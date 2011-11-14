@@ -1,7 +1,7 @@
 {
-  "name":        "com-arbys-prototype",
+  "name":        "AthenaUITestServer",
   "version":     "0.0.1",
-  "description": "Arbysness",
+  "description": "Test Server for the AthenaUI Framework",
   "author":      "JavaScript at LinkedIn",
   "private":     true,
   "dependencies": {
