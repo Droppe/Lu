@@ -11,6 +11,6 @@ http.createServer(function(request, response) {
   fileServer.serve( request, response, function(err, result) {
     sys.log( request.url );
   } );
-}).listen( 3000 );
+}).listen( 3001 );
 
-sys.log( 'Server listening on port 3000' );
+sys.log( 'Server listening on port 3001' );
