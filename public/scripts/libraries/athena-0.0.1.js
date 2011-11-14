@@ -1,6 +1,5 @@
 /*!
  * Athena UI Framwork v0.0.1
- * http://jquery.com/
  *
  * Copyright (c) 2011 Robert Martone
  * 
