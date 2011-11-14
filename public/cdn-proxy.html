@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>CDN</title>
+		<!-- Pulled From Master CDN -->
+		<script src="/scripts/libraries/porthole.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+
+			var windowProxy;
+
+			function proxyEventHandler( event ){
+				var request,
+					parameters = Porthole.WindowProxy.splitMessageParameters( event.data ),
+					url,
+					key;
+
+				url = parameters['url'];
+				key = parameters['key'];
+
+				request = XHR();
+				request.open( 'GET', url );
+
+				request.onreadystatechange = function() {
+					if( request.readyState === 4 && request.status === 200 ) {
+						windowProxy.postMessage( '?key=' + key + '&response=' + request.responseText );
+					}
+				}
+
+				request.send( null );
+
+			}
+
+			window.onload = function(){ 
+				windowProxy = new Porthole.WindowProxy( '//localhost:3000/relay.html' );
+				windowProxy.addEventListener( proxyEventHandler );
+			}
+
+			function XHR() {
+				var xmlhttp = false;
+
+				if ( typeof XMLHttpRequest !== 'undefined' ) {
+					try {
+						xmlhttp = new XMLHttpRequest();
+					} catch ( e ) {}
+				}
+
+				if ( !xmlhttp && typeof window.createRequest !== 'undefined' ) {
+					try {
+						xmlhttp = new window.createRequest();
+					} catch ( e ) {}
+				}
+
+				if ( !xmlhttp ) {
+					try {
+						xmlhttp = new ActiveXObject( 'Msxml2.XMLHTTP' );
+					} catch ( e ) {
+						try {
+							xmlhttp = new ActiveXObject( 'Microsoft.XMLHTTP' );
+						} catch ( e ) {}
+					}
+				}
+
+				if ( !xmlhttp ) {
+					throw new Error('Could not create an xmlHttpRequest Object');
+				}
+
+				return xmlhttp;
+
+			}
+
+		</script>
+	</head>
+	<body></body>
+</html>

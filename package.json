@@ -1,0 +1,12 @@
+{
+  "name":        "com-arbys-prototype",
+  "version":     "0.0.1",
+  "description": "Arbysness",
+  "author":      "JavaScript at LinkedIn",
+  "private":     true,
+  "dependencies": {
+    "node-static":        "0.5.7",
+    "seq":                "0.3.3"
+  },
+  "engine":      "node >= 0.4.10"
+}
