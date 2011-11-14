@@ -1,6 +1,6 @@
 /*!
  * Athena UI Framwork v0.0.1
- *
+ * https://github.com/iheartweb/AthenaUIFramework
  * Copyright (c) 2011 Robert Martone
  * 
  * Permission is hereby granted, free of charge, to any person obtaining
