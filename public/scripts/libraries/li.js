@@ -202,7 +202,8 @@
         required = _.reject( required, function( item, index ) {
           if( packages[item].requires.length === 0 && packages[item].__script ) {
             if( li.environment.debug ) {
-              code = ( '( function () {\n' + packages[item].__script + '\nconsole.log(\'Module "' + item + '" ready.\' );\n}() );' );
+              // The @ sourceURL forces Firebug to display the filename instead of a generic sequence number on the eval'd code.
+              code = ( '( function () {\n' + packages[item].__script + '\nconsole.log(\'Module "' + item + '" ready.\' );\n}() );//@ sourceURL=' + packages[item].path );
             } else {
               code = ( '( function () {\n' + packages[item].__script + '\n}() );' );
             }
@@ -366,6 +367,10 @@
 
   li.define( [
     {
+      id: 'libraries/ptclass',
+      version: '1.0',
+      path: '/scripts/libraries/ptclass.js'
+    }, {
       id: 'libraries/klass',
       version: '1.0',
       path: '/scripts/libraries/klass.js'
@@ -373,7 +378,7 @@
         id: 'libraries/athena',
         version: '0.0.1',
         path: '/scripts/libraries/athena-0.0.1.js',
-        requires: ['libraries/klass']
+        requires: ['libraries/ptclass']
     }, {
       id: 'providers/Event',
       version: '0.0.1',
