@@ -253,55 +253,71 @@ Athena = Class.create( {
         return off.apply( $this, [events, selector, handler] );
       };
 
+
       /**
        * Wrap jQuery's 'trigger' with Athena functionality. See: http://api.jquery.com/trigger/
        * @method trigger
        * @public
        */
       $.fn.trigger = function( event, parameters ) {
-        var $this = $( this );
-        // if( $this.data( '$observers' ) ) {
-        //   $this.notify( event, parameters );
-        // }
-        // if( $this.data( 'controls' ) ) {
-        //   _.each( $this.getControl(), function( Control, index ) {
-        //     Control.trigger( event, parameters );
-        //   } );
-        // }
-        return trigger.apply( $this, [event, parameters] );
+         var $this = $( this );
+         $this.notify( event, parameters );
+         return trigger.apply( $this, [event, parameters] );
       };
 
-      /**
-       * Notifies all observers of an event
-       * @method notify
-       * @public
-       * @param {String} A string containing a JavaScript event type, such as click or submit.
-       * @param {Array} Additional parameters to pass along to the event handler.
-       */
-      $.fn.notify = function( event, parameters ) {
-        var $this = $( this );
-        if( $this.data( '$observers' ) ) {
-          $this.data( '$observers' ).trigger( event );
-        }
-        return trigger.apply( $this, [events, selector, handler] );
-      };
+       /**
+        * Notifies all observers of an event
+        * @method notify
+        * @public
+        * @param {String} A string containing a JavaScript event type, such as click or submit.
+        * @param {Array} Additional parameters to pass along to the event handler.
+        */
+       $.fn.notify = function( event, parameters ) {
+         var $this = $( this );
+         if( $this.data( '$observers' ) ) {
+           $this.data( '$observers' ).trigger( event, parameters );
+         }
+       };
 
-      /**
-       * Adds an observer
-       * @method observe
-       * @public
-       * @param {Array} type A jQuery collection of of observers.
-       */
-      $.fn.observe = function( $observers ) {
-        var $this = $( this );
-        if( $this.data('$observers' ) ) {
-          $this.data( '$observers' ).add( $observers );
-        } else {
-          $this.data( '$observers', $observers );
-        }
-      };
+       /**
+        * Adds an observer
+        * @method observe
+        * @public
+        * @param {Array} $observer A jQuery collection of of observers.
+        */
+       $.fn.observe = function( $observer ) {
+         var $this = $( this );
+         if( $this.data( '$observers' ) ) {
+           $this.data( '$observers' ).add( $observer );
+         } else {
+           $this.data( '$observers', $observer );
+         }
+       };
+
+       /**
+        * Removes an unobserve
+        * @method unobserve
+        * @public
+        * @param {Array} $observer A jQuery collection.
+        */
+       $.fn.unobserve = function( $observer ) {
+         var $this = $( this ),
+           $observers;
+
+         $observers = $this.data( '$observers' );
+
+         if( $observers ){
+           $observers = $( _.reject( $observers, function( item, index ) {
+             return $observer.is( item );
+           } ) );
+           $this.data( '$observers', $observers );
+         }
+         return $this;
+
+       };
 
     } ( jQuery ) );
+
 
     /**
      * Factory for creating Controls.
@@ -321,6 +337,7 @@ Athena = Class.create( {
      * @param {Object} keys to be decorated
      * @param {Object} settings to be used in creation of controls
      */
+
     Athena.decorate = function( $node, keys, settings ) {
       return $node.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', settings );
     };
@@ -341,7 +358,7 @@ Athena = Class.create( {
       }
       return controls;
     };
-
+    
     $( function() {
       var $body = $( 'body' );
       //Athena.decorate( $body, ['ui:Abstract'] );

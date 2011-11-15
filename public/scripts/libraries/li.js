@@ -106,7 +106,7 @@
    * Class to manage javascript dependencies
    * @class Require
    * @constructor
-   * @param {Arra} ids The list of package ids to load.
+   * @param {Array} ids The list of package ids to load.
    * @param {Function} callback The callback function to execute after loading is complete. 
    */
   function Require( ids, callback ) {
@@ -375,10 +375,10 @@
       version: '1.0',
       path: '/scripts/libraries/klass.js'
     }, {
-        id: 'libraries/athena',
-        version: '0.0.1',
-        path: '/scripts/libraries/athena-0.0.1.js',
-        requires: ['libraries/klass']
+      id: 'libraries/athena',
+      version: '0.0.1',
+      path: '/scripts/libraries/athena-0.0.1.js',
+      requires: ['libraries/ptclass']
     }, {
       id: 'providers/Event',
       version: '0.0.1',
@@ -388,7 +388,7 @@
       id: 'ui/Abstract',
       version: '0.0.1',
       path: '/scripts/packages/ui/Abstract.js',
-      requires: ['libraries/klass', 'providers/Event']
+      requires: ['libraries/klass']
     }, {
       id: 'ui/Button',
       version: '0.0.1',

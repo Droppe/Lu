@@ -294,4 +294,9 @@ if (globalContext.exports) {
 else {
   globalContext.Class = Class;
 }
+
+if ( typeof module !== 'undefined' && module.exports ) {
+  module.exports = Class;
+}
+
 })(this);
