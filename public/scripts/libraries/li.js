@@ -383,7 +383,7 @@
       id: 'ui/Abstract',
       version: '0.0.1',
       path: '/scripts/packages/ui/Abstract.js',
-      requires: ['libraries/klass', 'providers/Event']
+      requires: ['libraries/klass']
     }, {
       id: 'ui/Button',
       version: '0.0.1',

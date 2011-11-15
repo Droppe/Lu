@@ -1,6 +1,5 @@
 var id = 'ui:Abstract',
   klass = li.require( 'libraries/klass' ),
-  EventProvider = li.require( 'providers/Event' ),
   Abstract;
 
 /**
@@ -81,25 +80,11 @@ Abstract = klass( function ( $element, settings ){
   $notify = $( settings.notify );
   $observe = $( settings.observe );
 
-  Event = new EventProvider( {
-    proxy: $element
-  } );
-
-  /**
-   * Trigger events for observers (nodes matching notify setting) 
-   * @private
-   * @method notify
-   * @param {String} type The type of custom event to trigger
-   * @param {Array} parameters Arguments passed through to the observer's callback function
-   */
-  function notify( type, parameters ) {
-    _.each( $notify, function( observer, index ) {
-      $( observer ).trigger( type + namespace, parameters );
-    } );
-  }
-
-  //Start observing nodes passed in observe setting
+  //Observe elements passed into $observe
   $observe.observe( $element );
+  
+  //Regiser elements passed in notify as observers
+  $element.observe( $notify );
 
   /**
    * Creates an event listener for a type
@@ -109,12 +94,7 @@ Abstract = klass( function ( $element, settings ){
    * @param {Function} handler The callback function
    */
   Abstract.on = function( type, handler ) {
-    return Event.on( type + namespace, function( event ) {
-      if( settings.bubble === false ) {
-        event.stopPropagation();
-      }
-      handler.apply( arguments );
-    } );
+    return $element.on( type + namespace, handler );
   };
 
   /**
@@ -124,7 +104,7 @@ Abstract = klass( function ( $element, settings ){
    * @param {String} type The type of event
    */
   Abstract.off = function( type ) {
-    return Event.off( type + namespace );
+    return $element.off( type + namespace );
   };
 
   /**
@@ -135,8 +115,9 @@ Abstract = klass( function ( $element, settings ){
    * @param {Aarray} parameters Extra arguments to pass through to the subscribed event handler
    */
   Abstract.trigger = function( type, parameters ) {
-    notify( type + namespace, parameters );
-    return Event.trigger( type + namespace, parameters );
+    return $element.trigger( type + namespace, parameters );
+    //notify( type + namespace, parameters );
+    //return Event.trigger( type + namespace, parameters );
   };
 
   /**
@@ -146,7 +127,7 @@ Abstract = klass( function ( $element, settings ){
    * @param {Array} $observer A jQuery collection to be added to the observers list
    */
   Abstract.observe = function( $observer ) {
-    $observers.add( $observer );
+    return $element.observe( $observer );
   };
 
   /**
@@ -156,9 +137,7 @@ Abstract = klass( function ( $element, settings ){
    * @param {Array} $subscriber A jQuery collection to unsubscribe
    */
   Abstract.unobserve = function( $observer ) {
-    $observers = _.reject( function( item, index ) {
-      return $observers.is( $( item ) );
-    } );
+    return $element.unobserve( $observer );
   };
 
   /**
@@ -178,6 +157,7 @@ Abstract = klass( function ( $element, settings ){
       return settings;
     }
   };
+
 
 } );
 

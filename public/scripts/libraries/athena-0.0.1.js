@@ -257,14 +257,7 @@ Athena = klass( function ( settings ){
      */
     $.fn.trigger = function( event, parameters ) {
       var $this = $( this );
-      // if( $this.data( '$observers' ) ) {
-      //   $this.notify( event, parameters );
-      // }
-      // if( $this.data( 'controls' ) ) {
-      //   _.each( $this.getControl(), function( Control, index ) {
-      //     Control.trigger( event, parameters );
-      //   } );
-      // }
+      $this.notify( event, parameters );
       return trigger.apply( $this, [event, parameters] );
     };
 
@@ -278,24 +271,44 @@ Athena = klass( function ( settings ){
     $.fn.notify = function( event, parameters ) {
       var $this = $( this );
       if( $this.data( '$observers' ) ) {
-        $this.data( '$observers' ).trigger( event );
+        $this.data( '$observers' ).trigger( event, parameters );
       }
-      return trigger.apply( $this, [events, selector, handler] );
     };
 
     /**
      * Adds an observer
      * @method observe
      * @public
-     * @param {Array} type A jQuery collection of of observers.
+     * @param {Array} $observer A jQuery collection of of observers.
      */
-    $.fn.observe = function( $observers ) {
+    $.fn.observe = function( $observer ) {
       var $this = $( this );
-      if( $this.data('$observers' ) ) {
-        $this.data( '$observers' ).add( $observers );
+      if( $this.data( '$observers' ) ) {
+        $this.data( '$observers' ).add( $observer );
       } else {
+        $this.data( '$observers', $observer );
+      }
+    };
+
+    /**
+     * Removes an unobserve
+     * @method unobserve
+     * @public
+     * @param {Array} $observer A jQuery collection.
+     */
+    $.fn.unobserve = function( $observer ) {
+      var $this = $( this ),
+        $observers;
+
+      $observers = $this.data( '$observers' );
+
+      if( $observers ){
+        $observers = $( _.reject( $observers, function( item, index ) {
+          return $observer.is( item );
+        } ) );
         $this.data( '$observers', $observers );
       }
+      return $this;
     };
 
   } ( jQuery ) );
