@@ -38,9 +38,8 @@ Button = Abstract.extend( function ( $element, settings ){
 
   $element.on( settings.on, function ( event ) {
     Button.trigger( action );
+    _.log("Button " + event.type + " " + action);
   } );
-
-  $element.data( id, Button );
   
 } );
 

@@ -215,7 +215,7 @@ Athena = klass( function ( settings ){
 
       return $this;
 
-    }
+    };
 
     /**
      * Calls Athena.getControl with selected elements
@@ -224,7 +224,7 @@ Athena = klass( function ( settings ){
      * @param {String} id The id of returned control.
      */
     $.fn.getControl = function( id ) {
-      return Athena.getControl( $( this ), id )
+      return Athena.getControl( $( this ), id );
     };
 
     /**
