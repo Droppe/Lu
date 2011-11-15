@@ -1,4 +1,5 @@
 var id = 'ui:Button:Previous',
+  Class = li.require( 'libraries/ptclass' ),
   Abstract = li.require( 'ui/Abstract' ),
   Button = li.require( 'ui/Button' ),
   PreviousButton;
@@ -11,13 +12,14 @@ var id = 'ui:Button:Previous',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-PreviousButton = Abstract.extend( function ( $element, settings ){
-/**
- * Instance of PreviousButton
- * @property PreviousButton
- * @type Object
- */
-  var PreviousButton = this,
+PreviousButton =  Class.create( {
+  initialize: function ( $element, settings ){
+    /**
+     * Instance of PreviousButton
+     * @property PreviousButton
+     * @type Object
+     */
+    var PreviousButton = this,
     /**
      * Default configuration values
      * @property defaults
@@ -28,10 +30,10 @@ PreviousButton = Abstract.extend( function ( $element, settings ){
       action: 'previous'
     };
 
-  settings = _.extend( defaults, settings );
+    settings = _.extend( defaults, settings );
 
-  return new Button( $element, settings );
-
+    return new Button( $element, settings );
+  }
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {

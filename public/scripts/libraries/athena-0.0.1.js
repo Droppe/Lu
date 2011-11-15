@@ -45,7 +45,7 @@ Athena = Class.create( {
      * @param {Object} jQuery
      */
     ( function( $ ) {
-    
+
       var queues = {},
         constructors = {},
         required = [],
@@ -248,66 +248,68 @@ Athena = Class.create( {
         return off.apply( $this, [events, selector, handler] );
       };
 
+
       /**
        * Wrap jQuery's 'trigger' with Athena functionality. See: http://api.jquery.com/trigger/
        * @method trigger
        * @public
        */
       $.fn.trigger = function( event, parameters ) {
-        var $this = $( this );
-        $this.notify( event, parameters );
-        return trigger.apply( $this, [event, parameters] );
+         var $this = $( this );
+         $this.notify( event, parameters );
+         return trigger.apply( $this, [event, parameters] );
       };
 
-      /**
-       * Notifies all observers of an event
-       * @method notify
-       * @public
-       * @param {String} A string containing a JavaScript event type, such as click or submit.
-       * @param {Array} Additional parameters to pass along to the event handler.
-       */
-      $.fn.notify = function( event, parameters ) {
-        var $this = $( this );
-        if( $this.data( '$observers' ) ) {
-          $this.data( '$observers' ).trigger( event, parameters );
-        }
-      };
+       /**
+        * Notifies all observers of an event
+        * @method notify
+        * @public
+        * @param {String} A string containing a JavaScript event type, such as click or submit.
+        * @param {Array} Additional parameters to pass along to the event handler.
+        */
+       $.fn.notify = function( event, parameters ) {
+         var $this = $( this );
+         if( $this.data( '$observers' ) ) {
+           $this.data( '$observers' ).trigger( event, parameters );
+         }
+       };
 
-      /**
-       * Adds an observer
-       * @method observe
-       * @public
-       * @param {Array} $observer A jQuery collection of of observers.
-       */
-      $.fn.observe = function( $observer ) {
-        var $this = $( this );
-        if( $this.data( '$observers' ) ) {
-          $this.data( '$observers' ).add( $observer );
-        } else {
-          $this.data( '$observers', $observer );
-        }
-      };
+       /**
+        * Adds an observer
+        * @method observe
+        * @public
+        * @param {Array} $observer A jQuery collection of of observers.
+        */
+       $.fn.observe = function( $observer ) {
+         var $this = $( this );
+         if( $this.data( '$observers' ) ) {
+           $this.data( '$observers' ).add( $observer );
+         } else {
+           $this.data( '$observers', $observer );
+         }
+       };
 
-      /**
-       * Removes an unobserve
-       * @method unobserve
-       * @public
-       * @param {Array} $observer A jQuery collection.
-       */
-      $.fn.unobserve = function( $observer ) {
-        var $this = $( this ),
-          $observers;
+       /**
+        * Removes an unobserve
+        * @method unobserve
+        * @public
+        * @param {Array} $observer A jQuery collection.
+        */
+       $.fn.unobserve = function( $observer ) {
+         var $this = $( this ),
+           $observers;
 
-        $observers = $this.data( '$observers' );
+         $observers = $this.data( '$observers' );
 
-        if( $observers ){
-          $observers = $( _.reject( $observers, function( item, index ) {
-            return $observer.is( item );
-          } ) );
-          $this.data( '$observers', $observers );
-        }
-        return $this;
-      };
+         if( $observers ){
+           $observers = $( _.reject( $observers, function( item, index ) {
+             return $observer.is( item );
+           } ) );
+           $this.data( '$observers', $observers );
+         }
+         return $this;
+
+       };
 
     } ( jQuery ) );
 
@@ -349,7 +351,7 @@ Athena = Class.create( {
       }
       return controls;
     };
-
+    
     $( function() {
       var $body = $( 'body' );
       //Athena.decorate( $body, ['ui:Abstract'] );
@@ -358,7 +360,7 @@ Athena = Class.create( {
       } ).execute();
     } );
 
-  } 
+  }
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {

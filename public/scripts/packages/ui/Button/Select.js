@@ -1,5 +1,7 @@
 var id = 'ui:Button:Select',
+  Class = li.require( 'libraries/ptclass' ),
   Abstract = li.require( 'ui/Abstract' ),
+  Button = li.require( 'ui/Button' ),
   Select;
 
 /**
@@ -10,13 +12,14 @@ var id = 'ui:Button:Select',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Select = Abstract.extend( function ( $element, settings ){
-/**
- * Instance of Select
- * @property Select
- * @type Object
- */
-  var Select = this,
+Select =  Class.create( {
+   initialize: function ( $element, settings ){
+    /**
+     * Instance of Select
+     * @property Select
+     * @type Object
+     */
+    var Select = this,
     /**
      * Default configuration values
      * @property defaults
@@ -28,18 +31,18 @@ Select = Abstract.extend( function ( $element, settings ){
     },
     item;
 
-  settings = _.extend( defaults, settings );
+    settings = _.extend( defaults, settings );
 
-  if( settings.item ) {
-    item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
-  } else {
-    item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
+    if( settings.item ) {
+      item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
+    } else {
+      item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
+    }
+
+    $element.on( settings.on, function ( event ) {
+      Select.trigger( settings.action, [ item ] );
+    } );
   }
-
-  $element.on( settings.on, function ( event ) {
-    Select.trigger( settings.action, [ item ] );
-  } );
-
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {

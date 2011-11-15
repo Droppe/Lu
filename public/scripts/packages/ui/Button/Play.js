@@ -1,4 +1,5 @@
 var id = 'ui:Button:Play',
+  Class = li.require( 'libraries/ptclass' ),
   Abstract = li.require( 'ui/Abstract' ),
   Button = li.require( 'ui/Button' ),
   PlayButton;
@@ -11,13 +12,14 @@ var id = 'ui:Button:Play',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-PlayButton = Abstract.extend( function ( $element, settings ){
-/**
- * Instance of PlayButton
- * @property PlayButton
- * @type Object
- */
-  var PlayButton = this,
+PlayButton =  Class.create( {
+  initialize: function ( $element, settings ){
+    /**
+     * Instance of PlayButton
+     * @property PlayButton
+     * @type Object
+     */
+    var PlayButton = this,
     /**
      * Default configuration values
      * @property defaults
@@ -28,10 +30,10 @@ PlayButton = Abstract.extend( function ( $element, settings ){
       action: 'play'
     };
 
-  settings = _.extend( defaults, settings );
+    settings = _.extend( defaults, settings );
 
-  return new Button( $element, settings );
-
+    return new Button( $element, settings );
+  }
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {
