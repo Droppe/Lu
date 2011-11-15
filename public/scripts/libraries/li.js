@@ -367,6 +367,10 @@
 
   li.define( [
     {
+      id: 'libraries/ptclass',
+      version: '1.0',
+      path: '/scripts/libraries/ptclass.js'
+    }, {
       id: 'libraries/klass',
       version: '1.0',
       path: '/scripts/libraries/klass.js'
