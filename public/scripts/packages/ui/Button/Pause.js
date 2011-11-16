@@ -2,7 +2,7 @@ var id = 'ui:Button:Pause',
   Class = li.require( 'libraries/ptclass' ),
   Abstract = li.require( 'ui/Abstract' ),
   Button = li.require( 'ui/Button' ),
-  NextButton;
+  PauseButton;
 
 /**
  * Representation of a button element
@@ -12,14 +12,14 @@ var id = 'ui:Button:Pause',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-NextButton =  Class.create( {
-   initialize: function ( $element, settings ){
+PauseButton =  Class.create( {
+   initialize: function( $element, settings ) {
   /**
-   * Instance of Next
-   * @property NextButton
+   * Instance of PauseButton
+   * @property PauseButton
    * @type Object
    */
-    var NextButton = this,
+    var PauseButton = this,
       /**
        * Default configuration values
        * @property defaults
@@ -30,12 +30,13 @@ NextButton =  Class.create( {
       };
 
     settings = _.extend( defaults, settings );
+    $super( $element, settings );
 
-    return new Button( $element, settings );
   }
+
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = NextButton;
+  module.exports = PauseButton;
 }
 

@@ -1,4 +1,4 @@
-var id = 'ui:Button:Play',
+var id = 'ui:Button:Pause',
   Class = li.require( 'libraries/ptclass' ),
   Abstract = li.require( 'ui/Abstract' ),
   Button = li.require( 'ui/Button' ),
@@ -13,25 +13,25 @@ var id = 'ui:Button:Play',
  * @param {Object} settings Configuration properties for this instance
  */
 PlayButton =  Class.create( {
-  initialize: function ( $element, settings ){
-    /**
-     * Instance of PlayButton
-     * @property PlayButton
-     * @type Object
-     */
+   initialize: function( $element, settings ) {
+  /**
+   * Instance of PlayButton
+   * @property PlayButton
+   * @type Object
+   */
     var PlayButton = this,
-    /**
-     * Default configuration values
-     * @property defaults
-     * @type Object
-     */
-    defaults = {
-      action: 'play'
-    };
+      /**
+       * Default configuration values
+       * @property defaults
+       * @type Object
+       */
+      defaults = {
+        action: 'play'
+      };
 
     settings = _.extend( defaults, settings );
+    $super( $element, settings );
 
-    return new Button( $element, settings );
   }
 } );
 

@@ -2,7 +2,7 @@ var id = 'ui:Button:Select',
   Class = li.require( 'libraries/ptclass' ),
   Abstract = li.require( 'ui/Abstract' ),
   Button = li.require( 'ui/Button' ),
-  Select;
+  SelectButton;
 
 /**
  * Representation of a button element
@@ -12,8 +12,8 @@ var id = 'ui:Button:Select',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Select =  Class.create( {
-   initialize: function ( $element, settings ){
+Select =  Class.create( Button, {
+   initialize: function( $super, $element, settings ) {
     /**
      * Instance of Select
      * @property Select
@@ -32,20 +32,11 @@ Select =  Class.create( {
     item;
 
     settings = _.extend( defaults, settings );
+    $super( $element, settings );
 
-    if( settings.item ) {
-      item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
-    } else {
-      item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
-    }
-
-    $element.on( settings.on, function ( event ) {
-      Select.trigger( settings.action, [ item ] );
-    } );
   }
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = Select;
 }
-

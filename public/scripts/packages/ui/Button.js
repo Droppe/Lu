@@ -32,16 +32,35 @@ Button = Class.create( Abstract, {
      * @property action
      * @type Object
      */
-    action;
+    action,
+    /**
+     * Target item used in event data
+     * @property action
+     * @type Object
+     */
+    item;
 
     settings = _.extend( defaults, settings );
 
     action = settings.action;
 
+    //try to figure out what to select...
+    if( action === 'select' ) {
+      if( settings.item ) {
+        item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
+      } else {
+        item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
+      }
+    }
+
     $super( $element, settings );
 
     $element.on( settings.on, function ( event ) {
-      Button.trigger( action );
+      if( item ) {
+        Button.trigger( action, [ item ] );
+      } else {
+        Button.trigger( action );
+      }
     } );
 
   }
