@@ -41,8 +41,12 @@ function isFunction(object) {
   return _toString.call(object) === FUNCTION_CLASS;
 }
 function extend(destination, source) {
-  for (var property in source) if (source.hasOwnProperty(property)) // modify protect primitive slaughter
-    destination[property] = source[property];
+  for (var property in source) {
+    if (source.hasOwnProperty(property)) {
+      // modify protect primitive slaughter
+      destination[property] = source[property];
+    }
+  }
   return destination;
 }
 function keys(object) {
@@ -86,7 +90,7 @@ function wrap(fn, wrapper) {
   return function() {
     var a = update([bind(__method, this)], arguments);
     return wrapper.apply(this, a);
-  }
+  };
 }
 function update(array, args) {
   var arrayLength = array.length, length = args.length;
@@ -103,7 +107,7 @@ function bind(fn, context) {
   return function() {
     var a = merge(args, arguments);
     return __method.apply(context, a);
-  }
+  };
 }
 
 /* ------------------------------------ */

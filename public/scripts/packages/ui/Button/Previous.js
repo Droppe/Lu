@@ -1,4 +1,4 @@
-var id = 'ui:Button:Previous',
+var id = 'ui:Button:Pause',
   Class = li.require( 'libraries/ptclass' ),
   Abstract = li.require( 'ui/Abstract' ),
   Button = li.require( 'ui/Button' ),
@@ -13,25 +13,25 @@ var id = 'ui:Button:Previous',
  * @param {Object} settings Configuration properties for this instance
  */
 PreviousButton =  Class.create( {
-  initialize: function ( $element, settings ){
-    /**
-     * Instance of PreviousButton
-     * @property PreviousButton
-     * @type Object
-     */
+   initialize: function( $element, settings ) {
+  /**
+   * Instance of PreviousButton
+   * @property PreviousButton
+   * @type Object
+   */
     var PreviousButton = this,
-    /**
-     * Default configuration values
-     * @property defaults
-     * @type Object
-     */
-    defaults = {
-      action: 'previous'
-    };
+      /**
+       * Default configuration values
+       * @property defaults
+       * @type Object
+       */
+      defaults = {
+        action: 'previous'
+      };
 
     settings = _.extend( defaults, settings );
+    $super( $element, settings );
 
-    return new Button( $element, settings );
   }
 } );
 
