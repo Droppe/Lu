@@ -1,6 +1,5 @@
 var id = 'ui:Button:Next',
   Class = li.require( 'libraries/ptclass' ),
-  Abstract = li.require( 'ui/Abstract' ),
   Button = li.require( 'ui/Button' ),
   NextButton;
 

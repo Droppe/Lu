@@ -389,7 +389,7 @@
       id: 'ui/Button',
       version: '0.0.1',
       path: '/scripts/packages/ui/Button.js',
-      requires: ['ui/Abstract']
+      requires: [ 'libraries/ptclass', 'ui/Abstract' ]
     }, {
       id: 'ui/List',
       version: '0.0.1',
@@ -404,27 +404,27 @@
       id: 'ui/Button/Next',
       version: '0.0.1',
       path: '/scripts/packages/ui/Button/Next.js',
-      requires: ['ui/Button']
+      requires: [ 'libraries/ptclass', 'ui/Button' ]
     }, {
       id: 'ui/Button/Previous',
       version: '0.0.1',
       path: '/scripts/packages/ui/Button/Previous.js',
-      requires: ['ui/Button']
+      requires: [ 'libraries/ptclass', 'ui/Button' ]
     }, {
       id: 'ui/Button/Select',
       version: '0.0.1',
       path: '/scripts/packages/ui/Button/Select.js',
-      requires: ['ui/Abstract', 'ui/Button']
+      requires: [ 'libraries/ptclass', 'ui/Button' ]
     }, {
       id: 'ui/Button/Play',
       version: '0.0.1',
       path: '/scripts/packages/ui/Button/Play.js',
-      requires: ['ui/Button']
+      requires: [ 'libraries/ptclass', 'ui/Button' ]
     }, {
       id: 'ui/Button/Pause',
       version: '0.0.1',
       path: '/scripts/packages/ui/Button/Pause.js',
-      requires: ['ui/Button']
+      requires: [ 'libraries/ptclass', 'ui/Button' ]
     }
   ] );
 
