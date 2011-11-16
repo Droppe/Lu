@@ -26,7 +26,6 @@ PreviousButton =  Class.create( {
      * @type Object
      */
     defaults = {
-      on: 'click',
       action: 'previous'
     };
 

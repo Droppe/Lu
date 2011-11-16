@@ -26,7 +26,6 @@ PlayButton =  Class.create( {
      * @type Object
      */
     defaults = {
-      on: 'click',
       action: 'play'
     };
 

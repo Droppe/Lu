@@ -27,9 +27,7 @@ var Class = li.require( 'libraries/ptclass' ),
   Athena;
 
 Athena = Class.create( {
-  
-  initialize: function ( settings ){
-
+  initialize: function( settings ) {
     var Athena = this,
       defaults = {
         namespace: 'athena',
@@ -46,8 +44,8 @@ Athena = Class.create( {
      * @private
      * @param {Object} jQuery
      */
-    ( function ( $ ) {
-    
+    ( function( $ ) {
+
       var queues = {},
         constructors = {},
         required = [],
@@ -237,9 +235,6 @@ Athena = Class.create( {
        */
       $.fn.on = function( events, selector, data, handler ) {
         var $this = $( this );
-        // _.each( $this.getControl(), function( Control, index ) {
-        //   console.log( Control );
-        // } );
         return on.apply( $this, [events, selector, data, handler] );
       };
 
@@ -318,7 +313,6 @@ Athena = Class.create( {
 
     } ( jQuery ) );
 
-
     /**
      * Factory for creating Controls.
      * @public
@@ -331,13 +325,12 @@ Athena = Class.create( {
     };
 
     /**
-     * Decorator for applying Athena notations to node.
+     * Decorates a node with Athena markup.
      * @public
      * @param {Object} jQuery
      * @param {Object} keys to be decorated
      * @param {Object} settings to be used in creation of controls
      */
-
     Athena.decorate = function( $node, keys, settings ) {
       return $node.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', settings );
     };
@@ -367,11 +360,8 @@ Athena = Class.create( {
       } ).execute();
     } );
 
-
-  } 
-
+  }
 } );
-
 
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = Athena;

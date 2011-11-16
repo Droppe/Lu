@@ -11,9 +11,8 @@ var id = 'ui:Button',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */ 
-Button = Class.create(Abstract, {
-  initialize: function ($super, $element, settings){
-
+Button = Class.create( Abstract, {
+  initialize: function ( $super, $element, settings ){
     /**
      * Instance of Button
      * @property Button
@@ -27,24 +26,13 @@ Button = Class.create(Abstract, {
      */
     defaults = {
       on: 'click'
-    },
-    /**
-     * Custom event name
-     * @property action
-     * @type Object
-     */
-    action;
+    };
 
     settings = _.extend( defaults, settings );
-    $super($element, settings );
-
-
-
-    action = settings.action;
+    $super( $element, settings );
 
     $element.on( settings.on, function ( event ) {
-      Button.trigger( action );
-      _.log("Button " + event.type + " " + action);
+      Button.trigger( settings.action );
     } );
   }
   
