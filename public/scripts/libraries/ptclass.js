@@ -86,7 +86,8 @@ function wrap(fn, wrapper) {
   return function() {
     var a = update([bind(__method, this)], arguments);
     return wrapper.apply(this, a);
-  }
+  };
+  
 }
 function update(array, args) {
   var arrayLength = array.length, length = args.length;
@@ -103,7 +104,7 @@ function bind(fn, context) {
   return function() {
     var a = merge(args, arguments);
     return __method.apply(context, a);
-  }
+  };
 }
 
 /* ------------------------------------ */
@@ -294,4 +295,11 @@ if (globalContext.exports) {
 else {
   globalContext.Class = Class;
 }
+
+
+if ( typeof module !== 'undefined' && module.exports ) {
+  module.exports = Class;
+}
+
+
 })(this);
