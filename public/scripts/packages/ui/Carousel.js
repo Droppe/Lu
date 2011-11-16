@@ -16,10 +16,13 @@ Carousel = Class.create(List, {
   		defaults = {
   		  items: $("li", $element)
   		};
-  
-  	settings = _.extend( defaults, settings );
-   
+      
+      
+    settings = _.extend( defaults, settings );
     $super($element, settings );
+  
+    console.dir(settings);
+  
   
     /**
      * Selects the next item in the list. 

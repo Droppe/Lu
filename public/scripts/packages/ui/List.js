@@ -27,6 +27,9 @@ List = Class.create( Abstract, {
 
     settings = _.extend( defaults, settings );
 
+    //$super($element, settings );
+
+
     /* 
      * Scan for items from the provided selector,
      * or default to the children of the container.
@@ -44,7 +47,6 @@ List = Class.create( Abstract, {
       $items = $element.children();
     }
     
-    $super($element, settings );
 
     /**
      * Select an item in the list

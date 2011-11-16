@@ -84,7 +84,11 @@
 
 <body>
   
-  <div id="container" data-athena="ui:Carousel" data-athena-config="{'ui:Carousel':{}}">
+  <div id="container" data-athena="ui:List" data-athena-config="{
+    'ui:List': {
+      items: 'li'
+    }
+  }">
    
     <ol id="car-list">
       <li class="selected">one</li>
@@ -146,52 +150,12 @@
   </div>
 
 
-  <script type="text/javascript" charset="utf-8">
-
-    $( function() {
-/*
-      $( '#pause_button' ).on( 'pause:before', function() {
-        console.info(  'before, pause' );
-      } );
-
-      $( '#container' ).on( 'pause', function() {
-        console.info( 'bubbled, pause' );
-      } );
-
-      $( '#pause_button' ).on( 'pause', function() {
-        console.info( 'pause' );
-      } );
-
-      $( '#pause_button' ).on( 'pause:after', function() {
-        console.info( 'after, pause' );
-      } );
-
-      $( '#play_button' ).on( 'play:before', function() {
-        console.info( 'before, play' );
-      } );
-
-      $( '#container' ).on( 'play', function() {
-        console.info( 'bubbled, play' );
-      } );
-
-      $( '#play_button' ).on( 'play', function() {
-        console.info( 'play' );
-      } );
-
-      $( '#play_button' ).on( 'play:after', function() {
-        console.info( 'after, play' );
-      } );
-*/
-    } );
-
-
-    </script>
-
 
     <script type="text/javascript" charset="utf-8">
       li.require( ['libraries/athena'], function( Athena ) {
         Athena = new Athena();
       } );
+      
     </script>
     
 </body>

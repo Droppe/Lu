@@ -58,8 +58,10 @@ Button = Class.create( Abstract, {
     $element.on( settings.on, function ( event ) {
       if( item ) {
         Button.trigger( action, [ item ] );
+        _.log("Button " + action);
       } else {
         Button.trigger( action );
+        _.log("Button " + action);
       }
     } );
   }
