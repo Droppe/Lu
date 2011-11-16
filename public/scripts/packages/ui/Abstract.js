@@ -11,7 +11,6 @@ var id = 'ui:Abstract',
  */
 Abstract = Class.create( {
   initialize: function ( $element, settings ){
-
     /**
      * Instance of Abstract class
      * @property Abstrance
@@ -162,7 +161,6 @@ Abstract = Class.create( {
       return result;
     };
   }
-
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {

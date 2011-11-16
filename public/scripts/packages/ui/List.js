@@ -10,8 +10,8 @@ var id = 'ui:List',
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  */
-List = Class.create( {
-  initialize: function ( $element, settings ){
+List = Class.create( Abstract, {
+  initialize: function ( $super, $element, settings ){
     var List = this,
       defaults = {
         /**
@@ -43,6 +43,8 @@ List = Class.create( {
     } else {
       $items = $element.children();
     }
+    
+    $super($element, settings );
 
     /**
      * Select an item in the list

@@ -11,7 +11,7 @@ var id = 'ui/Carousel',
  * @param {Object} settings Configuration properties
  */
 Carousel = Class.create(List, {
-  initalize: function ( $element, settings ){
+  initalize: function ( $super, $element, settings ){
   	var Carousel = this,
   		defaults = {
   		  items: $("li", $element)
@@ -19,11 +19,7 @@ Carousel = Class.create(List, {
   
   	settings = _.extend( defaults, settings );
    
-    //Since we can't call super(), we need to overwrite the List's items 
-    if ( settings.items ) {
-      Carousel.setItems(settings.items);
-    }
-  
+    $super($element, settings );
   
     /**
      * Selects the next item in the list. 
