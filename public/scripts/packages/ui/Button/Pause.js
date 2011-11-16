@@ -6,7 +6,7 @@ var id = 'ui:Button:Pause',
 
 /**
  * Representation of a button element
- * @class NextButton
+ * @class PauseButton
  * @constructor
  * @extends Abstract
  * @param {HTMLElement} element The HTML element surrounded by the control
@@ -26,7 +26,6 @@ NextButton =  Class.create( {
        * @type Object
        */
       defaults = {
-        on: 'click',
         action: 'pause'
       };
 

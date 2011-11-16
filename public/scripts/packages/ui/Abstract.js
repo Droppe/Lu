@@ -162,7 +162,6 @@ Abstract = Class.create( {
       return result;
     };
   }
-
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {

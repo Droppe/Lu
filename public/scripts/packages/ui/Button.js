@@ -11,14 +11,14 @@ var id = 'ui:Button',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Button = Class.create(Abstract, {
+Button = Class.create( Abstract, {
   initialize: function ( $super, $element, settings ){
     /**
      * Instance of Button
      * @property Button
      * @type Object
      */
-    var Button,
+    var Button = this,
     /**
      * Default configuration values
      * @property defaults
@@ -38,13 +38,12 @@ Button = Class.create(Abstract, {
 
     action = settings.action;
 
-    Button = $super($element, settings );
+    $super( $element, settings );
 
     $element.on( settings.on, function ( event ) {
       Button.trigger( action );
-      _.log("Button " + event.type + " " + action);
     } );
-  
+
   }
 } );
 

@@ -6,37 +6,35 @@ var id = 'ui:Button:Next',
 
 /**
  * Representation of a button element
- * @class PauseButton
+ * @class NextButton
  * @constructor
  * @extends Abstract
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-NextButton = Class.create( {
-  initialize: function ( $element, settings ){
+NextButton = Class.create( Button, {
+  initialize: function( $super, $element, settings ) {
     /**
      * Instance of NextButton
      * @property NextButton
      * @type Object
      */
-    var NextButton = this,
+    var NextButton,
     /**
      * Default configuration values
      * @property defaults
      * @type Object
     */
     defaults = {
-      on: 'click',
       action: 'next'
     };
 
     settings = _.extend( defaults, settings );
+    $super( $element, settings );
 
-    return new Button( $element, settings );
   }
 } );
 
-if ( typeof module !== 'undefined' && module.exports ) {
+if( typeof module !== 'undefined' && module.exports ) {
   module.exports = NextButton;
 }
-
