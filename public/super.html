@@ -80,22 +80,19 @@
 
 <h1>Super</h1>
 
-<body data-athena="ui:Abstract" data-athena-config="{
-    ui:Abstract: {
-      subscribe: 'button'
-    }
-  }">
+<body>
   
   <div id="main">
-    
-    <button data-athena="ui:Button" data-athena-config="{ui:Button: {action: 'next'}}">BUTTON</button>
-
+    <button data-athena="ui:Button" data-athena-config="{
+      'ui:Button': {
+        action: 'next'
+      }
+    }">BUTTON</button>
   </div>
 
 
   
   <script type="text/javascript" charset="utf-8">
-
 
       li.require( ['libraries/athena'], function( Athena ) {
         Athena = new Athena();
