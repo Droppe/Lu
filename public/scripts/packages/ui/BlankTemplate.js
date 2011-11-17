@@ -70,8 +70,10 @@ BlankTemplate = Class.create( Abstract, ( (function(){
        } );       
        
      },
-     anotherMethod: function ( $super, $element, settings ) {
+     anotherMethod: function ( $super) {
        // Your code here
+       // Call the parent method
+       $super();       
      }
    };
 
