@@ -23,10 +23,13 @@ BlankTemplate = Class.create( Abstract, ( (function(){
    * @final
    */
    var defaults = {
+     
+     // Default values go here
+     
    },
    /**
     * Configuration values
-    * @property onfig
+    * @property config
     * @private
     * @type {Object}
     */
