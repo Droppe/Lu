@@ -1,7 +1,7 @@
 var id = 'ui/Carousel',
   Class = li.require( 'libraries/ptclass' ),
-	List = li.require( 'ui/List' ),
-	Carousel;
+  List = li.require( 'ui/List' ),
+  Carousel;
 
 /**
  * Description
@@ -10,53 +10,83 @@ var id = 'ui/Carousel',
  * @param {HTMLElement} $element The JQuery node representing the Carousel's container
  * @param {Object} settings Configuration properties
  */
-Carousel = Class.create(List, {
-  initalize: function ( $element, settings ){
-  	var Carousel = this,
-  		defaults = {
-  		  items: $("li", $element)
-  		};
-  
-  	settings = _.extend( defaults, settings );
-   
-    //Since we can't call super(), we need to overwrite the List's items 
-    if ( settings.items ) {
-      Carousel.setItems(settings.items);
-    }
-  
-  
-    /**
-     * Selects the next item in the list. 
-     * @method next
-     * @public
-     * @return {Void}
-     */
-    Carousel.next = function() {
-      if (Carousel.hasNext()) {
-        Carousel.select( Carousel.index() + 1);
-      }
-      else {
-        Carousel.first();
-      }
+Carousel = Class.create( List, ( function CarouselFactory() {
+
+  var defaults = {
+      repeat: -1,
+      autoplay: true,
+      delay: 3000,
+      items: '.items li'
     };
 
-    /**
-     * Selects the previous item in the list. 
-     * @method previous
-     * @public
-     * @return {Void}
-     */  
-     Carousel.previous = function() {
-       if (Carousel.hasPrevious()) {
-         Carousel.select( Carousel.index() - 1);
-       }
-       else {
-         Carousel.last();
-       }
-     };
-  
-   } 
-});
+  return {
+    initialize: function( $super, $element, settings ) {
+      var Carousel = this,
+        repeat = settings.repeat,
+        playing = false;
+
+      settings = _.extend( defaults, settings );
+
+      $super( $element, settings );
+
+      Carousel.pause = function() {
+        if( playing ) {
+          playing = false;
+          Carousel.trigger( 'paused' );
+        }
+        return Carousel;
+      };
+      Carousel.play = function() {
+        var index;
+        if( playing === false ) {
+          repeat = settings.repeat;
+          playing = true;
+          index = Carousel.index();
+          ( function recurse() {
+            window.setTimeout( function() {
+              if( playing ) {
+                Carousel.next();
+                recurse();
+              }
+            }, settings.delay );
+          }() );
+          Carousel.trigger( 'playing' );
+        }
+        return Carousel;
+      };
+
+      if( settings.autoplay ) {
+        Carousel.play();
+      }
+
+      Carousel.on( 'max', function( event ) {
+        event.stopPropagation();
+        if( playing && repeat >= -1 ) {
+          repeat -= 1;
+          Carousel.first();
+        } else if ( playing && repeat <= -1 ){
+          Carousel.pause();
+        } else {
+          Carousel.first();
+        }
+      } );
+      Carousel.on( 'min', function( event ) {
+        event.stopPropagation();
+        Carousel.last();
+      } );
+      Carousel.on( 'play', function( event ) {
+        event.stopPropagation();
+        Carousel.play();
+      } );
+      Carousel.on( 'pause', function( event ) {
+        event.stopPropagation();
+        Carousel.pause();
+      } );
+
+    }
+  };
+
+}() ) );
 
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = Carousel;

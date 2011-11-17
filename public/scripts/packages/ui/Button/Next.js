@@ -19,14 +19,14 @@ NextButton = Class.create( Button, {
      * @type Object
      */
     var NextButton,
-    /**
-     * Default configuration values
-     * @property defaults
-     * @type Object
-    */
-    defaults = {
-      action: 'next'
-    };
+      /**
+       * Default configuration values
+       * @property defaults
+       * @type Object
+       */
+      defaults = {
+        action: 'next'
+      };
 
     settings = _.extend( defaults, settings );
     $super( $element, settings );

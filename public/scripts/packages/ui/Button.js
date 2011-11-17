@@ -50,13 +50,14 @@ Button = Class.create( Abstract, {
         item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
       } else {
         item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
+        console.log( 'ITEM', item );
       }
     }
 
     $super( $element, settings );
 
     $element.on( settings.on, function ( event ) {
-      if( item ) {
+      if( item !== undefined ) {
         Button.trigger( action, [ item ] );
       } else {
         Button.trigger( action );

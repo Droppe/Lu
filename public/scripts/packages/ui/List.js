@@ -10,17 +10,17 @@ var id = 'ui:List',
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  */
-List = Class.create( {
-  initialize: function ( $element, settings ){
+List = Class.create( Abstract, {
+  initialize: function ( $super, $element, settings ){
     var List = this,
       defaults = {
         /**
-     	   * The CSS class that designates a selected list item
-     	   * @property selectFlag
-     	   * @default 'selected'
-     	   * @type String
-     	   * @final
-      	 */
+         * The CSS class that designates a selected list item
+         * @property selectFlag
+         * @default 'selected'
+         * @type String
+         * @final
+        */
         selectFlag: 'selected'
       },
       $items;
@@ -36,7 +36,7 @@ List = Class.create( {
      */
     if ( settings.items ) {
       if( typeof settings.items === 'string' ) {
-        $items = $( settings.items );
+        $items = $( settings.items, $element );
       } else {
         $items = settings.items;
       }
@@ -44,75 +44,85 @@ List = Class.create( {
       $items = $element.children();
     }
 
+    $super( $element, settings );
+
     /**
      * Select an item in the list
      * @method selectItem
      * @public
      * @param {Integer|Object} item The index of the item to select, or a JQuery instance of the item.
-     * @return {Void}
+     * @return {Object} List
      */  
     List.select = function ( item ) {
-      var $item, 
-        $last;
-      
+      var $item;
+
       if( typeof item === 'number' ) {
         $item = $items.eq( item );
       } else {
         $item = item;
       }
-    
-      if( $item.hasClass( settings.selectFlag ) === false ) {
-        $last = $items.filter( '.' + settings.selectFlag );
-        $last.removeClass( settings.selectFlag );
-        $item.addClass( settings.selectFlag );
 
-        List.trigger( 'selected', [$item, List.index()] );
+      if( $item.hasClass( settings.selectFlag ) === false ) {
+        $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
+        List.trigger( 'selected', [$item.addClass( settings.selectFlag ), List.index()] );
       }
-    
+      return List;
     };
   
     /**
      * Selects the next item in the list. 
      * @method next
      * @public
-     * @return {Void}
+     * @return {Object} List
      */
     List.next = function() {
-      var x = ( List.hasNext() ) ? 1 : 0;
-    
-      List.select( $items.eq( List.index() + x ) );
+      var increment = 0;
+      if(  List.hasNext() ) {
+        increment = 1;
+      } else {
+         List.trigger( 'max' );
+      }
+      List.select( $items.eq( List.index() + increment ) );
+      return List;
     };
 
     /**
      * Selects the previous item in the list. 
      * @method previous
      * @public
-     * @return {Void}
+     * @return {Object} List
      */  
     List.previous = function() {
-      var x = ( List.hasPrevious() ) ? 1 : 0;
-    
-      List.select( $items.eq( List.index() - x ) );
+      var decrement = 0;
+      if( List.hasPrevious() ) {
+        decrement = 1;
+      } else {
+         List.trigger( 'min' );
+      }
+      List.select( $items.eq( List.index() - decrement ) );
+      return List;
     };
   
     /**
      * Selects the last item in the list. 
      * @method last
      * @public
-     * @return {Void}
+     * @return {Object} List
      */  
     List.last = function() {
       List.select( $items.eq( $items.length - 1 ) );
+      return List;
     };
   
     /**
      * Selects the first item in the list. 
      * @method first
      * @public
-     * @return {Void}
+     * @return {Object} List
      */  
     List.first = function() {
       List.select( 0 );
+      return List;
     };
 
     /**
@@ -194,7 +204,6 @@ List = Class.create( {
       return $items.length;
     };
 
-
     // Subscribe to custom events
     $element.on( 'select', function( event, item ) {
       event.stopPropagation();
@@ -216,8 +225,9 @@ List = Class.create( {
       event.stopPropagation();
       List.last();
     } );
-  
+
   }
+
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {

@@ -11,13 +11,13 @@ var id = 'ui:Button:Pause',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-PlayButton =  Class.create( {
-   initialize: function( $element, settings ) {
-  /**
-   * Instance of PlayButton
-   * @property PlayButton
-   * @type Object
-   */
+PlayButton =  Class.create( Button, {
+  initialize: function( $super, $element, settings ) {
+    /**
+     * Instance of PlayButton
+     * @property PlayButton
+     * @type Object
+     */
     var PlayButton = this,
       /**
        * Default configuration values

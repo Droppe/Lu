@@ -11,8 +11,8 @@ var id = 'ui:Button:Pause',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-PreviousButton =  Class.create( {
-   initialize: function( $element, settings ) {
+PreviousButton =  Class.create( Button, {
+   initialize: function( $super, $element, settings ) {
   /**
    * Instance of PreviousButton
    * @property PreviousButton

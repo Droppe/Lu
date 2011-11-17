@@ -16,7 +16,7 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    #list .selected {
+    .selected {
       color: red;
     }
   </style>
@@ -75,7 +75,52 @@
 
 <body>
 
-  <div id="container" data-athena="ui:Button:Next"></div>
+  <div id="container" data-athena="ui:Carousel" data-athena-config="{ 'ui:Carousel': { delay: 1000, repeat: 1 } }">
+    <ol id="list" class="items">
+      <li class="selected">
+        A
+      </li>
+      <li>
+        B
+      </li>
+      <li>
+        C
+      </li>
+      <li>
+        D
+      </li>
+    </ol>
+    <ul>
+      <li>
+        <button role="button" data-athena="ui:Button:Previous">&laquo; Previous</button>
+      </li>
+      <li>
+        <button role="button" data-athena="ui:Button:Pause">Pause</button>
+      </li>
+      <li>
+        <button role="button" data-athena="ui:Button:Play">Play</button>
+      </li>
+      <li>
+        <ol>
+          <li>
+            <button role="button" data-athena="ui:Button:Select">1</button>
+          </li>
+          <li>
+            <button role="button" data-athena="ui:Button:Select">2</button>
+          </li>
+          <li>
+            <button role="button" data-athena="ui:Button:Select">3</button>
+          </li>
+          <li>
+            <button role="button" data-athena="ui:Button:Select">4</button>
+          </li>
+        </ol>
+      </li>
+      <li>
+        <button role="button" data-athena="ui:Button:Next">Next &raquo;</button>
+      </li>
+    </li>
+  </div>
 
   <script type="text/javascript" charset="utf-8">
     li.require( ['libraries/athena'], function( Athena ) {
