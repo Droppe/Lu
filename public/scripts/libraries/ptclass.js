@@ -289,15 +289,23 @@ var Class = (function() {
     var temp = scope[method],
       useSuper = (argumentNames(fn)[0] == "$super") ? true : false;
 
+    args = [].slice.call(arguments);
+        
+    if (useSuper) {
+      args.unshift(temp);
+    }
+
+    // add method to prototype if it doesn't already exist
+    if (!temp) {
+      scope.__proto__[method] = fn;
+    }
+
+    // return function back to class as priviledged method
     return function() {
-      args = [].slice.call(arguments);
-      if (useSuper) {
-        args.unshift(temp);
-      }
-      if (temp) {
-        fn.apply(scope, args);
-      }
+      return fn.apply(scope, args);
     };
+
+    
   }
   // end TEMP
 
