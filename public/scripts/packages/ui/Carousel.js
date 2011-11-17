@@ -1,5 +1,4 @@
-var id = 'ui/Carousel',
-  Class = li.require( 'libraries/ptclass' ),
+var Class = li.require( 'libraries/ptclass' ),
 	List = li.require( 'ui/List' ),
 	Carousel;
 
@@ -7,56 +6,76 @@ var id = 'ui/Carousel',
  * Description
  * @class Carousel
  * @constructor
+ * @extends List
  * @param {HTMLElement} $element The JQuery node representing the Carousel's container
  * @param {Object} settings Configuration properties
  */
-Carousel = Class.create(List, {
-  initalize: function ( $super, $element, settings ){
-  	var Carousel = this,
-  		defaults = {
-  		  items: $("li", $element)
-  		};
-      
-      
-    settings = _.extend( defaults, settings );
-    $super($element, settings );
-  
-    console.dir(settings);
+Carousel = Class.create( List, ( function(){
   
   
-    /**
-     * Selects the next item in the list. 
-     * @method next
-     * @public
-     * @return {Void}
-     */
-    Carousel.next = function() {
-      if (Carousel.hasNext()) {
-        Carousel.select( Carousel.index() + 1);
-      }
-      else {
-        Carousel.first();
-      }
-    };
+    // Private Static Attributes
 
+    /**
+     * Default configuration values
+     * @property defaults
+     * @type Object
+     */
+     var defaults = {};
+     
+
+    // Return methods object
+    return {
+      initialize: function ( $super, $element, settings ){
+        
+        defaults = {
+          items: $("li", $element)
+        };
+
+        // Private attributes
+        var node = $element;
+
+        // Public attributes
+        this.node = node;
+
+        _.defaults( settings, defaults );
+
+        // Call the parent's initialize method with the new config via '$super'
+        $super( $element, settings );
+      },
+      /**
+       * Selects the next item in the list. 
+       * @method next
+       * @public
+       * @return {Void}
+       */
+      next: function() {
+        _.log("next: " + this.node.id);
+        if (this.hasNext()) {
+          this.select( this.index() + 1);
+        }
+        else {
+          this.first();
+        }
+      },
     /**
      * Selects the previous item in the list. 
      * @method previous
      * @public
      * @return {Void}
      */  
-     Carousel.previous = function() {
-       if (Carousel.hasPrevious()) {
-         Carousel.select( Carousel.index() - 1);
-       }
-       else {
-         Carousel.last();
-       }
-     };
-  
-   } 
-});
+    previous: function() {
+      if (this.hasPrevious()) {
+        this.select( this.index() - 1);
+      }
+      else {
+        this.last();
+      }
+    }
+  });
 
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Carousel;
-}
+  // for Athena
+  if ( typeof module !== 'undefined' && module.exports ) {
+    module.exports = Carousel;
+  }
+
+})();  

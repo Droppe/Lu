@@ -1,5 +1,4 @@
-var id = 'ui:Abstract',
-  Class = li.require( 'libraries/ptclass' ),
+var Class = li.require( 'libraries/ptclass' ),
   Abstract;
 
 /**
@@ -9,83 +8,102 @@ var id = 'ui:Abstract',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Abstract = Class.create( {
-  initialize: function ( $element, settings ){
+Abstract = Class.create( ( function() {
+
+  /**
+   * Default settings values
+   * @property defaults
+   * @private
+   * @type {Object}
+   */
+  var defaults = {
     /**
-     * Instance of Abstract class
-     * @property Abstrance
-     * @type {Object}
+     * A selector that matches nodes to observe
+     * @property observe
+     * @type {String}
      */
-    var Abstract = this,
-      /**
-       * Instance of EventProvider
-       * @property Event
-       * @type {Object}
-       */
-      Event,
-      /**
-       * Default configuration values
-       * @property defaults
-       * @private
-       * @type {Object}
-       */
-      defaults = {
-        /**
-         * A selector that matches nodes to observe
-         * @property observe
-         * @type {String}
-         */
-        observe: '',
-        /**
-         * A selector that matches nodes to notify of events
-         * @property notify
-         * @type {String}
-         */
-        notify: '',
-        /**
-         * When false, events are prevented from bubbling up the DOM tree
-         * @property bubble
-         * @type {Boolean}
-         * @default true
-         */
-        bubble: true
-      },
+    observe: '',
+    /**
+     * A selector that matches nodes to notify of events
+     * @property notify
+     * @type {String}
+     */
+    notify: '',
+    /**
+     * When false, events are prevented from bubbling up the DOM tree
+     * @property bubble
+     * @type {Boolean}
+     * @default true
+     */
+    bubble: true
+  };
+
+  return {
+    initialize: function ( $element, settings ) {
+    
+      // Protected attributes
+    
       /**
        * A jQuery collection that is observed for events
-       * @property $publishTo
+       * @property $observe
        * @private
        * @type {Array}
        */
-      $observe,
+      var $observe,
       /**
        * A jQuery collection that is notified of events
        * @property subscribe
        * @private
        * @type {Array}
        */
-      $notify,
+      $notify;      
+    
+      // Public attributes, though intended to be hidden (hence "__" prefix).
+
       /**
-       * The namespace that all events will be fired into and listed for in. See http://docs.jquery.com/Namespaced_Events.
-       * @property namespace
+       * Configuration values
+       * @property __config
+       * @private
+       * @type {Object}
+       */
+      this.__config;
+
+      /**
+       * The element wrapped by the component.
+       * @property __$node
+       * @private
+       * type {Object}
+       */
+      this.__$node;
+
+      /**
+       * The namespace that all events will be fired into and listed for in. 
+       * See http://docs.jquery.com/Namespaced_Events.
+       * @property __namespace
+       * @private
        * @type {String}
        */
-      namespace = '';
+      this.__namespace = '';
 
-    settings = _.extend( defaults, settings );
 
-    if( settings.namespace ) {
-      namespace = '.' + settings.namespace;
-    }
+      // Setup
+      this.__$node = $element;
+      this.__config = _.extend( defaults, settings );
 
-    $notify = $( settings.notify );
-    $observe = $( settings.observe );
+      if( this.__config.namespace ) {
+        this.__namespace = '.' + this.__config.namespace;
+      }
 
-    //Observe elements passed into $observe
-    $observe.observe( $element );
+      $notify = $( this.__config.notify );
+      $observe = $( this.__config.observe );
+
+      //Observe elements passed into $observe
+      $observe.observe( this.__$node );
+
+      //Regiser elements passed in notify as observers
+      this.__$node.observe( $notify );
+    },
   
-    //Regiser elements passed in notify as observers
-    $element.observe( $notify );
-
     /**
      * Creates an event listener for a type
      * @method on
@@ -93,19 +111,19 @@ Abstract = Class.create( {
      * @param {String} type The type of event
      * @param {Function} handler The callback function
      */
-    Abstract.on = function( type, handler ) {
-      return $element.on( type + namespace, handler );
-    };
-
+    on: function( type, handler ) {
+      return this.__$node.on( type + this.__namespace, handler );
+    },
+  
     /**
      * Unbinds event listeners of a type
      * @method off
      * @public
      * @param {String} type The type of event
      */
-    Abstract.off = function( type ) {
-      return $element.off( type + namespace );
-    };
+    off: function( type ) {
+      return this.__$node.off( type + this.__namespace );
+    },
 
     /**
      * Fires a custom event 
@@ -114,11 +132,9 @@ Abstract = Class.create( {
      * @param {String} type The type of event
      * @param {Aarray} parameters Extra arguments to pass through to the subscribed event handler
      */
-    Abstract.trigger = function( type, parameters ) {
-      return $element.trigger( type + namespace, parameters );
-      //notify( type + namespace, parameters );
-      //return Event.trigger( type + namespace, parameters );
-    };
+    trigger: function( type, parameters ) {
+      return this.__$node.trigger( type + this.__namespace, parameters );
+    },
 
     /**
      * Observe events
@@ -126,9 +142,9 @@ Abstract = Class.create( {
      * @public
      * @param {Array} $observer A jQuery collection to be added to the observers list
      */
-    Abstract.observe = function( $observer ) {
-      return $element.observe( $observer );
-    };
+    observe: function( $observer ) {
+      return this.__$node.observe( $observer );
+    },
 
     /**
      * Cease observation of events
@@ -136,9 +152,9 @@ Abstract = Class.create( {
      * @public
      * @param {Array} $subscriber A jQuery collection to unsubscribe
      */
-    Abstract.unobserve = function( $observer ) {
-      return $element.unobserve( $observer );
-    };
+    unobserve: function( $observer ) {
+      return this.__$node.unobserve( $observer );
+    },
 
     /**
      * Gets a static setting
@@ -146,22 +162,23 @@ Abstract = Class.create( {
      * @public
      * @param {String} key The name of the setting
      */
-    Abstract.getSetting = function( key ) {
+    getSetting: function( key ) {
       var result;
-      if( key ) {
-        if( settings.key ) {
-          result = settings.key;
+
+      if ( key ) {
+        if ( this.__config.key ) {
+          result = this.__config.key;
         } else {
-          Athena.error( 'The setting ' + key + ' does not exist in ', settings );
+          Athena.error( 'The setting ' + key + ' does not exist in ', this.__config );
         }
       } else {
-        result = settings;
+        result = this.__config;
       }
-      
+    
       return result;
-    };
-  }
-} );
+    }
+  };
+} )() );
 
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = Abstract;

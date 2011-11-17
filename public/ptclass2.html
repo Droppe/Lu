@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PT Class Test</title>
+</head>
+<body>
+  <h1>PT Class Test</h1>
+
+  See console for output.
+
+  <script src="/scripts/libraries/jquery-1.7.js"></script>
+  <script src="/scripts/libraries/ptclass.js"></script>
+  <script src="/scripts/libraries/underscore.js"></script>  
+  <script type="text/javascript">
+  
+  $(document).ready(function() {
+    
+    var A = Class.create({
+      initialize: function(settings) {
+        var A = this,
+          defaults = {
+            name: 'Joe'
+          };
+        
+        settings = _.extend( defaults, settings );
+        A.settings = settings;
+        
+        this.yell = function() {
+          return "OMG LOUD";
+        };
+        
+      },
+      speak: function() {
+        return("Hello my name is " + this.settings.name);
+      }   
+    });
+    
+    
+
+
+    var B = Class.create(A,{
+      initialize: function($super, settings) {
+
+        var B = this,
+          defaults = {
+            name: 'Joe'
+          };
+        
+        settings = _.extend( defaults, settings );
+
+        $super(settings);
+        
+        var parentYell = this.yell
+        this.yell = function() {
+          $super = function() { return parentYell.apply(this, arguments) };
+          $super();
+        };
+        
+        this.yell = Class.superfyMethod(this.yell, function($super) {
+          $super();
+        });
+        
+
+        // console.log("the value of B is ", B);
+
+        // B.speak = function( $super ) {
+        //   return( this[$super].call(this, $super) + " and this class inherits!");
+        // };
+
+      },
+      // speak: function() {
+      //   this.speak.call( this, $super );
+      // }
+    });
+
+
+    var C = ( function() {
+      
+      var config,
+        defaults = {
+          name: 'Petunia'
+      };
+      
+      return Class.create(A,{
+        initialize: function($super, settings) { 
+          config = _.extend( defaults, settings );
+          $super(config);
+        },
+        speak: function($super) {
+          return( $super() + " and this class hopefully works even better!");
+        }
+      });
+      
+    })();  
+    
+
+
+    var a = new A({name: "Jim G"});
+    console.log(a.speak());
+    
+    var b = new B({name: "Riley"});
+    console.log(b.speak());
+    
+    var c = new C();
+    console.log(c.speak());
+    
+  });
+  
+  </script>
+</body>
+</html>

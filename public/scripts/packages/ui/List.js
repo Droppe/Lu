@@ -1,5 +1,4 @@
-var id = 'ui:List',
-  Class = li.require( 'libraries/ptclass' ),
+var Class = li.require( 'libraries/ptclass' ),
   Abstract = li.require( 'ui/Abstract' ),
   List;
 
@@ -10,44 +9,68 @@ var id = 'ui:List',
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  */
-List = Class.create( Abstract, {
-  initialize: function ( $super, $element, settings ){
-    var List = this,
-      defaults = {
-        /**
-     	   * The CSS class that designates a selected list item
-     	   * @property selectFlag
-     	   * @default 'selected'
-     	   * @type String
-     	   * @final
-      	 */
-        selectFlag: 'selected'
-      },
-      $items;
+List = Class.create( Abstract, ( function() {
 
-    settings = _.extend( defaults, settings );
-
-    //$super($element, settings );
-
-
-    /* 
-     * Scan for items from the provided selector,
-     * or default to the children of the container.
-     * TODO: This code is problematic for any classes that extend List, 
-     * because we can't overwrite these settings within the subclass.
-     * Will ptklass fix this, since we'll be able to call super()?
-     */
-    if ( settings.items ) {
-      if( typeof settings.items === 'string' ) {
-        $items = $( settings.items );
-      } else {
-        $items = settings.items;
-      }
-    } else {
-      $items = $element.children();
-    }
+  var defaults = {
+      /**
+   	   * The CSS class that designates a selected list item
+   	   * @property selectFlag
+   	   * @default 'selected'
+   	   * @type String
+   	   * @final
+    	 */
+      selectFlag: 'selected'
+    };
     
+  return {
+    initialize: function ( $super, $element, settings ){
 
+      var self = this,
+        cItems,
+        config = _.extend( defaults, settings );
+      
+      $super($element, config );
+
+      /* 
+       * Scan for items from the provided selector,
+       * or default to the children of the container.
+       */
+      cItems = config.items;
+      
+      if ( cItems ) {
+        if( typeof cItems === 'string' ) {
+          self.$items = $( cItems );
+        } else {
+          self.$items = cItems;
+        }
+      } else {
+        self.$items = $element.children();
+      }
+      
+      // event listeners
+      $element.on( 'select', function( event, item ) {
+        event.stopPropagation();
+        self.select( item );
+      } );
+      $element.on( 'next', function( event, item ) {
+        event.stopPropagation();
+        self.next();
+      } );
+      $element.on( 'previous', function( event, item ) {
+        event.stopPropagation();
+        self.previous();
+      } );
+      $element.on( 'first', function( event, item ) {
+        event.stopPropagation();
+        self.first();
+      } );
+      $element.on( 'last', function( event, item ) {
+        event.stopPropagation();
+        self.last();
+      } );
+      
+    },
+    
     /**
      * Select an item in the list
      * @method selectItem
@@ -55,25 +78,24 @@ List = Class.create( Abstract, {
      * @param {Integer|Object} item The index of the item to select, or a JQuery instance of the item.
      * @return {Void}
      */  
-    List.select = function ( item ) {
+    select: function ( item ) {
       var $item, 
         $last;
       
       if( typeof item === 'number' ) {
-        $item = $items.eq( item );
+        $item = this.$items.eq( item );
       } else {
         $item = item;
       }
     
-      if( $item.hasClass( settings.selectFlag ) === false ) {
-        $last = $items.filter( '.' + settings.selectFlag );
-        $last.removeClass( settings.selectFlag );
-        $item.addClass( settings.selectFlag );
-
-        List.trigger( 'selected', [$item, List.index()] );
+      if( $item.hasClass( this.__config.selectFlag ) === false ) {
+        $last = this.$items.filter( '.' + this.__config.selectFlag );
+        $last.removeClass( this.__config.selectFlag );
+        $item.addClass( this.__config.selectFlag );
+        this.trigger( 'selected', [$item, this.index()] );
       }
     
-    };
+    },
   
     /**
      * Selects the next item in the list. 
@@ -81,11 +103,10 @@ List = Class.create( Abstract, {
      * @public
      * @return {Void}
      */
-    List.next = function() {
-      var x = ( List.hasNext() ) ? 1 : 0;
-    
-      List.select( $items.eq( List.index() + x ) );
-    };
+    next: function() {
+      var x = ( this.hasNext() ) ? 1 : 0;
+      this.select( this.$items.eq( this.index() + x ) );
+    },
 
     /**
      * Selects the previous item in the list. 
@@ -93,11 +114,10 @@ List = Class.create( Abstract, {
      * @public
      * @return {Void}
      */  
-    List.previous = function() {
-      var x = ( List.hasPrevious() ) ? 1 : 0;
-    
-      List.select( $items.eq( List.index() - x ) );
-    };
+    previous: function() {
+      var x = ( this.hasPrevious() ) ? 1 : 0;    
+      this.select( this.$items.eq( this.index() - x ) );
+    },
   
     /**
      * Selects the last item in the list. 
@@ -105,9 +125,9 @@ List = Class.create( Abstract, {
      * @public
      * @return {Void}
      */  
-    List.last = function() {
-      List.select( $items.eq( $items.length - 1 ) );
-    };
+    last: function() {
+      this.select( this.$items.eq( this.$items.length - 1 ) );
+    },
   
     /**
      * Selects the first item in the list. 
@@ -115,9 +135,9 @@ List = Class.create( Abstract, {
      * @public
      * @return {Void}
      */  
-    List.first = function() {
-      List.select( 0 );
-    };
+    first: function() {
+      this.select( 0 );
+    },
 
     /**
      * Determines if there are any higher-index items in the list.
@@ -125,9 +145,9 @@ List = Class.create( Abstract, {
      * @public
      * @return {Boolean} true if not at the last item in the list
      */
-    List.hasNext = function() {
-      return ( List.index() < $items.length - 1);
-    };
+    hasNext: function() {
+      return ( this.index() < this.$items.length - 1);
+    },
   
     /**
      * Determines if there are any lower-index items in the list.
@@ -135,9 +155,9 @@ List = Class.create( Abstract, {
      * @public
      * @return {Boolean} true if not at the first item in the list
      */
-    List.hasPrevious = function() {
-      return ( List.index() > 0 );
-    };
+    hasPrevious: function() {
+      return ( this.index() > 0 );
+    },
   
     /**
      * Returns the index of the selected item.
@@ -145,17 +165,17 @@ List = Class.create( Abstract, {
      * @public
      * @return {Number} The index of the selected item
      */
-    List.index = function() {
+    index: function() {
       var ndx = -1;
-      _.each( $items, function( item, index ) {
+      _.each( this.$items, function( item, index ) {
         var $item = $( item );
-        if( $item.hasClass( settings.selectFlag ) ) {
+        if( $item.hasClass( this.__config.selectFlag ) ) {
           ndx = index;
           return;
         }
       } );
       return ndx;
-    };
+    },
 
     /**
      * Returns the currently-selected item.
@@ -163,9 +183,9 @@ List = Class.create( Abstract, {
      * @public
      * @return {Object} JQuery object-reference to the selected item
      */  
-    List.current = function() {
-      return $items.eq( List.index() );
-    };
+    current: function() {
+      return this.$items.eq( this.index() );
+    },
 
     /**
      * Returns the array of list items. 
@@ -173,9 +193,9 @@ List = Class.create( Abstract, {
      * @public
      * @return {Array} The array of list items
      */  
-    List.items = function() {
-      return $items;
-    };
+    items: function() {
+      return this.$items;
+    },
 
     /**
      * Sets the array of list items. 
@@ -184,9 +204,9 @@ List = Class.create( Abstract, {
      * @param {Array} $newItems An array of JQuery objects representing the new list of items.
      * @return {Void}
      */  
-    List.setItems = function($newItems) {
-      $items = $newItems;
-    };
+    setItems: function($newItems) {
+      this.$items = $newItems;
+    },
 
     /**
      * Returns the number of items in the list. 
@@ -194,35 +214,14 @@ List = Class.create( Abstract, {
      * @public
      * @return {Number} The number of items in the list
      */
-    List.size = function() {
-      return $items.length;
-    };
-
-
-    // Subscribe to custom events
-    $element.on( 'select', function( event, item ) {
-      event.stopPropagation();
-      List.select( item );
-    } );
-    $element.on( 'next', function( event, item ) {
-      event.stopPropagation();
-      List.next();
-    } );
-    $element.on( 'previous', function( event, item ) {
-      event.stopPropagation();
-      List.previous();
-    } );
-    $element.on( 'first', function( event, item ) {
-      event.stopPropagation();
-      List.first();
-    } );
-    $element.on( 'last', function( event, item ) {
-      event.stopPropagation();
-      List.last();
-    } );
+    size: function() {
+      return this.$items.length;
+    }
+    
+  };
   
-  }
-} );
+})() );
+
 
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = List;
