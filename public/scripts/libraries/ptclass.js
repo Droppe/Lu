@@ -284,7 +284,7 @@ var Class = (function() {
   
   
   // TEMP
-  addPrivileged = function(scope, method, fn) {
+  function addPrivileged (scope, method, fn) {
 
     var temp = scope[method],
       useSuper = (argumentNames(fn)[0] == "$super") ? true : false;
