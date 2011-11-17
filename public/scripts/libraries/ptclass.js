@@ -284,7 +284,7 @@ var Class = (function() {
   
   
   // TEMP
-  function addPriviledged (scope, method, fn) {
+  function addPrivileged (scope, method, fn) {
 
     var temp = scope[method],
       useSuper = (argumentNames(fn)[0] == "$super") ? true : false;
@@ -300,7 +300,7 @@ var Class = (function() {
       scope.__proto__[method] = fn;
     }
 
-    // return function back to class as priviledged method
+    // return function back to class as privileged method
     return function() {
       return fn.apply(scope, args);
     };
@@ -311,7 +311,7 @@ var Class = (function() {
 
   return {
     create: create,
-    addPriviledged: addPriviledged,
+    addPrivileged: addPrivileged,
     Methods: {
       addMethods: addMethods
     }
