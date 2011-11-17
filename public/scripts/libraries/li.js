@@ -371,10 +371,6 @@
       version: '1.0',
       path: '/scripts/libraries/ptclass.js'
     }, {
-      id: 'libraries/klass',
-      version: '1.0',
-      path: '/scripts/libraries/klass.js'
-    }, {
       id: 'libraries/athena',
       version: '0.0.1',
       path: '/scripts/libraries/athena-0.0.1.js',
@@ -383,7 +379,7 @@
       id: 'providers/Event',
       version: '0.0.1',
       path: '/scripts/packages/providers/Event.js',
-      requires: ['libraries/klass']
+      requires: ['libraries/ptclass']
     }, {
       id: 'ui/Abstract',
       version: '0.0.1',
