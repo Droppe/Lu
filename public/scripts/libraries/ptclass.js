@@ -281,29 +281,9 @@ var Class = (function() {
     return this;
   }
   
-  // TEMP
-  function addPrivileged (scope, method, fn) {
-
-    var temp = scope[method],
-      useSuper = (argumentNames(fn)[0] == "$super") ? true : false;
-
-    // return function back to class as privileged method
-    return function() {
-      args = [].slice.call(arguments);
-
-      if (useSuper) {
-        args.unshift(temp);
-      }
-
-      return fn.apply(scope, args);
-    };
-    
-  }
-  // end TEMP
 
   return {
     create: create,
-    addPrivileged: addPrivileged,
     Methods: {
       addMethods: addMethods
     }
