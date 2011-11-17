@@ -27,23 +27,18 @@ List = Class.create( Abstract, {
 
     settings = _.extend( defaults, settings );
 
-    /* 
-     * Scan for items from the provided selector,
-     * or default to the children of the container.
-     * TODO: This code is problematic for any classes that extend List, 
-     * because we can't overwrite these settings within the subclass.
-     * Will ptklass fix this, since we'll be able to call super()?
-     */
+    //Scan for items from the provided selector, or default to the children of the container.
     if ( settings.items ) {
       if( typeof settings.items === 'string' ) {
-        $items = $( settings.items, $element );
+        $items =  $element.children( settings.items ).children();
       } else {
-        $items = settings.items;
+        $items = settings.items.children();
       }
     } else {
       $items = $element.children();
     }
 
+console.log( $items );
     $super( $element, settings );
 
     /**
@@ -184,17 +179,6 @@ List = Class.create( Abstract, {
     };
 
     /**
-     * Sets the array of list items. 
-     * @method setItems
-     * @public
-     * @param {Array} $newItems An array of JQuery objects representing the new list of items.
-     * @return {Void}
-     */  
-    List.setItems = function($newItems) {
-      $items = $newItems;
-    };
-
-    /**
      * Returns the number of items in the list. 
      * @method size
      * @public
@@ -204,7 +188,6 @@ List = Class.create( Abstract, {
       return $items.length;
     };
 
-    // Subscribe to custom events
     $element.on( 'select', function( event, item ) {
       event.stopPropagation();
       List.select( item );

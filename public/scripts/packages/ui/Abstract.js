@@ -42,14 +42,7 @@ Abstract = Class.create( {
          * @property notify
          * @type {String}
          */
-        notify: '',
-        /**
-         * When false, events are prevented from bubbling up the DOM tree
-         * @property bubble
-         * @type {Boolean}
-         * @default true
-         */
-        bubble: true
+        notify: ''
       },
       /**
        * A jQuery collection that is observed for events
