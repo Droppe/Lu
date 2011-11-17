@@ -280,11 +280,32 @@ var Class = (function() {
 
     return this;
   }
+  
+  
+  
+  // TEMP
+  addPrivileged = function(scope, method, fn) {
+
+    var temp = scope[method],
+      useSuper = (argumentNames(fn)[0] == "$super") ? true : false;
+
+    return function() {
+      args = [].slice.call(arguments);
+      if (useSuper) {
+        args.unshift(temp);
+      }
+      if (temp) {
+        fn.apply(scope, args);
+      }
+    };
+  };
+  // end TEMP
 
   return {
     create: create,
     Methods: {
-      addMethods: addMethods
+      addMethods: addMethods,
+      addPrivileged: addPrivileged
     }
   };
 })();
