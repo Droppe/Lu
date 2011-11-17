@@ -284,7 +284,7 @@ var Class = (function() {
   
   
   // TEMP
-  function addPrivileged (scope, method, fn) {
+  function addPriviledged (scope, method, fn) {
 
     var temp = scope[method],
       useSuper = (argumentNames(fn)[0] == "$super") ? true : false;
@@ -298,14 +298,14 @@ var Class = (function() {
         fn.apply(scope, args);
       }
     };
-  };
+  }
   // end TEMP
 
   return {
     create: create,
+    addPriviledged: addPriviledged,
     Methods: {
-      addMethods: addMethods,
-      addPrivileged: addPrivileged
+      addMethods: addMethods
     }
   };
 })();
