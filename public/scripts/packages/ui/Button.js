@@ -13,7 +13,7 @@ var Class = li.require( 'libraries/ptclass' ),
  */ 
 Button = Class.create( Abstract, ( (function(){
 
-  // Private Static Attributes
+  // Private attributes
 
   /**
    * Default configuration values
@@ -24,75 +24,83 @@ Button = Class.create( Abstract, ( (function(){
    */
    var defaults = {
      on: 'click'
+   },
+   /**
+    * Configuration values
+    * @property onfig
+    * @private
+    * @type {Object}
+    */
+   config,
+   /**
+    * Instance of Button
+    * @property Button
+    * @type Object
+    * @private
+    */
+   self,
+   /**
+    * Custom event name
+    * @property action
+    * @type Object
+    * @private
+    */
+   action,
+   /**
+    * Target item used in event data
+    * @property action
+    * @type Object
+    * @private
+    */
+   item;
+   
+
+   // Return methods object
+   return {
+     /**
+      * PTClass constructor 
+      * @method initialize
+      * @public
+      * @param {Object} $super Pointer to superclass constructor
+      * @param {Object} $element JQuery object for the element wrapped by the component
+      * @param {Object} settings Configuration settings
+      */    
+     initialize: function ( $super, $element, settings ){
+       self = this;
+       // Mix the defaults into the settings values
+       config = _.defaults( settings, defaults );
+
+       // Try to figure out what to select...
+       if( action === 'select' ) {
+         if( config.item ) {
+           item = ( typeof config.item === 'number' ) ? config.item : $( config.item );
+         } else {
+           item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
+         }
+       }
+
+       action = settings.action;
+
+       // Call the parent's constructor
+       $super( $element, config );
+       
+       // Event bindings
+       $element.on( config.on, function ( event ) {
+         if( item ) {
+           self.trigger( action, [ item ] );
+           _.log("Button " + action);
+         } else {
+           self.trigger( action );
+           _.log("Button " + action);
+         }
+       } );       
+       
+     }
    };
 
-  // Return methods object
-  return {
-    /**
-     * PTClass constructor 
-     * @method initialize
-     * @public
-     * @param {Object} $super Pointer to superclass constructor
-     * @param {Object} $element JQuery object for the element wrapped by the component
-     * @param {Object} settings Configuration settings
-     */    
-    initialize: function ( $super, $element, settings ){
-      
-      // Private Attributes
-      
-      /**
-       * Instance of Button
-       * @property Button
-       * @type Object
-       * @private
-       */
-      var Button = this,
-      /**
-       * Custom event name
-       * @property action
-       * @type Object
-       * @private
-       */
-      action,
-      /**
-       * Target item used in event data
-       * @property action
-       * @type Object
-       * @private
-       */
-      item;
-      
-      // Mix the defaults into the settings values
-      _.defaults( settings, defaults );
-
-      // Try to figure out what to select...
-      if( action === 'select' ) {
-        if( settings.item ) {
-          item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
-        } else {
-          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
-        }
-      }
-
-      action = settings.action;
-      
-      // Call the parent constructor
-      $super( $element, settings );
-
-      // Event bindings
-      $element.on( settings.on, function ( event ) {
-        if( item ) {
-          Button.trigger( action, [ item ] );
-          _.log("Button " + action);
-        } else {
-          Button.trigger( action );
-          _.log("Button " + action);
-        }
-      } );
-    } 
-  };
 })() ));
 
+// Export to Athena Framework
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = Button;
 }

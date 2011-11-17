@@ -5,13 +5,14 @@ var Class = li.require( 'libraries/ptclass' ),
  * The base component class all other UI components inherit from.
  * @class Abstract
  * @constructor
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Abstract = Class.create( ( function() {
+Abstract = Class.create( (function() {
 
   /**
-   * Default settings values
+   * Default configuration values
    * @property defaults
    * @private
    * @type {Object}
@@ -28,82 +29,74 @@ Abstract = Class.create( ( function() {
      * @property notify
      * @type {String}
      */
-    notify: '',
-    /**
-     * When false, events are prevented from bubbling up the DOM tree
-     * @property bubble
-     * @type {Boolean}
-     * @default true
-     */
-    bubble: true
-  };
-
+    notify: ''
+  },
+  /**
+   * A jQuery collection that is observed for events
+   * @property $observe
+   * @private
+   * @type {Array}
+   */
+  $observe,
+  /**
+   * A jQuery collection that is notified of events
+   * @property subscribe
+   * @private
+   * @type {Array}
+   */
+  $notify,
+  /**
+   * Configuration values
+   * @property onfig
+   * @private
+   * @type {Object}
+   */
+  config,  
+  /**
+   * The element wrapped by the component.
+   * @property $node
+   * @private
+   * type {Object}
+   */
+  $node,
+  /**
+   * The namespace that all events will be fired into and listed for in. 
+   * See http://docs.jquery.com/Namespaced_Events.
+   * @property namespace
+   * @private
+   * @type {String}
+   */
+  namespace = '';
+  
   return {
-    initialize: function ( $element, settings ) {
-    
-      // Protected attributes
-    
-      /**
-       * A jQuery collection that is observed for events
-       * @property $observe
-       * @private
-       * @type {Array}
-       */
-      var $observe,
-      /**
-       * A jQuery collection that is notified of events
-       * @property subscribe
-       * @private
-       * @type {Array}
-       */
-      $notify;      
-    
-      // Public attributes, though intended to be hidden (hence "__" prefix).
-
-      /**
-       * Configuration values
-       * @property __config
-       * @private
-       * @type {Object}
-       */
-      this.__config;
-
-      /**
-       * The element wrapped by the component.
-       * @property __$node
-       * @private
-       * type {Object}
-       */
-      this.__$node;
-
-      /**
-       * The namespace that all events will be fired into and listed for in. 
-       * See http://docs.jquery.com/Namespaced_Events.
-       * @property __namespace
-       * @private
-       * @type {String}
-       */
-      this.__namespace = '';
-
+    /**
+     * Class constructor 
+     * @method initialize
+     * @public
+     * @param {Object} $element JQuery object for DOM node wrapped by this component
+     * @param {Object} settings Custom settings for this component
+     */    
+    initialize: function($element, settings) {
 
       // Setup
-      this.__$node = $element;
-      this.__config = _.extend( defaults, settings );
+      $node = $element;
+      
+      config = _.defaults( settings, defaults );
 
-      if( this.__config.namespace ) {
-        this.__namespace = '.' + this.__config.namespace;
+      if( config.namespace ) {
+        namespace = '.' + config.namespace;
       }
 
-      $notify = $( this.__config.notify );
-      $observe = $( this.__config.observe );
+      $notify = $( config.notify );
+      $observe = $( config.observe );
 
       //Observe elements passed into $observe
-      $observe.observe( this.__$node );
+      $observe.observe( $node );
 
       //Regiser elements passed in notify as observers
-      this.__$node.observe( $notify );
+      $node.observe( $notify );
+      
     },
-  
     /**
      * Creates an event listener for a type
      * @method on
@@ -112,9 +105,9 @@ Abstract = Class.create( ( function() {
      * @param {Function} handler The callback function
      */
     on: function( type, handler ) {
-      return this.__$node.on( type + this.__namespace, handler );
+      return $node.on( type + namespace, handler );
     },
-  
+
     /**
      * Unbinds event listeners of a type
      * @method off
@@ -122,7 +115,7 @@ Abstract = Class.create( ( function() {
      * @param {String} type The type of event
      */
     off: function( type ) {
-      return this.__$node.off( type + this.__namespace );
+      return $node.off( type + namespace );
     },
 
     /**
@@ -130,12 +123,15 @@ Abstract = Class.create( ( function() {
      * @method trigger
      * @public
      * @param {String} type The type of event
-     * @param {Aarray} parameters Extra arguments to pass through to the subscribed event handler
+     * @param {Array} parameters Extra arguments to pass through to the subscribed event handler
      */
     trigger: function( type, parameters ) {
-      return this.__$node.trigger( type + this.__namespace, parameters );
+      $element.trigger( type + namespace + ':before', parameters );
+      $element.trigger( type + namespace, parameters );
+      $element.trigger( type + namespace + ':after', parameters );
+      return $element;
     },
-
+    
     /**
      * Observe events
      * @method observe
@@ -143,7 +139,7 @@ Abstract = Class.create( ( function() {
      * @param {Array} $observer A jQuery collection to be added to the observers list
      */
     observe: function( $observer ) {
-      return this.__$node.observe( $observer );
+      return $node.observe( $observer );
     },
 
     /**
@@ -153,7 +149,7 @@ Abstract = Class.create( ( function() {
      * @param {Array} $subscriber A jQuery collection to unsubscribe
      */
     unobserve: function( $observer ) {
-      return this.__$node.unobserve( $observer );
+      return $node.unobserve( $observer );
     },
 
     /**
@@ -166,20 +162,22 @@ Abstract = Class.create( ( function() {
       var result;
 
       if ( key ) {
-        if ( this.__config.key ) {
-          result = this.__config.key;
+        if ( config.key ) {
+          result = config.key;
         } else {
-          Athena.error( 'The setting ' + key + ' does not exist in ', this.__config );
+          Athena.error( 'The setting ' + key + ' does not exist in ', config );
         }
       } else {
-        result = this.__config;
+        result = config;
       }
     
       return result;
     }
   };
+
 } )() );
 
+// Export to Athena Framework
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = Abstract;
 }

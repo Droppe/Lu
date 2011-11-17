@@ -23,16 +23,11 @@
           };
         
         settings = _.extend( defaults, settings );
-        A.settings = settings;
-        
-        this.yell = function() {
-          return "OMG LOUD";
-        };
-        
-      },
-      speak: function() {
-        return("Hello my name is " + this.settings.name);
-      }   
+       
+        A.speak = function() {
+          return("Hello my name is " + settings.name);
+        };        
+      }
     });
     
     
@@ -48,29 +43,14 @@
         
         settings = _.extend( defaults, settings );
 
-        $super(settings);
-        
-        var parentYell = this.yell
-        this.yell = function() {
-          $super = function() { return parentYell.apply(this, arguments) };
-          $super();
+        $super(settings); 
+        console.log("the value of B is ", B);
+      
+        B.speak = function( $super ) {
+          return( $super() + " and this class inherits!");
         };
-        
-        this.yell = Class.superfyMethod(this.yell, function($super) {
-          $super();
-        });
-        
-
-        // console.log("the value of B is ", B);
-
-        // B.speak = function( $super ) {
-        //   return( this[$super].call(this, $super) + " and this class inherits!");
-        // };
-
-      },
-      // speak: function() {
-      //   this.speak.call( this, $super );
-      // }
+      
+      }
     });
 
 
