@@ -109,9 +109,10 @@ Abstract = Class.create( {
      * @param {Aarray} parameters Extra arguments to pass through to the subscribed event handler
      */
     Abstract.trigger = function( type, parameters ) {
-      return $element.trigger( type + namespace, parameters );
-      //notify( type + namespace, parameters );
-      //return Event.trigger( type + namespace, parameters );
+      $element.trigger( type + namespace + ':before', parameters );
+      $element.trigger( type + namespace, parameters );
+      $element.trigger( type + namespace + ':after', parameters );
+      return $element;
     };
 
     /**

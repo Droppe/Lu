@@ -38,12 +38,35 @@ List = Class.create( Abstract, {
       $items = $element.children();
     }
 
-console.log( $items );
     $super( $element, settings );
 
     /**
+     * Append a new item to $element
+     * @method append
+     * @public
+     * @param {Array} A jQuery Collection of $items to append
+     * @return {Object} List
+     */  
+    List.append = function ( $item ) {
+      $items.parent().append( $item );
+      return List;
+    };
+
+    /**
+     * Removes an item from $element
+     * @method remove
+     * @public
+     * @param {Array} A jQuery Collection of $items to remove
+     * @return {Object} List
+     */  
+    List.remove = function ( $item ) {
+      $( $item, $items.parent() ).remove();
+      return List;
+    };
+
+    /**
      * Select an item in the list
-     * @method selectItem
+     * @method select
      * @public
      * @param {Integer|Object} item The index of the item to select, or a JQuery instance of the item.
      * @return {Object} List
