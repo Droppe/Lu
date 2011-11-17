@@ -5,30 +5,30 @@ var id = 'ui:Button:Select',
 
 /**
  * Representation of a button element
- * @class Select
+ * @class SelectButton
  * @constructor
  * @extends Abstract
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Select =  Class.create( Button, {
+SelectButton =  Class.create( Button, {
    initialize: function( $super, $element, settings ) {
     /**
-     * Instance of Select
+     * Instance of SelectButton
      * @property Select
      * @type Object
      */
-    var Select = this,
-    /**
-     * Default configuration values
-     * @property defaults
-     * @type Object
-     */
-    defaults = {
-      on: 'click',
-      action: 'select'
-    },
-    item;
+    var SelectButton = this,
+      /**
+       * Default configuration values
+       * @property defaults
+       * @type Object
+       */
+      defaults = {
+        on: 'click',
+        action: 'select'
+      },
+      item;
 
     settings = _.extend( defaults, settings );
     $super( $element, settings );
@@ -37,5 +37,5 @@ Select =  Class.create( Button, {
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Select;
+  module.exports = SelectButton;
 }

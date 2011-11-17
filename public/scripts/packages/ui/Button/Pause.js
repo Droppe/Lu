@@ -11,13 +11,13 @@ var id = 'ui:Button:Pause',
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-PauseButton =  Class.create( {
-   initialize: function( $element, settings ) {
-  /**
-   * Instance of PauseButton
-   * @property PauseButton
-   * @type Object
-   */
+PauseButton =  Class.create( Button, {
+   initialize: function( $super, $element, settings ) {
+    /**
+     * Instance of PauseButton
+     * @property PauseButton
+     * @type Object
+     */
     var PauseButton = this,
       /**
        * Default configuration values
@@ -32,7 +32,6 @@ PauseButton =  Class.create( {
     $super( $element, settings );
 
   }
-
 } );
 
 if ( typeof module !== 'undefined' && module.exports ) {

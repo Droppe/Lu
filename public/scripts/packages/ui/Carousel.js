@@ -10,72 +10,94 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} $element The JQuery node representing the Carousel's container
  * @param {Object} settings Configuration properties
  */
-Carousel = Class.create( List, ( function(){
+Carousel = Class.create( List, ( (function () {
+
+  // Private static attributes
   
-  
-    // Private Static Attributes
+  /**
+   * Default configuration values
+   * @property defaults
+   * @type Object
+   * @private
+   * @final
+   */
+  var defaults = {
+      repeat: -1,
+      autoplay: true,
+      delay: 3000,
+      items: '.items li'
+    };
 
-    /**
-     * Default configuration values
-     * @property defaults
-     * @type Object
-     */
-     var defaults = {};
-     
+  return {
+    
+    initialize: function( $super, $element, settings ) {
+      var Carousel = this,
+        repeat = settings.repeat,
+        playing = false;
 
-    // Return methods object
-    return {
-      initialize: function ( $super, $element, settings ){
-        
-        defaults = {
-          items: $("li", $element)
-        };
+      settings = _.extend( defaults, settings );
 
-        // Private attributes
-        var node = $element;
+      $super( $element, settings );
 
-        // Public attributes
-        this.node = node;
-
-        _.defaults( settings, defaults );
-
-        // Call the parent's initialize method with the new config via '$super'
-        $super( $element, settings );
-      },
-      /**
-       * Selects the next item in the list. 
-       * @method next
-       * @public
-       * @return {Void}
-       */
-      next: function() {
-        _.log("next: " + this.node.id);
-        if (this.hasNext()) {
-          this.select( this.index() + 1);
+      Carousel.pause = function() {
+        if( playing ) {
+          playing = false;
+          Carousel.trigger( 'paused' );
         }
-        else {
-          this.first();
+        return Carousel;
+      };
+      Carousel.play = function() {
+        var index;
+        if( playing === false ) {
+          repeat = settings.repeat;
+          playing = true;
+          index = Carousel.index();
+          ( function recurse() {
+            window.setTimeout( function() {
+              if( playing ) {
+                Carousel.next();
+                recurse();
+              }
+            }, settings.delay );
+          }() );
+          Carousel.trigger( 'playing' );
         }
-      },
-    /**
-     * Selects the previous item in the list. 
-     * @method previous
-     * @public
-     * @return {Void}
-     */  
-    previous: function() {
-      if (this.hasPrevious()) {
-        this.select( this.index() - 1);
+        return Carousel;
+      };
+
+      if( settings.autoplay ) {
+        Carousel.play();
       }
-      else {
-        this.last();
-      }
+
+      Carousel.on( 'max', function( event ) {
+        event.stopPropagation();
+        if( playing && repeat >= -1 ) {
+          repeat -= 1;
+          Carousel.first();
+        } else if ( playing && repeat <= -1 ){
+          Carousel.pause();
+        } else {
+          Carousel.first();
+        }
+      } );
+      Carousel.on( 'min', function( event ) {
+        event.stopPropagation();
+        Carousel.last();
+      } );
+      Carousel.on( 'play', function( event ) {
+        event.stopPropagation();
+        Carousel.play();
+      } );
+      Carousel.on( 'pause', function( event ) {
+        event.stopPropagation();
+        Carousel.pause();
+      } );
+
     }
-  });
+  };
 
-  // for Athena
-  if ( typeof module !== 'undefined' && module.exports ) {
-    module.exports = Carousel;
-  }
+})() ));
 
-})();  
+if ( typeof module !== 'undefined' && module.exports ) {
+  module.exports = Carousel;
+}
