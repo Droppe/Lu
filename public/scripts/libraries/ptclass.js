@@ -281,30 +281,22 @@ var Class = (function() {
     return this;
   }
   
-  
-  
   // TEMP
   function addPrivileged (scope, method, fn) {
 
     var temp = scope[method],
       useSuper = (argumentNames(fn)[0] == "$super") ? true : false;
 
-    args = [].slice.call(arguments);
-        
-    if (useSuper) {
-      args.unshift(temp);
-    }
-
-    // add method to prototype if it doesn't already exist
-    if (!temp) {
-      scope.__proto__[method] = fn;
-    }
-
     // return function back to class as privileged method
     return function() {
+      args = [].slice.call(arguments);
+
+      if (useSuper) {
+        args.unshift(temp);
+      }
+
       return fn.apply(scope, args);
     };
-
     
   }
   // end TEMP
