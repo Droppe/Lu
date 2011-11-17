@@ -86,7 +86,8 @@ function wrap(fn, wrapper) {
   return function() {
     var a = update([bind(__method, this)], arguments);
     return wrapper.apply(this, a);
-  }
+  };
+  
 }
 function update(array, args) {
   var arrayLength = array.length, length = args.length;
@@ -103,7 +104,7 @@ function bind(fn, context) {
   return function() {
     var a = merge(args, arguments);
     return __method.apply(context, a);
-  }
+  };
 }
 
 /* ------------------------------------ */
@@ -271,14 +272,15 @@ var Class = (function() {
           return function() { return ancestor[m].apply(this, arguments); };
         })(property), method);
 
-        value.valueOf = method.valueOf.bind(method);
-        value.toString = method.toString.bind(method);
+        value.valueOf = bind(method.valueOf, method);
+        value.toString = bind(method.toString, method);
       }
       this.prototype[property] = value;
     }
 
     return this;
   }
+  
 
   return {
     create: create,
@@ -295,8 +297,10 @@ else {
   globalContext.Class = Class;
 }
 
+
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = Class;
 }
+
 
 })(this);
