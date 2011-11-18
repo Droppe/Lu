@@ -1,6 +1,6 @@
 var Class = li.require( 'libraries/ptclass' ),
   Button = li.require( 'ui/Button' ),
-  Pause;
+  PauseButton;
 
 /**
  * Representation of a button element preconfigured with a 'next' event
@@ -10,7 +10,7 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Pause = Class.create( Button,  ( function () {
+PauseButton = Class.create( Button,  ( function () {
 
    // RETURN METHODS OBJECT
    return {
@@ -49,5 +49,5 @@ Pause = Class.create( Button,  ( function () {
 
 // EXPORT TO ATHENA FRAMEWORK
 if( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Pause;
+  module.exports = PauseButton;
 }

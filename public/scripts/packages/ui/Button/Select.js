@@ -1,16 +1,16 @@
 var Class = li.require( 'libraries/ptclass' ),
   Button = li.require( 'ui/Button' ),
-  Select;
+  SelectButton;
 
 /**
  * Representation of a button element preconfigured with a 'next' event
- * @class NextButton
+ * @class SelectButton
  * @constructor
  * @extends Button
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Select = Class.create( Button,  ( function () {
+SelectButton = Class.create( Button,  ( function () {
 
    // RETURN METHODS OBJECT
    return {
@@ -49,5 +49,5 @@ Select = Class.create( Button,  ( function () {
 
 // EXPORT TO ATHENA FRAMEWORK
 if( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Select;
+  module.exports = SelectButton;
 }
