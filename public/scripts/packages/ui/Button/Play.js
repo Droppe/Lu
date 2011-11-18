@@ -28,7 +28,7 @@ PlayButton =  Class.create( Button, {
         action: 'play'
       };
 
-    settings = _.extend( defaults, settings );
+    settings = _.defaults( settings, defaults );
     $super( $element, settings );
 
   }

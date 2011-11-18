@@ -28,7 +28,7 @@ PreviousButton =  Class.create( Button, {
         action: 'previous'
       };
 
-    settings = _.extend( defaults, settings );
+    settings = _.extend( settings, defaults );
     $super( $element, settings );
 
   }

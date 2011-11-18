@@ -9,49 +9,9 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  */
-List =  Class.create( Abstract, ( (function(){
+List =  Class.create( Abstract, ( function () {
 
-  // Private attributes
-  /**
-   * Instance of Button
-   * @property Button
-   * @type Object
-   * @private
-   */  
-  var self,
-  /**
-   * Configuration values
-   * @property onfig
-   * @private
-   * @type {Object}
-   */
-  config,
-  /**
-   * Default configuration values
-   * @property defaults
-   * @type Object
-   * @private
-   * @final
-   */
-  defaults = {
-     /**
-      * The CSS class that designates a selected list item
-      * @property selectFlag
-      * @default 'selected'
-      * @type String
-      * @final
-     */
-     selectFlag: 'selected'
-  },
-  /**
-   * JQuery collection of like items in the list
-   * @property $items
-   * @type Object
-   * @private
-   */
-  $items;  
-  
-  // Return methods object 
+  // RETURN METHODS OBJECT 
   return {
     /**
      * PTClass constructor 
@@ -61,27 +21,77 @@ List =  Class.create( Abstract, ( (function(){
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ){
-      self = this;
+     initialize: function ( $super, $element, settings ){
+
+       // PRIVATE INSTANCE PROPERTIES
       
-      // Mix the defaults into the settings values
-      config = _.defaults( settings, defaults );
+      /**
+       * Instance of Button
+       * @property Button
+       * @type Object
+       * @private
+       */  
+      var self = this,
+      /**
+       * Default configuration values
+       * @property defaults
+       * @type Object
+       * @private
+       * @final
+       */
+      defaults = {
+         /**
+          * The CSS class that designates a selected list item
+          * @property selectFlag
+          * @default 'selected'
+          * @type String
+          * @final
+         */
+         selectFlag: 'selected'
+      },
+      /**
+       * JQuery collection of like items in the list
+       * @property $items
+       * @type Object
+       * @private
+       */
+      $items;  
+
+
+      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      _.defaults( settings, defaults );
+
+      // CALL THE PARENT'S CONSTRUCTOR
+      $super( $element, settings );
       
       //Scan for items from the provided selector, or default to the children of the container.
-      if ( config.items ) {
+      if ( settings.items ) {
         if( typeof config.items === 'string' ) {
-          $items =  $element.children( config.items ).children();
+          $items =  $element.children( settings.items ).children();
         } else {
-          $items = config.items.children();
+          $items = settings.items.children();
         }
       } else {
         $items = $element.children();
       }
-
-      // Call the parent's constructor
-      $super( $element, config );
+       
       
-      // Event bindings
+      // PRIVATE METHODS
+      // n/a
+      
+      
+      // PRIVILEGED METHODS
+      /**
+       * Gets JQuery collection of like items in the list
+       * @method Name
+       * @public|private
+       * @param {Type} Name Description
+       */
+      self.getItems = function () {
+        return _.clone($items);
+      };
+      
+      // EVENT BINDINGS
       $element.on( 'select', function( event, item ) {
          event.stopPropagation();
          self.select( item );
@@ -102,6 +112,7 @@ List =  Class.create( Abstract, ( (function(){
          event.stopPropagation();
          self.last();
        } );
+
       
     },
     /**
@@ -112,8 +123,8 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Object} List
      */  
     append: function ( $item ) {
-      $items.parent().append( $item );
-      return self;
+      this.getItems().parent().append( $item );
+      return this;
     },
     /**
      * Removes an item from $element
@@ -123,8 +134,8 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Object} List
      */  
     remove: function ( $item ) {
-      $( $item, $items.parent() ).remove();
-      return self;
+      $( $item, this.getItems().parent() ).remove();
+      return this;
     },
     /**
      * Select an item in the list
@@ -134,7 +145,9 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Object} List
      */  
     select: function ( item ) {
-      var $item;
+      var $item,
+        settings = this.getSetting(),
+        $items = this.getItems();
 
       if( typeof item === 'number' ) {
         $item = $items.eq( item );
@@ -142,11 +155,11 @@ List =  Class.create( Abstract, ( (function(){
         $item = item;
       }
 
-      if( $item.hasClass( config.selectFlag ) === false ) {
-        $items.filter( '.' + config.selectFlag ).removeClass( config.selectFlag );
-        self.trigger( 'selected', [$item.addClass( config.selectFlag ), self.index()] );
+      if( $item.hasClass( settings.selectFlag ) === false ) {
+        $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
+        this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
       }
-      return self;
+      return this;
     },
     /**
      * Selects the next item in the list. 
@@ -156,13 +169,14 @@ List =  Class.create( Abstract, ( (function(){
      */
     next: function() {
       var increment = 0;
-      if(  self.hasNext() ) {
+      if(  this.hasNext() ) {
         increment = 1;
       } else {
-         self.trigger( 'max' );
+         this.trigger( 'max' );
       }
-      self.select( $items.eq( self.index() + increment ) );
-      return self;
+      this.select( this.getItems().eq( this.index() + increment ) );
+      
+      return this;
     },
     /**
      * Selects the previous item in the list. 
@@ -172,13 +186,15 @@ List =  Class.create( Abstract, ( (function(){
      */  
     previous: function() {
       var decrement = 0;
-      if( self.hasPrevious() ) {
+
+      if( this.hasPrevious() ) {
         decrement = 1;
       } else {
-         self.trigger( 'min' );
+         this.trigger( 'min' );
       }
-      self.select( $items.eq( self.index() - decrement ) );
-      return self;
+      
+      this.select( this.getItems().eq( this.index() - decrement ) );
+      return this;
     },
     /**
      * Selects the last item in the list. 
@@ -187,8 +203,10 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Object} List
      */  
     last: function() {
-      self.select( $items.eq( $items.length - 1 ) );
-      return self;
+      var items = this.getItems();
+      
+      this.select( items.eq( items.length - 1 ) );
+      return this;
     },
     /**
      * Selects the first item in the list. 
@@ -197,8 +215,8 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Object} List
      */  
     first: function() {
-      self.select( 0 );
-      return self;
+      this.select( 0 );
+      return this;
     },    
     /**
      * Determines if there are any higher-index items in the list.
@@ -207,7 +225,7 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Boolean} true if not at the last item in the list
      */
     hasNext: function() {
-      return ( self.index() < $items.length - 1);
+      return ( this.index() < this.getItems().length - 1);
     },
     /**
      * Determines if there are any lower-index items in the list.
@@ -216,7 +234,7 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Boolean} true if not at the first item in the list
      */
     hasPrevious: function() {
-      return ( self.index() > 0 );
+      return ( this.index() > 0 );
     },
     /**
      * Returns the index of the selected item.
@@ -225,10 +243,11 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Number} The index of the selected item
      */
     index: function() {
-      var ndx = -1;
-      _.each( $items, function( item, index ) {
+      var that = this,
+        ndx = -1;
+      _.each( that.getItems(), function( item, index ) {
         var $item = $( item );
-        if( $item.hasClass( config.selectFlag ) ) {
+        if( $item.hasClass( that.getSetting().selectFlag ) ) {
           ndx = index;
           return;
         }
@@ -242,7 +261,7 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Object} JQuery object-reference to the selected item
      */  
     current: function() {
-      return $items.eq( self.index() );
+      return this.getItems().eq( this.index() );
     },
     /**
      * Returns the array of list items. 
@@ -251,7 +270,7 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Array} The array of list items
      */  
     items: function() {
-      return $items;
+      return this.getItems();
     },
     /**
      * Returns the number of items in the list. 
@@ -260,11 +279,11 @@ List =  Class.create( Abstract, ( (function(){
      * @return {Number} The number of items in the list
      */
     size: function() {
-      return $items.length;
+      return this.getItems().length;
     }
   };
 
-})() ));
+}() ));
 
 
 // Export to Athena Framework

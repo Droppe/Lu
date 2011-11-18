@@ -28,7 +28,7 @@ PauseButton =  Class.create( Button, {
         action: 'pause'
       };
 
-    settings = _.extend( defaults, settings );
+    settings = _.defaults( settings, defaults );
     $super( $element, settings );
 
   }
