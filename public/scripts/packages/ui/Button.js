@@ -40,13 +40,6 @@ Button = Class.create( Abstract, ( function () {
         on: 'click'
       },
       /**
-       * Instance of Button
-       * @property Button
-       * @type Object
-       * @private
-       */
-      self,
-      /**
        * Target item used in event data
        * @property action
        * @type Object
@@ -65,6 +58,11 @@ Button = Class.create( Abstract, ( function () {
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
+      // CALL THE PARENT'S CONSTRUCTOR
+      $super( $element, settings );
+
+      action = settings.action;
+
       // Try to figure out what to select...
       if( action === 'select' ) {
         if( settings.item ) {
@@ -74,10 +72,6 @@ Button = Class.create( Abstract, ( function () {
         }
       }
 
-      action = settings.action;
-
-      // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
        
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
