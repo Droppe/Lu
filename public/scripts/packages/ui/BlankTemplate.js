@@ -11,7 +11,7 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
  */ 
-BlankTemplate = Class.create( Abstract, ( (function(){
+BlankTemplate = Class.create( Abstract, ( function() {
 
   // Private attributes
 
@@ -77,10 +77,9 @@ BlankTemplate = Class.create( Abstract, ( (function(){
      }
    };
 
-})() ));
+}() );
 
 // Export to Athena Framework
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = BlankTemplate;
 }
-
