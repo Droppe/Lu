@@ -1,39 +1,53 @@
-var id = 'ui:Button:Next',
-  Class = li.require( 'libraries/ptclass' ),
+var Class = li.require( 'libraries/ptclass' ),
   Button = li.require( 'ui/Button' ),
   NextButton;
 
 /**
- * Representation of a button element
+ * Representation of a button element preconfigured with a 'next' event
  * @class NextButton
  * @constructor
- * @extends Abstract
+ * @extends Button
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-NextButton = Class.create( Button, {
-  initialize: function( $super, $element, settings ) {
-    /**
-     * Instance of NextButton
-     * @property NextButton
-     * @type Object
-     */
-    var NextButton,
-      /**
-       * Default configuration values
-       * @property defaults
-       * @type Object
-       */
-      defaults = {
-        action: 'next'
-      };
+NextButton = Class.create( Button,  ( function () {
 
-    settings = _.extend( defaults, settings );
-    $super( $element, settings );
+   // RETURN METHODS OBJECT
+   return {
+     /**
+      * PTClass constructor 
+      * @method initialize
+      * @public
+      * @param {Object} $super Pointer to superclass constructor
+      * @param {Object} $element JQuery object for the element wrapped by the component
+      * @param {Object} settings Configuration settings
+      */    
+     initialize: function ( $super, $element, settings ) {
 
-  }
-} );
+       // PRIVATE INSTANCE PROPERTIES
 
+       /**
+        * Default configuration values
+        * @property defaults
+        * @type Object
+        * @private
+        * @final
+        */
+       var defaults = {
+         action: 'next'
+       };
+       
+       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+       _.defaults( settings, defaults );
+   
+       // CALL THE PARENT'S CONSTRUCTOR
+       $super( $element, settings );
+     }
+  };
+  
+}() ));
+
+// EXPORT TO ATHENA FRAMEWORK
 if( typeof module !== 'undefined' && module.exports ) {
   module.exports = NextButton;
 }

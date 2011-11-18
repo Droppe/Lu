@@ -11,94 +11,88 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
  */ 
-Button = Class.create( Abstract, ( (function(){
+Button = Class.create( Abstract, ( function () {
 
-  // Private attributes
+  // GLOBAL STATICS
 
-  /**
-   * Default configuration values
-   * @property defaults
-   * @type Object
-   * @private
-   * @final
-   */
-   var defaults = {
-     on: 'click'
-   },
-   /**
-    * Configuration values
-    * @property onfig
-    * @private
-    * @type {Object}
-    */
-   config,
-   /**
-    * Instance of Button
-    * @property Button
-    * @type Object
-    * @private
-    */
-   self,
-   /**
-    * Custom event name
-    * @property action
-    * @type Object
-    * @private
-    */
-   action,
-   /**
-    * Target item used in event data
-    * @property action
-    * @type Object
-    * @private
-    */
-   item;
-   
+  // RETURN METHODS OBJECT
+  return {
+    /**
+     * PTClass constructor 
+     * @method initialize
+     * @public
+     * @param {Object} $super Pointer to superclass constructor
+     * @param {Object} $element JQuery object for the element wrapped by the component
+     * @param {Object} settings Configuration settings
+     */    
+    initialize: function ( $super, $element, settings ){
 
-   // Return methods object
-   return {
-     /**
-      * PTClass constructor 
-      * @method initialize
-      * @public
-      * @param {Object} $super Pointer to superclass constructor
-      * @param {Object} $element JQuery object for the element wrapped by the component
-      * @param {Object} settings Configuration settings
-      */    
-     initialize: function ( $super, $element, settings ){
-       self = this;
-       // Mix the defaults into the settings values
-       config = _.defaults( settings, defaults );
+      // PRIVATE INSTANCE PROPERTIES
 
-       // Try to figure out what to select...
-       if( action === 'select' ) {
-         if( config.item ) {
-           item = ( typeof config.item === 'number' ) ? config.item : $( config.item );
-         } else {
-           item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
-         }
-       }
-
-       action = settings.action;
-
-       // Call the parent's constructor
-       $super( $element, config );
+      /**
+       * Default configuration values for all instances
+       * @property globalDefaults
+       * @type Object
+       * @private
+       * @final
+       */
+      var defaults = {
+        on: 'click'
+      },
+      /**
+       * Instance of Button
+       * @property Button
+       * @type Object
+       * @private
+       */
+      self,
+      /**
+       * Target item used in event data
+       * @property action
+       * @type Object
+       * @private
+       */
+      item,
+       /**
+        * Custom event name
+        * @property action
+        * @type Object
+        * @private
+        */
+      action;
        
-       // Event bindings
-       $element.on( config.on, function ( event ) {
-         if( item ) {
-           self.trigger( action, [ item ] );
-           _.log("Button " + action);
-         } else {
-           self.trigger( action );
-           _.log("Button " + action);
-         }
-       } );       
        
-     }
-   };
+      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      _.defaults( settings, defaults );
 
-})() ));
+      // Try to figure out what to select...
+      if( action === 'select' ) {
+        if( settings.item ) {
+          item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
+        } else {
+          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
+        }
+      }
+
+      action = settings.action;
+
+      // CALL THE PARENT'S CONSTRUCTOR
+      $super( $element, settings );
+       
+      // EVENT BINDINGS
+      $element.on( settings.on, function ( event ) {
+        if( item ) {
+          $element.trigger( action, [ item ] );
+          _.log("Button " + action);
+        } else {
+          $element.trigger( action );
+          _.log("Button " + action);
+        }
+      } );
+    }
+  };
+
+}() ));
 
 // Export to Athena Framework
 if ( typeof module !== 'undefined' && module.exports ) {
