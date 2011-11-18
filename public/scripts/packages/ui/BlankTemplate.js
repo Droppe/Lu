@@ -42,11 +42,11 @@ BlankTemplate = Class.create( Abstract, ( function () {
       },
       /**
        * Instance of BlankTemplate
-       * @property Button
+       * @property BlankTemplate
        * @type Object
        * @private
        */
-      self = this;
+      BlankTemplate = this;
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -76,7 +76,7 @@ BlankTemplate = Class.create( Abstract, ( function () {
        * @public
        * @param {Type} Name Description
        */
-      self.bar = function( param ) {
+      BlankTemplate.bar = function( param ) {
         // Your code here
       };
 
@@ -93,7 +93,7 @@ BlankTemplate = Class.create( Abstract, ( function () {
      $super();       
     }
   };
-}() );
+}() ));
 
 // EXPORT TO ATHENA FRAMEWORK
 if ( typeof module !== 'undefined' && module.exports ) {
