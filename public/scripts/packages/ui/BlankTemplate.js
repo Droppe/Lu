@@ -10,76 +10,92 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
- */ 
-BlankTemplate = Class.create( Abstract, ( function() {
+ */
+BlankTemplate = Class.create( Abstract, ( function () {
 
-  // Private attributes
+  // GLOBAL STATICS
+  var abc = 123;
 
-  /**
-   * Default configuration values
-   * @property defaults
-   * @type Object
-   * @private
-   * @final
-   */
-   var defaults = {
-     
-     // Default values go here
-     
-   },
-   /**
-    * Configuration values
-    * @property config
-    * @private
-    * @type {Object}
-    */
-   config,
-   /**
-    * Instance of Button
-    * @property Button
-    * @type Object
-    * @private
-    */
-   self;
-   
+  // RETURN METHODS OBJECT
+  return {
+    /**
+     * PTClass constructor 
+     * @method initialize
+     * @public
+     * @param {Object} $super Pointer to superclass constructor
+     * @param {Object} $element JQuery object for the element wrapped by the component
+     * @param {Object} settings Configuration settings
+     */    
+    initialize: function( $super, $element, settings ) {
 
-   // Return methods object
-   return {
-     /**
-      * PTClass constructor 
-      * @method initialize
-      * @public
-      * @param {Object} $super Pointer to superclass constructor
-      * @param {Object} $element JQuery object for the element wrapped by the component
-      * @param {Object} settings Configuration settings
-      */    
-     initialize: function ( $super, $element, settings ) {
-       self = this;
+      // PRIVATE INSTANCE PROPERTIES
 
-       // Mix the defaults into the settings values
-       config = _.defaults( settings, defaults );
+      /**
+       * Default configuration values
+       * @property defaults
+       * @type Object
+       * @private
+       * @final
+       */
+      var defaults = {
+        // Default values go here
+      },
+      /**
+       * Instance of BlankTemplate
+       * @property Button
+       * @type Object
+       * @private
+       */
+      self = this;
 
-       // Put your constructor's setup code here
+      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      _.defaults( settings, defaults );
 
-       // Call the parent's constructor
-       $super( $element, config );
-       
-       // Event bindings
-       $element.on( config.on, function ( event ) {
+      // PUT YOUR CONSTRUCTOR'S SETUP CODE HERE -- ANYTHING THAT CHANGES THE SETTINGS
+
+      // CALL THE PARENT'S CONSTRUCTOR
+      $super( $element, settings );
+
+      // PRIVATE METHODS
+
+      /**
+       * A private method 
+       * @method foo
+       * @private
+       * @param {Type} Name Description
+       */
+      function foo( param ) {
         // Your code here
-       } );       
-       
-     },
-     anotherMethod: function ( $super) {
-       // Your code here
-       // Call the parent method
-       $super();       
-     }
-   };
+      }
 
+      // PRIVILEGED METHODS
+
+      /**
+       * A privileged method
+       * @method bar
+       * @public
+       * @param {Type} Name Description
+       */
+      self.bar = function( param ) {
+        // Your code here
+      };
+
+      // EVENT BINDINGS
+      $element.on( settings.on, function( event ){
+        // Your code here
+      } );
+
+    },
+    // PUBLIC METHODS
+    anotherMethod: function( $super ) {
+     // Your code here
+     // Call the parent method
+     $super();       
+    }
+  };
 }() );
 
-// Export to Athena Framework
+// EXPORT TO ATHENA FRAMEWORK
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = BlankTemplate;
 }
