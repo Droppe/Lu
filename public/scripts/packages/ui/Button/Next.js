@@ -1,6 +1,6 @@
 var Class = li.require( 'libraries/ptclass' ),
   Button = li.require( 'ui/Button' ),
-  NextButton;
+  Next;
 
 /**
  * Representation of a button element preconfigured with a 'next' event
@@ -10,34 +10,9 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-NextButton  = Class.create( Button, ( (function(){
+Next = Class.create( Button,  ( function () {
 
-  /**
-   * Default configuration values
-   * @property defaults
-   * @type Object
-   * @private
-   * @final
-   */
-   var defaults = {
-     action: 'next'
-   },
-   /**
-    * Configuration values
-    * @property onfig
-    * @private
-    * @type {Object}
-    */
-   config,
-   /**
-    * Instance of Button
-    * @property Button
-    * @type Object
-    * @private
-    */
-   self;
-
-   // Return methods object
+   // RETURN METHODS OBJECT
    return {
      /**
       * PTClass constructor 
@@ -47,19 +22,32 @@ NextButton  = Class.create( Button, ( (function(){
       * @param {Object} $element JQuery object for the element wrapped by the component
       * @param {Object} settings Configuration settings
       */    
-     initialize: function ( $super, $element, settings ){
-       self = this;
-       // Mix the defaults into the settings values
-       config = _.defaults( settings, defaults );
+     initialize: function ( $super, $element, settings ) {
+
+       // PRIVATE INSTANCE PROPERTIES
+
+       /**
+        * Default configuration values
+        * @property defaults
+        * @type Object
+        * @private
+        * @final
+        */
+       var defaults = {
+         action: 'next'
+       };
+       
+       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+       _.defaults( settings, defaults );
    
-       // Call the parent's constructor
-       $super( $element, config );
+       // CALL THE PARENT'S CONSTRUCTOR
+       $super( $element, settings );
      }
   };
   
-})() ));
+}() ));
 
-// Export to Athena Framework
+// EXPORT TO ATHENA FRAMEWORK
 if( typeof module !== 'undefined' && module.exports ) {
-  module.exports = NextButton;
+  module.exports = Next;
 }
