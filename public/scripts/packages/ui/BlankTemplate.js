@@ -10,12 +10,11 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
- */ 
+ */
 BlankTemplate = Class.create( Abstract, ( function () {
 
   // GLOBAL STATICS
   var abc = 123;
-   
 
   // RETURN METHODS OBJECT
   return {
@@ -27,10 +26,10 @@ BlankTemplate = Class.create( Abstract, ( function () {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
-       
+    initialize: function( $super, $element, settings ) {
+
       // PRIVATE INSTANCE PROPERTIES
-      
+
       /**
        * Default configuration values
        * @property defaults
@@ -48,7 +47,6 @@ BlankTemplate = Class.create( Abstract, ( function () {
        * @private
        */
       self = this;
-       
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -57,8 +55,7 @@ BlankTemplate = Class.create( Abstract, ( function () {
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
-      
-      
+
       // PRIVATE METHODS
 
       /**
@@ -67,12 +64,10 @@ BlankTemplate = Class.create( Abstract, ( function () {
        * @private
        * @param {Type} Name Description
        */
-      function foo(param) {
+      function foo( param ) {
         // Your code here
       }
 
-      
-      
       // PRIVILEGED METHODS
 
       /**
@@ -81,32 +76,26 @@ BlankTemplate = Class.create( Abstract, ( function () {
        * @public
        * @param {Type} Name Description
        */
-      self.bar = function (param) {
+      self.bar = function( param ) {
         // Your code here
       };
-      
-      
-      
-      // EVENT BINDINGS
-      $element.on( settings.on, function ( event ) {
-        // Your code here
-      } );       
-       
-     },
-     
-     // PUBLIC METHODS
-     
-     anotherMethod: function ( $super ) {
-       // Your code here
-       // Call the parent method
-       $super();       
-     }
-   };
 
-}() ));
+      // EVENT BINDINGS
+      $element.on( settings.on, function( event ){
+        // Your code here
+      } );
+
+    },
+    // PUBLIC METHODS
+    anotherMethod: function( $super ) {
+     // Your code here
+     // Call the parent method
+     $super();       
+    }
+  };
+}() );
 
 // EXPORT TO ATHENA FRAMEWORK
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = BlankTemplate;
 }
-
