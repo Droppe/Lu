@@ -11,7 +11,7 @@ var Class = li.require( 'libraries/ptclass' ),
  */
 List =  Class.create( Abstract, ( function () {
 
-  // RETURN METHODS OBJECT 
+  //RETURN METHODS OBJECT 
   return {
     /**
      * PTClass constructor 
@@ -21,13 +21,13 @@ List =  Class.create( Abstract, ( function () {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-     initialize: function ( $super, $element, settings ){
+    initialize: function ( $super, $element, settings ){
 
-       // PRIVATE INSTANCE PROPERTIES
-      
+      // PRIVATE INSTANCE PROPERTIES
+
       /**
-       * Instance of List
-       * @property List
+       * Instance of Button
+       * @property Button
        * @type Object
        * @private
        */  
@@ -63,7 +63,7 @@ List =  Class.create( Abstract, ( function () {
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
-      
+
       //Scan for items from the provided selector, or default to the children of the container.
       if ( settings.items ) {
         if( typeof settings.items === 'string' ) {
@@ -74,35 +74,25 @@ List =  Class.create( Abstract, ( function () {
       } else {
         $items = $element.children();
       }
-       
-      
+
       // PRIVATE METHODS
       // n/a
-      
-      
+
+
       // PRIVILEGED METHODS
+
       /**
-       * Gets JQuery collection of like items in the list
-       * @method Name
-       * @public|private
-       * @param {Type} Name Description
-       */
-      List.getItems = function () {
-        return _.clone($items);
-      };
-      
-     /**
        * Append a new item to $element
        * @method append
        * @public
        * @param {Array} A jQuery Collection of $items to append
        * @return {Object} List
        */  
-      List.append = function ( $item ) {
+      List.append = function( $item ) {
         $items.parent().append( $item );
         return List;
       };
-      
+
       /**
        * Removes an item from $element
        * @method remove
@@ -110,11 +100,10 @@ List =  Class.create( Abstract, ( function () {
        * @param {Array} A jQuery Collection of $items to remove
        * @return {Object} List
        */  
-      List.remove = function ( $item ) {
-        $( $item, $items.parent() ).remove();
+      List.remove = function( $item ) {
+        $( $item, $items ).remove();
         return List;
       };
-      
       /**
        * Select an item in the list
        * @method select
@@ -122,7 +111,7 @@ List =  Class.create( Abstract, ( function () {
        * @param {Integer|Object} item The index of the item to select, or a JQuery instance of the item.
        * @return {Object} List
        */  
-      List.select = function ( item ) {
+      List.select = function( item ) {
         var $item;
 
         if( typeof item === 'number' ) {
@@ -133,7 +122,7 @@ List =  Class.create( Abstract, ( function () {
 
         if( $item.hasClass( settings.selectFlag ) === false ) {
           $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
-          List.trigger( 'selected', [$item.addClass( settings.selectFlag ), List.index()] );
+          this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
         }
         return List;
       };
@@ -151,11 +140,11 @@ List =  Class.create( Abstract, ( function () {
         } else {
            List.trigger( 'max' );
         }
-        List.select( $items.eq( List.index() + increment ) );
+        List.select( List.getItems().eq( List.index() + increment ) );
 
         return List;
       };
-      
+
       /**
        * Selects the previous item in the list. 
        * @method previous
@@ -171,22 +160,21 @@ List =  Class.create( Abstract, ( function () {
            List.trigger( 'min' );
         }
 
-        List.select( $items.eq( List.index() - decrement ) );
-        return List;
+        List.select( this.getItems().eq( this.index() - decrement ) );
+        return this;
       };
-      
+
       /**
        * Selects the last item in the list. 
        * @method last
        * @public
        * @return {Object} List
-       */  
+       */
       List.last = function() {
-
-        List.select( $items.eq( $items.length - 1 ) );
+        List.select( items.eq( List.size() - 1 ) );
         return List;
       };
-      
+
       /**
        * Selects the first item in the list. 
        * @method first
@@ -197,7 +185,7 @@ List =  Class.create( Abstract, ( function () {
         List.select( 0 );
         return List;
       };
-      
+
       /**
        * Determines if there are any higher-index items in the list.
        * @method hasNext
@@ -205,9 +193,9 @@ List =  Class.create( Abstract, ( function () {
        * @return {Boolean} true if not at the last item in the list
        */
       List.hasNext = function() {
-        return ( List.index() < $items.length - 1);
+        return ( List.index() < List.size() - 1 );
       };
-      
+
       /**
        * Determines if there are any lower-index items in the list.
        * @method hasPrevious
@@ -226,7 +214,6 @@ List =  Class.create( Abstract, ( function () {
        */
       List.index = function() {
         var ndx = -1;
-        
         _.each( $items, function( item, index ) {
           var $item = $( item );
           if( $item.hasClass( settings.selectFlag ) ) {
@@ -236,7 +223,7 @@ List =  Class.create( Abstract, ( function () {
         } );
         return ndx;
       };
-      
+
       /**
        * Returns the currently-selected item.
        * @method current
@@ -256,7 +243,7 @@ List =  Class.create( Abstract, ( function () {
       List.items = function() {
         return $items;
       };
-      
+
       /**
        * Returns the number of items in the list. 
        * @method size
@@ -266,32 +253,32 @@ List =  Class.create( Abstract, ( function () {
       List.size = function() {
         return $items.length;
       };
-    
-      
+
       // EVENT BINDINGS
       $element.on( 'select', function( event, item ) {
-         event.stopPropagation();
-         List.select( item );
-       } );
-       $element.on( 'next', function( event, item ) {
-         event.stopPropagation();
-         List.next();
-       } );
-       $element.on( 'previous', function( event, item ) {
-         event.stopPropagation();
-         List.previous();
-       } );
-       $element.on( 'first', function( event, item ) {
-         event.stopPropagation();
-         List.first();
-       } );
-       $element.on( 'last', function( event, item ) {
-         event.stopPropagation();
-         List.last();
-       } );
+        event.stopPropagation();
+        List.select( item );
+      } );
+      $element.on( 'next', function( event, item ) {
+        event.stopPropagation();
+        List.next();
+      } );
+      $element.on( 'previous', function( event, item ) {
+        event.stopPropagation();
+        List.previous();
+      } );
+      $element.on( 'first', function( event, item ) {
+        event.stopPropagation();
+        List.first();
+      } );
+      $element.on( 'last', function( event, item ) {
+        event.stopPropagation();
+        List.last();
+      } );
 
-    }   
+    }
   };
+
 }() ));
 
 
