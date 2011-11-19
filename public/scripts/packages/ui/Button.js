@@ -68,7 +68,7 @@ Button = Class.create( Abstract, ( function () {
         if( settings.item ) {
           item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
         } else {
-          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
+          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] ) || '0';
         }
       }
 

@@ -114,7 +114,7 @@ List =  Class.create( Abstract, ( function () {
       List.select = function( item ) {
         var $item;
 
-        if( typeof item === 'number' ) {
+        if( typeof item === 'number' || typeof item === 'string') {
           $item = $items.eq( item );
         } else {
           $item = item;
