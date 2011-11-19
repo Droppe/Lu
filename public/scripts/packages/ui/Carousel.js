@@ -191,16 +191,15 @@ Carousel =  Class.create( List, ( function() {
        event.stopPropagation();
        Carousel.play();
       } );
-      Carousel.on( 'pause', function( event ) {
-       event.stopPropagation();
-       Carousel.pause();
+      Carousel.on( 'pause next previous first last select', function( event, item ) {
+        event.stopPropagation();
+        Carousel.pause();
       } );
 
       // Play if autoplay was true in settings
       if( settings.autoplay ) {
-        //Carousel.play();
+        Carousel.play();
       }
-
     }
   };
 
