@@ -9,15 +9,14 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Abstract = Class.create( (function() {
-  
-  // GLOBAL STATICS
-  
+Abstract = Class.create( ( function() {
 
-  // RETURN METHODS OBJECT  
+  // GLOBAL STATICS
+
+  // RETURN METHODS OBJECT
   return {
     /**
-     * Class constructor 
+     * Class constructor
      * @method initialize
      * @public
      * @param {Object} $element JQuery object for DOM node wrapped by this component
@@ -76,7 +75,6 @@ Abstract = Class.create( (function() {
        * @type {String}
        */
       namespace = '';
-
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -159,7 +157,7 @@ Abstract = Class.create( (function() {
       
     }
   };
-}() ));
+}() ) );
 
 // Export to Athena Framework
 if ( typeof module !== 'undefined' && module.exports ) {
