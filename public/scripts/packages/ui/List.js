@@ -140,7 +140,7 @@ List =  Class.create( Abstract, ( function () {
         } else {
            List.trigger( 'max' );
         }
-        List.select( List.getItems().eq( List.index() + increment ) );
+        List.select( $items.eq( List.index() + increment ) );
 
         return List;
       };
@@ -160,7 +160,7 @@ List =  Class.create( Abstract, ( function () {
            List.trigger( 'min' );
         }
 
-        List.select( this.getItems().eq( this.index() - decrement ) );
+        List.select( $items.eq( this.index() - decrement ) );
         return this;
       };
 
@@ -171,7 +171,7 @@ List =  Class.create( Abstract, ( function () {
        * @return {Object} List
        */
       List.last = function() {
-        List.select( items.eq( List.size() - 1 ) );
+        List.select( $items.eq( List.size() - 1 ) );
         return List;
       };
 
