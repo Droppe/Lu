@@ -9,15 +9,14 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Abstract = Class.create( (function() {
-  
-  // GLOBAL STATICS
-  
+Abstract = Class.create( ( function() {
 
-  // RETURN METHODS OBJECT  
+  // GLOBAL STATICS
+
+  // RETURN METHODS OBJECT
   return {
     /**
-     * Class constructor 
+     * Class constructor
      * @method initialize
      * @public
      * @param {Object} $element JQuery object for DOM node wrapped by this component
@@ -29,11 +28,11 @@ Abstract = Class.create( (function() {
 
       /**
         * Instance of Abstract
-        * @property self
+        * @property Abstract
         * @type Object
         * @private
         */      
-      var self = this,
+      var Abstract = this,
       /**
        * Default configuration values
        * @property defaults
@@ -77,7 +76,6 @@ Abstract = Class.create( (function() {
        */
       namespace = '';
 
-
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
@@ -100,126 +98,66 @@ Abstract = Class.create( (function() {
       
       // PRIVILEGED METHODS
       
+        
       /**
-       * Gets the JQuery object of the key DOM element
-       * for the component
-       * @method getElement
+       * Creates an event listener for a type
+       * @method on
        * @public
-       * @return Object
+       * @param {String} type The type of event
+       * @param {Function} handler The callback function
        */
-      self.getElement = function () {
+      Abstract.on = function( type, handler ) {
+        return $element.on( type + namespace, handler );
+      };
+
+      /**
+       * Unbinds event listeners of a type
+       * @method off
+       * @public
+       * @param {String} type The type of event
+       */
+      Abstract.off = function( type ) {
+        return $element.off( type + namespace );
+      };
+
+      /**
+       * Fires a custom event 
+       * @method trigger
+       * @public
+       * @param {String} type The type of event
+       * @param {Array} parameters Extra arguments to pass through to the subscribed event handler
+       */
+      Abstract.trigger = function( type, parameters ) {
+              
+        $element.trigger( type + namespace + ':before', parameters );
+        $element.trigger( type + namespace, parameters );
+        $element.trigger( type + namespace + ':after', parameters );
         return $element;
       };
-
+    
       /**
-       * Gets the namespace 
-       * @method getNamespace
+       * Observe events
+       * @method observe
        * @public
-       * @return String
+       * @param {Array} $observer A jQuery collection to be added to the observers list
        */
-      self.getNamespace = function () {
-        return namespace;
+      Abstract.observe = function( $observer ) {      
+        return $element.observe( $observer );
       };
 
       /**
-       * Gets a safe copy of the settings object
-       * @method getSettings
+       * Cease observation of events
+       * @method unobserve
        * @public
-       * @return Object
+       * @param {Array} $subscriber A jQuery collection to unsubscribe
        */
-      self.getSettings = function () {
-        return _.clone(settings);
+      Abstract.unobserve = function( $observer ) {      
+        return $element.unobserve( $observer );
       };
       
-    },
-    /**
-     * Creates an event listener for a type
-     * @method on
-     * @public
-     * @param {String} type The type of event
-     * @param {Function} handler The callback function
-     */
-    on: function( type, handler ) {
-      return this.getElement().on( type + namespace, handler );
-    },
-
-    /**
-     * Unbinds event listeners of a type
-     * @method off
-     * @public
-     * @param {String} type The type of event
-     */
-    off: function( type ) {
-      return this.getElement().off( type + namespace );
-    },
-
-    /**
-     * Fires a custom event 
-     * @method trigger
-     * @public
-     * @param {String} type The type of event
-     * @param {Array} parameters Extra arguments to pass through to the subscribed event handler
-     */
-    trigger: function( type, parameters ) {
-      var node = this.getElement(),
-        namespace = this.getNamespace();
-      
-      node.trigger( type + namespace + ':before', parameters );
-      node.trigger( type + namespace, parameters );
-      node.trigger( type + namespace + ':after', parameters );
-      return node;
-    },
-    
-    /**
-     * Observe events
-     * @method observe
-     * @public
-     * @param {Array} $observer A jQuery collection to be added to the observers list
-     */
-    observe: function( $observer ) {
-      var node = this.getElement();
-      
-      return node.observe( $observer );
-    },
-
-    /**
-     * Cease observation of events
-     * @method unobserve
-     * @public
-     * @param {Array} $subscriber A jQuery collection to unsubscribe
-     */
-    unobserve: function( $observer ) {
-      var node = this.getElement();
-      
-      return node.unobserve( $observer );
-    },
-
-    /**
-     * Gets a static setting
-     * @method getSetting
-     * @public
-     * @param {String} key The name of the setting
-     * @return String
-     */
-    getSetting: function( key ) {
-      var result,
-        settings = this.getSettings();
-
-      if ( key ) {
-        if ( settings.key ) {
-          result = settings.key;
-        } else {
-          Athena.error( 'The setting ' + key + ' does not exist in ', settings );
-        }
-      } else {
-        result = settings;
-      }
-    
-      return result;
     }
   };
-
-}() ));
+}() ) );
 
 // Export to Athena Framework
 if ( typeof module !== 'undefined' && module.exports ) {

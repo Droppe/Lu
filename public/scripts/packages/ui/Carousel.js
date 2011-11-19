@@ -9,30 +9,29 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  */
-Carousel =  Class.create( List,  ( function () {
+Carousel =  Class.create( List, ( function() {
 
-  
-  // RETURN METHODS OBJECT 
+  // RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor 
+     * PTClass constructor
      * @method initialize
      * @public
      * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
-     */    
+     */
     initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
-      
+
       /**
-       * Instance of Button
-       * @property Button
+       * Instance of Carousel
+       * @property Carousel
        * @type Object
        * @private
        */  
-      var self = this,
+      var Carousel = this,
       /**
        * Default configuration values
        * @property defaults
@@ -113,8 +112,6 @@ Carousel =  Class.create( List,  ( function () {
        */
       $pannels;
 
-
-      
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
@@ -125,133 +122,88 @@ Carousel =  Class.create( List,  ( function () {
       if( $pannels.length > 0 ) {
         settings.items = $pannels.children( settings.items );
       }
-      
+
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
-      
-      // Play if autoplay was true in settings
-      if( settings.autoplay ) {
-        self.play();
-      }
-      
-      
+
       // PRIVILEGED METHODS
-      
-      /**
-       * Is the carousel currently playing?
-       * @method isPlaying
+     /**
+       * Plays the Carousel when paused
+       * @method play
        * @public
-       * @return Boolean
+       * @return {Object} The Carousel instance
        */
-      self.isPlaying = function () {
-        return playing;
+      Carousel.play = function() {
+        if( playing === false ) {
+          repeat = settings.repeat;
+          playing = true;
+          ( function recurse() {
+            window.setTimeout( function() {
+              if( playing ) {
+                Carousel.next();
+                recurse();
+              }
+            }, settings.delay );
+          }() );
+          Carousel.trigger( 'playing' );
+        }
+        return Carousel;
       };
-      
-      /**
-       * Sets the current play state flag
-       * @method setPlayState
-       * @public
-       * @param {Boolean} isPlaying Is the carousel currently playing or not?
-       * @return {Void}
-       */
-      self.setPlayState = function ( isPlaying ) {
-        playing = (!!isPlaying);
-      };      
 
       /**
-       * Sets the current repeat state flag
-       * @method setRepeat
+       * Pauses the Carousel when playing
+       * @method pause
        * @public
-       * @param {Integer} newRepeatValue The current repeat value
-       * @return {Void}
+       * @return {Object} The Carousel instance
        */
-      self.setRepeat = function ( newRepeatValue ) {
-        repeat = newRepeatValue;
-      };      
-      
+      Carousel.pause = function() {
+        if( playing ) {
+          playing = false;
+          Carousel.trigger( 'paused' );
+        }
+        return Carousel;
+      },
 
       // EVENT BINDINGS
-      self.on( 'selected', function( event, $item ) {
+      Carousel.on( 'selected', function( event, $item ) {
          var $pannel = $item.closest( $pannels );
          if( $pannel.hasClass( settings.activeFlag ) === false ) {
            $pannels.removeClass( settings.activeFlag );
            $pannel.addClass( settings.activeFlag );
          }
-       } );
-       
-       self.on( 'max', function( event ) {
-         event.stopPropagation();
-         if( playing && repeat !== 0 ) {
-           repeat -= 1;
-           self.first();
-         } else if ( playing && repeat < 0 ){
-           self.first();
-         } else {
-           self.first();
-         }
-       } );
-       
-       self.on( 'min', function( event ) {
-         event.stopPropagation();
-         self.last();
-       } );
-       
-       self.on( 'play', function( event ) {
-         event.stopPropagation();
-         self.play();
-       } );
-       
-       self.on( 'pause', function( event ) {
-         event.stopPropagation();
-         self.pause();
-       } );      
-    },
-    
-    // PUBLIC METHODS
-    
-    /**
-     * Pauses the Carousel when playing
-     * @method pause
-     * @public
-     * @return {Object} The Carousel instance
-     */
-    pause: function() {
-      if( this.isPlaying() ) {
-        this.setPlayState(false);
-        this.trigger( 'paused' );
+      } );
+      Carousel.on( 'max', function( event ) {
+       event.stopPropagation();
+       if( playing && repeat !== 0 ) {
+         repeat -= 1;
+         Carousel.first();
+       } else if ( playing && repeat < 0 ){
+         Carousel.first();
+       } else {
+         Carousel.first();
+       }
+      } );
+      Carousel.on( 'min', function( event ) {
+       event.stopPropagation();
+       Carousel.last();
+      } );
+      Carousel.on( 'play', function( event ) {
+       event.stopPropagation();
+       Carousel.play();
+      } );
+      Carousel.on( 'pause next previous first last select', function( event, item ) {
+        event.stopPropagation();
+        Carousel.pause();
+      } );
+
+      // Play if autoplay was true in settings
+      if( settings.autoplay ) {
+        Carousel.play();
       }
-      return this;
-    },
-    /**
-     * Plays the Carousel when paused
-     * @method play
-     * @public
-     * @return {Object} The Carousel instance
-     */
-    play: function() {
-      var that = this,
-        settings = this.getSettings();
-      
-      if( that.isPlaying() === false ) {
-        that.setRepeat(settings.repeat);
-        that.setPlayState(true);
-        ( function recurse() {
-          window.setTimeout( function() {
-            if( that.isPlaying() ) {
-              that.next();
-              recurse();
-            }
-          }, settings.delay );
-        }() );
-        that.trigger( 'playing' );
-      }
-      return that;
     }
-      
   };
 
 }() ));
-
 
 // EXPORT TO ATHENA FRAMEWORK
 if ( typeof module !== 'undefined' && module.exports ) {
