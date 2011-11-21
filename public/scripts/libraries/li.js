@@ -429,7 +429,7 @@
       id: 'ui/Tabs',
       version: '0.0.1',
       path: '/scripts/packages/ui/Tabs.js',
-      requires: ['ui/Abstract']
+      requires: ['libraries/ptclass', 'ui/Abstract']
     }
   ] );
 
