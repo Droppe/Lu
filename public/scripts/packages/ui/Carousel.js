@@ -11,16 +11,16 @@ var Class = li.require( 'libraries/ptclass' ),
  */
 Carousel =  Class.create( List, ( function() {
 
-  // RETURN METHODS OBJECT 
+  // RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor 
+     * PTClass constructor
      * @method initialize
      * @public
      * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
-     */    
+     */
     initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
@@ -204,7 +204,6 @@ Carousel =  Class.create( List, ( function() {
   };
 
 }() ));
-
 
 // EXPORT TO ATHENA FRAMEWORK
 if ( typeof module !== 'undefined' && module.exports ) {
