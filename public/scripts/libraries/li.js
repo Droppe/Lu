@@ -430,6 +430,11 @@
       version: '0.0.1',
       path: '/scripts/packages/ui/Button/Pause.js',
       requires: [ 'libraries/ptclass', 'ui/Button' ]
+    }, {
+      id: 'ui/Tabs',
+      version: '0.0.1',
+      path: '/scripts/packages/ui/Tabs.js',
+      requires: ['ui/Abstract']
     }
   ] );
 
