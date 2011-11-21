@@ -169,11 +169,11 @@ var Class = li.require( 'libraries/ptclass' ),
       /**
        * Handles the tab click.  Changes the currentTab to the new tab by removing and adding
        * the class name "selected"
-       * @method clickHandler 
+       * @method selectHandler 
        * @private
        * @return {Void}
        */
-      clickHandler = function(event) {
+      selectHandler = function(event) {
 
         var tabPanel,
             // Convert to JQuery element
@@ -199,7 +199,7 @@ var Class = li.require( 'libraries/ptclass' ),
       // Nada!
       
       // EVENT BINDINGS
-      tabs.on("click", clickHandler);
+      tabs.on("select", selectHandler);
     }
   };
 }() ));
