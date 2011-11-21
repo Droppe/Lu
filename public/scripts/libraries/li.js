@@ -376,6 +376,11 @@
       path: '/scripts/libraries/athena-0.0.1.js',
       requires: ['libraries/ptclass']
     }, {
+      id: 'libraries/athena@2',
+      version: '0.0.1',
+      path: '/scripts/libraries/athena-0.0.2.js',
+      requires: ['libraries/ptclass']
+    }, {
       id: 'providers/Event',
       version: '0.0.1',
       path: '/scripts/packages/providers/Event.js',
