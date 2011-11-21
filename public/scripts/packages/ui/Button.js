@@ -37,7 +37,8 @@ Button = Class.create( Abstract, ( function () {
        * @final
        */
       var defaults = {
-        on: 'click'
+        on: 'click',
+        action: 'click'
       },
       /**
        * Target item used in event data
@@ -72,7 +73,6 @@ Button = Class.create( Abstract, ( function () {
         }
       }
 
-       
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
         if( item ) {
