@@ -53,7 +53,38 @@ Button = Class.create( Abstract, ( function () {
         * @type Object
         * @private
         */
-      action;
+      action,
+
+      isLink = false,
+      
+      /**
+       * Setups accessibility for the button.  If the button is a "link" then it will have an ARIA role of button and 
+       * will be selectable by the space bar.  
+       * @method setupAlly 
+       * @private
+       * @return {Void}
+       */
+      setupAlly = function() {
+        // If it's a link give it ARIA role button
+        isLink = $element.is("a"); 
+        if (isLink) {
+          $element.attr("role", "button");
+
+          $element.on("keyup", function(e) { 
+              // Pressed space bar
+              if (e.keyCode === 32) {   
+                // This code is repetitive
+                if( item || item === 0 ) {
+                  $element.trigger( action, [ item ] );
+                  _.log("Button " + action);
+                } else {
+                  $element.trigger( action );
+                  _.log("Button " + action);
+                }
+              } 
+            });
+        }  
+      };
        
        
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -73,6 +104,9 @@ Button = Class.create( Abstract, ( function () {
         }
       }
 
+      // Setup accessibility - ally 
+      setupAlly();
+
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
         // Oh, overloading the item!  The item can be a number or an Object
@@ -83,6 +117,13 @@ Button = Class.create( Abstract, ( function () {
         } else {
           $element.trigger( action );
           _.log("Button " + action);
+        }
+
+        // For accessibility.  When a link behaves as a button, we prevent the default behavior - i.e. link out -
+        // and set focus on the link.
+        if (isLink) {
+          event.preventDefault();
+          $element.focus();
         }
       } );
     }
