@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  Abstract = li.require( 'ui/Abstract' ),
+var Class = li.require("libraries/ptclass"),
+  Abstract = li.require("ui/Abstract"),
   Tabs;
 
 /**
@@ -26,7 +26,7 @@ var Class = li.require( 'libraries/ptclass' ),
 
       // PRIVATE
       // Constants
-      var SELECTED_CSSQ = "selected",
+      var SELECT_EVT = "select",
 
       // INSTANCE PROPERTIES
       
@@ -63,17 +63,7 @@ var Class = li.require( 'libraries/ptclass' ),
          * @private
          * @final
          */
-        tabPanels: '.tab-panels',
-
-        /**
-         * The CSS class that designates a selected panel
-         * @property selectFlag
-         * @default 'selected'
-         * @type String
-         * @final
-         * @private
-        */
-        activeFlag: 'active'
+        tabPanels: '.tab-panels'
       },
 
       /**
@@ -93,37 +83,7 @@ var Class = li.require( 'libraries/ptclass' ),
       $tabPanels,
 
       /**
-       * A JDOM reference to the selected tab 
-       * @property $currentTab
-       * @type Object
-       * @private
-       */
-      $currentTab,
-    
-      /**
-       * Given a tab, returns the panel ID
-       * @method getPanelId 
-       * @param {Object} tab - a JDOM reference to the tab element
-       * @private
-       * @return {String} panel ID 
-       */
-      getPanelId = function(tab) {
-        // Boo! Use a regex!
-        // REFACTOR this crap oliver!
-        var children = tab.children(),
-            $link = children ? $(children[0]) : null,
-            panelId = $link ? $link.attr("href") : null,
-            start = panelId ? panelId.indexOf("#") + 1 : null;
-
-        if (start) {
-          panelId = panelId.substring(start);
-        }
-
-        return panelId;
-      },
-
-      /**
-       * Initializes the tab component 
+       * Initializes the tab component
        * @method tabInit 
        * @param {Object} settings - Object literal containing settings which have been merged with default settings 
        * @private
@@ -131,59 +91,21 @@ var Class = li.require( 'libraries/ptclass' ),
        */
       tabInit = function(settings) {
         // Get references to tablist, tabpanels and the current tab
-        $tabList = $element.children(settings.tabList).children();
-        $tabPanels = $element.children( settings.tabPanels ).children();
-        $currentTab = $tabList.siblings(".selected"); 
+        $tabPanels = $($element.children( settings.tabPanels ));
 
-        // Hide the panels that aren't selected
-        hidePanels(getPanelId($currentTab));
+        $tabList = $($element.children(settings.tabList)); 
       },
 
       /**
-       * Hides panels which aren't equal to the exclude ID
-       * @method hidePanels 
-       * @param {String} exclude - ID of the tab panel to exclude
+       * Handles the tab select.  Fires the "select" event to the tab panels and passes the selected element
+       * @param {Event} event - Athena event
+       * @param {Object} item - JQuery DOM element
+       * @method selectTabHandler 
        * @private
        * @return {Void}
        */
-      hidePanels = function(exclude) {
-        var $listElement = $(".tab-panels li");
-
-        if ($listElement) {
-          // Iterate through each panel and if the ID isn't excluded, hide
-          $listElement.each(function() {
-            var $element = $(this);
-
-            if (this.id !== exclude) {
-              $element.attr("style", "display:none");  
-            } else {
-              // Hmmmmmmm... it's probably better to do this with a class because we're removing the whole
-              // damn style here!
-              $element.removeAttr("style");  
-            }
-
-          });            
-        }
-      },
-
-      /**
-       * Handles the tab click.  Changes the currentTab to the new tab by removing and adding
-       * the class name "selected"
-       * @method selectHandler 
-       * @private
-       * @return {Void}
-       */
-      selectHandler = function(event) {
-
-        var tabPanel,
-            // Convert to JQuery element
-            clickedTab = $(event.target.parentNode);
-
-        $currentTab.removeClass(SELECTED_CSSQ);
-        clickedTab.addClass(SELECTED_CSSQ);
-        $currentTab = clickedTab;
-
-        hidePanels(getPanelId($currentTab));
+      selectTabHandler = function(event, item) {
+        $tabPanels.trigger(SELECT_EVT, [item]);
       };
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -195,11 +117,8 @@ var Class = li.require( 'libraries/ptclass' ),
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
       
-      // PRIVILEGED METHODS
-      // Nada!
-      
-      // EVENT BINDINGS
-      tabs.on("select", selectHandler);
+      // Attach event listeners
+      $tabList.on(SELECT_EVT, selectTabHandler);
     }
   };
 }() ));

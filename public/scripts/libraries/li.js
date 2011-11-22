@@ -440,11 +440,14 @@
       version: '0.0.1',
       path: '/scripts/packages/ui/Tabs.js',
       requires: ['libraries/ptclass', 'ui/Abstract']
+<<<<<<< HEAD
     }, {
       id: 'ui/Loader',
       version: '0.0.1',
       path: '/scripts/packages/ui/Loader.js',
       requires: ['libraries/ptclass', 'ui/Abstract']
+=======
+>>>>>>> 7ea76538a084c30bf063291bde511082026acc6c
     }
   ] );
 
