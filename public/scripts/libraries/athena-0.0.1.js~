@@ -164,8 +164,6 @@ Athena = function( settings ) {
         $nodes.add( $this );
       }
 
-
-
       //Construct an array of required packages
       _.each( $nodes, function( node, index ) {
         var $node = $( node );
@@ -173,38 +171,26 @@ Athena = function( settings ) {
           var pckg = key.replace( /\:/g, '/' );
           if( _.indexOf( required, pckg ) === -1 ) {
             keys.push( key );
-            // cache of all packages
-            packages.push( pckg );
+            packages.push( key.replace( /\:/g, '/' ) );
           }
-          // the current queue of packages
           required.push( pckg );
         } );
       } );
-      
-      
-      // Test to see if CommonJS interface exists (from inject.js)
-      if( window.require && window.require.ensure ) {
+
+      if( require && require.ensure ) {
                 
-        window.require.setExpires(settings.moduleExpire);
-        window.require.setModuleRoot(settings.moduleRoot);
-      
-        window.require.ensure( required, function( require ) {
-          
-          _.each( required, function( item, index ) {
-            console.log("YO!", require( item ) );
-            constructors[item.replace( /\//g, ':'  )] = require( item );
-          } );
-           
+        require.setExpires(settings.moduleExpire);
+        require.setModuleRoot(settings.moduleRoot);
+        require.ensure( packages, function( require, exports, module ) {
+          console.log( require, exports, module );
+          _.each( exports, function( key, index ) {
+debugger;
+            constructors[key] = args[index];
+           } );
           recurse( $this );
-       
         } );
-      
+
       }
-
-
-
-      
-      
       //Recurse over all child nodes to make sure controls are instantiated.
       function recurse( $node ) {
 
@@ -387,22 +373,23 @@ Athena = function( settings ) {
    * @static
    * @param {Object} component The Athena component class to export
    */
+  
   Athena.exports = function ( component ) {
     // Get module from window scope
     var module = window.module;
 
-    // EXPORT TO ATHENA FRAMEWORK
-    // if ( typeof module !== 'undefined' ) {
-    //   if ( module.setExports ){
-    //     module.setExports( component );
-    //   } else if( module.exports ){
-    //       module.exports = component;
-    //   }
-    // } else {
-    //   Athena[component] = component;
-    // }    
+alert(component);
 
-    window.exports = component;
+    // EXPORT TO ATHENA FRAMEWORK
+    if ( typeof module !== 'undefined' ) {
+      if ( module.setExports ){
+        module.setExports( component );
+      } else if( module.exports ){
+          module.exports = component;
+      }
+    } else {
+      Athena[component] = component;
+    }    
     
   };
   

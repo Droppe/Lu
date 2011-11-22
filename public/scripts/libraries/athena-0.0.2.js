@@ -23,7 +23,10 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-var Class = li.require( 'libraries/ptclass' ),
+
+
+//var Class = li.require( 'libraries/ptclass' ),
+var Class = require("libraries/ptclass"),
   Athena;
 
 Athena = Class.create( {
@@ -32,10 +35,10 @@ Athena = Class.create( {
       defaults = {
         namespace: 'athena',
         debug: false,
-        scope: $( 'body' );
+        scope: $( 'body' )
       };
 
-    settings = _.extend( defaults, settings );
+    _.defaults( settings, defaults );
 
     ATTR = 'data-' + settings.namespace;
     UI_CONTROL_PATTERN = '[' + ATTR + '*="ui:"]';
@@ -183,7 +186,7 @@ Athena = Class.create( {
         } );
 
         function recurse( $node ) {
-          console.log($())
+          console.log( $() );
         }
 
         return $this;
@@ -326,7 +329,7 @@ Athena = Class.create( {
     
     $( function() {
       //Athena.decorate( $body, ['ui:Abstract'] );
-      $settings.scope.on( settings.namespace + '-ready', function( event ) {
+      settings.scope.on( settings.namespace + '-ready', function( event ) {
         console.log( 'hella cool' );
       } ).execute();
     } );
@@ -337,3 +340,5 @@ Athena = Class.create( {
 if ( typeof module !== 'undefined' && module.exports ) {
   module.exports = Athena;
 }
+
+

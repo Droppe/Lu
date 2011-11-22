@@ -84,9 +84,10 @@
 
 <body>
   
+  
   <div id="container" data-athena="ui:Carousel">
    
-    <ol id="car-list">
+    <ol id="car-list" class="items">
       <li class="selected">one</li>
       <li>two</li>
       <li>three</li>
@@ -103,7 +104,7 @@
 
   <div id="container2" data-athena="ui:Carousel">
    
-    <ol id="car-list2">
+    <ol id="car-list2" class="items">
       <li>one</li>
       <li class="selected">two</li>
       <li>three</li>
@@ -131,7 +132,7 @@
 
     <button id="btn-stop2" data-athena="ui:Button" data-athena-config="{
       'ui:Button': {
-        action: 'stop'
+        action: 'pause'
       }
     }">Stop</button>
 
