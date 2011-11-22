@@ -75,7 +75,9 @@ Button = Class.create( Abstract, ( function () {
 
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
-        if( item ) {
+        // Oh, overloading the item!  The item can be a number or an Object
+        // When it's a number - like index 0 - it's falsy unless we test it!
+        if( item || item === 0 ) {
           $element.trigger( action, [ item ] );
           _.log("Button " + action);
         } else {
