@@ -10,7 +10,7 @@ var Class = li.require("libraries/ptclass"),
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  */
-  Tabs =  Class.create( Abstract,  ( function () {
+Tabs =  Class.create( Abstract,  ( function () {
 
   // RETURN METHODS OBJECT 
   return {
@@ -26,7 +26,7 @@ var Class = li.require("libraries/ptclass"),
 
       // PRIVATE
       // Constants
-      var SELECT_EVT = "select",
+      var SELECT_EVT = 'select',
 
       // INSTANCE PROPERTIES
       
@@ -36,7 +36,7 @@ var Class = li.require("libraries/ptclass"),
        * @type Object
        * @private
        */  
-      tabs = this,
+      Tabs = this,
 
       /**
        * Default configuration values
@@ -46,7 +46,6 @@ var Class = li.require("libraries/ptclass"),
        * @final
        */
       defaults = {
-
         /**
          * A selector scoped to the $element that matches the tablist 
          * @property tabList
@@ -89,11 +88,10 @@ var Class = li.require("libraries/ptclass"),
        * @private
        * @return {Void}
        */
-      tabInit = function(settings) {
+      tabInit = function( settings ) {
         // Get references to tablist, tabpanels and the current tab
-        $tabPanels = $($element.children( settings.tabPanels ));
-
-        $tabList = $($element.children(settings.tabList)); 
+        $tabPanels = $( $element.children( settings.tabPanels ) );
+        $tabList = $( $element.children(settings.tabList) ); 
       },
 
       /**
@@ -104,8 +102,8 @@ var Class = li.require("libraries/ptclass"),
        * @private
        * @return {Void}
        */
-      selectTabHandler = function(event, item) {
-        $tabPanels.trigger(SELECT_EVT, [item]);
+      selectTabHandler = function( event, item ) {
+        $tabPanels.trigger( SELECT_EVT, [item] );
       };
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -118,10 +116,10 @@ var Class = li.require("libraries/ptclass"),
       $super( $element, settings );
       
       // Attach event listeners
-      $tabList.on(SELECT_EVT, selectTabHandler);
+      $tabList.on( SELECT_EVT, selectTabHandler );
     }
   };
-}() ));
+}() ) );
 
 // EXPORT TO ATHENA FRAMEWORK
 if ( typeof module !== 'undefined' && module.exports ) {
