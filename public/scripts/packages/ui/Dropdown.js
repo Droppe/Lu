@@ -12,6 +12,5 @@ Dropdown = Abstract.extend( function ( element, settings ){
 
 } );
 
-if ( typeof module !== 'undefined' && module.exports ) {
-	module.exports = Dropdown;
-}
+// EXPORT TO ATHENA FRAMEWORK
+Athena.exports(module, Dropdown);

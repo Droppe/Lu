@@ -42,6 +42,5 @@ Loader = Abstract.extend( function ( element, settings ){
 
 } );
 
-if ( typeof module !== 'undefined' && module.exports ) {
-	module.exports = Loader;
-}
+// EXPORT TO ATHENA FRAMEWORK
+Athena.exports(module, Loader);

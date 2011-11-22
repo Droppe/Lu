@@ -206,6 +206,4 @@ Carousel =  Class.create( List, ( function() {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Carousel;
-}
+Athena.exports(module, Carousel);

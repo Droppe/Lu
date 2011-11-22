@@ -48,6 +48,5 @@ PlayButton = Class.create( Button,  ( function () {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-if( typeof module !== 'undefined' && module.exports ) {
-  module.exports = PlayButton;
-}
+Athena.exports(module, PlayButton);
+

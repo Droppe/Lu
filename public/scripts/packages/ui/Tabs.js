@@ -205,6 +205,4 @@ var Class = li.require( 'libraries/ptclass' ),
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Tabs;
-}
+Athena.exports(module, Tabs);

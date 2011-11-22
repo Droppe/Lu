@@ -97,6 +97,5 @@ EventProvider = Class( {
   }
 } );
 
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = EventProvider;
-}
+// EXPORT TO ATHENA FRAMEWORK
+Athena.exports(module, EventProvider);

@@ -12,6 +12,5 @@ Dialog = Abstract.extend( function ( element, settings ){
 
 } );
 
-if ( typeof module !== 'undefined' && module.exports ) {
-	module.exports = Dialog;
-}
+// EXPORT TO ATHENA FRAMEWORK
+Athena.exports(module, Dialog);

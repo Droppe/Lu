@@ -10,7 +10,7 @@ var id = 'ui/Carousel',
  * @param {HTMLElement} element The DOM node representing the Carousel's container
  * @param {Object} settings Configuration properties
  */
-Carousel = Abstract.extend( function ( $element, settings ){
+CarouselAdapter = Abstract.extend( function ( $element, settings ){
   var Carousel = this,
     myList,
     defaults = {
@@ -73,6 +73,5 @@ Carousel = Abstract.extend( function ( $element, settings ){
 
 } );
 
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Carousel;
-}
+// EXPORT TO ATHENA FRAMEWORK
+Athena.exports(module, CarouselAdapter);

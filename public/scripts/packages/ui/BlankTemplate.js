@@ -96,6 +96,4 @@ BlankTemplate = Class.create( Abstract, ( function () {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = BlankTemplate;
-}
+Athena.exports(module, BlankTemplate);

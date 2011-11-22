@@ -88,8 +88,6 @@ Button = Class.create( Abstract, ( function () {
 
 }() ));
 
-// Export to Athena Framework
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Button;
-}
+// EXPORT TO ATHENA FRAMEWORK
+Athena.exports(module, Button);
 

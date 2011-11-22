@@ -282,7 +282,5 @@ List =  Class.create( Abstract, ( function () {
 }() ));
 
 
-// Export to Athena Framework
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = List;
-}
+// EXPORT TO ATHENA FRAMEWORK
+Athena.exports(module, List);

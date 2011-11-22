@@ -48,6 +48,4 @@ PauseButton = Class.create( Button,  ( function () {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-if( typeof module !== 'undefined' && module.exports ) {
-  module.exports = PauseButton;
-}
+Athena.exports(module, PauseButton);
