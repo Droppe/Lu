@@ -53,6 +53,7 @@ Button = Class.create( Abstract, ( function () {
        * @private
        */
       item,
+
        /**
         * Custom event name
         * @property action
@@ -61,8 +62,32 @@ Button = Class.create( Abstract, ( function () {
         */
       action,
 
+       /**
+        * Flag to denote whether the button component is a <button> or <a>
+        * @property isLink 
+        * @type Boolean 
+        * @private
+        */
       isLink = false,
-      
+    
+      /**
+       * Fires an event with the action and associated object/number
+       * @method triggerAction
+       * @param {String} action - ex. "select", "next", "prev"
+       * @param {Object} item - Normally a object but can be a number
+       * @private
+       * @return {Void}
+       */
+      triggerAction = function(action, item) {
+        if( item || item === 0 ) {
+          $element.trigger( action, [ item ] );
+          _.log("Button " + action);
+        } else {
+          $element.trigger( action );
+          _.log("Button " + action);
+        }
+      },
+
       /**
        * Setups accessibility for the button.  If the button is a "link" then it will have an ARIA role of button and 
        * will be selectable by the space bar.  
@@ -74,21 +99,15 @@ Button = Class.create( Abstract, ( function () {
         // If it's a link give it ARIA role button
         isLink = $element.is("a"); 
         if (isLink) {
+          // No need to check if role exists because JQuery won't add another one
           $element.attr("role", "button");
 
           $element.on("keyup", function(e) { 
               // Pressed space bar
               if (e.keyCode === 32) {   
-                // This code is repetitive
-                if( item || item === 0 ) {
-                  $element.trigger( action, [ item ] );
-                  _.log("Button " + action);
-                } else {
-                  $element.trigger( action );
-                  _.log("Button " + action);
-                }
+                triggerAction(action, item);
               } 
-            });
+          });
         }  
       };
        
@@ -118,18 +137,11 @@ Button = Class.create( Abstract, ( function () {
         event.preventDefault();
         // Oh, overloading the item!  The item can be a number or an Object
         // When it's a number - like index 0 - it's falsy unless we test it!
-        if( item || item === 0 ) {
-          $element.trigger( action, [ item ] );
-          _.log("Button " + action);
-        } else {
-          $element.trigger( action );
-          _.log("Button " + action);
-        }
+        triggerAction(action, item);
 
         // For accessibility.  When a link behaves as a button, we prevent the default behavior - i.e. link out -
         // and set focus on the link.
         if (isLink) {
-          event.preventDefault();
           $element.focus();
         }
       } );
