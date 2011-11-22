@@ -421,6 +421,11 @@
       path: '/scripts/packages/ui/Button/Select.js',
       requires: [ 'libraries/ptclass', 'ui/Button' ]
     }, {
+      id: 'ui/Button/Load',
+      version: '0.0.1',
+      path: '/scripts/packages/ui/Button/Load.js',
+      requires: [ 'libraries/ptclass', 'ui/Button' ]
+    }, {
       id: 'ui/Button/Play',
       version: '0.0.1',
       path: '/scripts/packages/ui/Button/Play.js',
@@ -434,6 +439,11 @@
       id: 'ui/Tabs',
       version: '0.0.1',
       path: '/scripts/packages/ui/Tabs.js',
+      requires: ['libraries/ptclass', 'ui/Abstract']
+    }, {
+      id: 'ui/Loader',
+      version: '0.0.1',
+      path: '/scripts/packages/ui/Loader.js',
       requires: ['libraries/ptclass', 'ui/Abstract']
     }
   ] );

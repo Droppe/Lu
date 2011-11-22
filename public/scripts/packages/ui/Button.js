@@ -28,15 +28,21 @@ Button = Class.create( Abstract, ( function () {
     initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
-
+      /**
+       * Instance of Button
+       * @property Button
+       * @type Object
+       * @private
+       */
+      var Button = this,
       /**
        * Default configuration values for all instances
-       * @property globalDefaults
+       * @property defaults
        * @type Object
        * @private
        * @final
        */
-      var defaults = {
+      defaults = {
         on: 'click',
         action: 'click'
       },
@@ -109,6 +115,7 @@ Button = Class.create( Abstract, ( function () {
 
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
+        event.preventDefault();
         // Oh, overloading the item!  The item can be a number or an Object
         // When it's a number - like index 0 - it's falsy unless we test it!
         if( item || item === 0 ) {
