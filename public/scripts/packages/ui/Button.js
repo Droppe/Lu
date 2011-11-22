@@ -28,15 +28,21 @@ Button = Class.create( Abstract, ( function () {
     initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
-
+      /**
+       * Instance of Button
+       * @property Button
+       * @type Object
+       * @private
+       */
+      var Button = this,
       /**
        * Default configuration values for all instances
-       * @property globalDefaults
+       * @property defaults
        * @type Object
        * @private
        * @final
        */
-      var defaults = {
+      defaults = {
         on: 'click',
         action: 'click'
       },
@@ -75,6 +81,7 @@ Button = Class.create( Abstract, ( function () {
 
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
+        event.preventDefault();
         if( item ) {
           $element.trigger( action, [ item ] );
           _.log("Button " + action);

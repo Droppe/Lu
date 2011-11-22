@@ -75,10 +75,14 @@
 
 <body>
 
-  <div id="container" data-athena="ui:Abstract"> Abstract </div>
+  <div id="container">
+    <div data-athena="ui:Loader">
+      <a href="/carousel_a.html" data-athena="ui:Button:Load">Click Me</a>
+    </div>
+  </div>
 
   <script type="text/javascript" charset="utf-8">
-    li.require( ['libraries/athena@2'], function( Athena ) {
+    li.require( ['libraries/athena'], function( Athena ) {
       Athena = new Athena();
     } );
   </script>

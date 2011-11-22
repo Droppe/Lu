@@ -128,7 +128,6 @@ Abstract = Class.create( ( function() {
        * @param {Array} parameters Extra arguments to pass through to the subscribed event handler
        */
       Abstract.trigger = function( type, parameters ) {
-              
         $element.trigger( type + namespace + ':before', parameters );
         $element.trigger( type + namespace, parameters );
         $element.trigger( type + namespace + ':after', parameters );
@@ -141,7 +140,7 @@ Abstract = Class.create( ( function() {
        * @public
        * @param {Array} $observer A jQuery collection to be added to the observers list
        */
-      Abstract.observe = function( $observer ) {      
+      Abstract.observe = function( $observer ) {
         return $element.observe( $observer );
       };
 
@@ -151,10 +150,10 @@ Abstract = Class.create( ( function() {
        * @public
        * @param {Array} $subscriber A jQuery collection to unsubscribe
        */
-      Abstract.unobserve = function( $observer ) {      
+      Abstract.unobserve = function( $observer ) {
         return $element.unobserve( $observer );
       };
-      
+
     }
   };
 }() ) );
