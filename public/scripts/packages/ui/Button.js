@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  Abstract = li.require( 'ui/Abstract' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  Abstract = require( 'ui/Abstract' ),
   Button;
 
 /**
@@ -71,7 +71,8 @@ Button = Class.create( Abstract, ( function () {
           item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] ) || '0';
         }
       }
-
+       
+       console.log("YOJIMG", $element);
        
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {

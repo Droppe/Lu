@@ -1,6 +1,6 @@
 var id = 'ui/Carousel',
-  Abstract = li.require( 'ui/Abstract' ),
-  List = li.require( 'ui/List' ),
+  Abstract = require( 'ui/Abstract' ),
+  List = require( 'ui/List' ),
   Carousel;
 
 /**

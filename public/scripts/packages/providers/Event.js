@@ -1,4 +1,4 @@
-var Class = li.require( 'libraries/ptclass' ),
+var Class = require( '/scripts/libraries/ptclass' ),
   EventProvider;
 
 /**

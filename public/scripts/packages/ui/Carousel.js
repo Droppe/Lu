@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  List = li.require( 'ui/List' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  List = require( 'ui/List' ),
   Carousel;
 
 /**

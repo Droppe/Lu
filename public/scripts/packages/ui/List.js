@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  Abstract = li.require( 'ui/Abstract' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  Abstract = require( 'ui/Abstract' ),
   List;
 
 /**

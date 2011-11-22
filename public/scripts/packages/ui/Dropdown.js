@@ -1,5 +1,5 @@
 var id = 'ui/Dropdown',
-	Abstract = li.require( 'ui/Abstract' ),
+	Abstract = require( 'ui/Abstract' ),
 	Callout;
 
 Dropdown = Abstract.extend( function ( element, settings ){

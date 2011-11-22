@@ -1,5 +1,5 @@
 var id = 'ui/Callout',
-	Abstract = li.require( 'ui/Abstract' ),
+	Abstract = require( 'ui/Abstract' ),
 	Callout;
 
 Callout = Abstract.extend( function ( element, settings ){

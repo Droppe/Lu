@@ -1,5 +1,5 @@
 var id = 'ui/Dialog',
-	Abstract = li.require( 'ui/Dialog' ),
+	Abstract = require( 'ui/Dialog' ),
 	Callout;
 
 Dialog = Abstract.extend( function ( element, settings ){

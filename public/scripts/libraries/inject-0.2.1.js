@@ -655,3 +655,8 @@ typeof b){if(!h)return;try{b=JSON.stringify(b)}catch(d){return}}l(a,b,c)}},get:f
 c,g()),b(a);return null},remove:function(a){if(!e)return null;localStorage.removeItem(a);localStorage.removeItem(a+d);localStorage.removeItem(a+c)}}}();
 ;
 }).call(this);
+
+
+if ( window.ENV_CONFIG && window.ENV_CONFIG.debug && !!window.localStorage) {
+ localStorage.clear();
+}

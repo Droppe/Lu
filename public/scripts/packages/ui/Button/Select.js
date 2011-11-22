@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  Button = li.require( 'ui/Button' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  Button = require( 'ui/Button' ),
   SelectButton;
 
 /**

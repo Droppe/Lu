@@ -1,5 +1,5 @@
 var id = 'ui/Loader',
-	Abstract = li.require( 'ui/Abstract' ),
+	Abstract = require( 'ui/Abstract' ),
 	Loader;
 
 /**

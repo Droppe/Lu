@@ -164,7 +164,7 @@ Athena = function( settings ) {
         $nodes.add( $this );
       }
 
-
+console.log("athena-0.0.1", "execute", $this, $nodes);
 
       //Construct an array of required packages
       _.each( $nodes, function( node, index ) {
@@ -195,7 +195,7 @@ Athena = function( settings ) {
 
       // Recurse over all child nodes to make sure controls are instantiated.
       function recurse( $node ) {
-
+console.log("athena-0.0.1", "recurse", $node);
         // Are we done yet?
         if( isReady( $this ) ) {
           // Everything is instantiated
