@@ -22,15 +22,15 @@
   </style>
 
   <style type="text/css">
-    .hide {
+    .tab-panels li {
       display: none;
     }
 
-    .selected {
+    .tab-panels li.selected {
+      display: block;
       font-weight: bold;
     }
   </style>
-
 
   <script type="text/javascript" charset="utf-8">
     ENV_CONFIG = {
@@ -89,7 +89,7 @@
 
   <div id="tabs" data-athena="ui:Tabs">
     <!-- Tablist -->
-    <ul id="tablist" class="tab-list">
+    <ul id="tablist" class="tab-list" data-athena="ui:List">
       <!-- Tabs -->
       <li class="selected">
         <a href="#tabpanel1" id="tab1" data-athena="ui:Button:Select">Tab 1</a>
@@ -100,11 +100,14 @@
       <li>
         <a href="#tabpanel3" id="tab3" data-athena="ui:Button:Select">Tab 3</a>
       </li>
+      <li>
+        <a href="#tabpanel4" id="tab4" data-athena="ui:Button:Select">Tab 4</a>
+      </li>
     </ul>
                                                                        
     <!-- Tab panels -->
-    <ul id="tabpanels" class="tab-panels">
-      <li id="tabpanel1">
+    <ul id="tabpanels" class="tab-panels" data-athena="ui:List">
+      <li id="tabpanel1" class="selected">
         Tab 1 panel
       </li>
       <li id="tabpanel2">
@@ -113,14 +116,17 @@
       <li id="tabpanel3">
         Tab 3 panel
       </li>
+      <li id="tabpanel4">
+        Tab 4 panel
+      </li>
     </ul>
   </div>
 
-    <script type="text/javascript" charset="utf-8">
-      li.require( ['libraries/athena'], function( Athena ) {
-        Athena = new Athena();
-      } );
-    </script>
+  <script type="text/javascript" charset="utf-8">
+    li.require( ['libraries/athena'], function( Athena ) {
+      Athena = new Athena();
+    } );
+  </script>
     
 </body>
 </html>

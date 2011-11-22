@@ -64,13 +64,13 @@ Carousel =  Class.create( List, ( function() {
          */
         delay: 3000,
         /**
-         * A selector scoped to the $element that matches carousel pannels
+         * A selector scoped to the $element that matches carousel panels
          * @property repeat
          * @type String
          * @private
          * @final
          */
-        pannels: '.pannels',
+        panels: '.panels',
         /**
          * A selector scoped to the $element that matches carousel items
          * @property repeat
@@ -80,7 +80,7 @@ Carousel =  Class.create( List, ( function() {
          */
         items: '.items',
         /**
-         * The CSS class that designates a selected pannel
+         * The CSS class that designates a selected panel
          * @property selectFlag
          * @default 'selected'
          * @type String
@@ -106,21 +106,21 @@ Carousel =  Class.create( List, ( function() {
       playing = false,
       /**
        * The collection of panels in the carousel
-       * @property $pannels
+       * @property $panels
        * @type Object
        * @private
        */
-      $pannels;
+      $panels;
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
       repeat = settings.repeat;
 
-      $pannels = $element.children( settings.pannels ).children();
+      $panels = $element.children( settings.panels ).children();
 
-      if( $pannels.length > 0 ) {
-        settings.items = $pannels.children( settings.items );
+      if( $panels.length > 0 ) {
+        settings.items = $panels.children( settings.items );
       }
 
       // CALL THE PARENT'S CONSTRUCTOR
@@ -166,10 +166,10 @@ Carousel =  Class.create( List, ( function() {
 
       // EVENT BINDINGS
       Carousel.on( 'selected', function( event, $item ) {
-         var $pannel = $item.closest( $pannels );
-         if( $pannel.hasClass( settings.activeFlag ) === false ) {
-           $pannels.removeClass( settings.activeFlag );
-           $pannel.addClass( settings.activeFlag );
+         var $panel = $item.closest( $panels );
+         if( $panel.hasClass( settings.activeFlag ) === false ) {
+           $panels.removeClass( settings.activeFlag );
+           $panel.addClass( settings.activeFlag );
          }
       } );
       Carousel.on( 'max', function( event ) {

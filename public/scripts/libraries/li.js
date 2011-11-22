@@ -376,6 +376,11 @@
       path: '/scripts/libraries/athena-0.0.1.js',
       requires: ['libraries/ptclass']
     }, {
+      id: 'libraries/athena@2',
+      version: '0.0.1',
+      path: '/scripts/libraries/athena-0.0.2.js',
+      requires: ['libraries/ptclass']
+    }, {
       id: 'providers/Event',
       version: '0.0.1',
       path: '/scripts/packages/providers/Event.js',
@@ -416,6 +421,11 @@
       path: '/scripts/packages/ui/Button/Select.js',
       requires: [ 'libraries/ptclass', 'ui/Button' ]
     }, {
+      id: 'ui/Button/Load',
+      version: '0.0.1',
+      path: '/scripts/packages/ui/Button/Load.js',
+      requires: [ 'libraries/ptclass', 'ui/Button' ]
+    }, {
       id: 'ui/Button/Play',
       version: '0.0.1',
       path: '/scripts/packages/ui/Button/Play.js',
@@ -429,7 +439,12 @@
       id: 'ui/Tabs',
       version: '0.0.1',
       path: '/scripts/packages/ui/Tabs.js',
-      requires: ['ui/Abstract']
+      requires: ['libraries/ptclass', 'ui/Abstract']
+    }, {
+      id: 'ui/Loader',
+      version: '0.0.1',
+      path: '/scripts/packages/ui/Loader.js',
+      requires: ['libraries/ptclass', 'ui/Abstract']
     }
   ] );
 
