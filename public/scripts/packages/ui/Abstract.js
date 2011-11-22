@@ -162,20 +162,4 @@ Abstract = Class.create( ( function() {
 }() ) );
 
 // EXPORT TO ATHENA FRAMEWORK
-//
-
-Athena.exports(Abstract);
-
-
-console.log("Abstract.js loaded!");
-
-// if ( typeof module !== 'undefined' ) {
-//   if ( module.setExports ){
-//     module.setExports( Abstract );
-//   } else if( module.exports ){
-//       module.exports = Abstract;
-//   }
-// } else {
-//   Athena.Abstract = Abstract;
-// }
-
+Athena.exports(module, Abstract);

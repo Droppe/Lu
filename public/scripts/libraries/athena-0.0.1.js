@@ -181,41 +181,29 @@ Athena = function( settings ) {
         } );
       } );
       
-      
       // Test to see if CommonJS interface exists (from inject.js)
       if( window.require && window.require.ensure ) {
-                
         window.require.setExpires(settings.moduleExpire);
         window.require.setModuleRoot(settings.moduleRoot);
-      
-        window.require.ensure( required, function( require ) {
-          
+        window.require.ensure( required, function( require ) {          
           _.each( required, function( item, index ) {
-            console.log("YO!", require( item ) );
-            constructors[item.replace( /\//g, ':'  )] = require( item );
+            constructors[keys[index]] = require( item );
           } );
-           
           recurse( $this );
-       
         } );
-      
       }
 
-
-
-      
-      
-      //Recurse over all child nodes to make sure controls are instantiated.
+      // Recurse over all child nodes to make sure controls are instantiated.
       function recurse( $node ) {
 
-        //Are we done yet?
+        // Are we done yet?
         if( isReady( $this ) ) {
-          //Everything is instantiated
+          // Everything is instantiated
           $this.trigger( settings.namespace + '-ready' );
           return;
         }
 
-        //Are we done with this $node?
+        // Are we done with this $node?
         if( isReady( $node ) ) {
           return;
         }
@@ -387,23 +375,10 @@ Athena = function( settings ) {
    * @static
    * @param {Object} component The Athena component class to export
    */
-  Athena.exports = function ( component ) {
-    // Get module from window scope
-    var module = window.module;
-
-    // EXPORT TO ATHENA FRAMEWORK
-    // if ( typeof module !== 'undefined' ) {
-    //   if ( module.setExports ){
-    //     module.setExports( component );
-    //   } else if( module.exports ){
-    //       module.exports = component;
-    //   }
-    // } else {
-    //   Athena[component] = component;
-    // }    
-
-    window.exports = component;
-    
+  Athena.exports = function ( module, component ) {
+    if (module && module.exports) {
+      module.exports = component;
+    }
   };
   
   $( function() {
