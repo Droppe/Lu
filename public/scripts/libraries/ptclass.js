@@ -303,3 +303,5 @@ if ( typeof module !== 'undefined' && module.exports ) {
 
 
 })(this);
+
+console.log("PTCLASS LOADED!");

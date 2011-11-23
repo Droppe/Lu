@@ -81,11 +81,11 @@
   </div>
 
   <script type="text/javascript" charset="utf-8">
-    $( '#container' ).bind( 'foo', function( event ) {
+    $( '#container' ).bind( 'foo', function( event, namespaced ) {
       console.log( 'foo' );
     } );
     $( '#standard' ).bind( 'click', function( event ) {
-      $( this ).trigger( 'foo' );
+      $( this ).trigger( 'foo', [ 'namespaced' ] );
     } );
     $( '#standard' ).bind( 'click', function( event ) {
       $( this ).trigger( 'foo' );

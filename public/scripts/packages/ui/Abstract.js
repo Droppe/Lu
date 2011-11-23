@@ -1,4 +1,4 @@
-var Class = li.require( 'libraries/ptclass' ),
+var Class = require( '/scripts/libraries/ptclass' ),
   Abstract;
 
 /**
@@ -10,6 +10,8 @@ var Class = li.require( 'libraries/ptclass' ),
  * @param {Object} settings Configuration properties for this instance
  */
 Abstract = Class.create( ( function() {
+
+
 
   // GLOBAL STATICS
 
@@ -158,7 +160,21 @@ Abstract = Class.create( ( function() {
   };
 }() ) );
 
-// Export to Athena Framework
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = Abstract;
-}
+// EXPORT TO ATHENA FRAMEWORK
+//
+
+//Athena.exports( Abstract );
+module.exports = Abstract;
+
+console.log( "Abstract.js loaded!" );
+
+// if ( typeof module !== 'undefined' ) {
+//   if ( module.setExports ){
+//     module.setExports( Abstract );
+//   } else if( module.exports ){
+//       module.exports = Abstract;
+//   }
+// } else {
+//   Athena.Abstract = Abstract;
+// }
+

@@ -162,7 +162,7 @@ Carousel =  Class.create( List, ( function() {
           Carousel.trigger( 'paused' );
         }
         return Carousel;
-      },
+      };
 
       // EVENT BINDINGS
       Carousel.on( 'selected', function( event, $item ) {

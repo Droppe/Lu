@@ -84,9 +84,10 @@
 
 <body>
   
+  
   <div id="container" data-athena="ui:Carousel">
    
-    <ol id="car-list">
+    <ol id="car-list" class="items">
       <li class="selected">one</li>
       <li>two</li>
       <li>three</li>
@@ -94,24 +95,16 @@
       <li>five</li>
     </ol>
 
-    <button id="btn-prev" data-athena="ui:Button" data-athena-config="{
-      'ui:Button': {
-        action: 'previous'
-      }
-    }">Previous</button>
+    <button id="btn-prev" data-athena="ui:Button:Previous">Previous</button>
+    <button id="btn-next" data-athena="ui:Button:Next">Next</button>
 
-    <button id="btn-next" data-athena="ui:Button" data-athena-config="{
-      'ui:Button': {
-        action: 'next'
-      }
-    }">Next</button>
 
   </div>
 
 
   <div id="container2" data-athena="ui:Carousel">
    
-    <ol id="car-list2">
+    <ol id="car-list2" class="items">
       <li>one</li>
       <li class="selected">two</li>
       <li>three</li>
@@ -139,7 +132,7 @@
 
     <button id="btn-stop2" data-athena="ui:Button" data-athena-config="{
       'ui:Button': {
-        action: 'stop'
+        action: 'pause'
       }
     }">Stop</button>
 
