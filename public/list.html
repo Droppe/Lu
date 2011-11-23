@@ -21,55 +21,25 @@
     }
   </style>
 
-  <script type="text/javascript" charset="utf-8">
-    ENV_CONFIG = {
-      debug: true
-    }
-  </script>
-
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
   <script src="/scripts/libraries/helpers.js" type="text/javascript" charset="utf-8"></script>
 
-  <!-- XDomain Proxies -->
-  <script src="/scripts/libraries/porthole.js" type="text/javascript" charset="utf-8"></script>
-  <script type="text/javascript">
-
-    var getResource = false,
-      head = document.getElementsByTagName( 'head' )[0],
-      proxieIds = [ 'localhost:3000' ],
-      proxies = [];
-
-    _.each( proxieIds, function( item, index ){
-      var proxy = item,
-        iframe;
-
-        iframe = document.createElement( 'iframe' );
-
-        iframe.src = '//' + item + '/cdn-proxy.html';
-        iframe.id = item + '-proxy';
-        iframe.name = item + '-proxy';
-        iframe.onload = function() {
-          proxies[index] = new Porthole.WindowProxy( '//' + item, item + '-proxy' );
-          proxies[index].addEventListener( li.proxyEventHandler );
-          if( !getResource ) {
-            getResource = function( key, url ) {
-              var proxy = proxies.shift();
-              proxy.postMessage( 'key=' + key + '&url=' + url );
-              proxies.push( proxy );
-            }
-          }
-        }
-        head.appendChild( iframe );
-    } );
-
-  </script>
-
-  <!-- Bootstrap:Dependency Manager & Loader -->
-  <script src="/scripts/libraries/li.js" type="text/javascript" charset="utf-8"></script>
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
 
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    ATHENA_CONFIG = {
+      debug: true
+    };
+  </script>
+
+  <script type="text/javascript" charset="utf-8">
+    require.ensure( ['/scripts/libraries/athena-0.0.1'], function() {} );
+  </script>
 
 </head>
 
@@ -117,12 +87,6 @@
     </button>
 
   </div>
-
-  <script type="text/javascript" charset="utf-8">
-    li.require( ['libraries/athena'], function( Athena ) {
-      Athena = new Athena();
-    } );
-  </script>
 
 </body>
 

@@ -77,7 +77,8 @@ THE SOFTWARE.
   */
   /*
   Constants and Registries used
-  */  var Porthole, callbackRegistry, checkComplete, clearFileRegistry, commonJSFooter, commonJSHeader, config, context, counter, createIframe, createTxId, fileExpiration, fileOnComplete, fileRegistry, fileStorageToken, fileStore, getFile, getModule, getPointcuts, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, isCached, jsSuffix, loadModules, loadQueue, lscache, modulePathRegistry, moduleRegistry, namespace, normalizePath, onModuleLoad, pauseRequired, require, requireRegex, responseSlicer, saveFile, saveModule, schemaVersion, sendToIframe, sendToXhr, setConfig, setUserModules, txnRegistry, userModules, xDomainRpc;
+  */
+  var Porthole, callbackRegistry, checkComplete, clearFileRegistry, commonJSFooter, commonJSHeader, config, context, counter, createIframe, createTxId, define, fileExpiration, fileOnComplete, fileRegistry, fileStorageToken, fileStore, getFile, getModule, getPointcuts, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, isCached, jsSuffix, loadModules, loadQueue, lscache, modulePathRegistry, moduleRegistry, namespace, normalizePath, onModuleLoad, pauseRequired, require, requireRegex, responseSlicer, saveFile, saveModule, schemaVersion, sendToIframe, sendToXhr, setConfig, setUserModules, txnRegistry, userModules, xDomainRpc;
   schemaVersion = 1;
   context = this;
   pauseRequired = false;
@@ -102,7 +103,7 @@ THE SOFTWARE.
   hostPrefixRegex = /^https?:\/\//;
   hostSuffixRegex = /^(.*?)(\/.*|$)/;
   iframeName = "injectProxy";
-  requireRegex = /require[\s]*\([\s]*(?:"|')([\w\\/\.\:]+?)(?:'|")[\s]*\)/gm;
+  requireRegex = /require[\s]*\([\s]*(?:"|')([\w\/\.\:]+?)(?:'|")[\s]*\)/gm;
   responseSlicer = /^(.+?)[\s](.+?)[\s](.+?)[\s]([\w\W]+)$/m;
   /*
   CommonJS wrappers for a header and footer
@@ -110,7 +111,7 @@ THE SOFTWARE.
   or anything else.
   this helps secure module bleeding
   */
-  commonJSHeader = 'with (window) {\n  (function() {\n    var module = {}, exports = {}, require = __INJECT_NS__.require, exe = null;\n    module.id = "__MODULE_ID__";\n    module.uri = "__MODULE_URI__";\n    module.exports = exports;\n    exe = function(module, exports, require) {\n      __POINTCUT_BEFORE__';
+  commonJSHeader = 'with (window) {\n  (function() {\n    var module = {}, exports = {}, require = __INJECT_NS__.require, exe = null;\n    module.id = "__MODULE_ID__";\n    module.uri = "__MODULE_URI__";\n    module.exports = exports;\n    module.setExports = function(xobj) {\n      for (var name in module.exports) {\n        if (module.exports.hasOwnProperty(name)) {\n          throw new Error("module.setExports() failed: Module Exports has already been defined");\n        }\n      }\n      module.exports = xobj;\n      return module.exports;\n    }\n    exe = function(module, exports, require) {\n      __POINTCUT_BEFORE__';
   commonJSFooter = '    __POINTCUT_AFTER__\n  };\n  exe.call(module, module, exports, require);\n  return module.exports;\n})();\n}';
   setConfig = function(cfg) {
     /*
@@ -153,7 +154,8 @@ THE SOFTWARE.
       ## getFile(path, cb) ##
       _internal_ Get a file by its path. Asynchronously calls its callback.
       Uses LocalStorage or UserData if available
-      */    var file, token;
+      */
+    var file, token;
     token = "" + fileStorageToken + schemaVersion + path;
     if (!fileRegistry) {
       fileRegistry = {};
@@ -175,7 +177,8 @@ THE SOFTWARE.
       ## saveFile(path, file) ##
       _internal_ Save a file for resource `path` into LocalStorage or UserData
       Also updates the internal fileRegistry
-      */    var token;
+      */
+    var token;
     token = "" + fileStorageToken + schemaVersion + path;
     if (isCached(path)) {
       return;
@@ -214,7 +217,8 @@ THE SOFTWARE.
     /*
       ## createIframe() ##
       _internal_ create an iframe to the config.xd.remote location
-      */    var iframe, localSrc, src, trimHost, _ref, _ref2;
+      */
+    var iframe, localSrc, src, trimHost, _ref, _ref2;
     src = config != null ? (_ref = config.xd) != null ? _ref.xhr : void 0 : void 0;
     localSrc = config != null ? (_ref2 = config.xd) != null ? _ref2.inject : void 0 : void 0;
     if (!src) {
@@ -263,7 +267,8 @@ THE SOFTWARE.
       ## getPointcuts(module) ##
       _internal_ get the [pointcuts](http://en.wikipedia.org/wiki/Pointcut) for a module if
       specified
-      */    var cut, definition, fn, noop, pointcuts;
+      */
+    var cut, definition, fn, noop, pointcuts;
     noop = function() {};
     pointcuts = {
       before: noop,
@@ -286,7 +291,8 @@ THE SOFTWARE.
       ## normalizePath(path) ##
       _internal_ normalize the path based on the module collection or any functions
       associated with its identifier
-      */    var configPath, lookup, moduleDefinition, returnPath, workingPath;
+      */
+    var configPath, lookup, moduleDefinition, returnPath, workingPath;
     lookup = path;
     workingPath = path;
     configPath = config.path || "";
@@ -336,7 +342,11 @@ THE SOFTWARE.
     /*
       ## loadModules(modList, cb) ##
       _internal_ load a collection of modules in modList, and once they have all loaded, execute the callback cb
-      */    var module, path, paths, txId, _i, _len, _results;
+      */
+    var module, path, paths, txId, _i, _len, _results;
+    if (modList.length === 0) {
+      return cb.apply(context, []);
+    }
     txId = createTxId();
     paths = {};
     for (_i = 0, _len = modList.length; _i < _len; _i++) {
@@ -382,7 +392,8 @@ THE SOFTWARE.
       the CommonJS harness, and will capture its exports. After this, it will signal
       to inject() that all items that were waiting on this path should continue checking
       their depdendencies
-      */    var cut, cuts, cutsStr, fn, footer, header, requires, runCmd, runModule;
+      */
+    var cut, cuts, cutsStr, fn, footer, header, requires, runCmd, runModule;
     cuts = getPointcuts(module);
     cutsStr = {};
     for (cut in cuts) {
@@ -426,32 +437,38 @@ THE SOFTWARE.
     /*
       ## checkComplete(txId) ##
       _internal_ check if all modules for a txId have loaded. If so, the callback is fired
-      */    var cb, done, modl, module, modules, _i, _len, _ref;
+      */
+    var cb, done, modl, module, modules, _i, _len, _ref;
     done = true;
     cb = callbackRegistry[txId];
     modules = [];
-    _ref = txnRegistry[txId];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      module = _ref[_i];
-      modl = getModule(module);
-      if (modl === false) {
-        done = false;
-      } else {
-        modules.push(modl);
-      }
-      if (!done) {
-        break;
+    if (txnRegistry[txId]) {
+      _ref = txnRegistry[txId];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        module = _ref[_i];
+        modl = getModule(module);
+        if (modl === false) {
+          done = false;
+        } else {
+          modules.push(modl);
+        }
+        if (!done) {
+          break;
+        }
       }
     }
-    if (done) {
-      return cb.call(context, modules);
+    if (done && cb) {
+      delete callbackRegistry[txId];
+      delete txnRegistry[txId];
+      return cb.apply(context, modules);
     }
   };
   sendToXhr = function(txId, module, path, cb) {
     /*
       ## sendToXhr(txId, module, path, cb) ##
       _internal_ request a module at path using xmlHttpRequest. On retrieval, fire off cb
-      */    var xhr;
+      */
+    var xhr;
     xhr = getXHR();
     xhr.open("GET", path);
     xhr.onreadystatechange = function() {
@@ -471,7 +488,8 @@ THE SOFTWARE.
     /*
       ## getXHR() ##
       _internal_ get an XMLHttpRequest object
-      */    var xmlhttp;
+      */
+    var xmlhttp;
     xmlhttp = false;
     if (typeof XMLHttpRequest !== "undefined") {
       try {
@@ -514,7 +532,8 @@ THE SOFTWARE.
       should be using require.ensure() instead. For modules beyond the first tier, their
       shallow dependencies are resolved and block, so there is no need for require.ensure()
       beyond the topmost level.
-      */    var mod;
+      */
+    var mod;
     mod = getModule(moduleId);
     if (mod === false) {
       throw new Error("" + moduleId + " not loaded");
@@ -527,7 +546,8 @@ THE SOFTWARE.
       Ensure the modules in moduleList (array) are loaded, and then execute callback
       (function). Use this instead of require() when you need to load shallow dependencies
       first.
-      */    var run;
+      */
+    var run;
     if ((config.xd != null) && !xDomainRpc && !pauseRequired) {
       createIframe();
       pauseRequired = true;
@@ -606,15 +626,81 @@ THE SOFTWARE.
   };
   require.run = function(moduleId) {
     /*
-      ## require.run(moduleId) ##
+      ## TODO require.run(moduleId) ##
       Execute the specified moduleId. This runs an ensure() to make sure the module has been loaded, and then
       execute it.
-      */    var foo;
-    return foo = "bar";
+      */
+  };
+  define = function(moduleId, deps, callback) {
+    /*
+      ## define(moduleId, deps, callback) ##
+      Define a module with moduleId, run require.ensure to make sure all dependency modules have been loaded, and then
+      apply the callback function with an array of dependency module objects, add the callback return and moduleId into
+      moduleRegistry list.
+      */
+    var dep, strippedDeps, _i, _len;
+    if (typeof moduleId !== "string") {
+      callback = deps;
+      deps = moduleId;
+      moduleId = null;
+    }
+    if (Object.prototype.toString.call(deps) !== "[object Array]") {
+      callback = deps;
+      deps = [];
+    }
+    strippedDeps = [];
+    for (_i = 0, _len = deps.length; _i < _len; _i++) {
+      dep = deps[_i];
+      if (dep !== "exports" && dep !== "require" && dep !== "module") {
+        strippedDeps.push(dep);
+      }
+    }
+    return require.ensure(strippedDeps, function(require, module, exports) {
+      var args, count, dep, item, returnValue, _j, _k, _len2, _len3, _ref;
+      args = [];
+      for (_j = 0, _len2 = deps.length; _j < _len2; _j++) {
+        dep = deps[_j];
+        switch (dep) {
+          case "require":
+            args.push(require);
+            break;
+          case "exports":
+            args.push(exports);
+            break;
+          case "module":
+            args.push(module);
+            break;
+          default:
+            args.push(require(dep));
+        }
+      }
+      if (typeof callback === 'function') {
+        returnValue = callback.apply(context, args);
+        count = 0;
+        _ref = module.exports;
+        for (_k = 0, _len3 = _ref.length; _k < _len3; _k++) {
+          item = _ref[_k];
+          count++;
+        }
+        if (count === 0 && typeof returnValue !== "undefined") {
+          exports = returnValue;
+        }
+      } else if (typeof callback === 'object') {
+        exports = callback;
+      }
+      if (moduleId) {
+        return saveModule(moduleId, exports);
+      }
+    });
+  };
+  define.amd = {
+    jQuery: true
   };
   context.require = require;
+  context.define = define;
   context.Inject = {
     require: require,
+    define: define,
     debug: {
       fileRegistry: fileRegistry,
       loadQueue: loadQueue,
@@ -655,8 +741,3 @@ typeof b){if(!h)return;try{b=JSON.stringify(b)}catch(d){return}}l(a,b,c)}},get:f
 c,g()),b(a);return null},remove:function(a){if(!e)return null;localStorage.removeItem(a);localStorage.removeItem(a+d);localStorage.removeItem(a+c)}}}();
 ;
 }).call(this);
-
-
-if ( window.ENV_CONFIG && window.ENV_CONFIG.debug && !!window.localStorage) {
- localStorage.clear();
-}

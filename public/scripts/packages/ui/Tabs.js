@@ -122,4 +122,6 @@ Tabs =  Class.create( Abstract,  ( function () {
 }() ) );
 
 // EXPORT TO ATHENA FRAMEWORK
-Athena.exports(module, Tabs);
+if( module && module.exports ) {
+  module.exports = Tabs;
+}

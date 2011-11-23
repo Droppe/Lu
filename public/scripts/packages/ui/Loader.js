@@ -1,6 +1,6 @@
 var Class = require( '/scripts/libraries/ptclass' ),
   Abstract = require( 'ui/Abstract' ),
-	Loader;
+  Loader;
 
 /**
  * Representation of a Loader
@@ -77,7 +77,7 @@ Loader = Class.create( Abstract, ( function () {
        */
       Loader.load = function ( uri ) {
         var node = _.explodeURL( uri );
-          content;
+          $content;
 
         Loader.trigger( 'loading' );
         $element.addClass( settings.loadingFlag );
@@ -98,15 +98,18 @@ Loader = Class.create( Abstract, ( function () {
         }
 
         if ( node.path === '' ) {
-          inject( $('#' + fragment ).html() );
+          $content = $('#' + fragment ).html().execute();
+          inject( $content );
         } else {
           $.ajax( {
             url: uri,
             success: function ( data, textStatus, jXHR ) {
               if( node.fragment ) {
-                inject( $( data ).find( '#' + node.fragment ).html() );
+                $content = $( $( data ).find( '#' + node.fragment ).html() ).execute();
+                inject( $content );
               } else {
-                 inject( data );
+                $content = $( data ).execute();
+                inject( $content );
               }
             }
           } );
@@ -134,4 +137,6 @@ Loader = Class.create( Abstract, ( function () {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-Athena.exports(module, Loader);
+if( module && module.exports ) {
+  module.exports = Loader;
+}

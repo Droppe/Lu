@@ -48,4 +48,6 @@ SelectButton = Class.create( Button,  ( function () {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-Athena.exports(module, SelectButton);
+if( module && module.exports ) {
+  module.exports = SelectButton;
+}

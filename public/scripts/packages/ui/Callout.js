@@ -13,4 +13,6 @@ Callout = Abstract.extend( function ( element, settings ){
 } );
 
 // EXPORT TO ATHENA FRAMEWORK
-Athena.exports(module, Callout);
+if( module && module.exports ) {
+  module.exports = Callout;
+}

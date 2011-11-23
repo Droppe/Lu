@@ -48,4 +48,6 @@ PreviousButton = Class.create( Button,  ( function () {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-Athena.exports(module, PreviousButton);
+if( module && module.exports ) {
+  module.exports = PreviousButton;
+}

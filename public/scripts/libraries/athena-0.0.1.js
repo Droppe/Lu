@@ -25,7 +25,7 @@
 
 var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
   Athena;
-  
+
 Athena = function( settings ) {
   var Athena = this,
     defaults = {
@@ -49,10 +49,7 @@ Athena = function( settings ) {
    * @param {Object} jQuery
    */
   ( function( $ ) {
-    
-    var queues = {},
-      constructors = {},
-      required = [],
+      var packages = {},
       on = $.fn.on,
       off = $.fn.off,
       trigger = $.fn.trigger;
@@ -127,25 +124,24 @@ Athena = function( settings ) {
      * @param {String} key The name of the Control.
      * @param {Function} Control The Control's constructor.
      */
-    function execute( $node, key ) {
-      var Control,
-        config = $node.data( settings.namespace + 'Config' );
+    function execute( $node ) {
+      var config = $node.data( settings.namespace + 'Config' ),
+        keys = getKeys( $node );
 
       config = config || '{}';
-      Control = constructors[key];
 
+      _.each( keys, function( key, index ) {
+        key = key.replace( /\:/g, '/' );
+        var Control = new packages[key]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;' )( $node ) );
+        console.info( 'Action ' + key + ' executed with', $node );
+        if( $node.data( 'controls' ) ) {
+          $node.data( 'controls' )[ key ] = Control;
+        } else {
+          $node.data( 'controls', {} ).data( 'controls' )[key] = Control;
+        }
+      } );
 
-      Control = new Control( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;' )( $node ) );
-
-_.log("athena", "#140", "key =>", key, "Control =>", Control);
-
-      _.log( 'Action ' + key + ' executed with', $node, Control);
-
-      if( $node.data( 'controls' ) ) {
-        $node.data( 'controls' )[ key ] = Control;
-      } else {
-        $node.data( 'controls', {} ).data( 'controls' )[key] = Control;
-      }
+      $node.data( 'athena', true );
 
     }
 
@@ -157,82 +153,47 @@ _.log("athena", "#140", "key =>", key, "Control =>", Control);
      */
     $.fn.execute = function() {
       var $this = $( this ),
-        $nodes,
+        $controls,
         keys = [],
-        packages = [];
+        required = [];
 
-      $nodes = $( UI_CONTROL_PATTERN, $this );
+      $controls = $( UI_CONTROL_PATTERN, $this );
 
       if( $this.is( UI_CONTROL_PATTERN ) ) {
-        $nodes.add( $this );
+        $controls = $controls.add( $this );
       }
 
+      $controls = $controls.filter( function( item ) {
+        return $( item ).data( 'athena' ) ? false : true;
+      } );
+
       //Construct an array of required packages
-      _.each( $nodes, function( node, index ) {
+      _.each( $controls, function( node, index ) {
         var $node = $( node );
         _.each( $node.attr( ATTR ).split( ' ' ), function( key, index ) {
           var pckg = key.replace( /\:/g, '/' );
-          if( _.indexOf( required, pckg ) === -1 ) {
-            keys.push( key );
-            // cache of all packages
-            packages.push( pckg );
+          if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ) {
+            required.push( pckg );
           }
-          // the current queue of packages
-          required.push( pckg );
         } );
       } );
-      
-      // Test to see if CommonJS interface exists (from inject.js)
-      if( window.require && window.require.ensure ) {
-        window.require.setExpires(settings.moduleExpire);
-        window.require.setModuleRoot(settings.moduleRoot);
-        window.require.ensure( required, function( require ) {          
-          _.each( required, function( item, index ) {
-            constructors[keys[index]] = require( item );
-          } );
 
-          recurse( $this );
+      // Test to see if nessasary CommonJS interfaces exists
+      try {
+        window.require.setExpires( settings.moduleExpire );
+        window.require.setModuleRoot( settings.moduleRoot );
+        console.log( required, packages );
+        window.require.ensure( required, function( require, module, exports ) {
+          console.info( 'ENSURE CALLBACK' );
+          _.each( required, function( requirement, index ) {
+            console.log( requirement );
+            packages[ requirement ] = require( requirement );
+          } );
+          $controls.each( function( index, control ) {
+            execute( $( control ) );
+          } );
         } );
-      }
-
-      // Recurse over all child nodes to make sure controls are instantiated.
-      function recurse( $node ) {
-
-        if (!$node[0].tagName) {
-          return;
-        }
-
-        _.log("athena", "197", $node);
-
-        // Are we done yet?
-        if( isReady( $this ) ) {
-          // Everything is instantiated
-          $this.trigger( settings.namespace + '-ready' );
-          return;
-        }
-
-        // Are we done with this $node?
-        if( isReady( $node ) ) {
-          return;
-        }
-
-        if( getDecendants( $node ).length === 0 ) {
-          //There are no decendant UI components, so it's safe to instantiate the Control.
-          if( $node.is( UI_CONTROL_PATTERN ) ) {
-            _.each( getKeys( $node ), function( key, index ) {
-              execute( $node, key );
-            } );
-            recurse( $this );
-          } else {
-            return;
-          }
-        } else {
-          _.each( $node.contents(), function( node, index ) {
-            recurse( $( node ) );
-          } );
-        }
-
-      }
+      } catch( error ) {}
 
       return $this;
 
@@ -375,42 +336,34 @@ _.log("athena", "#140", "key =>", key, "Control =>", Control);
     return controls;
   };
   
-  
-  /**
-   * Exports a component's class into the Athena framework
-   * @method export
-   * @public
-   * @static
-   * @param {Object} component The Athena component class to export
-   */
-  Athena.exports = function ( module, component ) {
-    if (module && module.exports) {
-      module.exports = component;
-    }
-  };
-  
+  // Athena is not always ready when components are evaled. :(
+  // /**
+  //  * Exports a component's class into the Athena framework
+  //  * @method export
+  //  * @public
+  //  * @static
+  //  * @param {Object} component The Athena component class to export
+  //  */
+  // Athena.exports = function ( module, component ) {
+  //   if( module && module.exports ) {
+  //     module.exports = component;
+  //   }
+  // };
+
   $( function() {
+
     var $body = $( 'body' );
-    //Athena.decorate( $body, ['ui:Abstract'] );
+    Athena.decorate( $body, ['ui:Abstract'] );
+
     $body.bind( settings.namespace + '-ready', function( event ) {
+      console.info( 'Ready !!! ')
     } ).execute();
+
   } );
+
 };
 
 // EXPORT TO ATHENA FRAMEWORK
-if ( typeof module !== 'undefined' ) {
-  if ( module.setExports ){
-    module.setExports( new Athena( ATHENA_CONFIG ) );
-  } else if( module.exports ){
-      module.exports = new Athena( ATHENA_CONFIG );
-  }
-} else {
-  Athena = new Athena();
-}
-
-
-// Temporary debug switch for localStorage until inject fixes their bug
-if (window.ENV_CONFIG && window.ENV_CONFIG.debug && window.localStorage) {
-  _.log("Clearing local storage");
-  window.localStorage.clear();
+if( module && module.exports ) {
+  module.exports = new Athena( ATHENA_CONFIG );
 }

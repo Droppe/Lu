@@ -283,4 +283,6 @@ List =  Class.create( Abstract, ( function () {
 
 
 // EXPORT TO ATHENA FRAMEWORK
-Athena.exports(module, List);
+if( module && module.exports ) {
+  module.exports = List;
+}

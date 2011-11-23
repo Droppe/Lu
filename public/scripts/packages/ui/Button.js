@@ -157,5 +157,6 @@ _.log("Button initialized");
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-Athena.exports(module, Button);
-
+if( module && module.exports ) {
+  module.exports = Button;
+}

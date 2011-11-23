@@ -161,4 +161,6 @@ Abstract = Class.create( ( function() {
 }() ) );
 
 // EXPORT TO ATHENA FRAMEWORK
-Athena.exports(module, Abstract);
+if( module && module.exports ) {
+  module.exports = Abstract;
+}

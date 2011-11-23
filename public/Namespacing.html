@@ -10,16 +10,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Carousel B</title>
-
-  <!-- Feature Detection -->
-  <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
-
-  <style type="text/css" media="screen">
-    .items .selected {
-      color: red;
-    }
-  </style>
+  <title>Namespacing Tests</title>
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
@@ -43,28 +34,23 @@
 </head>
 
 <body>
-  <div id="carousel"  class="panel" data-athena="ui:Carousel" data-athena-config="{
-    'ui:Carousel': {
-      observe: '#control_panel button'
-    }
-  }">
-    <ol class="items">
-      <li class="selected">One</li>
-      <li>Two</li>
-      <li>Three</li>
-      <li>Four</li>
-    </ol>
+
+  <div id="container">
+    <a id="namespaced" href="#">Name-spaced</a>
+    <a id="standard" href="#">Standard</a>
   </div>
-  <div id="control_panel">
-    <button data-athena="ui:Button:Previous">Previous</button>
-    <ol>
-      <li><button data-athena="ui:Button:Select">One</button></li>
-      <li><button data-athena="ui:Button:Select">Two</button></li>
-      <li><button data-athena="ui:Button:Select">Three</button></li>
-      <li><button data-athena="ui:Button:Select">Four</button></li>
-    </ol>
-    <button data-athena="ui:Button:Next">Next</button>
-  </div>
+
+  <script type="text/javascript" charset="utf-8">
+    $( '#container' ).bind( 'foo', function( event, namespaced ) {
+      console.log( 'foo' );
+    } );
+    $( '#standard' ).bind( 'click', function( event ) {
+      $( this ).trigger( 'foo', [ 'namespaced' ] );
+    } );
+    $( '#standard' ).bind( 'click', function( event ) {
+      $( this ).trigger( 'foo' );
+    } );
+  </script>
 
 </body>
 
