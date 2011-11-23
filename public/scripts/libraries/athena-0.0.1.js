@@ -130,8 +130,8 @@ Athena = function( settings ) {
 
       config = config || '{}';
       _.each( keys, function( key, index ) {
-        key = key.replace( /\:/g, '/' );
-        var Control = new packages[key]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;' )( $node ) );
+        var pckg = key.replace( /\:/g, '/' );
+        var Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; console.log(\'' + key + '\', config ); return config;')( $node ) );
         console.info( 'Action ' + key + ' executed with', $node );
         if( $node.data( 'controls' ) ) {
           $node.data( 'controls' )[ key ] = Control;
