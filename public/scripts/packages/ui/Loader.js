@@ -136,7 +136,7 @@ Loader = Class.create( Abstract, ( function () {
 
 }() ));
 
-// Export to Athena Framework
-if ( typeof module !== 'undefined' && module.exports ) {
+// EXPORT TO ATHENA FRAMEWORK
+if( module && module.exports ) {
   module.exports = Loader;
 }

@@ -77,7 +77,8 @@ THE SOFTWARE.
   */
   /*
   Constants and Registries used
-  */  var Porthole, callbackRegistry, checkComplete, clearFileRegistry, commonJSFooter, commonJSHeader, config, context, counter, createIframe, createTxId, fileExpiration, fileOnComplete, fileRegistry, fileStorageToken, fileStore, getFile, getModule, getPointcuts, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, isCached, jsSuffix, loadModules, loadQueue, lscache, modulePathRegistry, moduleRegistry, namespace, normalizePath, onModuleLoad, pauseRequired, require, requireRegex, responseSlicer, saveFile, saveModule, schemaVersion, sendToIframe, sendToXhr, setConfig, setUserModules, txnRegistry, userModules, xDomainRpc;
+  */
+  var Porthole, callbackRegistry, checkComplete, clearFileRegistry, commonJSFooter, commonJSHeader, config, context, counter, createIframe, createTxId, define, fileExpiration, fileOnComplete, fileRegistry, fileStorageToken, fileStore, getFile, getModule, getPointcuts, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, isCached, jsSuffix, loadModules, loadQueue, lscache, modulePathRegistry, moduleRegistry, namespace, normalizePath, onModuleLoad, pauseRequired, require, requireRegex, responseSlicer, saveFile, saveModule, schemaVersion, sendToIframe, sendToXhr, setConfig, setUserModules, txnRegistry, userModules, xDomainRpc;
   schemaVersion = 1;
   context = this;
   pauseRequired = false;
@@ -102,7 +103,7 @@ THE SOFTWARE.
   hostPrefixRegex = /^https?:\/\//;
   hostSuffixRegex = /^(.*?)(\/.*|$)/;
   iframeName = "injectProxy";
-  requireRegex = /require[\s]*\([\s]*(?:"|')([\w\\\/\.\:]+?)(?:'|")[\s]*\)/gm;
+  requireRegex = /require[\s]*\([\s]*(?:"|')([\w\/\.\:]+?)(?:'|")[\s]*\)/gm;
   responseSlicer = /^(.+?)[\s](.+?)[\s](.+?)[\s]([\w\W]+)$/m;
   /*
   CommonJS wrappers for a header and footer
@@ -110,7 +111,7 @@ THE SOFTWARE.
   or anything else.
   this helps secure module bleeding
   */
-  commonJSHeader = 'with (window) {\n  (function() {\n    var module = {}, exports = {}, require = __INJECT_NS__.require, exe = null;\n    module.id = "__MODULE_ID__";\n    module.uri = "__MODULE_URI__";\n    module.exports = exports;\n    exe = function(module, exports, require) {\n      __POINTCUT_BEFORE__';
+  commonJSHeader = 'with (window) {\n  (function() {\n    var module = {}, exports = {}, require = __INJECT_NS__.require, exe = null;\n    module.id = "__MODULE_ID__";\n    module.uri = "__MODULE_URI__";\n    module.exports = exports;\n    module.setExports = function(xobj) {\n      for (var name in module.exports) {\n        if (module.exports.hasOwnProperty(name)) {\n          throw new Error("module.setExports() failed: Module Exports has already been defined");\n        }\n      }\n      module.exports = xobj;\n      return module.exports;\n    }\n    exe = function(module, exports, require) {\n      __POINTCUT_BEFORE__';
   commonJSFooter = '    __POINTCUT_AFTER__\n  };\n  exe.call(module, module, exports, require);\n  return module.exports;\n})();\n}';
   setConfig = function(cfg) {
     /*
@@ -128,7 +129,7 @@ THE SOFTWARE.
       */    return userModules = modl;
   };
   getModule = function(module) {
-      /*
+    /*
       ## getModule(module) ##
       _internal_ Get a module by name
       */    return moduleRegistry[module] || false;
@@ -137,9 +138,8 @@ THE SOFTWARE.
     /*
       ## saveModule(module, exports) ##
       _internal_ Save a module by name
-      */    
-      if (moduleRegistry[module]) {
-      return false;
+      */    if (moduleRegistry[module]) {
+      return;
     }
     return moduleRegistry[module] = exports;
   };
@@ -154,7 +154,8 @@ THE SOFTWARE.
       ## getFile(path, cb) ##
       _internal_ Get a file by its path. Asynchronously calls its callback.
       Uses LocalStorage or UserData if available
-      */    var file, token;
+      */
+    var file, token;
     token = "" + fileStorageToken + schemaVersion + path;
     if (!fileRegistry) {
       fileRegistry = {};
@@ -162,7 +163,7 @@ THE SOFTWARE.
     if (fileRegistry[path] && fileRegistry[path].length) {
       return cb(true, fileRegistry[path]);
     } else {
-      //file = lscache.get(token);
+      file = lscache.get(token);
       if (file && typeof file === "string" && file.length) {
         fileRegistry[path] = file;
         return cb(true, fileRegistry[path]);
@@ -176,10 +177,11 @@ THE SOFTWARE.
       ## saveFile(path, file) ##
       _internal_ Save a file for resource `path` into LocalStorage or UserData
       Also updates the internal fileRegistry
-      */    var token;
+      */
+    var token;
     token = "" + fileStorageToken + schemaVersion + path;
     if (isCached(path)) {
-      return false;
+      return;
     }
     fileRegistry[path] = file;
     return lscache.set(token, file, config.fileExpiration);
@@ -215,7 +217,8 @@ THE SOFTWARE.
     /*
       ## createIframe() ##
       _internal_ create an iframe to the config.xd.remote location
-      */    var iframe, localSrc, src, trimHost, _ref, _ref2;
+      */
+    var iframe, localSrc, src, trimHost, _ref, _ref2;
     src = config != null ? (_ref = config.xd) != null ? _ref.xhr : void 0 : void 0;
     localSrc = config != null ? (_ref2 = config.xd) != null ? _ref2.inject : void 0 : void 0;
     if (!src) {
@@ -264,7 +267,8 @@ THE SOFTWARE.
       ## getPointcuts(module) ##
       _internal_ get the [pointcuts](http://en.wikipedia.org/wiki/Pointcut) for a module if
       specified
-      */    var cut, definition, fn, noop, pointcuts;
+      */
+    var cut, definition, fn, noop, pointcuts;
     noop = function() {};
     pointcuts = {
       before: noop,
@@ -287,7 +291,8 @@ THE SOFTWARE.
       ## normalizePath(path) ##
       _internal_ normalize the path based on the module collection or any functions
       associated with its identifier
-      */    var configPath, lookup, moduleDefinition, returnPath, workingPath;
+      */
+    var configPath, lookup, moduleDefinition, returnPath, workingPath;
     lookup = path;
     workingPath = path;
     configPath = config.path || "";
@@ -337,13 +342,16 @@ THE SOFTWARE.
     /*
       ## loadModules(modList, cb) ##
       _internal_ load a collection of modules in modList, and once they have all loaded, execute the callback cb
-      */    var module, path, paths, txId, _i, _len, _results;
+      */
+    var module, path, paths, txId, _i, _len, _results;
+    if (modList.length === 0) {
+      return cb.apply(context, []);
+    }
     txId = createTxId();
     paths = {};
     for (_i = 0, _len = modList.length; _i < _len; _i++) {
       module = modList[_i];
       paths[module] = normalizePath(module);
-      console.log("INJECT: LN#346 paths[module] => " + module + ", " + paths[module] );
     }
     txnRegistry[txId] = modList;
     callbackRegistry[txId] = cb;
@@ -384,7 +392,8 @@ THE SOFTWARE.
       the CommonJS harness, and will capture its exports. After this, it will signal
       to inject() that all items that were waiting on this path should continue checking
       their depdendencies
-      */    var cut, cuts, cutsStr, fn, footer, header, requires, runCmd, runModule;
+      */
+    var cut, cuts, cutsStr, fn, footer, header, requires, runCmd, runModule;
     cuts = getPointcuts(module);
     cutsStr = {};
     for (cut in cuts) {
@@ -428,32 +437,38 @@ THE SOFTWARE.
     /*
       ## checkComplete(txId) ##
       _internal_ check if all modules for a txId have loaded. If so, the callback is fired
-      */    var cb, done, modl, module, modules, _i, _len, _ref;
+      */
+    var cb, done, modl, module, modules, _i, _len, _ref;
     done = true;
     cb = callbackRegistry[txId];
     modules = [];
-    _ref = txnRegistry[txId];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      module = _ref[_i];
-      modl = getModule(module);
-      if (modl === false) {
-        done = false;
-      } else {
-        modules.push(modl);
-      }
-      if (!done) {
-        break;
+    if (txnRegistry[txId]) {
+      _ref = txnRegistry[txId];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        module = _ref[_i];
+        modl = getModule(module);
+        if (modl === false) {
+          done = false;
+        } else {
+          modules.push(modl);
+        }
+        if (!done) {
+          break;
+        }
       }
     }
-    if (done) {
-      return cb.call(context, modules);
+    if (done && cb) {
+      delete callbackRegistry[txId];
+      delete txnRegistry[txId];
+      return cb.apply(context, modules);
     }
   };
   sendToXhr = function(txId, module, path, cb) {
     /*
       ## sendToXhr(txId, module, path, cb) ##
       _internal_ request a module at path using xmlHttpRequest. On retrieval, fire off cb
-      */    var xhr;
+      */
+    var xhr;
     xhr = getXHR();
     xhr.open("GET", path);
     xhr.onreadystatechange = function() {
@@ -473,7 +488,8 @@ THE SOFTWARE.
     /*
       ## getXHR() ##
       _internal_ get an XMLHttpRequest object
-      */    var xmlhttp;
+      */
+    var xmlhttp;
     xmlhttp = false;
     if (typeof XMLHttpRequest !== "undefined") {
       try {
@@ -516,7 +532,8 @@ THE SOFTWARE.
       should be using require.ensure() instead. For modules beyond the first tier, their
       shallow dependencies are resolved and block, so there is no need for require.ensure()
       beyond the topmost level.
-      */    var mod;
+      */
+    var mod;
     mod = getModule(moduleId);
     if (mod === false) {
       throw new Error("" + moduleId + " not loaded");
@@ -529,12 +546,12 @@ THE SOFTWARE.
       Ensure the modules in moduleList (array) are loaded, and then execute callback
       (function). Use this instead of require() when you need to load shallow dependencies
       first.
-      */    var run;
+      */
+    var run;
     if ((config.xd != null) && !xDomainRpc && !pauseRequired) {
       createIframe();
       pauseRequired = true;
     }
-    
     run = function() {
       return loadModules(moduleList, function() {
         var exports, module;
@@ -609,15 +626,81 @@ THE SOFTWARE.
   };
   require.run = function(moduleId) {
     /*
-      ## require.run(moduleId) ##
+      ## TODO require.run(moduleId) ##
       Execute the specified moduleId. This runs an ensure() to make sure the module has been loaded, and then
       execute it.
-      */    var foo;
-    return foo = "bar";
+      */
+  };
+  define = function(moduleId, deps, callback) {
+    /*
+      ## define(moduleId, deps, callback) ##
+      Define a module with moduleId, run require.ensure to make sure all dependency modules have been loaded, and then
+      apply the callback function with an array of dependency module objects, add the callback return and moduleId into
+      moduleRegistry list.
+      */
+    var dep, strippedDeps, _i, _len;
+    if (typeof moduleId !== "string") {
+      callback = deps;
+      deps = moduleId;
+      moduleId = null;
+    }
+    if (Object.prototype.toString.call(deps) !== "[object Array]") {
+      callback = deps;
+      deps = [];
+    }
+    strippedDeps = [];
+    for (_i = 0, _len = deps.length; _i < _len; _i++) {
+      dep = deps[_i];
+      if (dep !== "exports" && dep !== "require" && dep !== "module") {
+        strippedDeps.push(dep);
+      }
+    }
+    return require.ensure(strippedDeps, function(require, module, exports) {
+      var args, count, dep, item, returnValue, _j, _k, _len2, _len3, _ref;
+      args = [];
+      for (_j = 0, _len2 = deps.length; _j < _len2; _j++) {
+        dep = deps[_j];
+        switch (dep) {
+          case "require":
+            args.push(require);
+            break;
+          case "exports":
+            args.push(exports);
+            break;
+          case "module":
+            args.push(module);
+            break;
+          default:
+            args.push(require(dep));
+        }
+      }
+      if (typeof callback === 'function') {
+        returnValue = callback.apply(context, args);
+        count = 0;
+        _ref = module.exports;
+        for (_k = 0, _len3 = _ref.length; _k < _len3; _k++) {
+          item = _ref[_k];
+          count++;
+        }
+        if (count === 0 && typeof returnValue !== "undefined") {
+          exports = returnValue;
+        }
+      } else if (typeof callback === 'object') {
+        exports = callback;
+      }
+      if (moduleId) {
+        return saveModule(moduleId, exports);
+      }
+    });
+  };
+  define.amd = {
+    jQuery: true
   };
   context.require = require;
+  context.define = define;
   context.Inject = {
     require: require,
+    define: define,
     debug: {
       fileRegistry: fileRegistry,
       loadQueue: loadQueue,
@@ -633,15 +716,28 @@ THE SOFTWARE.
   */
   Porthole = null;
   
-Porthole=(typeof Porthole=="undefined")||!Porthole?{}:Porthole;Porthole={trace:function(a){try{"Porthole: "+a;}catch(b){}},error:function(a){try{console.error("Porthole: "+a);}catch(b){}}};Porthole.WindowProxy=function(){};Porthole.WindowProxy.prototype={postMessage:function(){},addEventListener:function(a){},removeEventListener:function(a){}};Porthole.WindowProxyLegacy=function(a,b){if(b===undefined){b=""}this.targetWindowName=b;this.eventListeners=[];this.origin=window.location.protocol+"//"+window.location.host;if(a!==null){this.proxyIFrameName=this.targetWindowName+"ProxyIFrame";this.proxyIFrameLocation=a;this.proxyIFrameElement=this.createIFrameProxy()}else{this.proxyIFrameElement=null}};Porthole.WindowProxyLegacy.prototype={getTargetWindowName:function(){return this.targetWindowName},getOrigin:function(){return this.origin},createIFrameProxy:function(){var a=document.createElement("iframe");a.setAttribute("id",this.proxyIFrameName);a.setAttribute("name",this.proxyIFrameName);a.setAttribute("src",this.proxyIFrameLocation);a.setAttribute("frameBorder","1");a.setAttribute("scrolling","auto");a.setAttribute("width",30);a.setAttribute("height",30);a.setAttribute("style","position: absolute; left: -100px; top:0px;");if(a.style.setAttribute){a.style.setAttribute("cssText","position: absolute; left: -100px; top:0px;")}document.body.appendChild(a);return a},postMessage:function(b,a){if(a===undefined){a="*"}if(this.proxyIFrameElement===null){Porthole.error("Can't send message because no proxy url was passed in the constructor")}else{sourceWindowName=window.name;this.proxyIFrameElement.setAttribute("src",this.proxyIFrameLocation+"#"+b+"&sourceOrigin="+escape(this.getOrigin())+"&targetOrigin="+escape(a)+"&sourceWindowName="+sourceWindowName+"&targetWindowName="+this.targetWindowName);this.proxyIFrameElement.height=this.proxyIFrameElement.height>50?50:100}},addEventListener:function(a){this.eventListeners.push(a);return a},removeEventListener:function(b){try{var a=this.eventListeners.indexOf(b);this.eventListeners.splice(a,1)}catch(c){this.eventListeners=[];Porthole.error(c)}},dispatchEvent:function(c){for(var b=0;b<this.eventListeners.length;b++){try{this.eventListeners[b](c)}catch(a){Porthole.error("Exception trying to call back listener: "+a)}}}};Porthole.WindowProxyHTML5=function(a,b){if(b===undefined){b=""}this.targetWindowName=b};Porthole.WindowProxyHTML5.prototype={postMessage:function(b,a){if(a===undefined){a="*"}if(this.targetWindowName===""){targetWindow=top}else{targetWindow=parent.frames[this.targetWindowName]}targetWindow.postMessage(b,a)},addEventListener:function(a){window.addEventListener("message",a,false);return a},removeEventListener:function(a){window.removeEventListener("message",a,false)},dispatchEvent:function(b){var a=document.createEvent("MessageEvent");a.initMessageEvent("message",true,true,b.data,b.origin,1,window,null);window.dispatchEvent(a)}};if(typeof window.postMessage!="function"){Porthole.trace("Using legacy browser support");Porthole.WindowProxy=Porthole.WindowProxyLegacy;Porthole.WindowProxy.prototype=Porthole.WindowProxyLegacy.prototype}else{Porthole.trace("Using built-in browser support");Porthole.WindowProxy=Porthole.WindowProxyHTML5;Porthole.WindowProxy.prototype=Porthole.WindowProxyHTML5.prototype}Porthole.WindowProxy.splitMessageParameters=function(c){if(typeof c=="undefined"||c===null){return null}var e=[];var d=c.split(/&/);for(var b in d){var a=d[b].split("=");if(typeof(a[1])=="undefined"){e[a[0]]=""}else{e[a[0]]=a[1]}}return e};Porthole.MessageEvent=function MessageEvent(c,a,b){this.data=c;this.origin=a;this.source=b};Porthole.WindowProxyDispatcher={forwardMessageEvent:function(c){var b=document.location.hash;if(b.length>0){b=b.substr(1);m=Porthole.WindowProxyDispatcher.parseMessage(b);if(m.targetWindowName===""){targetWindow=top}else{targetWindow=parent.frames[m.targetWindowName]}var a=Porthole.WindowProxyDispatcher.findWindowProxyObjectInWindow(targetWindow,m.sourceWindowName);if(a){if(a.origin==m.targetOrigin||m.targetOrigin=="*"){c=new Porthole.MessageEvent(m.data,m.sourceOrigin,a);a.dispatchEvent(c)}else{Porthole.error("Target origin "+a.origin+" does not match desired target of "+m.targetOrigin)}}else{Porthole.error("Could not find window proxy object on the target window")}}},parseMessage:function(b){if(typeof b=="undefined"||b===null){return null}params=Porthole.WindowProxy.splitMessageParameters(b);var a={targetOrigin:"",sourceOrigin:"",sourceWindowName:"",data:""};a.targetOrigin=unescape(params.targetOrigin);a.sourceOrigin=unescape(params.sourceOrigin);a.sourceWindowName=unescape(params.sourceWindowName);a.targetWindowName=unescape(params.targetWindowName);var c=b.split(/&/);if(c.length>3){c.pop();c.pop();c.pop();c.pop();a.data=c.join("&")}return a},findWindowProxyObjectInWindow:function(a,c){if(a.RuntimeObject){a=a.RuntimeObject()}if(a){for(var b in a){try{if(a[b]!==null&&typeof a[b]=="object"&&a[b] instanceof a.Porthole.WindowProxy&&a[b].getTargetWindowName()==c){return a[b]}}catch(d){}}}return null},start:function(){if(window.addEventListener){window.addEventListener("resize",Porthole.WindowProxyDispatcher.forwardMessageEvent,false)}else{if(document.body.attachEvent){window.attachEvent("onresize",Porthole.WindowProxyDispatcher.forwardMessageEvent)}else{Porthole.error("Can't attach resize event")}}}};
+Porthole="undefined"==typeof Porthole||!Porthole?{}:Porthole;Porthole={trace:function(){},error:function(a){try{console.error("Porthole: "+a)}catch(b){}},WindowProxy:function(){}};Porthole.WindowProxy.prototype={postMessage:function(){},addEventListener:function(){},removeEventListener:function(){}};
+Porthole.WindowProxyLegacy=function(a,b){void 0===b&&(b="");this.targetWindowName=b;this.eventListeners=[];this.origin=window.location.protocol+"//"+window.location.host;null!==a?(this.proxyIFrameName=this.targetWindowName+"ProxyIFrame",this.proxyIFrameLocation=a,this.proxyIFrameElement=this.createIFrameProxy()):this.proxyIFrameElement=null};
+Porthole.WindowProxyLegacy.prototype={getTargetWindowName:function(){return this.targetWindowName},getOrigin:function(){return this.origin},createIFrameProxy:function(){var a=document.createElement("iframe");a.setAttribute("id",this.proxyIFrameName);a.setAttribute("name",this.proxyIFrameName);a.setAttribute("src",this.proxyIFrameLocation);a.setAttribute("frameBorder","1");a.setAttribute("scrolling","auto");a.setAttribute("width",30);a.setAttribute("height",30);a.setAttribute("style","position: absolute; left: -100px; top:0px;");
+a.style.setAttribute&&a.style.setAttribute("cssText","position: absolute; left: -100px; top:0px;");document.body.appendChild(a);return a},postMessage:function(a,b){void 0===b&&(b="*");null===this.proxyIFrameElement?Porthole.error("Can't send message because no proxy url was passed in the constructor"):(sourceWindowName=window.name,this.proxyIFrameElement.setAttribute("src",this.proxyIFrameLocation+"#"+a+"&sourceOrigin="+escape(this.getOrigin())+"&targetOrigin="+escape(b)+"&sourceWindowName="+sourceWindowName+
+"&targetWindowName="+this.targetWindowName),this.proxyIFrameElement.height=50<this.proxyIFrameElement.height?50:100)},addEventListener:function(a){this.eventListeners.push(a);return a},removeEventListener:function(a){try{this.eventListeners.splice(this.eventListeners.indexOf(a),1)}catch(b){this.eventListeners=[],Porthole.error(b)}},dispatchEvent:function(a){for(var b=0;b<this.eventListeners.length;b++)try{this.eventListeners[b](a)}catch(c){Porthole.error("Exception trying to call back listener: "+
+c)}}};Porthole.WindowProxyHTML5=function(a,b){void 0===b&&(b="");this.targetWindowName=b};
+Porthole.WindowProxyHTML5.prototype={postMessage:function(a,b){void 0===b&&(b="*");targetWindow=""===this.targetWindowName?top:parent.frames[this.targetWindowName];targetWindow.postMessage(a,b)},addEventListener:function(a){window.addEventListener("message",a,!1);return a},removeEventListener:function(a){window.removeEventListener("message",a,!1)},dispatchEvent:function(a){var b=document.createEvent("MessageEvent");b.initMessageEvent("message",!0,!0,a.data,a.origin,1,window,null);window.dispatchEvent(b)}};
+"function"!=typeof window.postMessage?(Porthole.trace("Using legacy browser support"),Porthole.WindowProxy=Porthole.WindowProxyLegacy,Porthole.WindowProxy.prototype=Porthole.WindowProxyLegacy.prototype):(Porthole.trace("Using built-in browser support"),Porthole.WindowProxy=Porthole.WindowProxyHTML5,Porthole.WindowProxy.prototype=Porthole.WindowProxyHTML5.prototype);
+Porthole.WindowProxy.splitMessageParameters=function(a){if("undefined"==typeof a||null===a)return null;var b=[],a=a.split(/&/),c;for(c in a){var d=a[c].split("=");b[d[0]]="undefined"==typeof d[1]?"":d[1]}return b};Porthole.MessageEvent=function(a,b,c){this.data=a;this.origin=b;this.source=c};
+Porthole.WindowProxyDispatcher={forwardMessageEvent:function(a){a=document.location.hash;if(0<a.length){a=a.substr(1);m=Porthole.WindowProxyDispatcher.parseMessage(a);targetWindow=""===m.targetWindowName?top:parent.frames[m.targetWindowName];var b=Porthole.WindowProxyDispatcher.findWindowProxyObjectInWindow(targetWindow,m.sourceWindowName);b?b.origin==m.targetOrigin||"*"==m.targetOrigin?(a=new Porthole.MessageEvent(m.data,m.sourceOrigin,b),b.dispatchEvent(a)):Porthole.error("Target origin "+b.origin+
+" does not match desired target of "+m.targetOrigin):Porthole.error("Could not find window proxy object on the target window")}},parseMessage:function(a){if("undefined"==typeof a||null===a)return null;params=Porthole.WindowProxy.splitMessageParameters(a);var b={targetOrigin:"",sourceOrigin:"",sourceWindowName:"",data:""};b.targetOrigin=unescape(params.targetOrigin);b.sourceOrigin=unescape(params.sourceOrigin);b.sourceWindowName=unescape(params.sourceWindowName);b.targetWindowName=unescape(params.targetWindowName);
+a=a.split(/&/);if(3<a.length)a.pop(),a.pop(),a.pop(),a.pop(),b.data=a.join("&");return b},findWindowProxyObjectInWindow:function(a,b){a.RuntimeObject&&(a=a.RuntimeObject());if(a)for(var c in a)try{if(null!==a[c]&&"object"==typeof a[c]&&a[c]instanceof a.Porthole.WindowProxy&&a[c].getTargetWindowName()==b)return a[c]}catch(d){}return null},start:function(){window.addEventListener?window.addEventListener("resize",Porthole.WindowProxyDispatcher.forwardMessageEvent,!1):document.body.attachEvent?window.attachEvent("onresize",
+Porthole.WindowProxyDispatcher.forwardMessageEvent):Porthole.error("Can't attach resize event")}};
 ;
   /*
   lscache library
   */
   lscache = null;
   
-lscache=function(){var e;try{e=!!localStorage.getItem}catch(k){e=false}var h=window.JSON!=null;return{set:function(a,b,g){if(e){if(typeof b!="string"){if(!h)return;try{b=JSON.stringify(b)}catch(l){return}}try{localStorage.setItem(a,b)}catch(i){if(i.name==="QUOTA_EXCEEDED_ERR"||i.name=="NS_ERROR_DOM_QUOTA_REACHED"){for(var d,f=[],c=0;c<localStorage.length;c++)if(d=localStorage.key(c),d.indexOf("-cacheexpiration")>-1){var j=d.split("-cacheexpiration")[0];f.push({key:j,expiration:parseInt(localStorage[d],
-10)})}f.sort(function(a,b){return a.expiration-b.expiration});c=0;for(d=Math.min(30,f.length);c<d;c++)localStorage.removeItem(f[c].key),localStorage.removeItem(f[c].key+"-cacheexpiration");localStorage.setItem(a,b)}else return}g?localStorage.setItem(a+"-cacheexpiration",Math.floor((new Date).getTime()/6E4)+g):localStorage.removeItem(a+"-cacheexpiration")}},get:function(a){function b(a){if(h)try{return JSON.parse(localStorage.getItem(a))}catch(b){return localStorage.getItem(a)}else return localStorage.getItem(a)}
-if(!e)return null;if(localStorage.getItem(a+"-cacheexpiration")){var g=parseInt(localStorage.getItem(a+"-cacheexpiration"),10);if(Math.floor((new Date).getTime()/6E4)>=g)localStorage.removeItem(a),localStorage.removeItem(a+"-cacheexpiration");else return b(a)}else if(localStorage.getItem(a))return b(a);return null},remove:function(a){if(!e)return null;localStorage.removeItem(a);localStorage.removeItem(a+"-cacheexpiration")}}}();
+var lscache=function(){function g(){return Math.floor((new Date).getTime()/6E4)}function l(a,b,f){function o(){try{localStorage.setItem(a+c,g()),0<f?(localStorage.setItem(a+d,g()+f),localStorage.setItem(a,b)):0>f||0===f?(localStorage.removeItem(a+c),localStorage.removeItem(a+d),localStorage.removeItem(a)):localStorage.setItem(a,b)}catch(h){if("QUOTA_EXCEEDED_ERR"===h.name||"NS_ERROR_DOM_QUOTA_REACHED"==h.name){if(0===i.length&&!m)return localStorage.removeItem(a+c),localStorage.removeItem(a+d),localStorage.removeItem(a),
+!1;m&&(m=!1);if(!e){for(var n=0,l=localStorage.length;n<l;n++)if(j=localStorage.key(n),-1<j.indexOf(c)){var p=j.split(c)[0];i.push({key:p,touched:parseInt(localStorage[j],10)})}i.sort(function(a,b){return a.touched-b.touched})}if(k=i.shift())localStorage.removeItem(k.key+c),localStorage.removeItem(k.key+d),localStorage.removeItem(k.key);o()}}}var e=!1,m=!0,i=[],j,k;o()}var d="-EXP",c="-LRU",e;try{e=!!localStorage.getItem}catch(q){e=!1}var h=null!=window.JSON;return{set:function(a,b,c){if(e){if("string"!=
+typeof b){if(!h)return;try{b=JSON.stringify(b)}catch(d){return}}l(a,b,c)}},get:function(a){function b(a){if(h)try{return JSON.parse(localStorage.getItem(a))}catch(b){return localStorage.getItem(a)}else return localStorage.getItem(a)}if(!e)return null;if(localStorage.getItem(a+d)){var f=parseInt(localStorage.getItem(a+d),10);if(g()>=f)localStorage.removeItem(a),localStorage.removeItem(a+d),localStorage.removeItem(a+c);else return localStorage.setItem(a+c,g()),b(a)}else if(localStorage.getItem(a))return localStorage.setItem(a+
+c,g()),b(a);return null},remove:function(a){if(!e)return null;localStorage.removeItem(a);localStorage.removeItem(a+d);localStorage.removeItem(a+c)}}}();
 ;
 }).call(this);

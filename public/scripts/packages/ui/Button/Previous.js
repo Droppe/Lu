@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  Button = li.require( 'ui/Button' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  Button = require( 'ui/Button' ),
   PreviousButton;
 
 /**
@@ -48,6 +48,6 @@ PreviousButton = Class.create( Button,  ( function () {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-if( typeof module !== 'undefined' && module.exports ) {
+if( module && module.exports ) {
   module.exports = PreviousButton;
 }

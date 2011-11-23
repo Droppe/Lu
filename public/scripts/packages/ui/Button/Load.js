@@ -48,6 +48,6 @@ LoadButton = Class.create( Button,  ( function () {
 }() ));
 
 // EXPORT TO ATHENA FRAMEWORK
-if( typeof module !== 'undefined' && module.exports ) {
+if( module && module.exports ) {
   module.exports = LoadButton;
 }

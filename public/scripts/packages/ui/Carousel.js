@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  List = li.require( 'ui/List' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  List = require( 'ui/List' ),
   Carousel;
 
 /**
@@ -205,7 +205,7 @@ Carousel =  Class.create( List, ( function() {
 
 }() ));
 
-// EXPORT TO ATHENA FRAMEWORK
-if ( typeof module !== 'undefined' && module.exports ) {
+//EXPORT TO ATHENA FRAMEWORK
+if( module && module.exports ) {
   module.exports = Carousel;
 }

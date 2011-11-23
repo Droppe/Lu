@@ -335,52 +335,34 @@ Athena = function( settings ) {
     return controls;
   };
   
-  
-  /**
-   * Exports a component's class into the Athena framework
-   * @method export
-   * @public
-   * @static
-   * @param {Object} component The Athena component class to export
-   */
-  Athena.exports = function ( component ) {
-    // Get module from window scope
-    var module = window.module;
+  // Athena is not always ready when components are evaled. :(
+  // /**
+  //  * Exports a component's class into the Athena framework
+  //  * @method export
+  //  * @public
+  //  * @static
+  //  * @param {Object} component The Athena component class to export
+  //  */
+  // Athena.exports = function ( module, component ) {
+  //   if( module && module.exports ) {
+  //     module.exports = component;
+  //   }
+  // };
 
-    // EXPORT TO ATHENA FRAMEWORK
-    // if ( typeof module !== 'undefined' ) {
-    //   if ( module.setExports ){
-    //     module.setExports( component );
-    //   } else if( module.exports ){
-    //       module.exports = component;
-    //   }
-    // } else {
-    //   Athena[component] = component;
-    // }    
-
-    window.exports = component;
-    
-  };
-  
   $( function() {
+
     var $body = $( 'body' );
-    //Athena.decorate( $body, ['ui:Abstract'] );
+    Athena.decorate( $body, ['ui:Abstract'] );
+
     $body.bind( settings.namespace + '-ready', function( event ) {
-      console.log( 'hella cool' );
+      console.info( 'Ready !!! ')
     } ).execute();
+
   } );
+
 };
 
-module.exports = new Athena( ATHENA_CONFIG );
- 
 // EXPORT TO ATHENA FRAMEWORK
-// if ( typeof module !== 'undefined' ) {
-//   if ( module.setExports ){
-//     module.setExports( new Athena( ATHENA_CONFIG ) );
-//   } else if( module.exports ){
-//       module.exports = new Athena( ATHENA_CONFIG );
-//   }
-// } else {
-//   Athena = new Athena();
-// }
-
+if( module && module.exports ) {
+  module.exports = new Athena( ATHENA_CONFIG );
+}

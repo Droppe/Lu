@@ -1,5 +1,5 @@
-var Class = li.require("libraries/ptclass"),
-  Abstract = li.require("ui/Abstract"),
+var Class = require( '/scripts/libraries/ptclass' ),
+  Abstract = require( 'ui/Abstract' ),
   Tabs;
 
 /**
@@ -122,6 +122,6 @@ Tabs =  Class.create( Abstract,  ( function () {
 }() ) );
 
 // EXPORT TO ATHENA FRAMEWORK
-if ( typeof module !== 'undefined' && module.exports ) {
+if( module && module.exports ) {
   module.exports = Tabs;
 }

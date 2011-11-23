@@ -1,4 +1,4 @@
-var Class = li.require( 'libraries/ptclass' ),
+var Class = require( '/scripts/libraries/ptclass' ),
   EventProvider;
 
 /**
@@ -97,6 +97,5 @@ EventProvider = Class( {
   }
 } );
 
-if ( typeof module !== 'undefined' && module.exports ) {
-  module.exports = EventProvider;
-}
+// EXPORT TO ATHENA FRAMEWORK
+Athena.exports(module, EventProvider);

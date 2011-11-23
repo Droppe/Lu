@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  Abstract = li.require( 'ui/Abstract' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  Abstract = require( 'ui/Abstract' ),
   List;
 
 /**
@@ -282,7 +282,7 @@ List =  Class.create( Abstract, ( function () {
 }() ));
 
 
-// Export to Athena Framework
-if ( typeof module !== 'undefined' && module.exports ) {
+// EXPORT TO ATHENA FRAMEWORK
+if( module && module.exports ) {
   module.exports = List;
 }
