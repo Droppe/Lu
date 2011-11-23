@@ -97,5 +97,5 @@ EventProvider = Class( {
   }
 } );
 
-// EXPORT TO ATHENA FRAMEWORK
+//Export to CommonJS Loader
 Athena.exports(module, EventProvider);
