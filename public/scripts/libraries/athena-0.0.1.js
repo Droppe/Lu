@@ -136,7 +136,7 @@ Athena = function( settings ) {
 
       Control = new Control( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;' )( $node ) );
 
-      console.info( 'Action ' + key + ' executed with', $node );
+      console.info( 'Action ' + key + ' executed with', $node, Control);
 
       if( $node.data( 'controls' ) ) {
         $node.data( 'controls' )[ key ] = Control;
@@ -147,7 +147,7 @@ Athena = function( settings ) {
     }
 
     /**
-     * Parses the DOM starting with selected element, requires nessasary JS Files, and instantiates Athena controls. 
+     * Parses the DOM starting with selected element, requires necessary JS Files, and instantiates Athena controls. 
      * @method getControl
      * @public
      * @param {String} id The id of returned control.
@@ -187,12 +187,17 @@ Athena = function( settings ) {
           _.each( required, function( item, index ) {
             constructors[keys[index]] = require( item );
           } );
+
           recurse( $this );
         } );
       }
 
       // Recurse over all child nodes to make sure controls are instantiated.
       function recurse( $node ) {
+
+        if (!$node[0].tagName) {
+          return;
+        }
 
         // Are we done yet?
         if( isReady( $this ) ) {
