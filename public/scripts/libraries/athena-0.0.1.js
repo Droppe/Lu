@@ -164,8 +164,6 @@ Athena = function( settings ) {
         $nodes.add( $this );
       }
 
-console.log("athena-0.0.1", "execute", $this, $nodes);
-
       //Construct an array of required packages
       _.each( $nodes, function( node, index ) {
         var $node = $( node );
@@ -195,7 +193,7 @@ console.log("athena-0.0.1", "execute", $this, $nodes);
 
       // Recurse over all child nodes to make sure controls are instantiated.
       function recurse( $node ) {
-console.log("athena-0.0.1", "recurse", $node);
+
         // Are we done yet?
         if( isReady( $this ) ) {
           // Everything is instantiated
@@ -385,7 +383,6 @@ console.log("athena-0.0.1", "recurse", $node);
     var $body = $( 'body' );
     //Athena.decorate( $body, ['ui:Abstract'] );
     $body.bind( settings.namespace + '-ready', function( event ) {
-      console.log( 'hella cool' );
     } ).execute();
   } );
 };
@@ -401,3 +398,9 @@ if ( typeof module !== 'undefined' ) {
   Athena = new Athena();
 }
 
+
+// Temporary debug switch for localStorage until inject fixes their bug
+if (window.ENV_CONFIG && window.ENV_CONFIG.debug && window.localStorage) {
+  _.log("Clearing local storage");
+  window.localStorage.clear();
+}
