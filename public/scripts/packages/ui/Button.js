@@ -156,7 +156,7 @@ _.log("Button initialized");
 
 }() ));
 
-// EXPORT TO ATHENA FRAMEWORK
+//Export to CommonJS Loader
 if( module && module.exports ) {
   module.exports = Button;
 }

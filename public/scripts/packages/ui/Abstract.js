@@ -11,8 +11,6 @@ var Class = require( '/scripts/libraries/ptclass' ),
  */
 Abstract = Class.create( ( function() {
 
-
-
   // GLOBAL STATICS
 
   // RETURN METHODS OBJECT
@@ -96,7 +94,6 @@ Abstract = Class.create( ( function() {
       
       
       // PRIVATE METHODS
-      // n/a
       
       // PRIVILEGED METHODS
       
@@ -160,7 +157,7 @@ Abstract = Class.create( ( function() {
   };
 }() ) );
 
-// EXPORT TO ATHENA FRAMEWORK
+//Export to CommonJS Loader
 if( module && module.exports ) {
   module.exports = Abstract;
 }

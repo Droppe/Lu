@@ -47,7 +47,7 @@ PreviousButton = Class.create( Button,  ( function () {
   
 }() ));
 
-// EXPORT TO ATHENA FRAMEWORK
+//Export to CommonJS Loader
 if( module && module.exports ) {
   module.exports = PreviousButton;
 }

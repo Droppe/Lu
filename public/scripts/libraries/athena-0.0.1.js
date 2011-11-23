@@ -116,9 +116,6 @@ Athena = function( settings ) {
       return false;
     }
 
-
-_.log("jimg");
-
     /**
      * Instantiates a control with selected element.
      * @method execute
@@ -135,11 +132,9 @@ _.log("jimg");
 
       _.each( keys, function( key, index ) {
         var pckg = key.replace( /\:/g, '/' );
+        var Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; console.log(\'' + key + '\', config ); return config;')( $node ) );
+        console.info( 'Action ' + key + ' executed with', $node );
 
-        var configFctn = new Function( '$this', 'var config =' + config + '[\'' + pckg + '\'] || {}; return config;' )( $node );
-                
-        var Control = new packages[pckg]( $node, configFctn );
-        console.info( 'Action ' + pckg + ' executed with', $node );
         if( $node.data( 'controls' ) ) {
           $node.data( 'controls' )[ pckg ] = Control;
         } else {
@@ -188,11 +183,8 @@ _.log("jimg");
       try {
         window.require.setExpires( settings.moduleExpire );
         window.require.setModuleRoot( settings.moduleRoot );
-        console.log( required, packages );
         window.require.ensure( required, function( require, module, exports ) {
-          console.info( 'ENSURE CALLBACK' );
           _.each( required, function( requirement, index ) {
-            console.log( requirement );
             packages[ requirement ] = require( requirement );
           } );
           $controls.each( function( index, control ) {
@@ -300,6 +292,19 @@ _.log("jimg");
 
   } ( jQuery ) );
 
+  Athena.destroy = function( $element ) {
+    var $controls;
+    $controls = $( UI_CONTROL_PATTERN, $element );
+
+    if( $element.is( UI_CONTROL_PATTERN ) ) {
+      $controls = $controls.add( $element );
+    }
+
+    $controls.removeData( 'athena', '$observers', 'controls' );
+
+  }
+
+
   /**
    * Factory for creating Controls.
    * @public
@@ -341,20 +346,6 @@ _.log("jimg");
     }
     return controls;
   };
-  
-  // Athena is not always ready when components are evaled. :(
-  // /**
-  //  * Exports a component's class into the Athena framework
-  //  * @method export
-  //  * @public
-  //  * @static
-  //  * @param {Object} component The Athena component class to export
-  //  */
-  // Athena.exports = function ( module, component ) {
-  //   if( module && module.exports ) {
-  //     module.exports = component;
-  //   }
-  // };
 
   $( function() {
 
@@ -369,7 +360,7 @@ _.log("jimg");
 
 };
 
-// EXPORT TO ATHENA FRAMEWORK
+//Export to CommonJS Loader
 if( module && module.exports ) {
   module.exports = new Athena( ATHENA_CONFIG );
 }
