@@ -31,7 +31,7 @@ _.explodeURL = function ( url ) {
 
 _.log = function () {
   var args = arguments;
-  if ( window.ENV_CONFIG && window.ENV_CONFIG.debug && console && !!console.log ) {
+  if ( window.ATHENA_CONFIG && window.ATHENA_CONFIG.debug && console && !!console.log ) {
     console.log( "ATHENA: ", args );
   }
 };

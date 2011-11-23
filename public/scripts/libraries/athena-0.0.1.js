@@ -116,6 +116,9 @@ Athena = function( settings ) {
       return false;
     }
 
+
+_.log("jimg");
+
     /**
      * Instantiates a control with selected element.
      * @method execute
@@ -131,13 +134,16 @@ Athena = function( settings ) {
       config = config || '{}';
 
       _.each( keys, function( key, index ) {
-        key = key.replace( /\:/g, '/' );
-        var Control = new packages[key]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;' )( $node ) );
-        console.info( 'Action ' + key + ' executed with', $node );
+        var pckg = key.replace( /\:/g, '/' );
+
+        var configFctn = new Function( '$this', 'var config =' + config + '[\'' + pckg + '\'] || {}; return config;' )( $node );
+                
+        var Control = new packages[pckg]( $node, configFctn );
+        console.info( 'Action ' + pckg + ' executed with', $node );
         if( $node.data( 'controls' ) ) {
-          $node.data( 'controls' )[ key ] = Control;
+          $node.data( 'controls' )[ pckg ] = Control;
         } else {
-          $node.data( 'controls', {} ).data( 'controls' )[key] = Control;
+          $node.data( 'controls', {} ).data( 'controls' )[pckg] = Control;
         }
       } );
 
@@ -367,3 +373,5 @@ Athena = function( settings ) {
 if( module && module.exports ) {
   module.exports = new Athena( ATHENA_CONFIG );
 }
+
+localStorage.clear();
