@@ -29,8 +29,9 @@ _.explodeURL = function ( url ) {
 
 };
 
-_.log = function (msg) {
+_.log = function () {
+  var args = arguments;
   if ( window.ENV_CONFIG && window.ENV_CONFIG.debug && console && !!console.log ) {
-    console.log( 'ATHENA: ' , msg );
+    console.log( "ATHENA: ", args );
   }
 };

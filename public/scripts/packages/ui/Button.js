@@ -26,8 +26,7 @@ Button = Class.create( Abstract, ( function () {
      * @param {Object} settings Configuration settings
      */    
     initialize: function ( $super, $element, settings ){
-
-//  _.log(["$ELEMENT", $element, settings]);
+_.log("Button initialized");      
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -101,12 +100,12 @@ Button = Class.create( Abstract, ( function () {
        * @return {Void}
        */
       function triggerAction(action, item) {
+        _.log("Button " + action);
+        
         if( item || item === 0 ) {
           $element.trigger( action, [ item ] );
-          _.log("Button " + action);
         } else {
           $element.trigger( action );
-          _.log("Button " + action);
         }
       }
 

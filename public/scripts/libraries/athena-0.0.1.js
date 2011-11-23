@@ -134,9 +134,12 @@ Athena = function( settings ) {
       config = config || '{}';
       Control = constructors[key];
 
+
       Control = new Control( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;' )( $node ) );
 
-      console.info( 'Action ' + key + ' executed with', $node, Control);
+_.log("athena", "#140", "key =>", key, "Control =>", Control);
+
+      _.log( 'Action ' + key + ' executed with', $node, Control);
 
       if( $node.data( 'controls' ) ) {
         $node.data( 'controls' )[ key ] = Control;
@@ -198,6 +201,8 @@ Athena = function( settings ) {
         if (!$node[0].tagName) {
           return;
         }
+
+        _.log("athena", "197", $node);
 
         // Are we done yet?
         if( isReady( $this ) ) {
