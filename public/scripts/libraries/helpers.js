@@ -30,7 +30,5 @@ _.explodeURL = function ( url ) {
 };
 
 _.log = function (msg) {
-  if ( li.environment.debug && console && !!console.log ) {
     console.log( 'ATHENA: ' + msg );
-  }
 };

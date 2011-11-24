@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  Abstract = li.require( 'ui/Abstract' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  Abstract = require( 'ui/Abstract' ),
   Button;
 
 /**
@@ -125,7 +125,7 @@ Button = Class.create( Abstract, ( function () {
         if( settings.item ) {
           item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
         } else {
-          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] );
+          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] ) || '0';
         }
       }
 
@@ -150,8 +150,7 @@ Button = Class.create( Abstract, ( function () {
 
 }() ));
 
-// Export to Athena Framework
-if ( typeof module !== 'undefined' && module.exports ) {
+//Export to CommonJS Loader
+if( module && module.exports ) {
   module.exports = Button;
 }
-

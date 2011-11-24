@@ -1,5 +1,5 @@
 var id = 'ui/Callout',
-	Abstract = li.require( 'ui/Abstract' ),
+	Abstract = require( 'ui/Abstract' ),
 	Callout;
 
 Callout = Abstract.extend( function ( element, settings ){
@@ -12,6 +12,7 @@ Callout = Abstract.extend( function ( element, settings ){
 
 } );
 
-if ( typeof module !== 'undefined' && module.exports ) {
-	module.exports = Callout;
+//Export to CommonJS Loader
+if( module && module.exports ) {
+  module.exports = Callout;
 }

@@ -1,4 +1,4 @@
-var Class = li.require( 'libraries/ptclass' ),
+var Class = require( '/scripts/libraries/ptclass' ),
   Abstract;
 
 /**
@@ -94,7 +94,6 @@ Abstract = Class.create( ( function() {
       
       
       // PRIVATE METHODS
-      // n/a
       
       // PRIVILEGED METHODS
       
@@ -158,7 +157,7 @@ Abstract = Class.create( ( function() {
   };
 }() ) );
 
-// Export to Athena Framework
-if ( typeof module !== 'undefined' && module.exports ) {
+//Export to CommonJS Loader
+if( module && module.exports ) {
   module.exports = Abstract;
 }

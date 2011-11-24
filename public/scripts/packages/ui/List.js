@@ -1,5 +1,5 @@
-var Class = li.require( 'libraries/ptclass' ),
-  Abstract = li.require( 'ui/Abstract' ),
+var Class = require( '/scripts/libraries/ptclass' ),
+  Abstract = require( 'ui/Abstract' ),
   List;
 
 /**
@@ -169,7 +169,7 @@ List =  Class.create( Abstract, ( function () {
       List.select = function( item ) {
         var $item;
 
-        if( typeof item === 'number' ) {
+        if( typeof item === 'number' || typeof item === 'string') {
           $item = $items.eq( item );
         } else {
           $item = item;
@@ -340,7 +340,7 @@ List =  Class.create( Abstract, ( function () {
 }() ));
 
 
-// Export to Athena Framework
-if ( typeof module !== 'undefined' && module.exports ) {
+//Export to CommonJS Loader
+if( module && module.exports ) {
   module.exports = List;
 }
