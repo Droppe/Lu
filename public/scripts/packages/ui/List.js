@@ -25,6 +25,8 @@ List =  Class.create( Abstract, ( function () {
 
       // PRIVATE CONSTANTS
       var NEXT = 'next',
+          LAST = 'last',
+          FIRST = 'first',
           PREVIOUS = 'previous',
           VERTICAL = 'vertical',
           HORIZONTAL = 'horizontal',
@@ -88,27 +90,35 @@ List =  Class.create( Abstract, ( function () {
         // A "vertical" list direction means that the up and down arrow keys work
         if (settings.direction === VERTICAL) {  
           switch (keyCode) {
-            case 38: 
+            case 38: // Up arrow
               List.trigger(PREVIOUS, item);
               break;
-            case 40: 
+            case 40: // Down arrow 
               List.trigger(NEXT, item);
-              break;
             default:
-            // Fall thru
+              break;
           }
         } else {
           // By default, list direction is "horizontal" and left and right arrows work 
           switch (keyCode) {
-            case 37: 
+            case 37: // Left arrow
               List.trigger(PREVIOUS, item);
               break;
-            case 39: 
+            case 39: // Right arrow
               List.trigger(NEXT, item);
-              break;
             default:
-            // Fall thru
+              break;
           }
+        }
+
+        switch (keyCode) {
+          case 36: // Home key
+            List.trigger(FIRST, item);
+            break;
+          case 35: // Last key
+            List.trigger(LAST, item);
+          default:
+            break;
         }
       };
 
@@ -179,6 +189,10 @@ List =  Class.create( Abstract, ( function () {
           $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
           this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
         }
+
+        // Set focus to the item that you've selected
+        // We do this for ally
+        $item.attr("tabindex", "-1").focus();
 
         return List;
       };
@@ -324,11 +338,11 @@ List =  Class.create( Abstract, ( function () {
         event.stopPropagation();
         List.previous();
       } );
-      $element.on( 'first', function( event, item ) {
+      $element.on( FIRST, function( event, item ) {
         event.stopPropagation();
         List.first();
       } );
-      $element.on( 'last', function( event, item ) {
+      $element.on( LAST, function( event, item ) {
         event.stopPropagation();
         List.last();
       } );
