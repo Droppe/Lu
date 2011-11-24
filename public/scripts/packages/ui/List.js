@@ -23,15 +23,21 @@ List =  Class.create( Abstract, ( function () {
      */    
     initialize: function ( $super, $element, settings ){
 
-      // PRIVATE INSTANCE PROPERTIES
+      // PRIVATE CONSTANTS
+      var NEXT = 'next',
+          PREVIOUS = 'previous',
+          VERTICAL = 'vertical',
+          HORIZONTAL = 'horizontal',
 
+      // PRIVATE INSTANCE PROPERTIES
       /**
        * Instance of Button
        * @property Button
        * @type Object
        * @private
        */  
-      var List = this,
+      List = this,
+
       /**
        * Default configuration values
        * @property defaults
@@ -47,7 +53,16 @@ List =  Class.create( Abstract, ( function () {
           * @type String
           * @final
          */
-         selectFlag: 'selected'
+         selectFlag: 'selected',
+
+         /**
+          * Denotes the behavior of left, right, top and down arrow keys.
+          * @property direction 
+          * @default 'horizontal'
+          * @type String
+          * @final
+         */
+         direction: HORIZONTAL
       },
       /**
        * JQuery collection of like items in the list
@@ -55,7 +70,47 @@ List =  Class.create( Abstract, ( function () {
        * @type Object
        * @private
        */
-      $items;  
+      $items,
+     
+      /**
+       * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
+       * arrows.  Left and up correspond to action "previous" and right and next correspond to "next". 
+       * @method handleKeyup
+       * @private
+       * @param {Event} event An event object
+       * @param {Object} item An object or a number
+       * @return {Void}
+       */  
+      handleKeyup = function(event, item) {
+        var keyCode = event.keyCode,
+            item = $(event.target);
+
+        // A "vertical" list direction means that the up and down arrow keys work
+        if (settings.direction === VERTICAL) {  
+          switch (keyCode) {
+            case 38: 
+              List.trigger(PREVIOUS, item);
+              break;
+            case 40: 
+              List.trigger(NEXT, item);
+              break;
+            default:
+            // Fall thru
+          }
+        } else {
+          // By default, list direction is "horizontal" and left and right arrows work 
+          switch (keyCode) {
+            case 37: 
+              List.trigger(PREVIOUS, item);
+              break;
+            case 39: 
+              List.trigger(NEXT, item);
+              break;
+            default:
+            // Fall thru
+          }
+        }
+      };
 
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -124,6 +179,7 @@ List =  Class.create( Abstract, ( function () {
           $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
           this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
         }
+
         return List;
       };
 
@@ -207,7 +263,7 @@ List =  Class.create( Abstract, ( function () {
       };
 
       /**
-       * Returns the index of the selected item.
+       * Returns the index of the selecte item.
        * @method index
        * @public
        * @return {Number} The index of the selected item
@@ -254,16 +310,17 @@ List =  Class.create( Abstract, ( function () {
         return $items.length;
       };
 
+
       // EVENT BINDINGS
       $element.on( 'select', function( event, item ) {
         event.stopPropagation();
         List.select( item );
       } );
-      $element.on( 'next', function( event, item ) {
+      $element.on( NEXT, function( event, item ) {
         event.stopPropagation();
         List.next();
       } );
-      $element.on( 'previous', function( event, item ) {
+      $element.on( PREVIOUS, function( event, item ) {
         event.stopPropagation();
         List.previous();
       } );
@@ -275,6 +332,7 @@ List =  Class.create( Abstract, ( function () {
         event.stopPropagation();
         List.last();
       } );
+      $element.on('keyup', handleKeyup);
 
     }
   };

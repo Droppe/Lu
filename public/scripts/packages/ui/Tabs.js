@@ -27,6 +27,7 @@ Tabs =  Class.create( Abstract,  ( function () {
       // PRIVATE
       // Constants
       var SELECT_EVT = 'select',
+          SELECTED_EVT = 'selected',
 
       // INSTANCE PROPERTIES
       
@@ -104,6 +105,24 @@ Tabs =  Class.create( Abstract,  ( function () {
        */
       selectTabHandler = function( event, item ) {
         $tabPanels.trigger( SELECT_EVT, [item] );
+      },
+
+      /**
+       * Handles the selected tab event.  Fires the "select" event to the tab panels and an index in an array 
+       * @param {Event} event - Athena event
+       * @param {Object} item - JQuery DOM element
+       * @method selectedTabHandler 
+       * @private
+       * @return {Void}
+       */
+      selectedTabHandler = function(event, item) {
+        // Get the parent and the children
+        var items = item.parent().children(),
+            // Get the index of the item
+            index = items.index(item);
+
+        // Fire the select with the index value
+        $tabPanels.trigger( SELECT_EVT, [index] );
       };
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -117,6 +136,7 @@ Tabs =  Class.create( Abstract,  ( function () {
       
       // Attach event listeners
       $tabList.on( SELECT_EVT, selectTabHandler );
+      $tabList.on( SELECTED_EVT, selectedTabHandler );
     }
   };
 }() ) );
