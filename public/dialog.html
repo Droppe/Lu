@@ -24,8 +24,7 @@
 
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
-
+  
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -35,6 +34,15 @@
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
     require.ensure( ['/scripts/libraries/athena-0.0.1'], function() {} );
+    
+    require.ensure( ['/scripts/libraries/jquery-ui-1.8.16/jquery.ui.core'], function() {} );
+    require.ensure( ['/scripts/libraries/jquery-ui-1.8.16/jquery.ui.widget'], function() {} );
+    require.ensure( ['/scripts/libraries/jquery-ui-1.8.16/jquery.ui.button'], function() {} );
+    require.ensure( ['/scripts/libraries/jquery-ui-1.8.16/jquery.ui.draggable'], function() {} );
+    require.ensure( ['/scripts/libraries/jquery-ui-1.8.16/jquery.ui.mouse'], function() {} );
+    require.ensure( ['/scripts/libraries/jquery-ui-1.8.16/jquery.ui.position'], function() {} );
+    require.ensure( ['/scripts/libraries/jquery-ui-1.8.16/jquery.ui.resizable'], function() {} );
+    require.ensure( ['/scripts/libraries/jquery-ui-1.8.16/jquery.ui.dialog'], function() {} );
   </script>
 
 </head>
@@ -56,7 +64,6 @@
     
   <div id="dialog" title="Dialog Title (drag me)" data-athena="ui:Dialog" data-athena-config="{ 
 	  'ui:Dialog': {
-			autoOpen: false,
 			width: 600,
 			draggable: true,
 			modal: false,
