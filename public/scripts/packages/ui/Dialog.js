@@ -3,10 +3,10 @@ var Class = require( '/scripts/libraries/ptclass' ),
   Dialog;
 
 /**
- * Representation of a button element preconfigured with a 'next' event
- * @class NextButton
+ * Representation of a Dialog
+ * @class Dialog
  * @constructor
- * @extends Button
+ * @extends Abstract
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
