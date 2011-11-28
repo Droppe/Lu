@@ -23,15 +23,23 @@ List =  Class.create( Abstract, ( function () {
      */    
     initialize: function ( $super, $element, settings ){
 
-      // PRIVATE INSTANCE PROPERTIES
+      // PRIVATE CONSTANTS
+      var NEXT = 'next',
+          LAST = 'last',
+          FIRST = 'first',
+          PREVIOUS = 'previous',
+          VERTICAL = 'vertical',
+          HORIZONTAL = 'horizontal',
 
+      // PRIVATE INSTANCE PROPERTIES
       /**
        * Instance of Button
        * @property Button
        * @type Object
        * @private
        */  
-      var List = this,
+      List = this,
+
       /**
        * Default configuration values
        * @property defaults
@@ -47,7 +55,16 @@ List =  Class.create( Abstract, ( function () {
           * @type String
           * @final
          */
-         selectFlag: 'selected'
+         selectFlag: 'selected',
+
+         /**
+          * Denotes the behavior of left, right, top and down arrow keys.
+          * @property direction 
+          * @default 'horizontal'
+          * @type String
+          * @final
+         */
+         direction: HORIZONTAL
       },
       /**
        * JQuery collection of like items in the list
@@ -55,7 +72,55 @@ List =  Class.create( Abstract, ( function () {
        * @type Object
        * @private
        */
-      $items;  
+      $items,
+     
+      /**
+       * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
+       * arrows.  Left and up correspond to action "previous" and right and next correspond to "next". 
+       * @method handleKeyup
+       * @private
+       * @param {Event} event An event object
+       * @param {Object} item An object or a number
+       * @return {Void}
+       */  
+      handleKeyup = function(event, item) {
+        var keyCode = event.keyCode,
+            item = $(event.target);
+
+        // A "vertical" list direction means that the up and down arrow keys work
+        if (settings.direction === VERTICAL) {  
+          switch (keyCode) {
+            case 38: // Up arrow
+              List.trigger(PREVIOUS, item);
+              break;
+            case 40: // Down arrow 
+              List.trigger(NEXT, item);
+            default:
+              break;
+          }
+        } else {
+          // By default, list direction is "horizontal" and left and right arrows work 
+          switch (keyCode) {
+            case 37: // Left arrow
+              List.trigger(PREVIOUS, item);
+              break;
+            case 39: // Right arrow
+              List.trigger(NEXT, item);
+            default:
+              break;
+          }
+        }
+
+        switch (keyCode) {
+          case 36: // Home key
+            List.trigger(FIRST, item);
+            break;
+          case 35: // Last key
+            List.trigger(LAST, item);
+          default:
+            break;
+        }
+      };
 
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -124,6 +189,11 @@ List =  Class.create( Abstract, ( function () {
           $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
           this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
         }
+
+        // Set focus to the item that you've selected
+        // We do this for ally
+        $item.attr("tabindex", "-1").focus();
+
         return List;
       };
 
@@ -207,7 +277,7 @@ List =  Class.create( Abstract, ( function () {
       };
 
       /**
-       * Returns the index of the selected item.
+       * Returns the index of the selecte item.
        * @method index
        * @public
        * @return {Number} The index of the selected item
@@ -254,27 +324,29 @@ List =  Class.create( Abstract, ( function () {
         return $items.length;
       };
 
+
       // EVENT BINDINGS
       $element.on( 'select', function( event, item ) {
         event.stopPropagation();
         List.select( item );
       } );
-      $element.on( 'next', function( event, item ) {
+      $element.on( NEXT, function( event, item ) {
         event.stopPropagation();
         List.next();
       } );
-      $element.on( 'previous', function( event, item ) {
+      $element.on( PREVIOUS, function( event, item ) {
         event.stopPropagation();
         List.previous();
       } );
-      $element.on( 'first', function( event, item ) {
+      $element.on( FIRST, function( event, item ) {
         event.stopPropagation();
         List.first();
       } );
-      $element.on( 'last', function( event, item ) {
+      $element.on( LAST, function( event, item ) {
         event.stopPropagation();
         List.last();
       } );
+      $element.on('keyup', handleKeyup);
 
     }
   };

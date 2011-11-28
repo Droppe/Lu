@@ -26,6 +26,7 @@ Button = Class.create( Abstract, ( function () {
      * @param {Object} settings Configuration settings
      */    
     initialize: function ( $super, $element, settings ){
+_.log("Button initialized");      
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -68,49 +69,8 @@ Button = Class.create( Abstract, ( function () {
         * @type Boolean 
         * @private
         */
-      isLink = false,
+      isLink = false;
     
-      /**
-       * Fires an event with the action and associated object/number
-       * @method triggerAction
-       * @param {String} action - ex. "select", "next", "prev"
-       * @param {Object} item - Normally a object but can be a number
-       * @private
-       * @return {Void}
-       */
-      triggerAction = function(action, item) {
-        if( item || item === 0 ) {
-          $element.trigger( action, [ item ] );
-          _.log("Button " + action);
-        } else {
-          $element.trigger( action );
-          _.log("Button " + action);
-        }
-      },
-
-      /**
-       * Setups accessibility for the button.  If the button is a "link" then it will have an ARIA role of button and 
-       * will be selectable by the space bar.  
-       * @method setupAlly 
-       * @private
-       * @return {Void}
-       */
-      setupAlly = function() {
-        // If it's a link give it ARIA role button
-        isLink = $element.is("a"); 
-        if (isLink) {
-          // No need to check if role exists because JQuery won't add another one
-          $element.attr("role", "button");
-
-          $element.on("keyup", function(e) { 
-              // Pressed space bar
-              if (e.keyCode === 32) {   
-                triggerAction(action, item);
-              } 
-          });
-        }  
-      };
-       
        
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -129,8 +89,49 @@ Button = Class.create( Abstract, ( function () {
         }
       }
 
-      // Setup accessibility - ally 
-      setupAlly();
+
+      // PRIVATE METHODS
+      /**
+       * Fires an event with the action and associated object/number
+       * @method triggerAction
+       * @param {String} action - ex. "select", "next", "prev"
+       * @param {Object} item - Normally a object but can be a number
+       * @private
+       * @return {Void}
+       */
+      function triggerAction(action, item) {
+        _.log("Button " + action);
+        
+        if( item || item === 0 ) {
+          $element.trigger( action, [ item ] );
+        } else {
+          $element.trigger( action );
+        }
+      }
+
+      /**
+       * Setups accessibility for the button.  If the button is a "link" then it will have an ARIA role of button and 
+       * will be selectable by the space bar.  
+       * @method setupAlly 
+       * @private
+       * @return {Void}
+       */
+      function setupAlly() {
+        // If it's a link give it ARIA role button
+        isLink = $element.is("a"); 
+        if (isLink) {
+          // No need to check if role exists because JQuery won't add another one
+          $element.attr("role", "button");
+
+          $element.on("keyup", function(e) { 
+              // Pressed space bar
+              if (e.keyCode === 32) {   
+                triggerAction(action, item);
+              } 
+          });
+        }  
+      }
+
 
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
@@ -145,6 +146,11 @@ Button = Class.create( Abstract, ( function () {
           $element.focus();
         }
       } );
+      
+      
+      // Setup accessibility - ally 
+      setupAlly();
+      
     }
   };
 

@@ -157,14 +157,16 @@ Athena = function( settings ) {
         keys = getKeys( $node );
 
       config = config || '{}';
+
       _.each( keys, function( key, index ) {
         var pckg = key.replace( /\:/g, '/' );
         var Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node ) );
         console.info( 'Action ' + key + ' executed with', $node );
+
         if( $node.data( 'controls' ) ) {
-          $node.data( 'controls' )[ key ] = Control;
+          $node.data( 'controls' )[ pckg ] = Control;
         } else {
-          $node.data( 'controls', {} ).data( 'controls' )[key] = Control;
+          $node.data( 'controls', {} ).data( 'controls' )[pckg] = Control;
         }
       } );
 
@@ -173,7 +175,7 @@ Athena = function( settings ) {
     }
 
     /**
-     * Parses the DOM starting with selected element, requires nessasary JS Files, and instantiates Athena controls. 
+     * Parses the DOM starting with selected element, requires necessary JS Files, and instantiates Athena controls. 
      * @method getControl
      * @public
      * @param {String} id The id of returned control.
@@ -309,6 +311,7 @@ Athena = function( settings ) {
 
   };
 
+
   /**
    * Factory for creating Controls.
    * @public
@@ -368,3 +371,5 @@ Athena = function( settings ) {
 if( module && module.exports ) {
   module.exports = new Athena( ATHENA_CONFIG );
 }
+
+localStorage.clear();
