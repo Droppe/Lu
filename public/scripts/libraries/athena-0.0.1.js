@@ -43,34 +43,6 @@ Athena = function( settings ) {
   ATTR = 'data-' + settings.namespace;
   UI_CONTROL_PATTERN = '[' + ATTR + '*="ui:"]';
 
-  (function( $ ){
-
-    $.fn.athena = function( method ) {
-      var args = [ this ];
-      Array.prototype.slice.call( arguments, 1 );
-      switch( method ) {
-        case 'execute':
-          Athena.execute.apply( this, args );
-          break;
-        case 'create':
-          Athena.create.apply( this, args );
-          break;
-        case 'destroy':
-          Athena.execute.apply( this, args );
-          break;
-        case 'observe':
-          break;
-        case 'unobserve':
-          break;
-        default:
-      }
-        return methods[ method ].apply( this );
-      } else if ( typeof method === 'object' || ! method ) {
-        return methods.init.apply( this, arguments );
-      }
-    };
-
-  })( jQuery );
   /**
    * Binds to jQuery and provides helper functions.
    * @private
