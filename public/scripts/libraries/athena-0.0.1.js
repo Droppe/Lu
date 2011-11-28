@@ -43,6 +43,34 @@ Athena = function( settings ) {
   ATTR = 'data-' + settings.namespace;
   UI_CONTROL_PATTERN = '[' + ATTR + '*="ui:"]';
 
+  (function( $ ){
+
+    $.fn.athena = function( method ) {
+      var args = [ this ];
+      Array.prototype.slice.call( arguments, 1 );
+      switch( method ) {
+        case 'execute':
+          Athena.execute.apply( this, args );
+          break;
+        case 'create':
+          Athena.create.apply( this, args );
+          break;
+        case 'destroy':
+          Athena.execute.apply( this, args );
+          break;
+        case 'observe':
+          break;
+        case 'unobserve':
+          break;
+        default:
+      }
+        return methods[ method ].apply( this );
+      } else if ( typeof method === 'object' || ! method ) {
+        return methods.init.apply( this, arguments );
+      }
+    };
+
+  })( jQuery );
   /**
    * Binds to jQuery and provides helper functions.
    * @private
@@ -131,7 +159,7 @@ Athena = function( settings ) {
       config = config || '{}';
       _.each( keys, function( key, index ) {
         var pckg = key.replace( /\:/g, '/' );
-        var Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; console.log(\'' + key + '\', config ); return config;')( $node ) );
+        var Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node ) );
         console.info( 'Action ' + key + ' executed with', $node );
         if( $node.data( 'controls' ) ) {
           $node.data( 'controls' )[ key ] = Control;
@@ -204,27 +232,6 @@ Athena = function( settings ) {
     $.fn.getControl = function( id ) {
       return Athena.getControl( $( this ), id );
     };
-
-    /**
-     * Wrap jQuery's 'on' with Athena functionality. See: http://api.jquery.com/on/
-     * @method on
-     * @public
-     */
-    $.fn.on = function( events, selector, data, handler ) {
-      var $this = $( this );
-      return on.apply( $this, [events, selector, data, handler] );
-    };
-
-    /**
-     * Wrap jQuery's 'off' with Athena functionality. See: http://api.jquery.com/off/
-     * @method off
-     * @public
-     */
-    $.fn.off = function( events, selector, handler ) {
-      var $this = $( this );
-      return off.apply( $this, [events, selector, handler] );
-    };
-
 
     /**
      * Wrap jQuery's 'trigger' with Athena functionality. See: http://api.jquery.com/trigger/
@@ -300,7 +307,7 @@ Athena = function( settings ) {
 
     $controls.removeData( 'athena', '$observers', 'controls' );
 
-  }
+  };
 
   /**
    * Factory for creating Controls.
@@ -350,7 +357,7 @@ Athena = function( settings ) {
     Athena.decorate( $body, ['ui:Abstract'] );
 
     $body.bind( settings.namespace + '-ready', function( event ) {
-      console.info( 'Ready !!! ')
+      console.info( 'Ready !!! ' );
     } ).execute();
 
   } );
