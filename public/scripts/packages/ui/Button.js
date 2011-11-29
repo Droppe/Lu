@@ -95,7 +95,7 @@ _.log("Button initialized");
        * Fires an event with the action and associated object/number
        * @method triggerAction
        * @param {String} action - ex. "select", "next", "prev"
-       * @param {Object} item - Normally a object but can be a number
+       * @param {Object|Number} item - Normally an object but can be a number
        * @private
        * @return {Void}
        */
