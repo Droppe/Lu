@@ -82,12 +82,12 @@
             }
           }">
         </label>
-        <div class="hidden" id="revealContent3">
+        <span class="hidden" id="revealContent3">
           Extra content for 3.
-        </div>
-        <div class="hidden" id="revealContent3b">
+        </span>
+        <span class="hidden" id="revealContent3b">
           More extra content for 3.
-        </div>
+        </span>
 
       </fieldset>
 
@@ -126,8 +126,8 @@
       
       <fieldset>
         <legend>Select Dropdown</legend>
-        <select name="mySelect" data-athena="ui:Reveal" data-athena-config="{
-          'ui:Reveal':{
+        <select name="mySelect" data-athena="ui:Reveal:Select" data-athena-config="{
+          'ui:Reveal:Select':{
             targetNode: {
               '7': '#revealContent7',
               '8': '#revealContent8',
@@ -135,6 +135,7 @@
             }
           }          
         }">
+          <option value="">Please choose something</option>
           <option value="7">seven</option>
           <option value="8">eight</option>
           <option value="9">nine</option>

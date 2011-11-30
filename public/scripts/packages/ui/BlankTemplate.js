@@ -7,8 +7,6 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @class BlankTemplate
  * @constructor
  * @extends Abstract
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
  */
 BlankTemplate = Class.create( Abstract, ( function () {

@@ -1,5 +1,5 @@
 var Class = require( '/scripts/libraries/ptclass' ),
-  SelectButton = require( 'ui/Button/Select' ),
+  Abstract = require( 'ui/Abstract' ),
   Reveal;
 
 /**
@@ -8,10 +8,9 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @class Reveal
  * @constructor
  * @extends Abstract
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
+ * @requires ptclass, Abstract
  */
-Reveal = Class.create( SelectButton,  ( function () {
+Reveal = Class.create( Abstract,  ( function () {
 
   // RETURN METHODS OBJECT
   return {
@@ -65,7 +64,7 @@ Reveal = Class.create( SelectButton,  ( function () {
        * @property dontHide
        * @type Boolean
        */
-      dontHide = ( $('input:checkbox:checked', $element.parent()).length > 0);
+      dontHide = ( $('input:checked', $element.parent()).length > 0);
             
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -92,7 +91,7 @@ Reveal = Class.create( SelectButton,  ( function () {
 
       /**
        * Toggles the display of the related content by
-       * adding/removing the hidden class on the component's key element.
+       * adding/removing the hidden class on the content's containing element.
        * @method toggle
        * @public
        * @return {Void}

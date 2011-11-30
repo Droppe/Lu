@@ -1,15 +1,15 @@
 var Class = require( '/scripts/libraries/ptclass' ),
-  Reveal = require( 'ui/Reveal' ),
-  RadioReveal;
+  RadioReveal = require( 'ui/Reveal/Radio' ),
+  SelectReveal;
 
 /**
- * Toggles the display of related content to a change event from a grouping of radio buttons.
- * @class RadioReveal
+ * Toggles the display of related content to a change event from a grouping of select options.
+ * @class SelectReveal
  * @constructor
  * @extends Reveal
- * @require ptclass, Reveal
+ * @requires ptclass, Reveal:Radio
  */
-RadioReveal = Class.create( Reveal,  ( function () {
+SelectReveal = Class.create( RadioReveal,  ( function () {
 
   // RETURN METHODS OBJECT
   return {
@@ -31,7 +31,7 @@ RadioReveal = Class.create( Reveal,  ( function () {
        * @type Object
        * @private
        */
-      var RadioReveal = this,
+      var SelectReveal = this,
       
       /**
        * Default configuration values
@@ -58,19 +58,6 @@ RadioReveal = Class.create( Reveal,  ( function () {
       
       targetNodes = settings.targetNode; 
 
-      // PRIVILEGED METHODS
-      /**
-       * Calculates the target node from the mapping of targets specified in the
-       * configuration
-       * @method getRevealTarget
-       * @public
-       * @return {Object} A JQuery object referencing the desired target content node
-       */
-      RadioReveal.getRevealTargets = function () {
-        // Join the values of the config hash into a CSS selector
-        return $( _.values(targetNodes).join(",") );
-      };
-
       /**
        * Toggles the display of the selected related content by
        * adding/removing the hidden class on the contents' containing elements.
@@ -78,18 +65,18 @@ RadioReveal = Class.create( Reveal,  ( function () {
        * @public
        * @return {Void}
        */
-      RadioReveal.toggle = function () {
-        RadioReveal.hide();
-        $(targetNodes[$('input[type="radio"]:checked', $element).val()]).removeClass("hidden");
+      SelectReveal.toggle = function () {
+        SelectReveal.hide();
+        $(targetNodes[$element.val()]).removeClass("hidden");
         
       };
       
-      RadioReveal.toggle();
+      SelectReveal.toggle();
     }
   };  
 }() ));
 
 //Export to CommonJS Loader
 if( module && module.exports ) {
-  module.exports = RadioReveal;
+  module.exports = SelectReveal;
 }
