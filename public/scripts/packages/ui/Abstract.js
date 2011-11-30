@@ -89,7 +89,7 @@ Abstract = Class.create( ( function() {
       //Observe elements passed into $observe
       $observe.observe( $element );
 
-      //Regiser elements passed in notify as observers
+      //Register elements passed in notify as observers
       $element.observe( $notify );
       
       
@@ -97,7 +97,6 @@ Abstract = Class.create( ( function() {
       
       // PRIVILEGED METHODS
       
-        
       /**
        * Creates an event listener for a type
        * @method on

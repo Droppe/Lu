@@ -78,52 +78,51 @@
           3
           <input type="checkbox" name="myCheckBox3" value="on" data-athena="ui:Reveal" data-athena-config="{
             'ui:Reveal':{
-              targetNode: '#revealContent3, #revealContent3b'
+              targetNode: '#revealContent3'
             }
           }">
         </label>
         <div class="hidden" id="revealContent3">
           Extra content for 3.
         </div>
-        <div class="hidden" id="revealContent3b">
-          More extra content for 3.
-        </div>
-
       </fieldset>
 
-      <fieldset data-athena="ui:Reveal:Radio" data-athena-config="{
-        'ui:Reveal:Radio':{
-          targetNode: {
-            'four': '#revealContent4',
-            'five': '#revealContent5',
-            'six': '#revealContent6',
-          }
-        }
-      }">
+      <fieldset>
         <legend>Radio Buttons</legend>
         <label>
           4
-          <input type="radio" name="myRadio" value="four">
+          <input type="radio" name="myRadio" value="on" data-athena="ui:Reveal" data-athena-config="{
+            'ui:Reveal':{
+              targetNode: '#revealContent4'
+            }
+          }">
         </label>
         <div class="hidden" id="revealContent4">
           Extra content for 4.
         </div>
         <label>
           5
-          <input type="radio" name="myRadio" value="five">
+          <input type="radio" name="myRadio" value="on" data-athena="ui:Reveal" data-athena-config="{
+            'ui:Reveal':{
+              targetNode: '#revealContent5'
+            }
+          }">
         </label>
         <div class="hidden" id="revealContent5">
           Extra content for 5.
         </div>
         <label>
           6
-          <input type="radio" name="myRadio" value="six">
+          <input type="radio" name="myRadio" value="on" data-athena="ui:Reveal" data-athena-config="{
+            'ui:Reveal':{
+              targetNode: '#revealContent6'
+            }
+          }">
         </label>
         <div class="hidden" id="revealContent6">
           Extra content for 6.
         </div>
       </fieldset>
-      
       <fieldset>
         <legend>Select Dropdown</legend>
         <select name="mySelect" data-athena="ui:Reveal" data-athena-config="{

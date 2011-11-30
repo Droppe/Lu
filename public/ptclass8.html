@@ -19,14 +19,15 @@
       var A = Class.create( {
         id: "A",
         initialize: function () {
-          var secret = "private";
-          this.getSecret = function () { return secret; };
-          this.yell = function () {
-            return this.getSecret() + ": A - PRIVILEGED, from " + this.id;
+          var A = this,
+          secret = "private";
+          A.getSecret = function () { return secret; };
+          A.yell = function () {
+            return A.getSecret() + ": A - PRIVILEGED, from " + A.id;
           };
         },
-        yell: function () {
-          return this.getSecret() + ": A - PROTO, from " + this.id;
+        Xyell: function () {
+          return A.getSecret() + ": A - PROTO, from " + A.id;
         }
       } );    
       
@@ -34,15 +35,19 @@
       var B = Class.create( A, {
         id: "B",
         initialize: function($super){
-
-          this.Xyell = function () {
-            return "B - PRIVILEGED, from " + this.id;
-          };
+          var B = this;
+          
           $super();
 
+
+          B.Xyell = function () {
+            return "B - PRIVILEGED, from " + B.id;
+          };
+
+
         },
-        yell: function ($super) {
-          return $super() + "; B - PROTO, from " + this.id + " secret is " + this.getSecret();
+        Xyell: function ($super) {
+          return $super() + "; B - PROTO, from " + B.id + " secret is " + B.getSecret();
         }        
       });    
 

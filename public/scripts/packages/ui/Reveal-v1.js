@@ -3,11 +3,10 @@ var Class = require( '/scripts/libraries/ptclass' ),
   Reveal;
 
 /**
- * Toggles the display of related content to a change event 
- * from a checkbox or other single element.
+ * Toggles the display of related content to some select action on a checkbox, radio button, or select dropdown.
  * @class Reveal
  * @constructor
- * @extends Abstract
+ * @extends SelectButton
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
@@ -52,20 +51,33 @@ Reveal = Class.create( SelectButton,  ( function () {
        * @private
        */
       revealClass,
+      targetNode,
       /**
-       * The CSS selector for the node(s) for the content to be revealed
-       * @property targetNodes
+       * The node for the revealed content's container
+       * @property revealTarget
        * @private
-       * @type String
+       * @type Object
        */
-      targetNodesSelector,
+      revealTarget,
+      /**
+       * The set of grouped radio buttons or select options
+       * @property revealGroup
+       * @type Object
+       */
+      revealGroup = [],
+      /**
+       * The number of items in the revealGroup
+       * @property revealGroupLength
+       * @type Int
+       */
+      revealGroupLength = [],      
       /**
        * Don't hide the related content on page load if the element
        * is already checked or selected
        * @property dontHide
        * @type Boolean
        */
-      dontHide = ( $('input:checkbox:checked', $element.parent()).length > 0);
+      dontHide = ( $('input:checkbox:checked, select option:selected, input:radio:checked', $element.parent()).length > 0);
             
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -73,8 +85,25 @@ Reveal = Class.create( SelectButton,  ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      targetNodesSelector = settings.targetNode;
+      targetNode = settings.targetNode;
+      _.log("TARGETNODE:", targetNode);
+      
+      // TBD...
       revealClass = settings.className;
+      revealGroup = ( function () {
+        var $parentForm = $element.closest("form");
+        if (typeof targetNode === "string") {
+          return $('input:radio[name="' + $element.attr("name") + '"]', $parentForm).not($element);
+        }
+        else {
+          return $( _.values(targetNode).join(","), $parentForm ).not(targetNode[$element.val()]);
+        }
+      }());
+        
+        
+      revealGroupLength = revealGroup.length;
+
+_.log("REVEALGROUP for", $element, revealGroup);
 
       // PRIVILEGED METHODS
 
@@ -82,13 +111,23 @@ Reveal = Class.create( SelectButton,  ( function () {
        * Calculates the target node based on whether a single
        * target or a mapping of targets is specified in the
        * configuration
-       * @method getRevealTargets
+       * @method getRevealTarget
        * @public
        * @return {Object} A JQuery object referencing the desired target content node
        */
-      Reveal.getRevealTargets = function () {
-        return $(targetNodesSelector);
-      };
+      Reveal.getRevealTarget = ( function () {
+        if (typeof targetNode === "string") {
+          return function () {
+            return $(targetNode);
+          };
+        }
+        else {
+          return function () {
+            return $(targetNode[$element.val()]);
+          };
+        }
+      }() );
+
 
       /**
        * Toggles the display of the related content by
@@ -97,8 +136,8 @@ Reveal = Class.create( SelectButton,  ( function () {
        * @public
        * @return {Void}
        */
-      Reveal.toggle = function () {        
-        Reveal.getRevealTargets().toggleClass(revealClass);
+      Reveal.toggle = function () {
+        Reveal.getRevealTarget().toggleClass(revealClass);
       };
 
       /**
@@ -108,7 +147,7 @@ Reveal = Class.create( SelectButton,  ( function () {
        * @return {Void}
        */
       Reveal.hide = function () {
-        Reveal.getRevealTargets().addClass(revealClass);
+        Reveal.getRevealTarget().addClass(revealClass);
       };
 
       /**
@@ -118,15 +157,22 @@ Reveal = Class.create( SelectButton,  ( function () {
        * @return {Void}
        */
       Reveal.show = function () {
-        Reveal.getRevealTargets().removeClass(revealClass);
+        Reveal.getRevealTarget().removeClass(revealClass);
       };
  
       // EVENT BINDINGS
       $element.on( settings.on, function( event ){
         Reveal.toggle();
+        // For radio buttons
+        if (revealGroupLength) {
+          // TODO: Do this, or add the items in revealGroup to the observers list for custom eventing?          
+          revealGroup.each(function(count, obj) {
+            $(obj).data("controls")["ui/Reveal"].hide();
+          });
+        }
       } );
 
-      // Initially hide the extra content unless the checkbox is checked
+      // Initially hide the extra content unless the radio/checkbox/selection is active
       if (dontHide) {
         Reveal.toggle();
       }
