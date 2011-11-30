@@ -42,7 +42,9 @@ Reveal = Class.create( Abstract,  ( function () {
        */
       defaults = {
         on: 'change',
-        className: 'hidden'
+        className: 'hidden',
+        hideEvent: "unselected",
+        showEvent: "selected"        
       },
       /**
        * The CSS class that Reveal uses to toggle the related-content display
@@ -98,6 +100,8 @@ Reveal = Class.create( Abstract,  ( function () {
        */
       Reveal.toggle = function () {        
         Reveal.getRevealTargets().toggleClass(revealClass);
+        Reveal.trigger(settings.showEvent);
+        _.log("Reveal", "toggle", $element, settings.showEvent);
       };
 
       /**
@@ -108,6 +112,7 @@ Reveal = Class.create( Abstract,  ( function () {
        */
       Reveal.hide = function () {
         Reveal.getRevealTargets().addClass(revealClass);
+        Reveal.trigger(settings.hideEvent);
       };
 
       /**
@@ -118,10 +123,12 @@ Reveal = Class.create( Abstract,  ( function () {
        */
       Reveal.show = function () {
         Reveal.getRevealTargets().removeClass(revealClass);
+        Reveal.trigger(settings.showEvent);
       };
  
       // EVENT BINDINGS
       $element.on( settings.on, function( event ){
+        _.log(settings.on, $element);
         Reveal.toggle();
       } );
 

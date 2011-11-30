@@ -43,18 +43,16 @@
 </head>
 
 <body>
-
   <div id="container">
-
     <form>
-      
       <fieldset>
         <legend>Checkboxes</legend>
         <label>
           1
-          <input type="checkbox" name="myCheckBox1" value="on" data-athena="ui:Reveal" data-athena-config="{
+          <input type="checkbox" name="myCheckBox1" value="on1" data-athena="ui:Reveal" data-athena-config="{
             'ui:Reveal':{
-              targetNode: '#revealContent1'
+              targetNode: '#revealContent1',
+              notify: '.unrelated'
             }
           }">
         </label>
@@ -64,7 +62,7 @@
 
         <label>
           2
-          <input type="checkbox" name="myCheckBox2" value="on" data-athena="ui:Reveal" data-athena-config="{
+          <input type="checkbox" name="myCheckBox2" value="on2" data-athena="ui:Reveal" data-athena-config="{
             'ui:Reveal':{
               targetNode: '#revealContent2'
             }
@@ -76,7 +74,7 @@
 
         <label>
           3
-          <input type="checkbox" name="myCheckBox3" value="on" data-athena="ui:Reveal" data-athena-config="{
+          <input type="checkbox" name="myCheckBox3" value="on3" data-athena="ui:Reveal" data-athena-config="{
             'ui:Reveal':{
               targetNode: '#revealContent3, #revealContent3b'
             }
@@ -131,7 +129,7 @@
             targetNode: {
               '7': '#revealContent7',
               '8': '#revealContent8',
-              '9': '#revealContent9'
+              '9': '.revealContent9'
             }
           }          
         }">
@@ -146,13 +144,20 @@
         <div class="hidden" id="revealContent8">
           Extra content for 8.
         </div>
-        <div class="hidden" id="revealContent9">
+        <div class="hidden revealContent9">
           Extra content for 9.
         </div>
+        <div class="hidden revealContent9">
+          More extra content for 9.
+        </div>
+
       </fieldset>
     </form>
-
-
+    
+    
+    <div class="unrelated hidden" data-athena="ui:Reveal:Container">
+      This is some completely unrelated content, DOM-wise.
+    </div>
 
   </div>
 
