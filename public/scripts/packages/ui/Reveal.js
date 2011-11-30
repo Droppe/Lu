@@ -101,7 +101,6 @@ Reveal = Class.create( Abstract,  ( function () {
       Reveal.toggle = function () {        
         Reveal.getRevealTargets().toggleClass(revealClass);
         Reveal.trigger(settings.showEvent);
-        _.log("Reveal", "toggle", $element, settings.showEvent);
       };
 
       /**
@@ -128,7 +127,6 @@ Reveal = Class.create( Abstract,  ( function () {
  
       // EVENT BINDINGS
       $element.on( settings.on, function( event ){
-        _.log(settings.on, $element);
         Reveal.toggle();
       } );
 
