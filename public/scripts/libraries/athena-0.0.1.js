@@ -132,7 +132,7 @@ Athena = function( settings ) {
 
       _.each( keys, function( key, index ) {
         var pckg = key.replace( /\:/g, '/' );
-        var Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; console.log(\'' + key + '\', config ); return config;')( $node ) );
+        var Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node ) );
         console.info( 'Action ' + key + ' executed with', $node );
 
         if( $node.data( 'controls' ) ) {
@@ -208,27 +208,6 @@ Athena = function( settings ) {
     };
 
     /**
-     * Wrap jQuery's 'on' with Athena functionality. See: http://api.jquery.com/on/
-     * @method on
-     * @public
-     */
-    $.fn.on = function( events, selector, data, handler ) {
-      var $this = $( this );
-      return on.apply( $this, [events, selector, data, handler] );
-    };
-
-    /**
-     * Wrap jQuery's 'off' with Athena functionality. See: http://api.jquery.com/off/
-     * @method off
-     * @public
-     */
-    $.fn.off = function( events, selector, handler ) {
-      var $this = $( this );
-      return off.apply( $this, [events, selector, handler] );
-    };
-
-
-    /**
      * Wrap jQuery's 'trigger' with Athena functionality. See: http://api.jquery.com/trigger/
      * @method trigger
      * @public
@@ -302,7 +281,7 @@ Athena = function( settings ) {
 
     $controls.removeData( 'athena', '$observers', 'controls' );
 
-  }
+  };
 
 
   /**
@@ -353,7 +332,7 @@ Athena = function( settings ) {
     Athena.decorate( $body, ['ui:Abstract'] );
 
     $body.bind( settings.namespace + '-ready', function( event ) {
-      console.info( 'Ready !!! ')
+      console.info( 'Ready !!! ' );
     } ).execute();
 
   } );
