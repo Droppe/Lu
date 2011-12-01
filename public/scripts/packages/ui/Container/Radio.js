@@ -1,5 +1,5 @@
 var Class = require( '/scripts/libraries/ptclass' ),
-  Reveal = require( 'ui/Reveal' ),
+  Container = require( 'ui/Container' ),
   RadioReveal;
 
 /**
@@ -9,7 +9,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @extends Reveal
  * @require ptclass, Reveal
  */
-RadioReveal = Class.create( Reveal,  ( function () {
+RadioReveal = Class.create( Container,  ( function () {
 
   // RETURN METHODS OBJECT
   return {
@@ -84,7 +84,7 @@ RadioReveal = Class.create( Reveal,  ( function () {
         
       };
       
-      RadioReveal.toggle();
+      //RadioReveal.toggle();
     }
   };  
 }() ));

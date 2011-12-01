@@ -63,7 +63,6 @@
           }
         }">Unselect</button>
 
-
         <label>
           1
           <input type="checkbox" name="myCheckBox1" value="on1" data-athena="ui:Container:Reveal" aria-controls="revealContent1">
@@ -72,7 +71,6 @@
           2
           <input type="checkbox" checked="checked" name="myCheckBox2" value="on2" data-athena="ui:Container:Reveal" aria-controls="revealContent2">
         </label>
-
         <span class="hidden" id="revealContent1" data-athena="ui:Container">
           Extra content for 1.
         </span>
@@ -84,15 +82,23 @@
       </fieldset>
 
 
-      <fieldset>
+      <fieldset data-athena="ui:Container:Radio">
         <legend>Radio Buttons</legend>
         <label>
-          1
-          <input type="radio" name="myRadioBtn1" value="on1" data-athena="ui:Container:Reveal" aria-controls="revealContent1">
+          3
+          <input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3">
         </label>
-        <span class="hidden" id="revealContent1" data-athena="ui:Container">
-          Extra content for 1.
+        <label>
+          4
+          <input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4">
+        </label>
+        <span class="hidden" id="revealContent3" data-athena="ui:Container">
+          Extra content for 3.
         </span>
+        <span class="hidden" id="revealContent4" data-athena="ui:Container">
+          Extra content for 4.
+        </span>
+
       </fieldset>
 
 
