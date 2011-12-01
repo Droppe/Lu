@@ -44,121 +44,59 @@
 
 <body>
   <div id="container">
+    
+    
     <form>
       <fieldset>
         <legend>Checkboxes</legend>
+
+        <button data-athena="ui:Button" data-athena-config="{
+          'ui:Button': {
+            action: 'selected',
+            notify: '#revealContent1'
+          }
+        }">Select</button>
+        <button data-athena="ui:Button" data-athena-config="{
+          'ui:Button': {
+            action: 'unselected',
+            notify: '#revealContent1'
+          }
+        }">Unselect</button>
+
+
         <label>
           1
-          <input type="checkbox" name="myCheckBox1" value="on1" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
-              targetNode: '#revealContent1',
-              notify: '.unrelated'
-            }
-          }">
+          <input type="checkbox" name="myCheckBox1" value="on1" data-athena="ui:Container:Reveal" aria-controls="revealContent1">
         </label>
-        <div class="hidden" id="revealContent1">
-          Extra content for 1.
-        </div>
-
         <label>
           2
-          <input type="checkbox" name="myCheckBox2" value="on2" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
-              targetNode: '#revealContent2'
-            }
-          }">
+          <input type="checkbox" checked="checked" name="myCheckBox2" value="on2" data-athena="ui:Container:Reveal" aria-controls="revealContent2">
         </label>
-        <div class="hidden" id="revealContent2">
-          Extra content for 2.
-        </div>
 
-        <label>
-          3
-          <input type="checkbox" name="myCheckBox3" value="on3" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
-              targetNode: '#revealContent3, #revealContent3b'
-            }
-          }">
-        </label>
-        <span class="hidden" id="revealContent3">
-          Extra content for 3.
+        <span class="hidden" id="revealContent1" data-athena="ui:Container">
+          Extra content for 1.
         </span>
-        <span class="hidden" id="revealContent3b">
-          More extra content for 3.
+        <span class="hidden" id="revealContent2" data-athena="ui:Container">
+          Extra content for 2.
         </span>
+
 
       </fieldset>
 
-      <fieldset data-athena="ui:Reveal:Radio" data-athena-config="{
-        'ui:Reveal:Radio':{
-          targetNode: {
-            'four': '#revealContent4',
-            'five': '#revealContent5',
-            'six': '#revealContent6',
-          }
-        }
-      }">
+
+      <fieldset>
         <legend>Radio Buttons</legend>
         <label>
-          4
-          <input type="radio" name="myRadio" value="four">
+          1
+          <input type="radio" name="myRadioBtn1" value="on1" data-athena="ui:Container:Reveal" aria-controls="revealContent1">
         </label>
-        <div class="hidden" id="revealContent4">
-          Extra content for 4.
-        </div>
-        <label>
-          5
-          <input type="radio" name="myRadio" value="five">
-        </label>
-        <div class="hidden" id="revealContent5">
-          Extra content for 5.
-        </div>
-        <label>
-          6
-          <input type="radio" name="myRadio" value="six">
-        </label>
-        <div class="hidden" id="revealContent6">
-          Extra content for 6.
-        </div>
+        <span class="hidden" id="revealContent1" data-athena="ui:Container">
+          Extra content for 1.
+        </span>
       </fieldset>
-      
-      <fieldset>
-        <legend>Select Dropdown</legend>
-        <select name="mySelect" data-athena="ui:Reveal:Select" data-athena-config="{
-          'ui:Reveal:Select':{
-            targetNode: {
-              '7': '#revealContent7',
-              '8': '#revealContent8',
-              '9': '.revealContent9'
-            }
-          }          
-        }">
-          <option value="">Please choose something</option>
-          <option value="7">seven</option>
-          <option value="8">eight</option>
-          <option value="9">nine</option>
-        </select>
-        <div class="hidden" id="revealContent7">
-          Extra content for 7.
-        </div>
-        <div class="hidden" id="revealContent8">
-          Extra content for 8.
-        </div>
-        <div class="hidden revealContent9">
-          Extra content for 9.
-        </div>
-        <div class="hidden revealContent9">
-          More extra content for 9.
-        </div>
 
-      </fieldset>
+
     </form>
-    
-    
-    <div class="unrelated hidden" data-athena="ui:Reveal:Container">
-      This is some completely unrelated content, DOM-wise.
-    </div>
-
   </div>
 
 </body>
