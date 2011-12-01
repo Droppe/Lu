@@ -34,7 +34,8 @@ Dialog = Class.create( Abstract,  ( function () {
         * @final
         */
        var defaults = {
-         autoOpen: false
+         autoOpen: false,
+         resizable: false
        };
        
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
