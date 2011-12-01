@@ -1,0 +1,150 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]> <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]> <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Tip</title>
+
+  <!-- Feature Detection -->
+  <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
+
+  <style type="text/css" media="screen">
+    #container {
+      margin: 50px auto;
+      width: 600px;
+      font-size: 13px;
+      line-height: 18px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .tip {
+      display: block;
+      position: absolute;
+      padding: 5px;
+      font-size: 11px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      opacity: .95;
+    }
+    .tip.above,
+    .tip.below {
+      margin-left: -5px;
+    }
+    .tip.above {
+      margin-top: -11px;
+    }
+    .tip.below {
+      margin-top: 0px;
+    }
+    .tip.right,
+    .tip.left {
+      margin-top: -3px;
+    }
+    .tip.right {
+      margin-left: 0px;
+    }
+    .tip.left {
+      margin-left: -11px;
+    }
+    .tip .content {
+      background-color: #fff;
+      border: 2px solid #ddd;
+      color: #333;
+      max-width: 200px;
+      padding: 3px 8px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 3px;
+    }
+    .tip .arrow {
+      height: 0;
+      position: absolute;
+    }
+    .tip.above .arrow {
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid #dedede;
+        bottom: 0;
+        left: 50%;
+        margin-left: -5px;
+    }
+    .tip.below .arrow {
+      border-bottom: 5px solid #ccc;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      left: 50%;
+      margin-left: -5px;
+      top: 0;
+    }
+    .tip.left .arrow {
+      border-left: 5px solid #ccc;
+      border-bottom: 5px solid transparent;
+      border-top: 5px solid transparent;
+      top: 50%;
+      margin-top: -5px;
+      right: 0;
+    }
+    .tip.right .arrow {
+      border-right: 5px solid #ccc;
+      border-bottom: 5px solid transparent;
+      border-top: 5px solid transparent;
+      top: 50%;
+      margin-top: -5px;
+      left: 0;
+    }
+  </style>
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/helpers.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    ATHENA_CONFIG = {
+      debug: true
+    };
+  </script>
+
+  <script type="text/javascript" charset="utf-8">
+    localStorage.clear();
+    require.ensure( ['/scripts/libraries/athena-0.0.1'], function() {} );
+  </script>
+
+</head>
+
+<body>
+
+  <div id="container">
+    Lorem ipsum dolor sit amet, <a href="#" title="Left"
+    data-athena="ui:Tip:Left">consectetur</a> adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud <a href="#" title="Right"
+    data-athena="ui:Tip:Right">exercitation</a> ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis <a href="#" class="miniprofile" title="Above" data-athena="ui:Tip ui:Loader" data-athena-config="{
+      'ui:Loader': {
+        uri: 'miniprofile'
+      },
+      'ui:Tip': {
+        type: 'miniprofile'
+      }
+    }">irure</a> dolor in reprehenderit in
+    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+    occaecat cupidatat non proident, sunt in <a href="#" title="Below"
+    data-athena="ui:Tip:Below">culpa</a> qui officia deserunt mollit
+    anim id est laborum.
+  </div>
+
+</body>
+
+</html>
+

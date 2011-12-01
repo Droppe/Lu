@@ -18,6 +18,10 @@
   </style>
 
   <style type="text/css">
+    .tab-list li {
+      display: inline-block;
+    }
+
     .tab-panels li {
       display: none;
     }
@@ -56,27 +60,23 @@
 </head>
 
 <body>
-  <h1>Tabs</h1>
+  <h1>Tabs Example</h1>
 
   <div id="tabs" data-athena="ui:Tabs">
     <!-- Tablist -->
-    <ul id="tablist" class="tab-list" data-athena="ui:List" data-athena-config="{
-      'ui:List': {
-        direction: 'vertical'
-      }
-    }">
+    <ul id="tablist" class="tab-list" data-athena="ui:List">
       <!-- Tabs -->
       <li class="selected">
-        <a href="#tabpanel1" id="tab1" data-athena="ui:Button:Select">Tab 1</a>
+        <a href="#tabpanel1" data-athena="ui:Button:Select">Tab 1</a>
       </li>
       <li>
-        <a href="#tabpanel2" id="tab2" data-athena="ui:Button:Select">Tab 2</a>
+        <a href="#tabpanel2" data-athena="ui:Button:Select">Tab 2</a>
       </li>
       <li>
-        <a href="#tabpanel3" id="tab3" data-athena="ui:Button:Select">Tab 3</a>
+        <a href="#tabpanel3" data-athena="ui:Button:Select">Tab 3</a>
       </li>
       <li>
-        <a href="#tabpanel4" id="tab4" data-athena="ui:Button:Select">Tab 4</a>
+        <a href="#tabpanel4" data-athena="ui:Button:Select">Tab 4</a>
       </li>
     </ul>
                                                                        
