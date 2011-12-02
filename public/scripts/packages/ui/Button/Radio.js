@@ -64,12 +64,16 @@ RadioButton = Class.create( Checkbox,  ( function () {
         _.log("RadioButton", action, $element);
         
         // Trigger 'unselect' on all the similar radio buttons
-        $( 'input:radio[name="'+ $element.attr("name") + '"]', $element.closest("form") ).each( function() {
-          $(this).trigger("unselect");
+        $( 'input:radio[name="'+ $element.attr("name") + '"]', $element.closest("form") ).each( function(index, item) {
+          $(item).trigger("unselect");
         } );
 
         RadioButton.trigger(action, item);
       };
+
+      // Auto trigger the default-checked radio button
+      
+      $( 'input:radio[name="'+ $element.attr("name") + '"]:checked', $element.closest("form") ).trigger(settings.on);
 
     }
   };  

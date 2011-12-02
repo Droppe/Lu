@@ -42,7 +42,7 @@
 
 <style>
   .selected {
-    border: 1px dashed red;
+    xborder: 1px dashed red;
   }
 </style>
 
@@ -78,27 +78,33 @@
           Extra content for 2.
         </span>
 
-
       </fieldset>
-
 
       <fieldset>
         <legend>Radio Buttons</legend>
         <ul data-athena="ui:List">
-          <li><label><input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3" data-athena="ui:Button:Radio">3</label></li>
-          <li><label><input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4" data-athena="ui:Button:Radio">4</label></li>
-          <li><label><input type="radio" name="myRadioBtn" value="on5" aria-controls="revealContent5" data-athena="ui:Button:Radio">5</label></li>
+          <li>
+            <label><input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3" data-athena="ui:Button:Radio">3</label>
+            <span class="hidden" id="revealContent3" data-athena="ui:Container">
+              Extra content for 3.
+            </span>
+          </li>
+          <li>
+            <label><input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4" data-athena="ui:Button:Radio">4</label>
+            <span class="hidden" id="revealContent4" data-athena="ui:Container">
+              Extra content for 4.
+            </span>
+          </li>
+          <li>
+            <label><input type="radio" name="myRadioBtn" value="on5" aria-controls="revealContent5" data-athena="ui:Button:Radio">5</label>
+            <span class="hidden" id="revealContent5" data-athena="ui:Container">
+              Extra content for 5.
+            </span>
+          </li>
         </ul>
           
-        <span class="hidden" id="revealContent3" data-athena="ui:Container">
-          Extra content for 3.
-        </span>
-        <span class="hidden" id="revealContent4" data-athena="ui:Container">
-          Extra content for 4.
-        </span>
-        <span class="hidden" id="revealContent5" data-athena="ui:Container">
-          Extra content for 5.
-        </span>
+
+
 
       </fieldset>
 
