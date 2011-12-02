@@ -1,6 +1,6 @@
 var Class = require( '/scripts/libraries/ptclass' ),
-  Checkbox = require( 'ui/Button/Checkbox' ),
-  RadioButton;
+  Button = require( 'ui/Button' ),
+  FormSelect;
   
 
 /**
@@ -10,7 +10,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @extends Button
  * @require ptclass, Button
  */
-RadioButton = Class.create( Checkbox,  ( function () {
+FormSelect = Class.create( Button,  ( function () {
 
   // RETURN METHODS OBJECT
   return {
@@ -32,7 +32,7 @@ RadioButton = Class.create( Checkbox,  ( function () {
        * @type Object
        * @private
        */
-      var RadioButton = this,
+      var FormSelect = this,
       
       /**
        * Default configuration values
@@ -46,7 +46,23 @@ RadioButton = Class.create( Checkbox,  ( function () {
         action: 'select'
       };
 
-            
+      
+      function getNotifyIds() {
+        var ids = [];
+        $("option", $element).each( function(index, item) {
+          var id = $(item).attr("aria-controls");
+          if (id) {
+            ids.push( "#" +  id);
+          }
+        });
+        return ids;
+      }
+
+      // Get the notify target(s) from the config or from the ARIA-controls attribute
+      settings.notify = settings.notify || getNotifyIds().join();
+      
+      _.log("settings.notify:", settings.notify);
+      
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
         
@@ -54,24 +70,17 @@ RadioButton = Class.create( Checkbox,  ( function () {
       $super( $element, settings );
 
       // PRIVILEDGED METHODS
-      RadioButton.triggerAction = function () {
+      FormSelect.triggerAction = function () {
         var action = settings.action,
-          // 'item' is used if the radio buttons are in a ui:List
-          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] ) || '0';
-
-        _.log("RadioButton", action, $element);
+          item;
         
-        // Trigger 'unselect' on all the similar radio buttons
-        $( 'input:radio[name="'+ $element.attr("name") + '"]', $element.closest("form") ).each( function(index, item) {
-          $(item).trigger("unselect");
-        } );
+        // Find the selected option's content ID
+        item = $("option:selected", $element).attr("aria-controls");
 
-        RadioButton.trigger(action, item);
+        _.log("FormSelect.triggerAction", action, $element, "item:", item);
+        
+        $element.trigger(action, [item]);
       };
-
-      // Auto trigger the default-checked radio button
-      
-      $( 'input:radio[name="'+ $element.attr("name") + '"]:checked', $element.closest("form") ).trigger(settings.on);
 
     }
   };  
@@ -79,5 +88,5 @@ RadioButton = Class.create( Checkbox,  ( function () {
 
 //Export to CommonJS Loader
 if( module && module.exports ) {
-  module.exports = RadioButton;
+  module.exports = FormSelect;
 }

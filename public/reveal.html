@@ -120,6 +120,26 @@
           </span>
       </fieldset>
 
+      <fieldset>
+        <legend>Select Options</legend>
+        <select name="mySelect" data-athena="ui:Button:FormSelect">
+          <option> -- </option>
+          <option value="9" aria-controls="revealContent9">nine</option>
+          <option value="10" aria-controls="revealContent10">ten</option>
+          <option value="11" aria-controls="revealContent11">eleven</option>                    
+        </select>
+        
+        <span class="hidden" id="revealContent9" data-athena="ui:Container">
+          Extra content for 9.
+        </span>
+        <span class="hidden" id="revealContent10" data-athena="ui:Container">
+          Extra content for 10.
+        </span>
+        <span class="hidden" id="revealContent11" data-athena="ui:Container">
+          Extra content for 11.
+        </span>
+        
+      </fieldset>
 
     </form>
   </div>
