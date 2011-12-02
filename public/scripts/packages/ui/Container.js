@@ -40,7 +40,9 @@ Container = Class.create( Abstract,  ( function () {
        * @final
        */
       defaults = {
+        // CSS
         className: "hidden",
+        // EVENTS
         hideEvent: "unselected",
         showEvent: "selected",
         hiddenEvent: "hidden",
@@ -89,13 +91,18 @@ Container = Class.create( Abstract,  ( function () {
 
 
       // EVENT BINDINGS
+      
+      // show
       $element.on( settings.showEvent, function( event ){
         _.log(settings.showEvent, $element);
+        event.stopPropagation();
         Container.show();
       } );
 
+      // hide
       $element.on( settings.hideEvent, function( event ){
         _.log(settings.hideEvent, $element);
+        event.stopPropagation();
         Container.hide();
       } );
 

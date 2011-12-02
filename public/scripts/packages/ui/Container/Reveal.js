@@ -24,6 +24,8 @@ Reveal = Class.create( Container,  ( function () {
      */    
     initialize: function ( $super, $element, settings ) {
 
+
+
       // PRIVATE INSTANCE PROPERTIES
 
       /**
@@ -60,6 +62,7 @@ Reveal = Class.create( Container,  ( function () {
             
 
       // Get the notify target from the config or from the ARIA-controls attribute
+
       settings.notify = settings.notify || ( "#" + $element.attr("aria-controls") );
             
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -91,9 +94,13 @@ Reveal = Class.create( Container,  ( function () {
       };
 
       // Overwrite these for this subclass since we don't need their events to trigger
-      Reveal.show = Reveal.hide = function () {};
+      Reveal.show = function () {};
+      Reveal.hide = function () {
+        Reveal.trigger(settings.hideEvent);
+      };
  
       // EVENT BINDINGS
+      // change
       $element.on( settings.on, function( event ){
         Reveal.toggle();
       } );

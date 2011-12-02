@@ -82,21 +82,29 @@
       </fieldset>
 
 
-      <fieldset data-athena="ui:Container:Radio">
+      <fieldset>
         <legend>Radio Buttons</legend>
         <label>
           3
-          <input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3">
+          <input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3" data-athena="ui:Container:Radio">
         </label>
         <label>
           4
-          <input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4">
+          <input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4" data-athena="ui:Container:Radio">
         </label>
+        <label>
+          5
+          <input type="radio" name="myRadioBtn" value="on5" aria-controls="revealContent5" data-athena="ui:Container:Radio">
+        </label>
+
         <span class="hidden" id="revealContent3" data-athena="ui:Container">
           Extra content for 3.
         </span>
         <span class="hidden" id="revealContent4" data-athena="ui:Container">
           Extra content for 4.
+        </span>
+        <span class="hidden" id="revealContent5" data-athena="ui:Container">
+          Extra content for 5.
         </span>
 
       </fieldset>

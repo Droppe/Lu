@@ -26,7 +26,6 @@ Button = Class.create( Abstract, ( function () {
      * @param {Object} settings Configuration settings
      */    
     initialize: function ( $super, $element, settings ){
-_.log("Button initialized");      
 
       // PRIVATE INSTANCE PROPERTIES
       /**

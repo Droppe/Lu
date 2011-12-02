@@ -1,5 +1,5 @@
 var Class = require( '/scripts/libraries/ptclass' ),
-  Container = require( 'ui/Container' ),
+  Reveal = require( 'ui/Container/Reveal' ),
   RadioReveal;
 
 /**
@@ -9,7 +9,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @extends Reveal
  * @require ptclass, Reveal
  */
-RadioReveal = Class.create( Container,  ( function () {
+RadioReveal = Class.create( Reveal,  ( function () {
 
   // RETURN METHODS OBJECT
   return {
@@ -41,50 +41,39 @@ RadioReveal = Class.create( Container,  ( function () {
        * @final
        */
       defaults = {
-      },
-      /**
-       * The map of nodes for the revealed contents' containers
-       * @property targetNodes
-       * @private
-       * @type String
-       */
-      targetNodes;
-            
+      };
+
+      
+      // Get the notify target from the config or from the ARIA-controls attribute
+      //settings.notify = settings.notify || ( "#" + $element.attr("aria-controls") );
+      if (!settings.notify) {
+        settings.notify = "#" + $element.attr("aria-controls") ;
+      }
+
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
-
+        
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
-      
-      targetNodes = settings.targetNode; 
+
+
 
       // PRIVILEGED METHODS
-      /**
-       * Calculates the target node from the mapping of targets specified in the
-       * configuration
-       * @method getRevealTarget
-       * @public
-       * @return {Object} A JQuery object referencing the desired target content node
-       */
-      RadioReveal.getRevealTargets = function () {
-        // Join the values of the config hash into a CSS selector
-        return $( _.values(targetNodes).join(",") );
-      };
 
       /**
-       * Toggles the display of the selected related content by
-       * adding/removing the hidden class on the contents' containing elements.
-       * @method toggle
-       * @public
-       * @return {Void}
-       */
+        * Toggles the display of the related content by
+        * adding/removing the hidden class on the content's containing element.
+        * @method toggle
+        * @public
+        * @return {Void}
+        */
       RadioReveal.toggle = function () {
-        RadioReveal.hide();
-        $(targetNodes[$('input[type="radio"]:checked', $element).val()]).removeClass(settings.className);
-        
-      };
-      
-      //RadioReveal.toggle();
+        _.log("Radio", $element, settings.showEvent, settings.notify);
+        // Fire 'selected' 
+        RadioReveal.trigger(settings.showEvent);
+        // Fire 'unselected'
+        $('input[type="radio"][name="' + $element.attr("name") + '"]', $element.closest("form")).not($element).trigger(settings.hideEvent);
+       };
     }
   };  
 }() ));
