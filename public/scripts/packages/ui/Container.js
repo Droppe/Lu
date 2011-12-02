@@ -93,14 +93,28 @@ Container = Class.create( Abstract,  ( function () {
       // EVENT BINDINGS
       
       // show
-      $element.on( settings.onShow, function( event ){
+      $element.on( settings.onShow, function( event, item ){
         _.log("Container", settings.onShow, $element);
-        event.stopPropagation();
-        Container.show();
+        event.stopPropagation();        
+        
+        var ok = true;
+        
+        if (item) {
+          if ( typeof item === "string" && item !== $element.attr("id")) {
+            ok = false;
+          } 
+        }
+        
+        if (ok) {
+          Container.show();
+        } else {
+          Container.hide();
+        }
+        
       } );
 
       // hide
-      $element.on( settings.onHide, function( event ){
+      $element.on( settings.onHide, function( event, item ){
         _.log("Container", settings.onHide, $element);
         event.stopPropagation();
         Container.hide();
