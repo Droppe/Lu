@@ -43,10 +43,10 @@ Container = Class.create( Abstract,  ( function () {
         // CSS
         className: "hidden",
         // EVENTS
-        hideEvent: "unselected",
-        showEvent: "selected",
-        hiddenEvent: "hidden",
-        shownEvent: "revealed"
+        onHide: "hide unselect",
+        onShow: "show select",
+        actionHide: "hide",
+        actionShow: "show"
       },
       /**
        * Classname for the hidden class from config
@@ -93,15 +93,15 @@ Container = Class.create( Abstract,  ( function () {
       // EVENT BINDINGS
       
       // show
-      $element.on( settings.showEvent, function( event ){
-        _.log(settings.showEvent, $element);
+      $element.on( settings.onShow, function( event ){
+        _.log("Container", settings.onShow, $element);
         event.stopPropagation();
         Container.show();
       } );
 
       // hide
-      $element.on( settings.hideEvent, function( event ){
-        _.log(settings.hideEvent, $element);
+      $element.on( settings.onHide, function( event ){
+        _.log("Container", settings.onHide, $element);
         event.stopPropagation();
         Container.hide();
       } );

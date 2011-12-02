@@ -1,15 +1,16 @@
 var Class = require( '/scripts/libraries/ptclass' ),
-  Reveal = require( 'ui/Container/Reveal' ),
-  RadioReveal;
+  Checkbox = require( 'ui/Button/Checkbox' ),
+  RadioButton;
+  
 
 /**
  * Toggles the display of related content to a change event from a grouping of radio buttons.
- * @class RadioReveal
+ * @class RadioButton
  * @constructor
- * @extends Reveal
- * @require ptclass, Reveal
+ * @extends Button
+ * @require ptclass, Button
  */
-RadioReveal = Class.create( Reveal,  ( function () {
+RadioButton = Class.create( Checkbox,  ( function () {
 
   // RETURN METHODS OBJECT
   return {
@@ -31,7 +32,7 @@ RadioReveal = Class.create( Reveal,  ( function () {
        * @type Object
        * @private
        */
-      var RadioReveal = this,
+      var RadioButton = this,
       
       /**
        * Default configuration values
@@ -41,44 +42,40 @@ RadioReveal = Class.create( Reveal,  ( function () {
        * @final
        */
       defaults = {
+        on: 'change',
+        action: 'select'
       };
 
       
-      // Get the notify target from the config or from the ARIA-controls attribute
-      //settings.notify = settings.notify || ( "#" + $element.attr("aria-controls") );
-      if (!settings.notify) {
-        settings.notify = "#" + $element.attr("aria-controls") ;
-      }
-
+      settings.item = 3;
+      
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
         
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
+      // PRIVILEDGED METHODS
+      RadioButton.triggerAction = function () {
+        var action = settings.action,
+          // 'item' is used if the radio buttons are in a ui:List
+          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] ) || '0';
 
+        _.log("RadioButton", action, $element);
+        
+        // Trigger 'unselect' on all the similar radio buttons
+        $( 'input:radio[name="'+ $element.attr("name") + '"]', $element.closest("form") ).each( function() {
+          $(this).trigger("unselect");
+        } );
 
-      // PRIVILEGED METHODS
+        RadioButton.trigger(action, item);
+      };
 
-      /**
-        * Toggles the display of the related content by
-        * adding/removing the hidden class on the content's containing element.
-        * @method toggle
-        * @public
-        * @return {Void}
-        */
-      RadioReveal.toggle = function () {
-        _.log("Radio", $element, settings.showEvent, settings.notify);
-        // Fire 'selected' 
-        RadioReveal.trigger(settings.showEvent);
-        // Fire 'unselected'
-        $('input[type="radio"][name="' + $element.attr("name") + '"]', $element.closest("form")).not($element).trigger(settings.hideEvent);
-       };
     }
   };  
 }() ));
 
 //Export to CommonJS Loader
 if( module && module.exports ) {
-  module.exports = RadioReveal;
+  module.exports = RadioButton;
 }

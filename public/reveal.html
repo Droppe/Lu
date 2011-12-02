@@ -40,37 +40,37 @@
     require.ensure( ['/scripts/libraries/athena-0.0.1'], function() {} );
   </script>
 
+<style>
+  .selected {
+    border: 1px dashed red;
+  }
+</style>
+
 </head>
 
 <body>
   <div id="container">
     
-    
     <form>
       <fieldset>
         <legend>Checkboxes</legend>
 
-        <button data-athena="ui:Button" data-athena-config="{
+        <button type="button" data-athena="ui:Button" data-athena-config="{
           'ui:Button': {
-            action: 'selected',
+            action: 'select',
             notify: '#revealContent1'
           }
         }">Select</button>
-        <button data-athena="ui:Button" data-athena-config="{
+        <button type="button" data-athena="ui:Button" data-athena-config="{
           'ui:Button': {
-            action: 'unselected',
+            action: 'unselect',
             notify: '#revealContent1'
           }
         }">Unselect</button>
 
-        <label>
-          1
-          <input type="checkbox" name="myCheckBox1" value="on1" data-athena="ui:Container:Reveal" aria-controls="revealContent1">
-        </label>
-        <label>
-          2
-          <input type="checkbox" checked="checked" name="myCheckBox2" value="on2" data-athena="ui:Container:Reveal" aria-controls="revealContent2">
-        </label>
+        <label><input type="checkbox" name="myCheckBox1" value="on1" data-athena="ui:Button:Checkbox" aria-controls="revealContent1">1</label>
+        <label><input type="checkbox" checked="checked" name="myCheckBox2" value="on2" data-athena="ui:Button:Checkbox" aria-controls="revealContent2">2</label>
+
         <span class="hidden" id="revealContent1" data-athena="ui:Container">
           Extra content for 1.
         </span>
@@ -84,19 +84,12 @@
 
       <fieldset>
         <legend>Radio Buttons</legend>
-        <label>
-          3
-          <input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3" data-athena="ui:Container:Radio">
-        </label>
-        <label>
-          4
-          <input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4" data-athena="ui:Container:Radio">
-        </label>
-        <label>
-          5
-          <input type="radio" name="myRadioBtn" value="on5" aria-controls="revealContent5" data-athena="ui:Container:Radio">
-        </label>
-
+        <ul data-athena="ui:List">
+          <li><label><input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3" data-athena="ui:Button:Radio">3</label></li>
+          <li><label><input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4" data-athena="ui:Button:Radio">4</label></li>
+          <li><label><input type="radio" name="myRadioBtn" value="on5" aria-controls="revealContent5" data-athena="ui:Button:Radio">5</label></li>
+        </ul>
+          
         <span class="hidden" id="revealContent3" data-athena="ui:Container">
           Extra content for 3.
         </span>

@@ -88,25 +88,7 @@ Button = Class.create( Abstract, ( function () {
         }
       }
 
-
       // PRIVATE METHODS
-      /**
-       * Fires an event with the action and associated object/number
-       * @method triggerAction
-       * @param {String} action - ex. "select", "next", "prev"
-       * @param {Object|Number} item - Normally an object but can be a number
-       * @private
-       * @return {Void}
-       */
-      function triggerAction(action, item) {
-        _.log("Button " + action);
-        
-        if( item || item === 0 ) {
-          $element.trigger( action, [ item ] );
-        } else {
-          $element.trigger( action );
-        }
-      }
 
       /**
        * Setups accessibility for the button.  If the button is a "link" then it will have an ARIA role of button and 
@@ -125,11 +107,32 @@ Button = Class.create( Abstract, ( function () {
           $element.on("keyup", function(e) { 
               // Pressed space bar
               if (e.keyCode === 32) {   
-                triggerAction(action, item);
+                Button.triggerAction(action, item);
               } 
           });
         }  
       }
+      
+      // PRIVILEDGED METHODS
+      
+      /**
+       * Fires an event with the action and associated object/number
+       * @method triggerAction
+       * @param {String} action - ex. "select", "next", "prev"
+       * @param {Object|Number} item - Normally an object but can be a number
+       * @private
+       * @return {Void}
+       */
+      Button.triggerAction = function (action, item) {
+        _.log("Button", action, $element);
+        
+        if( item || item === 0 ) {
+          $element.trigger( action, [ item ] );
+        } else {
+          $element.trigger( action );
+        }
+      };
+      
 
 
       // EVENT BINDINGS
@@ -137,7 +140,7 @@ Button = Class.create( Abstract, ( function () {
         event.preventDefault();
         // Oh, overloading the item!  The item can be a number or an Object
         // When it's a number - like index 0 - it's falsy unless we test it!
-        triggerAction(action, item);
+        Button.triggerAction(action, item);
 
         // For accessibility.  When a link behaves as a button, we prevent the default behavior - i.e. link out -
         // and set focus on the link.
