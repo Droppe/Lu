@@ -181,24 +181,24 @@ List =  Class.create( Abstract, ( function () {
         
         var $item;
 
-        if (!item) {
-          return List;
-        }
+        // item can be an integer and 0 is falsy!
+        if (item === 0 || item) {
 
-        if( typeof item === 'number' || typeof item === 'string') {
-          $item = $items.eq( item );
-        } else {
-          $item = $(item);
-        }
+          if( typeof item === 'number' || typeof item === 'string') {
+            $item = $items.eq( item );
+          } else {
+            $item = $(item);
+          }
 
-        if( $item.hasClass( settings.selectFlag ) === false ) {
-          $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
-          this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
-        }
+          if( $item.hasClass( settings.selectFlag ) === false ) {
+            $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
+            this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
+          }
 
-        // Set focus to the item that you've selected
-        // We do this for ally
-        $item.attr("tabindex", "-1").focus();
+          // Set focus to the item that you've selected
+          // We do this for ally
+          $item.attr("tabindex", "-1").focus();
+        }
 
         return List;
       };
