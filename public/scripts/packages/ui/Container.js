@@ -94,7 +94,7 @@ Container = Class.create( Abstract,  ( function () {
       
       // show
       $element.on( settings.onShow, function( event, item ){
-        _.log("Container", settings.onShow, $element);
+        _.log("Container", settings.onShow, $element, item);
         event.stopPropagation();        
         
         var ok = true;

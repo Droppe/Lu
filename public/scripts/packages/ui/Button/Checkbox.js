@@ -44,13 +44,14 @@ Checkbox = Class.create( Button,  ( function () {
       defaults = {
         on: 'change',
         actionCheck: 'select',
-        actionUncheck: 'unselect'
+        actionUncheck: 'unselect',
+        ariaAttrib: 'aria-controls'
       };
             
 
       // Get the notify target from the config or from the ARIA-controls attribute
 
-      settings.notify = settings.notify || ( "#" + $element.attr("aria-controls") );
+      settings.notify = settings.notify || ( "#" + $element.attr(defaults.ariaAttrib) );
             
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
