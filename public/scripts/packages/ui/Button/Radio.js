@@ -49,9 +49,6 @@ RadioButton = Class.create( FormSelect,  ( function () {
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
         
-
-      
-      
       /**
        * Determines the ids of any other components to notify
        * based on the "aria-controls" attribute.
@@ -88,9 +85,11 @@ RadioButton = Class.create( FormSelect,  ( function () {
         var action = settings.action,
         item = $('input:[type="radio"][name="' + $element.attr("name") + '"]:checked', $element.closest("form")).attr(settings.ariaAttrib) || "--";
 
-        _.log("Radio.triggerAction", settings.notify);
+        //_.log("Radio.triggerAction", "$element", $element, settings.notify);
         $element.trigger(action, [item]);
       };
+
+      RadioButton.triggerAction();
 
     }
   };  

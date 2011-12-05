@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Reveal</title>
+  <title>Container</title>
 
   <!-- Feature Detection -->
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
@@ -45,24 +45,25 @@
 <body>
   <div id="container">
         
-    <div class="unrelated" data-athena="ui:Container">
-      This is some completely unrelated content, DOM-wise.
-    </div>
 
     <button data-athena="ui:Button" data-athena-config="{
       'ui:Button':{
-        action: 'selected',
+        action: 'select',
         notify: '.unrelated'
       }
     }">Show</button>
     
     <button data-athena="ui:Button" data-athena-config="{
       'ui:Button':{
-        action: 'unselected',
+        action: 'unselect',
         notify: '.unrelated'
       }
     }">Hide</button>
-    
+
+    <div class="unrelated" data-athena="ui:Container">
+      This is some completely unrelated content, DOM-wise.
+    </div>
+
   </div>
 
 </body>

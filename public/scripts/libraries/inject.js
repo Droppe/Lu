@@ -1,662 +1,225 @@
-/**
- * @license
- * Library: Inject
- * Homepage: https://github.com/jakobo/inject
- * License: Apache 2.0 License
- */
+/*
+Library: Inject
+Homepage: https://github.com/jakobo/inject
+License: Apache 2.0 License
+*/
 
 
-/**
- * @license
- * Inject
- * Copyright (c) 2011 Jakob Heuser <jakob@felocity.com>. All Rights Reserved.
- * Apache Software License 2.0 (see below)
- *
- * lscache library (c) 2011 Pamela Fox
- * Apache Software License 2.0 (see below)
- *
- * Porthole
- * Copyright (c) 2011 Ternary Labs. All Rights Reserved.
- * MIT License (see below)
- *
- * APACHE SOFTWARE LICENSE 2.0
- * ===
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * MIT LICENSE
- * ===
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
+/*
+Inject
+Copyright (c) 2011 Jakob Heuser <jakob@felocity.com>. All Rights Reserved.
+Apache Software License 2.0 (see below)
+
+lscache library (c) 2011 Pamela Fox
+Apache Software License 2.0 (see below)
+
+Porthole
+Copyright (c) 2011 Ternary Labs. All Rights Reserved.
+MIT License (see below)
+
+APACHE SOFTWARE LICENSE 2.0
+===
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+MIT LICENSE
+===
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
 
 (function() {
-
   /*
   # Inject: Dependency Awesomeness #
   
   Some sample ways to use inject...
       var foo = require("moduleName");
-      
-      // -- or --
-      
       require.ensure(["moduleOne", "moduleTwo", "moduleThree"], function(require, exports, module) {
         var foo = require("moduleOne");
       })
-      
-      // -- or --
-      
-      require.run("mySampleApplication")
   
   Configuring Inject
     require.setModuleRoot("http://example.com/path/to/js/root")
     require.setCrossDomain("http://local.example.com/path/to/relay.html", "http://remote.example.com/path/to/relay.html")
-    require.addRule(moduleName, "http://local.example.com/path/to/module")
+    require.manifest({
+      moduleName: "http://local.example.com/path/to/module"
+    }, [weight])
+    require.manifest(function(path) {
+    
+    }, [weight])
+    require.run("appName")
   
   For more details, check out the README or github: https://github.com/Jakobo/inject
   */
-
   /*
   Constants and Registries used
-  */
-
-  var Porthole, analyzeFile, applyRules, clearFileRegistry, commonJSFooter, commonJSHeader, context, createIframe, db, define, dispatchTreeDownload, downloadTree, executeFile, fileStorageToken, fileStore, getFormattedPointcuts, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, jsSuffix, loadModules, lscache, namespace, pauseRequired, processCallbacks, require, requireRegex, responseSlicer, schemaVersion, sendToIframe, sendToXhr, treeNode, undef, userConfig, userModules, xDomainRpc, _db;
-  var __hasProp = Object.prototype.hasOwnProperty;
-
-  userConfig = {
-    "moduleRoot": null,
-    "fileExpires": 1440,
-    "xd": {
-      "inject": null,
-      "xhr": null
-    }
-  };
-
-  undef = undef;
-
+  */  var Porthole, callbackRegistry, checkComplete, clearFileRegistry, commonJSFooter, commonJSHeader, config, context, counter, createIframe, createTxId, fileExpiration, fileOnComplete, fileRegistry, fileStorageToken, fileStore, getFile, getModule, getPointcuts, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, isCached, jsSuffix, loadModules, loadQueue, lscache, modulePathRegistry, moduleRegistry, namespace, normalizePath, onModuleLoad, pauseRequired, require, requireRegex, responseSlicer, saveFile, saveModule, schemaVersion, sendToIframe, sendToXhr, setConfig, setUserModules, txnRegistry, userModules, xDomainRpc;
   schemaVersion = 1;
-
   context = this;
-
   pauseRequired = false;
-
-  _db = {
-    "moduleRegistry": {},
-    "transactionRegistry": {},
-    "transactionRegistryCounter": 0,
-    "loadQueue": [],
-    "rulesQueue": [],
-    "fileQueue": []
-  };
-
+  fileRegistry = null;
   xDomainRpc = null;
-
   fileStorageToken = "FILEDB";
-
   fileStore = "Inject FileStorage";
-
   namespace = "Inject";
-
+  fileExpiration = 1440;
+  counter = 0;
+  loadQueue = [];
   userModules = {};
-
+  moduleRegistry = {};
+  modulePathRegistry = {};
+  callbackRegistry = {};
+  txnRegistry = {};
+  fileOnComplete = {};
+  config = {
+    fileExpiration: fileExpiration
+  };
   jsSuffix = /.*?\.js$/;
-
   hostPrefixRegex = /^https?:\/\//;
-
   hostSuffixRegex = /^(.*?)(\/.*|$)/;
-
   iframeName = "injectProxy";
-
-  requireRegex = /require[\s]*\([\s]*(?:"|')([\w\/\.\:]+?)(?:'|")[\s]*\)/gm;
-
-  responseSlicer = /^(.+?)[\s]([\w\W]+)$/m;
-
+  requireRegex = /require[\s]*\([\s]*(?:"|')([\w\\/\.\:]+?)(?:'|")[\s]*\)/gm;
+  responseSlicer = /^(.+?)[\s](.+?)[\s](.+?)[\s]([\w\W]+)$/m;
   /*
   CommonJS wrappers for a header and footer
   these bookend the included code and insulate the scope so that it doesn't impact inject()
   or anything else.
+  this helps secure module bleeding
   */
-
-  commonJSHeader = 'with (window) {\n  (function() {\n    var module = {}, exports = {}, require = __INJECT_NS__.require, exe = null;\n    module.id = "__MODULE_ID__";\n    module.uri = "__MODULE_URI__";\n    module.exports = exports;\n    module.setExports = function(xobj) {\n      for (var name in module.exports) {\n        if (module.exports.hasOwnProperty(name)) {\n          throw new Error("module.setExports() failed: Module Exports has already been defined");\n        }\n      }\n      module.exports = xobj;\n      return module.exports;\n    }\n    exe = function(module, exports, require) {\n      __POINTCUT_BEFORE__';
-
+  commonJSHeader = 'with (window) {\n  (function() {\n    var module = {}, exports = {}, require = __INJECT_NS__.require, exe = null;\n    module.id = "__MODULE_ID__";\n    module.uri = "__MODULE_URI__";\n    module.exports = exports;\n    exe = function(module, exports, require) {\n      __POINTCUT_BEFORE__';
   commonJSFooter = '    __POINTCUT_AFTER__\n  };\n  exe.call(module, module, exports, require);\n  return module.exports;\n})();\n}';
-
-  db = {
+  setConfig = function(cfg) {
     /*
-      ## db{} ##
-      this is the database for all registries and queues
-      to reduce maintenance headaches, all accessing is done through this
-      object, and not the _db object
-    */
-    "module": {
-      /*
-          ## db.module{} ##
-          These functions manipulate the module registry
-      */
-      "create": function(moduleId) {
-        /*
-              ## create(moduleId) ##
-              create a registry entry for tracking a module
-        */
-        var registry;
-        registry = _db.moduleRegistry;
-        if (!registry[moduleId]) {
-          return registry[moduleId] = {
-            "exports": null,
-            "path": null,
-            "file": null,
-            "loading": false,
-            "rulesApplied": false,
-            "requires": [],
-            "staticRequires": [],
-            "exec": null,
-            "pointcuts": {
-              "before": [],
-              "after": []
-            }
-          };
-        }
-      },
-      "getExports": function(moduleId) {
-        /*
-              ## getExports(moduleId) ##
-              get the exports for a given moduleId
-        */
-        var registry, _ref, _ref2;
-        registry = _db.moduleRegistry;
-        if ((_ref = registry[moduleId]) != null ? _ref.exports : void 0) {
-          return registry[moduleId].exports;
-        }
-        if ((_ref2 = registry[moduleId]) != null ? _ref2.exec : void 0) {
-          registry[moduleId].exec();
-          registry[moduleId].exec = null;
-          return registry[moduleId].exports;
-        }
-        return false;
-      },
-      "setExports": function(moduleId, exports) {
-        /*
-              ## setExports(moduleId, exports) ##
-              set the exports for moduleId
-        */
-        var registry;
-        registry = _db.moduleRegistry;
-        db.module.create(moduleId);
-        return registry[moduleId].exports = exports;
-      },
-      "getPointcuts": function(moduleId) {
-        /*
-              ## getPointcuts(moduleId) ##
-              get the pointcuts for a given moduleId
-        */
-        var registry, _ref;
-        registry = _db.moduleRegistry;
-        if ((_ref = registry[moduleId]) != null ? _ref.pointcuts : void 0) {
-          return registry[moduleId].pointcuts;
-        }
-      },
-      "setPointcuts": function(moduleId, pointcuts) {
-        /*
-              ## setPointcuts(moduleId, pointcuts) ##
-              set the pointcuts for moduleId
-        */
-        var registry;
-        registry = _db.moduleRegistry;
-        db.module.create(moduleId);
-        return registry[moduleId].pointcuts = pointcuts;
-      },
-      "getRequires": function(moduleId) {
-        /*
-              ## getRequires(moduleId) ##
-              get the requires for a given moduleId found at runtime
-        */
-        var registry, _ref;
-        registry = _db.moduleRegistry;
-        if ((_ref = registry[moduleId]) != null ? _ref.requires : void 0) {
-          return registry[moduleId].requires;
-        }
-      },
-      "setRequires": function(moduleId, requires) {
-        /*
-              ## setRequires(moduleId, requires) ##
-              set the runtime dependencies for moduleId
-        */
-        var registry;
-        registry = _db.moduleRegistry;
-        db.module.create(moduleId);
-        return registry[moduleId].requires = requires;
-      },
-      "getStaticRequires": function(moduleId) {
-        /*
-              ## getStaticRequires(moduleId) ##
-              get the requires for a given moduleId found at declaration time (static dependencies)
-        */
-        var registry, _ref;
-        registry = _db.moduleRegistry;
-        if ((_ref = registry[moduleId]) != null ? _ref.staticRequires : void 0) {
-          return registry[moduleId].staticRequires;
-        }
-      },
-      "setStaticRequires": function(moduleId, staticRequires) {
-        /*
-              ## setStaticRequires(moduleId, staticRequires) ##
-              set the staticRequires for moduleId, found at declaration time
-        */
-        var registry;
-        registry = _db.moduleRegistry;
-        db.module.create(moduleId);
-        return registry[moduleId].staticRequires = staticRequires;
-      },
-      "getRulesApplied": function(moduleId) {
-        /*
-              ## getRulesApplied(moduleId) ##
-              get the status of the rulesApplied flag. It's set when it has passed through
-              the rules queue
-        */
-        var registry, _ref;
-        registry = _db.moduleRegistry;
-        if ((_ref = registry[moduleId]) != null ? _ref.rulesApplied : void 0) {
-          return registry[moduleId].rulesApplied;
-        } else {
-          return false;
-        }
-      },
-      "setRulesApplied": function(moduleId, rulesApplied) {
-        /*
-              ## setRulesApplied(moduleId, rulesApplied) ##
-              set the rules applied flag for moduleId once all rules have been applied
-        */
-        var registry;
-        registry = _db.moduleRegistry;
-        db.module.create(moduleId);
-        return registry[moduleId].rulesApplied = rulesApplied;
-      },
-      "getPath": function(moduleId) {
-        /*
-              ## getPath(moduleId) ##
-              get the resolved path for a given moduleId
-        */
-        var registry, _ref;
-        registry = _db.moduleRegistry;
-        if ((_ref = registry[moduleId]) != null ? _ref.path : void 0) {
-          return registry[moduleId].path;
-        } else {
-          return false;
-        }
-      },
-      "setPath": function(moduleId, path) {
-        /*
-              ## setPath(moduleId, path) ##
-              set the path for moduleId
-        */
-        var registry;
-        registry = _db.moduleRegistry;
-        db.module.create(moduleId);
-        return registry[moduleId].path = path;
-      },
-      "getFile": function(moduleId) {
-        /*
-              ## getFile(moduleId) ##
-              get the file for a given moduleId. If it doesn't exist in the registry,
-              look for the object in localStorage. Return false if no matches are found
-        */
-        var file, path, registry, token, _ref;
-        registry = _db.moduleRegistry;
-        path = db.module.getPath(moduleId);
-        token = "" + fileStorageToken + schemaVersion + path;
-        if ((_ref = registry[moduleId]) != null ? _ref.file : void 0) {
-          return registry[moduleId].file;
-        }
-        if (userConfig.fileExpiration === 0) return false;
-        file = lscache.get(token);
-        if (file && typeof file === "string" && file.length) {
-          db.module.setFile(moduleId, file);
-          return file;
-        }
-        return false;
-      },
-      "setFile": function(moduleId, file) {
-        /*
-              ## setFile(moduleId, file) ##
-              set the file contents for moduleId, and update localStorage
-        */
-        var path, registry, token;
-        registry = _db.moduleRegistry;
-        db.module.create(moduleId);
-        registry[moduleId].file = file;
-        path = db.module.getPath(moduleId);
-        token = "" + fileStorageToken + schemaVersion + path;
-        return lscache.set(token, file, userConfig.fileExpires);
-      },
-      "clearAllFiles": function() {
-        /*
-              ## clearAllFiles() ##
-              remove all files from the registry. It sets them all back to an unloaded state
-        */
-        var data, moduleId, registry, _results;
-        registry = _db.moduleRegistry;
-        _results = [];
-        for (moduleId in registry) {
-          if (!__hasProp.call(registry, moduleId)) continue;
-          data = registry[moduleId];
-          data.file = null;
-          _results.push(data.loading = false);
-        }
-        return _results;
-      },
-      "getLoading": function(moduleId) {
-        /*
-              ## getLoading(moduleId) ##
-              get the status of the loading flag. It's set when an item begins download,
-              and cleared when the download completes and the file is saved
-        */
-        var registry, _ref;
-        registry = _db.moduleRegistry;
-        if ((_ref = registry[moduleId]) != null ? _ref.loading : void 0) {
-          return registry[moduleId].loading;
-        } else {
-          return false;
-        }
-      },
-      "setLoading": function(moduleId, loading) {
-        /*
-              ## setLoading(moduleId, loading) ##
-              set the loading flag for moduleId, It's set when an item begins download
-        */
-        var registry;
-        registry = _db.moduleRegistry;
-        db.module.create(moduleId);
-        return registry[moduleId].loading = loading;
-      }
-    },
-    "txn": {
-      /*
-          ## db.txn{} ##
-          These methods manipulate the transaction registry
-      */
-      "create": function() {
-        /*
-              ## create() ##
-              Create a transaction so we can count outstanding requests
-        */
-        var id;
-        id = _db.transactionRegistryCounter++;
-        _db.transactionRegistry[id] = 0;
-        return id;
-      },
-      "add": function(txnId) {
-        /*
-              ## add(txnId) ##
-              increment the counter for a given transaction id
-        */        return _db.transactionRegistry[txnId]++;
-      },
-      "subtract": function(txnId) {
-        /*
-              ## subtract(txnId) ##
-              decrement the counter for a given transaction id
-        */        return _db.transactionRegistry[txnId]--;
-      },
-      "get": function(txnId) {
-        /*
-              ## get(txnId) ##
-              Get the number of outstanding transactions for a given transaction id
-        */        return _db.transactionRegistry[txnId];
-      },
-      "remove": function(txnId) {
-        /*
-              ## remove(txnId) ##
-              Remove a transaction entry from the registry
-        */        _db.transactionRegistry[txnId] = null;
-        return delete _db.transactionRegistry[txnId];
-      }
-    },
-    "queue": {
-      "load": {
-        /*
-              ## db.queue.load{} ##
-              these methods affect the load queue, tracking callback requests
-              when loading is blocked for a cross domain iframe
-        */
-        "add": function(item) {
-          return _db.loadQueue.push(item);
-        },
-        "get": function() {
-          return _db.loadQueue;
-        }
-      },
-      "rules": {
-        /*
-              ## db.queue.rules{} ##
-              these methods affect the rules queue, tracking rules placed into
-              the system via addRule(). Any time the rules are dirty, we sort them
-              on get()
-        */
-        "add": function(item) {
-          _db.rulesQueue.push(item);
-          return _db.rulesQueueDirty = true;
-        },
-        "get": function() {
-          if (_db.rulesQueueDirty) {
-            _db.rulesQueueDirty = false;
-            _db.rulesQueue.sort(function(a, b) {
-              return b.weight - a.weight;
-            });
-          }
-          return _db.rulesQueue;
-        },
-        "size": function() {
-          return _db.rulesQueue.length;
-        }
-      },
-      "file": {
-        /*
-              ## db.queue.file{} ##
-              these methods affect the file queue, used for tracking pending callbacks
-              when a file is being downloaded. It supports a clear() method to remove
-              all pending callbacks after the queue has been ran.
-        */
-        "add": function(moduleId, item) {
-          if (!_db.fileQueue[moduleId]) !(_db.fileQueue[moduleId] = []);
-          return _db.fileQueue[moduleId].push(item);
-        },
-        "get": function(moduleId) {
-          if (_db.fileQueue[moduleId]) {
-            return _db.fileQueue[moduleId];
-          } else {
-            return [];
-          }
-        },
-        "clear": function(moduleId) {
-          if (_db.fileQueue[moduleId]) return _db.fileQueue[moduleId] = [];
-        }
+      ## setConfig(cfg) ##
+      _internal_ Set the config
+      */    config = cfg;
+    if (!(config.fileExpiration != null)) {
+      return config.fileExpiration = fileExpiration;
+    }
+  };
+  setUserModules = function(modl) {
+    /*
+      ## setUserModules(modl) ##
+      _internal_ Set the collection of user defined modules
+      */    return userModules = modl;
+  };
+  getModule = function(module) {
+    /*
+      ## getModule(module) ##
+      _internal_ Get a module by name
+      */    return moduleRegistry[module] || false;
+  };
+  saveModule = function(module, exports) {
+    /*
+      ## saveModule(module, exports) ##
+      _internal_ Save a module by name
+      */    if (moduleRegistry[module]) {
+      return;
+    }
+    return moduleRegistry[module] = exports;
+  };
+  isCached = function(path) {
+    /*
+      ## isCached(mpath) ##
+      _internal_ test if a file is in the cache validity has been moved to lscache
+      */    return (fileRegistry != null) && (fileRegistry[path] != null);
+  };
+  getFile = function(path, cb) {
+    /*
+      ## getFile(path, cb) ##
+      _internal_ Get a file by its path. Asynchronously calls its callback.
+      Uses LocalStorage or UserData if available
+      */    var file, token;
+    token = "" + fileStorageToken + schemaVersion + path;
+    if (!fileRegistry) {
+      fileRegistry = {};
+    }
+    if (fileRegistry[path] && fileRegistry[path].length) {
+      return cb(true, fileRegistry[path]);
+    } else {
+      file = lscache.get(token);
+      if (file && typeof file === "string" && file.length) {
+        fileRegistry[path] = file;
+        return cb(true, fileRegistry[path]);
+      } else {
+        return cb(false, null);
       }
     }
   };
-
-  treeNode = (function() {
-
+  saveFile = function(path, file) {
     /*
-      ## treeNode [class] ##
-      _internal_ used for constructing the dependency tree
-      once built, we can perform a post-order traversal which identifies
-      the order we are supposed to execute our required files
-    */
-
-    function treeNode(value) {
-      /*
-          ## constructor(value) ##
-          set the value for the node, create null values for parent, left right
-      */      this.value = value;
-      this.children = [];
-      this.parent = null;
-      this.left = null;
-      this.right = null;
+      ## saveFile(path, file) ##
+      _internal_ Save a file for resource `path` into LocalStorage or UserData
+      Also updates the internal fileRegistry
+      */    var token;
+    token = "" + fileStorageToken + schemaVersion + path;
+    if (isCached(path)) {
+      return;
     }
-
-    treeNode.prototype.getValue = function() {
-      /*
-          ## getValue() ##
-          get the value of the node
-      */      return this.value;
-    };
-
-    treeNode.prototype.addChild = function(node) {
-      /*
-          ## addChild(node) ##
-          add a child node to the existing tree. Creates left, right, and parent relationships
-      */
-      var rightChild;
-      if (this.children.length > 0) {
-        rightChild = this.children[this.children.length - 1];
-        node.setLeft(rightChild);
-        rightChild.setRight(node);
-      }
-      this.children.push(node);
-      return node.setParent(this);
-    };
-
-    treeNode.prototype.getChildren = function() {
-      /*
-          ## getChildren() ##
-          get the children for the existing tree
-      */      return this.children;
-    };
-
-    treeNode.prototype.setLeft = function(node) {
-      /*
-          ## setLeft(node) ##
-          set the sibling to the left of this current node
-      */      return this.left = node;
-    };
-
-    treeNode.prototype.getLeft = function() {
-      /*
-          ## getLeft() ##
-          get the left / previous sibling
-      */      return this.left;
-    };
-
-    treeNode.prototype.setRight = function(node) {
-      /*
-          ## setRight(node) ##
-          set the sibling to the right of this current node
-      */      return this.right = node;
-    };
-
-    treeNode.prototype.getRight = function() {
-      /*
-          ## getRight() ##
-          get the right / next sibling
-      */      return this.right;
-    };
-
-    treeNode.prototype.setParent = function(node) {
-      /*
-          ## setParent(node) ##
-          set the parent of this node
-      */      return this.parent = node;
-    };
-
-    treeNode.prototype.getParent = function() {
-      /*
-          ## getParent() ##
-          get the parent of this node
-      */      return this.parent;
-    };
-
-    treeNode.prototype.postOrder = function() {
-      /*
-          ## postOrder() ##
-          Perform a post-order traversal of the tree, and return an array
-          of the values. The order for post-order is left, right, parent
-      */
-      var currentNode, direction, output, _results;
-      output = [];
-      currentNode = this;
-      direction = null;
-      _results = [];
-      while (currentNode) {
-        if (currentNode.getChildren().length > 0 && direction !== "up") {
-          direction = "down";
-          currentNode = currentNode.getChildren()[0];
-          continue;
-        }
-        output.push(currentNode.getValue());
-        if (currentNode.getRight()) {
-          direction = "right";
-          currentNode = currentNode.getRight();
-          continue;
-        }
-        if (currentNode.getParent()) {
-          direction = "up";
-          currentNode = currentNode.getParent();
-          continue;
-        }
-        return output;
-      }
-      return _results;
-    };
-
-    return treeNode;
-
-  })();
-
+    fileRegistry[path] = file;
+    return lscache.set(token, file, config.fileExpiration);
+  };
   clearFileRegistry = function(version) {
-    var key, keys, token, _i, _len;
-    if (version == null) version = schemaVersion;
+    var file, lkey, token;
+    if (version == null) {
+      version = schemaVersion;
+    }
     /*
       ## clearFileRegistry(version = schemaVersion) ##
       _internal_ Clears the internal file registry at `version`
       clearing all local storage keys that relate to the fileStorageToken and version
-    */
+      */
     token = "" + fileStorageToken + version;
-    keys = [];
-    
-  for (var i = 0; i < localStorage.length; i++) {
-    var key = localStorage.key(i);
-    if (key.indexOf(token) !== -1) keys.push(key)
-  }
-  ;
-    for (_i = 0, _len = keys.length; _i < _len; _i++) {
-      key = keys[_i];
-      localStorage.removeItem(key);
+    for (lkey in localStorage) {
+      file = localStorage[lkey];
+      if (lkey.indexOf(token) !== -1) {
+        lscache.remove(lkey);
+      }
     }
-    if (version === schemaVersion) return db.module.clearAllFiles();
+    if (version === schemaVersion) {
+      return fileRegistry = {};
+    }
   };
-
+  createTxId = function() {
+    /*
+      ## createTxId() ##
+      _internal_ create a transaction id
+      */    return "txn_" + (counter++);
+  };
   createIframe = function() {
     /*
       ## createIframe() ##
-      _internal_ create an iframe to the xhr location
-    */
-    var iframe, localSrc, src, trimHost, _ref, _ref2;
-    src = userConfig != null ? (_ref = userConfig.xd) != null ? _ref.xhr : void 0 : void 0;
-    localSrc = userConfig != null ? (_ref2 = userConfig.xd) != null ? _ref2.inject : void 0 : void 0;
-    if (!src) throw new Error("Configuration requires xd.remote to be defined");
+      _internal_ create an iframe to the config.xd.remote location
+      */    var iframe, localSrc, src, trimHost, _ref, _ref2;
+    src = config != null ? (_ref = config.xd) != null ? _ref.xhr : void 0 : void 0;
+    localSrc = config != null ? (_ref2 = config.xd) != null ? _ref2.inject : void 0 : void 0;
+    if (!src) {
+      throw new Error("Configuration requires xd.remote to be defined");
+    }
     if (!localSrc) {
       throw new Error("Configuration requires xd.local to be defined");
     }
@@ -664,7 +227,11 @@
       host = host.replace(hostPrefixRegex, "").replace(hostSuffixRegex, "$1");
       return host;
     };
-    iframe = document.createElement("iframe");
+    try {
+      iframe = document.createElement("<iframe name=\"" + iframeName + "\"/>");
+    } catch (err) {
+      iframe = document.createElement("iframe");
+    }
     iframe.name = iframeName;
     iframe.src = src + "#xhr";
     iframe.style.width = iframe.style.height = "1px";
@@ -672,304 +239,239 @@
     iframe.style.position = "absolute";
     iframe.id = iframeName;
     document.body.insertBefore(iframe, document.body.firstChild);
-    xDomainRpc = new Porthole.WindowProxy(userConfig.xd.xhr + "#xhr", iframeName);
+    xDomainRpc = new Porthole.WindowProxy(config.xd.xhr + "#xhr", iframeName);
     return xDomainRpc.addEventListener(function(event) {
-      var item, pieces, _i, _len, _ref3;
-      if (trimHost(event.origin) !== trimHost(userConfig.xd.xhr)) return;
+      var item, pieces, _i, _len;
+      if (trimHost(event.origin) !== trimHost(config.xd.xhr)) {
+        return;
+      }
       if (event.data === "READY") {
         xDomainRpc.postMessage("READYREADY");
         pauseRequired = false;
-        _ref3 = db.queue.load.get();
-        for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-          item = _ref3[_i];
+        for (_i = 0, _len = loadQueue.length; _i < _len; _i++) {
+          item = loadQueue[_i];
           item();
         }
         return;
       }
       pieces = event.data.match(responseSlicer);
-      return processCallbacks(pieces[1], pieces[2]);
+      return onModuleLoad(pieces[1], pieces[2], pieces[3], pieces[4]);
     });
   };
-
-  getFormattedPointcuts = function(moduleId) {
+  getPointcuts = function(module) {
     /*
-      ## getFormattedPointcuts(moduleId) ##
+      ## getPointcuts(module) ##
       _internal_ get the [pointcuts](http://en.wikipedia.org/wiki/Pointcut) for a module if
       specified
-    */
-    var afterCut, beforeCut, cut, cuts, definition, fn, noop, pointcuts, _i, _j, _len, _len2, _ref, _ref2;
-    cuts = db.module.getPointcuts(moduleId);
-    beforeCut = [";"];
-    afterCut = [";"];
-    _ref = cuts.before;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      cut = _ref[_i];
-      beforeCut.push(cut.toString().match(/.*?\{([\w\W]*)\}/m)[1]);
-    }
-    _ref2 = cuts.after;
-    for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
-      cut = _ref2[_j];
-      afterCut.push(cut.toString().match(/.*?\{([\w\W]*)\}/m)[1]);
-    }
-    beforeCut.push(";");
-    afterCut.push(";");
-    return {
-      before: beforeCut.join(";\n"),
-      after: afterCut.join(";\n")
-    };
+      */    var cut, definition, fn, noop, pointcuts;
     noop = function() {};
     pointcuts = {
-      'before': noop,
-      'after': noop
+      before: noop,
+      after: noop
     };
-    if (!userModules[module]) return pointcuts;
+    if (!userModules[module]) {
+      return pointcuts;
+    }
     definition = userModules[module];
     for (cut in pointcuts) {
       fn = pointcuts[cut];
-      if (definition[cut]) pointcuts[cut] = definition[cut];
+      if (definition[cut]) {
+        pointcuts[cut] = definition[cut];
+      }
     }
     return pointcuts;
   };
-
-  dispatchTreeDownload = function(id, tree, node, callback) {
+  normalizePath = function(path) {
     /*
-      ## dispatchTreeDownload(id, tree, node, callback) ##
-      _internal_ this is used to decouple the execution of a subtree when in a loop
-      It uses setTimeout() to fully decouple the item, and yield to the page which
-      may be doing other tasks. When all children have completed, callback() is
-      invoked
-    */    tree.addChild(node);
-    if (db.module.getLoading(node.getValue()) === false) {
-      db.txn.add(id);
-      return context.setTimeout(function() {
-        return downloadTree(node, function() {
-          db.txn.subtract(id);
-          if (db.txn.get(id) === 0) {
-            db.txn.remove(id);
-            return callback();
-          }
-        });
-      });
-    }
-  };
-
-  loadModules = function(modList, callback) {
-    /*
-      ## loadModules(modList, callback) ##
-      _internal_ load a collection of modules in modList, and once they have all loaded, execute the callback cb
-    */
-    var execute, id, moduleId, node, tree, _i, _len, _results;
-    if (modList.length === 0) {
-      context.setTimeout(callback.apply(context, []));
-      return;
-    }
-    tree = new treeNode(null);
-    id = db.txn.create();
-    execute = function() {
-      var executionOrder, exports, moduleId, _i, _j, _len, _len2;
-      executionOrder = tree.postOrder();
-      for (_i = 0, _len = executionOrder.length; _i < _len; _i++) {
-        moduleId = executionOrder[_i];
-        if (moduleId === null) continue;
-        executeFile(moduleId);
-      }
-      exports = [];
-      for (_j = 0, _len2 = modList.length; _j < _len2; _j++) {
-        moduleId = modList[_j];
-        exports.push(db.module.getExports(moduleId));
-      }
-      callback.apply(context, exports);
-    };
-    _results = [];
-    for (_i = 0, _len = modList.length; _i < _len; _i++) {
-      moduleId = modList[_i];
-      node = new treeNode(moduleId);
-      _results.push(dispatchTreeDownload(id, tree, node, execute));
-    }
-    return _results;
-  };
-
-  downloadTree = function(tree, callback) {
-    /*
-      ## downloadTree(tree, callback) ##
-      download the current item and its dependencies, storing the results in a tree
-      when all items have finished loading, invoke callback()
-    */
-    var download, file, moduleId, onDownloadComplete;
-    moduleId = tree.getValue();
-    if (db.module.getRulesApplied() === false) applyRules(moduleId);
-    onDownloadComplete = function(moduleId, file) {
-      var id, node, req, requires, _i, _len;
-      db.module.setFile(moduleId, file);
-      analyzeFile(moduleId);
-      requires = db.module.getRequires(moduleId);
-      id = db.txn.create();
-      for (_i = 0, _len = requires.length; _i < _len; _i++) {
-        req = requires[_i];
-        node = new treeNode(req);
-        dispatchTreeDownload(id, tree, node, callback);
-      }
-      if (db.txn.get(id) === 0) {
-        db.txn.remove(id);
-        return context.setTimeout(callback);
-      }
-    };
-    download = function() {
-      db.module.setLoading(moduleId, true);
-      if (userConfig.xd.inject && userConfig.xd.xhr) {
-        return sendToIframe(moduleId, processCallbacks);
-      } else {
-        return sendToXhr(moduleId, processCallbacks);
-      }
-    };
-    db.queue.file.add(moduleId, onDownloadComplete);
-    if (db.module.getLoading(moduleId)) return;
-    file = db.module.getFile(moduleId);
-    if (file && file.length > 0) {
-      return processCallbacks(moduleId, file);
-    } else {
-      return download();
-    }
-  };
-
-  processCallbacks = function(moduleId, file) {
-    /*
-      ## processCallbacks(moduleId, file) ##
-      _internal_ given a module ID and file, disable the loading flag for the module
-      then locate all callbacks that have been queued- dispatch them
-    */
-    var cb, cbs, _i, _len, _results;
-    db.module.setLoading(moduleId, false);
-    cbs = db.queue.file.get(moduleId);
-    db.queue.file.clear(moduleId);
-    _results = [];
-    for (_i = 0, _len = cbs.length; _i < _len; _i++) {
-      cb = cbs[_i];
-      _results.push(cb(moduleId, file));
-    }
-    return _results;
-  };
-
-  analyzeFile = function(moduleId) {
-    /*
-      ## analyzeFile(moduleId) ##
-      _internal_ scan a module's file for dependencies and record them
-    */
-    var req, requires, staticReq, uniques, _i, _len, _ref;
-    requires = [];
-    uniques = {};
-    while (requireRegex.exec(db.module.getFile(moduleId))) {
-      req = RegExp.$1;
-      if (uniques[req] !== true) requires.push(req);
-      uniques[req] = true;
-    }
-    _ref = db.module.getStaticRequires(moduleId);
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      staticReq = _ref[_i];
-      if (uniques[staticReq] !== true) requires.push(staticReq);
-      uniques[staticReq] = true;
-    }
-    return db.module.setRequires(moduleId, requires);
-  };
-
-  applyRules = function(moduleId) {
-    /*
-      ## applyRules(moduleId) ##
+      ## normalizePath(path) ##
       _internal_ normalize the path based on the module collection or any functions
       associated with its identifier
-    */
-    var isMatch, pointcuts, rule, workingPath, _i, _len, _ref, _ref2, _ref3;
-    workingPath = moduleId;
-    pointcuts = {
-      before: [],
-      after: []
-    };
-    _ref = db.queue.rules.get();
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      rule = _ref[_i];
-      isMatch = typeof rule.key === "string" ? rule.key.toLowerCase() === workingPath.toLowerCase() : rule.key.test(workingPath);
-      if (isMatch === false) continue;
-      workingPath = typeof rule.path === "string" ? rule.path : rule.path(workingPath);
-      if (rule != null ? (_ref2 = rule.pointcuts) != null ? _ref2.before : void 0 : void 0) {
-        pointcuts.before.push(rule.pointcuts.before);
+      */    var configPath, lookup, moduleDefinition, returnPath, workingPath;
+    lookup = path;
+    workingPath = path;
+    configPath = config.path || "";
+    if (modulePathRegistry[path]) {
+      return modulePathRegistry[path];
+    }
+    if (userModules[path]) {
+      moduleDefinition = userModules[path];
+      if (typeof moduleDefinition === "string") {
+        workingPath = moduleDefinition;
       }
-      if (rule != null ? (_ref3 = rule.pointcuts) != null ? _ref3.after : void 0 : void 0) {
-        pointcuts.after.push(rule.pointcuts.after);
+      if (typeof moduleDefinition === "object" && moduleDefinition.path) {
+        if (typeof moduleDefinition.path === "function") {
+          returnPath = moduleDefinition.path(workingPath);
+          if (returnPath !== false) {
+            workingPath = returnPath;
+          }
+        }
+        if (typeof moduleDefinition.path === "string") {
+          workingPath = moduleDefinition.path;
+        }
       }
     }
-    if (workingPath.indexOf("/") !== 0) {
-      if (typeof userConfig.moduleRoot === "undefined") {
-        throw new Error("Module Root must be defined");
-      } else if (typeof userConfig.moduleRoot === "string") {
-        workingPath = "" + userConfig.moduleRoot + workingPath;
-      } else if (typeof userConfig.moduleRoot === "function") {
-        workingPath = userConfig.moduleRoot(workingPath);
+    if (typeof configPath === "function") {
+      returnPath = configPath(workingPath);
+      if (returnPath !== false) {
+        workingPath = returnPath;
       }
     }
-    if (!jsSuffix.test(workingPath)) workingPath = "" + workingPath + ".js";
-    db.module.setPath(moduleId, workingPath);
-    db.module.setPointcuts(moduleId, pointcuts);
-    return db.module.setRulesApplied(moduleId, true);
+    if (workingPath.indexOf("http") === 0 || workingPath.indexOf("https") === 0) {
+      modulePathRegistry[lookup] = workingPath;
+      return modulePathRegistry[lookup];
+    }
+    if (workingPath.indexOf("/") !== 0 && typeof configPath === "undefined") {
+      throw new Error("Path must be defined");
+    }
+    if (workingPath.indexOf("/") !== 0 && typeof configPath === "string") {
+      workingPath = "" + config.path + workingPath;
+    }
+    if (!jsSuffix.test(workingPath)) {
+      workingPath = "" + workingPath + ".js";
+    }
+    modulePathRegistry[lookup] = workingPath;
+    return modulePathRegistry[lookup];
   };
-
-  executeFile = function(moduleId) {
+  loadModules = function(modList, cb) {
     /*
-      ## executeFile(moduleId) ##
-      _internal_ attempts to execute a file with a CommonJS scope
-      and store the exports
-    */
-    var cuts, exports, footer, header, path, runCmd, text;
-    if (db.module.getExports(moduleId)) return;
-    cuts = getFormattedPointcuts(moduleId);
-    path = db.module.getPath(moduleId);
-    text = db.module.getFile(moduleId);
-    header = commonJSHeader.replace(/__MODULE_ID__/g, moduleId).replace(/__MODULE_URI__/g, path).replace(/__INJECT_NS__/g, namespace).replace(/__POINTCUT_BEFORE__/g, cuts.before);
-    footer = commonJSFooter.replace(/__POINTCUT_AFTER__/g, cuts.after);
+      ## loadModules(modList, cb) ##
+      _internal_ load a collection of modules in modList, and once they have all loaded, execute the callback cb
+      */    var module, path, paths, txId, _i, _len, _results;
+    txId = createTxId();
+    paths = {};
+    for (_i = 0, _len = modList.length; _i < _len; _i++) {
+      module = modList[_i];
+      paths[module] = normalizePath(module);
+    }
+    txnRegistry[txId] = modList;
+    callbackRegistry[txId] = cb;
+    _results = [];
+    for (module in paths) {
+      path = paths[module];
+      if (!fileOnComplete[path]) {
+        fileOnComplete[path] = {
+          txns: [],
+          loading: false
+        };
+      }
+      if (getModule(module)) {
+        paths[module] = getModule(module);
+      }
+      _results.push(getFile(path, function(ok, val) {
+        fileOnComplete[path].txns.push(txId);
+        if (ok && typeof val === "string" && val.length) {
+          return onModuleLoad(txId, module, path, val);
+        } else {
+          if (!fileOnComplete[path].loading) {
+            fileOnComplete[path].loading = true;
+            if (config.xd != null) {
+              return sendToIframe(txId, module, path, onModuleLoad);
+            } else {
+              return sendToXhr(txId, module, path, onModuleLoad);
+            }
+          }
+        }
+      }));
+    }
+    return _results;
+  };
+  onModuleLoad = function(txId, module, path, text) {
+    /*
+      ## onModuleLoad(txId, module, path, text) ##
+      _internal_ Fired when a module's file has been loaded. Will then set up
+      the CommonJS harness, and will capture its exports. After this, it will signal
+      to inject() that all items that were waiting on this path should continue checking
+      their depdendencies
+      */    var cut, cuts, cutsStr, fn, footer, header, requires, runCmd, runModule;
+    cuts = getPointcuts(module);
+    cutsStr = {};
+    for (cut in cuts) {
+      fn = cuts[cut];
+      cutsStr[cut] = fn.toString().match(/.*?\{([\w\W]*)\}/m)[1];
+    }
+    header = commonJSHeader.replace(/__MODULE_ID__/g, module).replace(/__MODULE_URI__/g, path).replace(/__INJECT_NS__/g, namespace).replace(/__POINTCUT_BEFORE__/g, cutsStr.before);
+    footer = commonJSFooter.replace(/__POINTCUT_AFTER__/g, cutsStr.after);
     runCmd = "" + header + "\n" + text + "\n" + footer + "\n//@ sourceURL=" + path;
-    try {
-      exports = context.eval(runCmd);
-    } catch (err) {
-      throw err;
+    requires = [];
+    while (requireRegex.exec(text)) {
+      requires.push(RegExp.$1);
     }
-    return db.module.setExports(moduleId, exports);
+    runModule = function() {
+      var exports, txn, _i, _len, _ref, _results;
+      try {
+        exports = context.eval(runCmd);
+      } catch (err) {
+        throw err;
+      }
+      saveModule(module, exports);
+      saveFile(path, text);
+      fileOnComplete[path].loading = false;
+      _ref = fileOnComplete[path].txns;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        txn = _ref[_i];
+        _results.push(checkComplete(txn));
+      }
+      return _results;
+    };
+    if (requires.length > 0) {
+      return loadModules(requires, function() {
+        return runModule();
+      });
+    } else {
+      return runModule();
+    }
   };
-
-  sendToXhr = function(moduleId, callback) {
+  checkComplete = function(txId) {
     /*
-      ## sendToXhr(moduleId, callback) ##
-      CLEANUPOK
+      ## checkComplete(txId) ##
+      _internal_ check if all modules for a txId have loaded. If so, the callback is fired
+      */    var cb, done, modl, module, modules, _i, _len, _ref;
+    done = true;
+    cb = callbackRegistry[txId];
+    modules = [];
+    _ref = txnRegistry[txId];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      module = _ref[_i];
+      modl = getModule(module);
+      if (modl === false) {
+        done = false;
+      } else {
+        modules.push(modl);
+      }
+      if (!done) {
+        break;
+      }
+    }
+    if (done) {
+      return cb.call(context, modules);
+    }
+  };
+  sendToXhr = function(txId, module, path, cb) {
+    /*
+      ## sendToXhr(txId, module, path, cb) ##
       _internal_ request a module at path using xmlHttpRequest. On retrieval, fire off cb
-    */
-    var path, xhr;
-    path = db.module.getPath(moduleId);
+      */    var xhr;
     xhr = getXHR();
     xhr.open("GET", path);
     xhr.onreadystatechange = function() {
       if (xhr.readyState === 4 && xhr.status === 200) {
-        return callback.call(context, moduleId, xhr.responseText);
+        return cb.call(context, txId, module, path, xhr.responseText);
       }
     };
     return xhr.send(null);
   };
-
-  sendToIframe = function(moduleId, callback) {
+  sendToIframe = function(txId, module, path, cb) {
     /*
       ## sendToIframe(txId, module, path, cb) ##
-      CLEANUPOK
       _internal_ request a module at path using Porthole + iframe. On retrieval, the cb will be fired
-    */
-    var path;
-    path = db.module.getPath(moduleId);
-    return xDomainRpc.postMessage("" + moduleId + " " + path);
+      */    return xDomainRpc.postMessage("" + txId + " " + module + " " + path);
   };
-
   getXHR = function() {
     /*
       ## getXHR() ##
-      CLEANUPOK
       _internal_ get an XMLHttpRequest object
-    */
-    var xmlhttp;
+      */    var xmlhttp;
     xmlhttp = false;
     if (typeof XMLHttpRequest !== "undefined") {
       try {
@@ -996,107 +498,95 @@
         }
       }
     }
-    if (!xmlhttp) throw new Error("Could not create an xmlHttpRequest Object");
+    if (!xmlhttp) {
+      throw new Error("Could not create an xmlHttpRequest Object");
+    }
     return xmlhttp;
   };
-
   /*
   Main Payloads: require, require.ensure, etc
   */
-
   require = function(moduleId) {
     /*
       ## require(moduleId) ##
-      CLEANUPOK
       Return the value of a module. This is a synchronous call, meaning the module needs
       to have already been loaded. If you are unsure about the module's existence, you
       should be using require.ensure() instead. For modules beyond the first tier, their
       shallow dependencies are resolved and block, so there is no need for require.ensure()
       beyond the topmost level.
-    */
-    var mod;
-    mod = db.module.getExports(moduleId);
-    if (mod === false) throw new Error("" + moduleId + " not loaded");
+      */    var mod;
+    mod = getModule(moduleId);
+    if (mod === false) {
+      throw new Error("" + moduleId + " not loaded");
+    }
     return mod;
   };
-
   require.ensure = function(moduleList, callback) {
     /*
       ## require.ensure(moduleList, callback) ##
-      CLEANUPOK
       Ensure the modules in moduleList (array) are loaded, and then execute callback
       (function). Use this instead of require() when you need to load shallow dependencies
       first.
-    */
-    var ensureExecutionCallback, run;
-    if ((userConfig.xd.xhr != null) && !xDomainRpc && !pauseRequired) {
+      */    var run;
+    if ((config.xd != null) && !xDomainRpc && !pauseRequired) {
       createIframe();
       pauseRequired = true;
     }
-    ensureExecutionCallback = function() {
-      var exports, module;
-      module = {};
-      exports = {};
-      module.exports = exports;
-      return callback.call(context, require, module, exports);
-    };
     run = function() {
-      return loadModules(moduleList, ensureExecutionCallback);
+      return loadModules(moduleList, function() {
+        var exports, module;
+        module = {};
+        exports = {};
+        module.exports = exports;
+        return callback.call(context, require, module, exports);
+      });
     };
     if (pauseRequired) {
-      return db.queue.load.add(run);
+      return loadQueue.push(run);
     } else {
       return run();
     }
   };
-
   require.setModuleRoot = function(root) {
     /*
       ## require.setModuleRoot(root) ##
-      CLEANUPOK
       set the base path for including your modules. This is used as the default if no
       items in the manifest can be located.
       
       Optionally, you can set root to a function. The return value of that function will
       be used instead. This can allow for very complex module configurations and branching
       with multiple CDNs such as in a complex production environment.
-    */    if (typeof root === "string" && root.lastIndexOf("/") !== root.length) {
+      */    if (typeof root === "string" && root.lastIndexOf("/") !== root.length) {
       root = "" + root + "/";
     }
-    return userConfig.moduleRoot = root;
+    return config.path = root;
   };
-
   require.setExpires = function(expires) {
     /*
       ## require.setExpires(expires) ##
-      CLEANUPOK
       Set the time in seconds that files will persist in localStorage. Setting to 0 will disable
       localstorage caching.
-    */    return userConfig.fileExpires = expires;
+      */    return config.fileExpiration = expires;
   };
-
   require.setCrossDomain = function(local, remote) {
     /*
       ## require.setCrossDomain(local, remote) ##
-      CLEANUPOK
       Set a pair of URLs to relay files. You must have two relay files in your cross domain setup:
       
       * one relay file (local) on the same domain as the page hosting Inject
       * one relay file (remote) on the domain where you are hosting your root from setModuleRoot()
       
       The same require.setCrossDomain statement should be added to BOTH your relay.html files.
-    */    userConfig.xd.inject = local;
-    return userConfig.xd.xhr = remote;
+      */    config.xd = {};
+    config.xd.inject = local;
+    return config.xd.xhr = remote;
   };
-
   require.clearCache = function(version) {
     /*
       ## require.clearCache(version) ##
-      CLEANUPOK
       Remove the localStorage class at version. If no version is specified, the entire cache is cleared.
-    */    return clearFileRegistry(version);
+      */    return clearFileRegistry(version);
   };
-
   require.manifest = function(manifest) {
     /*
       ## require.manifest(manifest) ##
@@ -1112,164 +602,33 @@
       for example add an after() method which sets exports.$ to jQuery.noConflict(). This would restore the
       window to its unpoluted state and make jQuery actionable as a commonJS module without having to alter
       the original library.
-    */
-    var item, ruleSet, rules, _results;
-    _results = [];
-    for (item in manifest) {
-      if (!__hasProp.call(manifest, item)) continue;
-      rules = manifest[item];
-      ruleSet = {
-        path: rules.path || null,
-        pointcuts: {
-          before: rules.before || null,
-          after: rules.after || null
-        }
-      };
-      _results.push(require.addRule(item, ruleSet));
-    }
-    return _results;
+      */    return setUserModules(manifest);
   };
-
-  require.addRule = function(match, weight, ruleSet) {
-    var usePath;
-    if (weight == null) weight = null;
-    if (ruleSet == null) ruleSet = null;
-    /*
-      ## require.addRule(match, [weight], ruleset) ##
-      Add a rule that matches the given match, and apply ruleset to it
-      * match: a regex or string to match against
-      * weight: [optional] a numeric weight. Higher numbered weights run later
-      * ruleset: a string containing a 1:1 replacement for match, or an object literal that
-        contains path or pointcuts information
-    */
-    if (ruleSet === null) {
-      ruleSet = weight;
-      weight = db.queue.rules.size();
-    }
-    if (typeof ruleSet === "string") {
-      usePath = ruleSet;
-      ruleSet = {
-        path: usePath
-      };
-    }
-    return db.queue.rules.add({
-      key: match,
-      weight: weight,
-      pointcuts: ruleSet.pointcuts || null,
-      path: ruleSet.path || null
-    });
-  };
-
   require.run = function(moduleId) {
     /*
       ## require.run(moduleId) ##
-      Try to getFile for moduleId, if the file exists, execute the file, if not, load this file and run it
-    */    if (db.module.getFile(moduleId) === false) {
-      return loadModules([moduleId], function() {});
-    } else {
-      db.module.setExports(moduleId, null);
-      return executeFile(moduleId);
+      Execute the specified moduleId. This runs an ensure() to make sure the module has been loaded, and then
+      execute it.
+      */    var foo;
+    return foo = "bar";
+  };
+  context.require = require;
+  context.Inject = {
+    require: require,
+    debug: {
+      fileRegistry: fileRegistry,
+      loadQueue: loadQueue,
+      userModules: userModules,
+      moduleRegistry: moduleRegistry,
+      modulePathRegistry: modulePathRegistry,
+      callbackRegistry: callbackRegistry,
+      txnRegistry: txnRegistry
     }
   };
-
-  define = function(moduleId, deps, callback) {
-    /*
-      ## define(moduleId, deps, callback) ##
-      Define a module with moduleId, run require.ensure to make sure all dependency modules have been loaded, and then
-      apply the callback function with an array of dependency module objects, add the callback return and moduleId into
-      moduleRegistry list.
-    */
-    var dep, strippedDeps, _i, _len;
-    if (typeof moduleId !== "string") {
-      callback = deps;
-      deps = moduleId;
-      moduleId = null;
-    }
-    if (Object.prototype.toString.call(deps) !== "[object Array]") {
-      callback = deps;
-      deps = [];
-    }
-    strippedDeps = [];
-    for (_i = 0, _len = deps.length; _i < _len; _i++) {
-      dep = deps[_i];
-      if (dep !== "exports" && dep !== "require" && dep !== "module") {
-        strippedDeps.push(dep);
-      }
-    }
-    db.module.setStaticRequires(moduleId, strippedDeps);
-    return require.ensure(strippedDeps, function(require, module, exports) {
-      var args, count, dep, item, returnValue, _j, _k, _len2, _len3, _ref;
-      args = [];
-      for (_j = 0, _len2 = deps.length; _j < _len2; _j++) {
-        dep = deps[_j];
-        switch (dep) {
-          case "require":
-            args.push(require);
-            break;
-          case "exports":
-            args.push(exports);
-            break;
-          case "module":
-            args.push(module);
-            break;
-          default:
-            args.push(require(dep));
-        }
-      }
-      if (typeof callback === 'function') {
-        returnValue = callback.apply(context, args);
-        count = 0;
-        _ref = module['exports'];
-        for (_k = 0, _len3 = _ref.length; _k < _len3; _k++) {
-          item = _ref[_k];
-          count++;
-        }
-        if (count === 0 && typeof returnValue !== "undefined") {
-          exports = returnValue;
-        }
-      } else if (typeof callback === 'object') {
-        exports = callback;
-      }
-      if (moduleId) return db.module.setExports(moduleId, exports);
-    });
-  };
-
-  define.amd = {
-    jQuery: true
-  };
-
-  context['require'] = require;
-
-  context['define'] = define;
-
-  context['Inject'] = {
-    'require': require,
-    'define': define,
-    'debug': function() {
-      return typeof console !== "undefined" && console !== null ? console.dir(_db) : void 0;
-    }
-  };
-
-  context['require']['ensure'] = require.ensure;
-
-  context['require']['setModuleRoot'] = require.setModuleRoot;
-
-  context['require']['setExpires'] = require.setExpires;
-
-  context['require']['setCrossDomain'] = require.setCrossDomain;
-
-  context['require']['clearCache'] = require.clearCache;
-
-  context['require']['manifest'] = require.manifest;
-
-  context['require']['run'] = require.run;
-
   /*
   Porthole
   */
-
   Porthole = null;
-
   
 Porthole="undefined"==typeof Porthole||!Porthole?{}:Porthole;Porthole={trace:function(){},error:function(a){try{console.error("Porthole: "+a)}catch(b){}},WindowProxy:function(){}};Porthole.WindowProxy.prototype={postMessage:function(){},addEventListener:function(){},removeEventListener:function(){}};
 Porthole.WindowProxyLegacy=function(a,b){void 0===b&&(b="");this.targetWindowName=b;this.eventListeners=[];this.origin=window.location.protocol+"//"+window.location.host;null!==a?(this.proxyIFrameName=this.targetWindowName+"ProxyIFrame",this.proxyIFrameLocation=a,this.proxyIFrameElement=this.createIFrameProxy()):this.proxyIFrameElement=null};
@@ -1285,18 +644,14 @@ Porthole.WindowProxyDispatcher={forwardMessageEvent:function(a){a=document.locat
 a=a.split(/&/);if(3<a.length)a.pop(),a.pop(),a.pop(),a.pop(),b.data=a.join("&");return b},findWindowProxyObjectInWindow:function(a,b){a.RuntimeObject&&(a=a.RuntimeObject());if(a)for(var c in a)try{if(null!==a[c]&&"object"==typeof a[c]&&a[c]instanceof a.Porthole.WindowProxy&&a[c].getTargetWindowName()==b)return a[c]}catch(d){}return null},start:function(){window.addEventListener?window.addEventListener("resize",Porthole.WindowProxyDispatcher.forwardMessageEvent,!1):document.body.attachEvent?window.attachEvent("onresize",
 Porthole.WindowProxyDispatcher.forwardMessageEvent):Porthole.error("Can't attach resize event")}};
 ;
-
   /*
   lscache library
   */
-
   lscache = null;
-
   
 var lscache=function(){function g(){return Math.floor((new Date).getTime()/6E4)}function l(a,b,f){function o(){try{localStorage.setItem(a+c,g()),0<f?(localStorage.setItem(a+d,g()+f),localStorage.setItem(a,b)):0>f||0===f?(localStorage.removeItem(a+c),localStorage.removeItem(a+d),localStorage.removeItem(a)):localStorage.setItem(a,b)}catch(h){if("QUOTA_EXCEEDED_ERR"===h.name||"NS_ERROR_DOM_QUOTA_REACHED"==h.name){if(0===i.length&&!m)return localStorage.removeItem(a+c),localStorage.removeItem(a+d),localStorage.removeItem(a),
 !1;m&&(m=!1);if(!e){for(var n=0,l=localStorage.length;n<l;n++)if(j=localStorage.key(n),-1<j.indexOf(c)){var p=j.split(c)[0];i.push({key:p,touched:parseInt(localStorage[j],10)})}i.sort(function(a,b){return a.touched-b.touched})}if(k=i.shift())localStorage.removeItem(k.key+c),localStorage.removeItem(k.key+d),localStorage.removeItem(k.key);o()}}}var e=!1,m=!0,i=[],j,k;o()}var d="-EXP",c="-LRU",e;try{e=!!localStorage.getItem}catch(q){e=!1}var h=null!=window.JSON;return{set:function(a,b,c){if(e){if("string"!=
 typeof b){if(!h)return;try{b=JSON.stringify(b)}catch(d){return}}l(a,b,c)}},get:function(a){function b(a){if(h)try{return JSON.parse(localStorage.getItem(a))}catch(b){return localStorage.getItem(a)}else return localStorage.getItem(a)}if(!e)return null;if(localStorage.getItem(a+d)){var f=parseInt(localStorage.getItem(a+d),10);if(g()>=f)localStorage.removeItem(a),localStorage.removeItem(a+d),localStorage.removeItem(a+c);else return localStorage.setItem(a+c,g()),b(a)}else if(localStorage.getItem(a))return localStorage.setItem(a+
 c,g()),b(a);return null},remove:function(a){if(!e)return null;localStorage.removeItem(a);localStorage.removeItem(a+d);localStorage.removeItem(a+c)}}}();
 ;
-
 }).call(this);
