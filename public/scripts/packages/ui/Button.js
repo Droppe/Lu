@@ -44,8 +44,7 @@ _.log("Button initialized");
        * @final
        */
       defaults = {
-        on: 'click',
-        action: 'click'
+        on: 'click'
       },
       /**
        * Target item used in event data

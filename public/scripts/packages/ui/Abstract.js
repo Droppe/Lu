@@ -22,7 +22,7 @@ Abstract = Class.create( ( function() {
      * @param {Object} $element JQuery object for DOM node wrapped by this component
      * @param {Object} settings Custom settings for this component
      */    
-    initialize: function($element, settings) {
+    initialize: function( $element, settings ) {
 
       // PRIVATE INSTANCE PROPERTIES
 
@@ -91,13 +91,11 @@ Abstract = Class.create( ( function() {
 
       //Regiser elements passed in notify as observers
       $element.observe( $notify );
-      
-      
+
       // PRIVATE METHODS
-      
+
       // PRIVILEGED METHODS
-      
-        
+
       /**
        * Creates an event listener for a type
        * @method on
