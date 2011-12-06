@@ -34,6 +34,15 @@
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
     require.ensure( ['/scripts/libraries/athena-0.0.1'], function() {} );
+    require.addRule(/jquery\.ui/, {
+      path: function(module) {
+        return ["/scripts/libraries/jquery-ui-1.8.16", module].join("/") + ".js"
+      },
+      pointcuts: {
+        before: function() {},
+        after: function() {}
+      }
+    });    
   </script>
 
 </head>
@@ -57,6 +66,7 @@
     'ui:Dialog': {
       width: 600,
       draggable: true,
+      resizable: true,
       modal: false,
       closeText: 'Close Me'
     }

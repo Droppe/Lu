@@ -35,26 +35,38 @@ Dialog = Class.create( Abstract,  ( function () {
       var defaults = {
         autoOpen: false,
         resizable: false
-      };
+      },
+      /**
+      * jQuery UI Dependencies
+      * @property dependencies
+      * @type Array
+      * @private
+      */
+      dependencies;
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
+      
+      // CREATE DEPENDENCIES ARRAY
+      dependencies = [
+        'jquery.ui.core',
+        'jquery.ui.widget',
+        'jquery.ui.mouse',
+        'jquery.ui.position'
+      ];      
+      if (settings.draggable) {
+        dependencies.push('jquery.ui.draggable');
+      }
+      if (settings.resizable) {
+        dependencies.push('jquery.ui.resizable');
+      }
+      dependencies.push('jquery.ui.dialog');
 
       require.ensure(
-        [
-          //'/scripts/libraries/jquery-1.7.js',
-          '/scripts/libraries/jquery-ui-1.8.16/jquery.ui.core',
-          '/scripts/libraries/jquery-ui-1.8.16/jquery.ui.widget',
-          '/scripts/libraries/jquery-ui-1.8.16/jquery.ui.mouse',
-          '/scripts/libraries/jquery-ui-1.8.16/jquery.ui.button',
-          '/scripts/libraries/jquery-ui-1.8.16/jquery.ui.draggable',
-          '/scripts/libraries/jquery-ui-1.8.16/jquery.ui.position',
-          '/scripts/libraries/jquery-ui-1.8.16/jquery.ui.resizable',
-          '/scripts/libraries/jquery-ui-1.8.16/jquery.ui.dialog'
-        ],
+        dependencies,
         function() {
           $element.dialog(settings);
           $element.on('open', function() {
