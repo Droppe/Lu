@@ -83,7 +83,7 @@ List =  Class.create( Abstract, ( function () {
        * @param {Object} item An object or a number
        * @return {Void}
        */  
-      handleKeyup = function(event, item) {
+      handleKeyup = function(event) {
         var keyCode = event.keyCode,
             item = $(event.target);
 
@@ -177,22 +177,28 @@ List =  Class.create( Abstract, ( function () {
        * @return {Object} List
        */  
       List.select = function( item ) {
+        _.log("List.select", "$items: ", $items);
+        
         var $item;
 
-        if( typeof item === 'number' || typeof item === 'string') {
-          $item = $items.eq( item );
-        } else {
-          $item = item;
-        }
+        // item can be an integer and 0 is falsy!
+        if (item === 0 || item) {
 
-        if( $item.hasClass( settings.selectFlag ) === false ) {
-          $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
-          this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
-        }
+          if( typeof item === 'number' || typeof item === 'string') {
+            $item = $items.eq( item );
+          } else {
+            $item = $(item);
+          }
 
-        // Set focus to the item that you've selected
-        // We do this for ally
-        $item.attr("tabindex", "-1").focus();
+          if( $item.hasClass( settings.selectFlag ) === false ) {
+            $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
+            this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
+          }
+
+          // Set focus to the item that you've selected
+          // We do this for ally
+          $item.attr("tabindex", "-1").focus();
+        }
 
         return List;
       };
@@ -277,7 +283,7 @@ List =  Class.create( Abstract, ( function () {
       };
 
       /**
-       * Returns the index of the selecte item.
+       * Returns the index of the selected item.
        * @method index
        * @public
        * @return {Number} The index of the selected item

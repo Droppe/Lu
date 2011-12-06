@@ -48,6 +48,25 @@ StyledDropdown =  Class.create( Abstract,  ( function () {
        * @final
        */
       defaults = {
+
+        /**
+         * The "name" for the selected item when form submitted
+         * @property submitName 
+         * @type String 
+         * @private
+         * @final
+         */
+        submitName: 'submitName',
+
+        /**
+         * Flag that denotes whether to update the selected item.  By default, update selected item. 
+         * @property updateSelectedItem 
+         * @type Boolean 
+         * @private
+         * @final
+         */
+        updateSelectedItem: true,
+
         /**
          * A selector scoped to the $element that matches the selectedItem 
          * @property selectedItem 
@@ -55,7 +74,7 @@ StyledDropdown =  Class.create( Abstract,  ( function () {
          * @private
          * @final
          */
-        selectedItem: '.athena-selected-item',
+        selectedItem: 'athena-selected-item',
 
         /**
          * A selector scoped to the $element that matches the list of select elements 
@@ -64,7 +83,7 @@ StyledDropdown =  Class.create( Abstract,  ( function () {
          * @private
          * @final
          */
-        dropDownList: '.athena-dropdown-list'
+        dropDownList: 'athena-dropdown-list'
 
       },
 
@@ -85,6 +104,15 @@ StyledDropdown =  Class.create( Abstract,  ( function () {
       $dropDownList,
 
       /**
+       * JQuery DOM reference to the hidden input field.  Undefined
+       * when the Styled Dropdown control isn't in a form.
+       * @property $hiddenInput
+       * @type Object
+       * @private
+       */
+      $hiddenInput,
+
+      /**
        * Initializes the StyledDropdown component
        * @method styledDropdownInit 
        * @param {Object} settings - Object literal containing settings which have been merged with default settings 
@@ -92,9 +120,19 @@ StyledDropdown =  Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       styledDropdownInit = function( settings ) {
+        var $parentForm = $element.parents("form");
+
         // Get references to the styled dropdown selected item and the dropdown list
-        $selectedItem = $( $element.children( settings.selectedItem ) );
-        $dropDownList = $( $element.children( settings.dropDownList ) );
+        $selectedItem = $( $element.children( "." + settings.selectedItem ) );
+        $dropDownList = $( $element.children( "." + settings.dropDownList ) );
+
+        if ($parentForm.length === 1) {
+          // If we're inside a form - only one parent form -, create hidden input field
+          // Only one selection _not_ multiple yet...
+          // Ok... this is suppose to be efficient...
+          $hiddenInput = $("<input type='hidden' name='" + settings.submitName + "' value='" + $selectedItem.html() + "' />").appendTo($($parentForm[0]));
+        }
+
       },
 
       /**
@@ -118,12 +156,16 @@ StyledDropdown =  Class.create( Abstract,  ( function () {
        * @return {Collection} Collection of JQuery DOM link elements
        */
       findAthenaItems = function($ul, classNameQuery) {
-        // Find the link in a list and find the "athena-item" class and if that's not 
-        // there, get the JQuery DOM element for the <a>. 
-        var $elements = $ul.find("a " + classNameQuery);
+        var $elements;
 
-        if ($elements.length === 0) {
-          $elements = $ul.find("a");
+        if ($ul) {
+          // Find the link in a list and find the "athena-item" class and if that's not 
+          // there, get the JQuery DOM element for the <a>. 
+          $elements = $ul.find("a " + classNameQuery);
+
+          if ($elements.length === 0) {
+            $elements = $ul.find("a");
+          }
         }
 
         return $elements; 
@@ -148,8 +190,13 @@ StyledDropdown =  Class.create( Abstract,  ( function () {
             $link = $($elements.get(item));
           }
 
-          if ($link) {
+          if ($link && settings.updateSelectedItem) {
             $selectedItem.html($link.html());
+          }
+
+          if ($link && $hiddenInput) {
+            // If it exists, update the hidden input field!
+            $hiddenInput.attr("value", $link.html());
           }
 
           // Hide the drop down list
@@ -188,10 +235,19 @@ StyledDropdown =  Class.create( Abstract,  ( function () {
         var $item = $(item), 
             itemName;
 
-        if ($item) {
-          // This returns one element
-          itemName = findAthenaItems($item, ".athena-item").html(); 
-          $selectedItem.html(itemName);
+        // This returns one element
+        itemName = findAthenaItems($item, ".athena-item").html(); 
+
+        if (itemName) {
+          // Update the selected item if we're suppose to
+          if (settings.updateSelectedItem) {
+            $selectedItem.html(itemName);
+          }
+
+          // If there's a hidden input, update the value!
+          if ($hiddenInput) {
+            $hiddenInput.attr("value", itemName);
+          }
         }
       },
 

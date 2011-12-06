@@ -83,8 +83,40 @@
                                                                        
   </div>
 
-  <div class="styled-dropdown" data-athena="ui:StyledDropdown">
-    <h2>Styled Dropdown #2</h2>
+  <div class="styled-dropdown" data-athena="ui:StyledDropdown" data-athena-config="{
+      'ui:StyledDropdown': {
+      updateSelectedItem: false
+    }
+  }">
+
+    <h2>Styled Dropdown #2 No Item Update</h2>
+
+    <a href="#" class="athena-selected-item" data-athena="ui:Button:Select">
+      No update      
+    </a>
+
+    <!-- Styled dropdown -->
+    <ul class="athena-dropdown-list" data-athena="ui:List" data-athena-config="{'ui:List' : { direction: 'vertical' }}">
+      <!-- Options -->
+      <li class="selected">
+        <a href="#" data-athena="ui:Button:Select">Option 1</a>
+      </li>
+      <li>
+        <a href="#" data-athena="ui:Button:Select">Option 2</a>
+      </li>
+      <li>
+        <a href="#" data-athena="ui:Button:Select">Option 3</a>
+      </li>
+      <li>
+        <a href="#" data-athena="ui:Button:Select">Option 4</a>
+      </li>
+    </ul>
+                                                                       
+  </div>
+
+  <form method="get" action="/">
+  <div class="styled-dropdown" data-athena="ui:StyledDropdown"> 
+    <h2>Styled Dropdown #3 in a form</h2>
 
     <a href="#" class="athena-selected-item" data-athena="ui:Button:Select">
       Apple      
@@ -117,6 +149,7 @@
     </ul>
                                                                        
   </div>
+  </form>
 
 </body>
 </html>

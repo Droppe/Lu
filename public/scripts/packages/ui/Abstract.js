@@ -31,7 +31,7 @@ Abstract = Class.create( ( function() {
         * @property Abstract
         * @type Object
         * @private
-        */      
+        */
       var Abstract = this,
       /**
        * Default configuration values
@@ -89,7 +89,7 @@ Abstract = Class.create( ( function() {
       //Observe elements passed into $observe
       $observe.observe( $element );
 
-      //Regiser elements passed in notify as observers
+      //Register elements passed in notify as observers
       $element.observe( $notify );
 
       // PRIVATE METHODS
@@ -130,7 +130,7 @@ Abstract = Class.create( ( function() {
         $element.trigger( type + namespace + ':after', parameters );
         return $element;
       };
-    
+
       /**
        * Observe events
        * @method observe

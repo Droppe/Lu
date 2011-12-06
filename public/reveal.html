@@ -1,0 +1,150 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]> <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]> <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Reveal</title>
+
+  <!-- Feature Detection -->
+  <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
+
+  <style type="text/css" media="screen">
+  .hidden { display: none; }
+  </style>
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/helpers.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    ATHENA_CONFIG = {
+      debug: true
+    };
+  </script>
+
+  <script type="text/javascript" charset="utf-8">
+    localStorage.clear();
+    require.ensure( ['/scripts/libraries/athena-0.0.1'], function() {} );
+  </script>
+
+<style>
+  .selected {
+    xborder: 1px dashed red;
+  }
+</style>
+
+</head>
+
+<body>
+  <div id="container">
+    
+    <form>
+      <fieldset>
+        <legend>Checkboxes</legend>
+
+        <button type="button" data-athena="ui:Button" data-athena-config="{
+          'ui:Button': {
+            action: 'select',
+            notify: '#revealContent1'
+          }
+        }">Select</button>
+        <button type="button" data-athena="ui:Button" data-athena-config="{
+          'ui:Button': {
+            action: 'unselect',
+            notify: '#revealContent1'
+          }
+        }">Unselect</button>
+
+        <label><input type="checkbox" name="myCheckBox1" value="on1" data-athena="ui:Button:Checkbox" aria-controls="revealContent1">1</label>
+        <label><input type="checkbox" checked="checked" name="myCheckBox2" value="on2" data-athena="ui:Button:Checkbox" aria-controls="revealContent2">2</label>
+
+        <span class="hidden" id="revealContent1" data-athena="ui:Container">
+          Extra content for 1.
+        </span>
+        <span class="hidden" id="revealContent2" data-athena="ui:Container">
+          Extra content for 2.
+        </span>
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Radio Buttons -- in List</legend>
+        <ul data-athena="ui:List">
+          <li>
+            <label><input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3" data-athena="ui:Button:Radio">3</label>
+            <span class="hidden" id="revealContent3" data-athena="ui:Container">
+              Extra content for 3.
+            </span>
+          </li>
+          <li>
+            <label><input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4" data-athena="ui:Button:Radio">4</label>
+            <span class="hidden" id="revealContent4" data-athena="ui:Container">
+              Extra content for 4.
+            </span>
+          </li>
+          <li>
+            <label><input type="radio" name="myRadioBtn" value="on5" aria-controls="revealContent5" data-athena="ui:Button:Radio">5</label>
+            <span class="hidden" id="revealContent5" data-athena="ui:Container">
+              Extra content for 5.
+            </span>
+          </li>
+        </ul>
+      </fieldset>
+
+      <fieldset>
+        <legend>Radio Buttons -- not in List</legend>
+          <label><input type="radio" name="myRadioBtn2" value="on6" aria-controls="revealContent6" data-athena="ui:Button:Radio">6</label>
+          <span class="hidden" id="revealContent6" data-athena="ui:Container">
+            Extra content for 6.
+          </span>
+          <label><input type="radio" name="myRadioBtn2" value="on7" aria-controls="revealContent7" data-athena="ui:Button:Radio">7</label>
+          <span class="hidden" id="revealContent7" data-athena="ui:Container">
+            Extra content for 7.
+          </span>
+          <label><input type="radio" name="myRadioBtn2" value="on8" aria-controls="revealContent8" data-athena="ui:Button:Radio">8</label>
+          <span class="hidden" id="revealContent8" data-athena="ui:Container">
+            Extra content for 8.
+          </span>
+      </fieldset>
+
+      <fieldset>
+        <legend>Select Options</legend>
+        <select name="mySelect" data-athena="ui:Button:FormSelect">
+          <option> -- </option>
+          <option value="9" aria-controls="revealContent9">nine</option>
+          <option value="10" aria-controls="revealContent10">ten</option>
+          <option value="11" aria-controls="revealContent11">eleven</option>                    
+        </select>
+        
+        <span class="hidden" id="revealContent9" data-athena="ui:Container">
+          Extra content for 9.
+        </span>
+        <span class="hidden" id="revealContent10" data-athena="ui:Container">
+          Extra content for 10.
+        </span>
+        <span class="hidden" id="revealContent11" data-athena="ui:Container">
+          Extra content for 11.
+        </span>
+        
+      </fieldset>
+
+    </form>
+  </div>
+
+</body>
+
+</html>
+
