@@ -2,6 +2,8 @@ var Class = require( '/scripts/libraries/ptclass' ),
   Abstract = require( 'ui/Abstract' ),
   Loader;
 
+//TODO: Loader should take a $jquery object, a selector, a string, or a uri;
+
 /**
  * Representation of a Loader
  * @class Loader
@@ -76,7 +78,8 @@ Loader = Class.create( Abstract, ( function () {
        * @return {Object} The Loader instance
        */
       Loader.load = function ( uri ) {
-        var node = _.explodeURL( uri );
+        var explodedURL = _.explodeURL( uri ),
+          content,
           $content;
 
         Loader.trigger( 'loading' );
@@ -95,36 +98,42 @@ Loader = Class.create( Abstract, ( function () {
               break;
           }
           $element.removeClass( settings.loadingFlag );
+          Loader.trigger( 'loaded' );
         }
 
-        if ( node.path === '' ) {
-          $content = $('#' + fragment ).html().execute();
-          inject( $content );
+        if ( explodedURL.path === '' ) {
+          $content = $( uri );
+          if( $content.length > 0 ) {
+            content = $content.html();
+          } else {
+           content = $( '#' + explodedURL.fragment ).html(); 
+          }
+          inject( content );
         } else {
           $.ajax( {
             url: uri,
             success: function ( data, textStatus, jXHR ) {
-              if( node.fragment ) {
-                $content = $( $( data ).find( '#' + node.fragment ).html() ).execute();
-                inject( $content );
+              if( explodedURL.fragment ) {
+                content = $( data ).find( '#' + explodedURL.fragment );
+                inject( content );
               } else {
-                $content = $( data ).execute();
-                inject( $content );
+                content = data;
+                inject( content );
               }
             }
           } );
         }
-        Loader.trigger( 'loaded' );
         return Loader;
       };
 
       //Event Bindings
-      Loader.on( 'load', function( event ) {
-        var uri;
-        if( !settings.uri ) {
-          uri = $( event.target ).attr( 'href' ); 
-        } else {
-          uri = settings.uri;
+      Loader.on( 'load', function( event, uri ) {
+        if( uri === undefined ) {
+          if( settings.uri ) {
+            uri = settings.uri;
+          } else {
+            uri = $( event.target ).attr( 'href' ); 
+          }
         }
         event.stopPropagation();
         event.preventDefault();

@@ -1,8 +1,8 @@
 var Class = require( '/scripts/libraries/ptclass' ),
   Tip = require( 'ui/Tip' ),
-  BelowTip;
+  RightTip;
 
-BelowTip = Class.create( Tip, ( function () {
+RightTip = Class.create( Tip, ( function () {
 
    return {
      initialize: function ( $super, $element, settings ) {
@@ -12,7 +12,7 @@ BelowTip = Class.create( Tip, ( function () {
        };
 
        _.defaults( settings, defaults );
-
+       console.log( settings );
        $super( $element, settings );
      }
   };
@@ -21,5 +21,5 @@ BelowTip = Class.create( Tip, ( function () {
 
 //Export to CommonJS Loader
 if( module && module.exports ) {
-  module.exports = BelowTip;
+  module.exports = RightTip;
 }

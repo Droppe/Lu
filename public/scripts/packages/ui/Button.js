@@ -44,8 +44,7 @@ Button = Class.create( Abstract, ( function () {
        * @final
        */
       defaults = {
-        on: 'click',
-        action: 'click'
+        on: 'click'
       },
       /**
        * Target item used in event data
@@ -126,14 +125,14 @@ Button = Class.create( Abstract, ( function () {
        */
       Button.triggerAction = function (action, item) {
         _.log("Button", action, $element);
-        
+
         if( item || item === 0 ) {
           Button.trigger( action, [ item ] );
         } else {
           Button.trigger( action );
         }
       };
-      
+
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
 
