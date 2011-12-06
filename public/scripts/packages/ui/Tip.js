@@ -10,9 +10,13 @@ var Class = require( '/scripts/libraries/ptclass' ),
 
 Tip =  Class.create( Abstract,  ( function () {
 
-  var HIDE_EVENT = 'hide',
-    HIDDEN_EVENT = 'hidden',
+
+  var
+    //Observed events 
+    HIDE_EVENT = 'hide',
     SHOW_EVENT = 'show',
+    //Stateful published events
+    HIDDEN_EVENT = 'hidden',
     SHOWN_EVENT = 'shown';
 
   return {
@@ -45,7 +49,7 @@ Tip =  Class.create( Abstract,  ( function () {
         defaults = {
 
             /**
-             * The time in ms before the tip hides after the user leaves the tip
+             * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
              * @property delay
              * @type Number
              * @private
@@ -53,46 +57,139 @@ Tip =  Class.create( Abstract,  ( function () {
             delay: 300,
 
             /**
-             * The placement of the tip 
-             * @property delay
-             * @type Number
+             * The placement of the tip. above || below || right || left
+             * @property placement
+             * @type String
              * @private
              */
             placement: 'above',
+
+            /**
+             * The number of pixels from the top of the element the tip will be positioned at.
+             * @property offsetTop
+             * @type Number
+             * @private
+             */
             offsetTop: 0,
+
+            /**
+             * The number of pixels from the left of the element the tip will be positioned at.
+             * @property offsetTop
+             * @type Number
+             * @private
+             */
             offsetLeft: 0,
+
+            /**
+             * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
+             * @property template
+             * @type String
+             * @private
+             */
             template: '<div class="tip"><div class="arrow"></div><div class="content"><%= content %></div></div>',
+
+            /**
+             * If set to true the tip will remain open until the mouse has left the tip.
+             * @property sticky
+             * @type Boolean
+             * @private
+             */
             sticky: true,
+
+            /**
+             * The buffer in pixels around the element to be used in determing if the user has stoped interacting with the tip
+             * @property threshold
+             * @type Number
+             * @private
+             */
             threshold: 10
         },
-        shown = false,
-        $document = $( document ),
-        $tip,
-        $content,
-        position,
-        title,
-        delay,
-        sticky;
 
+        /**
+         * An indicator of weather or not the tip is curently shown.
+         * @property shown
+         * @type Boolean
+         * @private
+         */
+        shown = false,
+
+        /**
+         * A jQuery collection that references the document.
+         * @property $document
+         * @type Object
+         * @private
+         */
+        $document = $( document ),
+
+        /**
+         * A jQuery collection that references the the tip.
+         * @property $tip
+         * @type Object
+         * @private
+         */
+        $tip,
+
+        /**
+         * A jQuery collection that references the tip's content.
+         * @property $content
+         * @type Object
+         * @private
+         */
+        $content,
+
+        /**
+         * The cached position of the tip
+         * @property position
+         * @type Object
+         * @private
+         */
+        position,
+
+        /**
+         * The derived content used in the tip
+         * @property content
+         * @type Object
+         * @private
+         */
+        content,
+
+        /**
+         * An indicator of wether or not the tip should remain open
+         * @property stuck
+         * @type Object
+         * @private
+         */
+        stuck;
+
+      //Use the title as content id content no provide in settings
       if( settings.content === undefined ) {
-        title = $element.attr( 'title' );
-        if( title !== undefined ) {
+        content = $element.attr( 'title' );
+        if( content !== undefined ) {
           $element.removeAttr( 'title' );
-          settings.content = title; 
+          settings.content = content; 
         }
       }
 
-      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
+      //Instancetiate the tip
       $tip = $( _.template( settings.template, { content: settings.content } ) );
 
+      //transfer the styles from the target to the tip if style is not specified
       if( settings.style ) {
         $tip.addClass( settings.placement + ' ' + settings.style );
       } else {
         $tip.addClass( settings.placement + ' ' + $element.attr( 'class' ) );
       }
 
+      /**
+       * Used to determine the position of the tip
+       * @private
+       * @method getPosition
+       * @param cache {Boolean} Uses the cached position by default or if set to true.
+       * @returns position {Object} And object containing a top and left
+       */
       function getPosition( cache ) {
         if( position === undefined || cache === false ) {
 
@@ -127,6 +224,7 @@ Tip =  Class.create( Abstract,  ( function () {
         return position;
       }
 
+      //require the Loader and set up listeners if a uri was specifed
       if( settings.uri ) {
         $content = $tip.find( '.content' );
         require.ensure( ['ui/Loader'], function() {
@@ -141,17 +239,22 @@ Tip =  Class.create( Abstract,  ( function () {
         } );
       }
 
+      /**
+       * Show the tip
+       * @privelaged
+       * @method show
+       */
       Tip.show = function() {
         if( shown === false ) {
           $( 'body' ).append( $tip );
           $tip.css( getPosition() );
 
           $tip.on( 'mouseenter.athena.tip', function( event ) {
-            sticky = true;
+            stuck = true;
           } );
 
           $tip.on( 'mouseleave.athena.tip', function( event ) {
-            sticky = false;
+            stuck = false;
             Tip.hide();
           } );
 
@@ -159,10 +262,16 @@ Tip =  Class.create( Abstract,  ( function () {
           $element.trigger( SHOWN_EVENT, $tip );
         }
       };
+
+      /**
+       * Hide the tip
+       * @privelaged
+       * @method show
+       */
       Tip.hide = function() {
         if( shown === true ) {
-          delay = window.setTimeout( function() {
-            if( !sticky ) {
+          window.setTimeout( function() {
+            if( !stuck || !settings.sticky ) {
               $tip.off( 'mouseenter.athena.tip' );
               $tip.off( 'mouseleave.athena.tip' );
               $tip.remove();
@@ -173,8 +282,9 @@ Tip =  Class.create( Abstract,  ( function () {
         }
       };
 
+      //Event Listeners
       $element.on( 'mouseenter', function( event ) {
-        event.stopPropagation();
+        //set up a listener on the document to be used in determing if the user has moused out of the threshold
         $document.on( 'mousemove.athena.tip', function( event ) {
           var clientX = event.clientX,
             clientY = event.clientY,
@@ -183,6 +293,11 @@ Tip =  Class.create( Abstract,  ( function () {
             width = $element.width(),
             height = $element.height();
 
+            /**
+             * Returns true if the mouse is within the threshold area
+             * @private
+             * @method isMouseInside
+             */
           function isMouseInside() {
             if( clientX < left - settings.threshold - settings.offsetLeft ) {
               return false;
@@ -204,9 +319,8 @@ Tip =  Class.create( Abstract,  ( function () {
         } );
         Tip.show();
       } );
-      $element.on( 'focus.athena.tip', function( event ) {
+      $element.on( 'focus', function( event ) {
         event.stopPropagation();
-
         $element.on( 'blur.athena.tip', function( event ) {
           event.stopPropagation();
           $element.off( 'blur.athena.tip' );
@@ -216,6 +330,8 @@ Tip =  Class.create( Abstract,  ( function () {
         Tip.show();
 
       } );
+
+      //Listen to theese events from other controls
       $element.on( HIDE_EVENT, function( event ) {
         event.stopPropagation();
         Tip.hide();
