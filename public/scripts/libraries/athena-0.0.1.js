@@ -141,6 +141,8 @@ Athena = function( settings ) {
           $node.data( 'controls', {} ).data( 'controls' )[pckg] = Control;
         }
       } );
+      
+      $node.trigger('athena-executed');
 
       $node.data( 'athena', true );
 
@@ -190,6 +192,12 @@ Athena = function( settings ) {
           $controls.each( function( index, control ) {
             execute( $( control ) );
           } );
+          
+          _.log("YOJIMG", "Athena executing", module);
+          if ( $this.is("body") ) {
+            $this.trigger("athena-ready");
+          }
+          
         } );
       } catch( error ) {}
 
@@ -333,7 +341,9 @@ Athena = function( settings ) {
 
     $body.bind( settings.namespace + '-ready', function( event ) {
       console.info( 'Ready !!! ' );
-    } ).execute();
+    } );
+    
+    $body.execute();
 
   } );
 
