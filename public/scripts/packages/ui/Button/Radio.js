@@ -3,11 +3,12 @@ var Class = require( '/scripts/libraries/ptclass' ),
   RadioButton;
   
 
+
 /**
  * Toggles the display of related content to a change event from a grouping of radio buttons.
  * @class RadioButton
  * @constructor
- * @extends Button
+ * @extends FormSelect
  * @require ptclass, Button
  */
 RadioButton = Class.create( FormSelect,  ( function () {
