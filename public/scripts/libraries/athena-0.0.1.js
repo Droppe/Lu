@@ -62,7 +62,8 @@ Athena = function( settings ) {
       on = $.fn.on,
       off = $.fn.off,
       trigger = $.fn.trigger,
-      $deferred = $.Deferred();
+      $deferred = [$.Deferred()];
+      
 
     /**
      * Queues a control for execution with selected node.
@@ -238,7 +239,8 @@ Athena = function( settings ) {
             //console.log(numberOfControls);
             if( numberOfControls === 0 ) {
               $this.trigger( 'athena-ready', [ $this ] );
-              $deferred.resolve();
+              _.last($deferred).resolve();
+              $deferred.push( $.Deferred() );
             }
           } );
           
@@ -293,8 +295,7 @@ Athena = function( settings ) {
 
       if ( $observerData && $observerData.length ) {
         
-        $deferred.done( function () {
-          _.log("Deferred.done", $observerData);
+        $this.data("$deferred").done( function () {
           $observerData.trigger( event, parameters );
         });
 
@@ -317,6 +318,8 @@ Athena = function( settings ) {
       } else {
         $this.data( '$observers', $observer );
       }
+      
+      $this.data("$deferred", _.last($deferred) );
 
     };
 
