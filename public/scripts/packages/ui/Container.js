@@ -45,7 +45,6 @@ Container = Class.create( Abstract,  ( function () {
         // EVENTS
         onHide: "hide unselect",
         onShow: "show select",
-        onSelected: "selected",
         actionHide: "hide",
         actionShow: "show"
       },
@@ -251,7 +250,7 @@ Container = Class.create( Abstract,  ( function () {
        */
       Container.hide = function () {
         $element.addClass(hiddenClass);
-        Container.trigger(settings.hiddenEvent);
+        Container.trigger(settings.actionHide);
       };
 
       /**
@@ -262,7 +261,7 @@ Container = Class.create( Abstract,  ( function () {
        */
       Container.show = function () {
         $element.removeClass(hiddenClass);
-        Container.trigger(settings.shownEvent);
+        Container.trigger(settings.actionShow);
       };
 
       /**

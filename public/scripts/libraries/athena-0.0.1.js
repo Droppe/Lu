@@ -23,6 +23,15 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+$( 'body' ).on( 'athena-executed', function( event, control ) {
+  console.log( $( this ).is( event.target ) );
+  console.log( 'control', control );
+} );
+
+$( 'body' ).on( 'athena-ready', function( event, executed ) {
+  console.log('YEAAAAA!!!!!!!', executed );
+} );
+
 var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
   Athena;
 
@@ -135,14 +144,14 @@ Athena = function( settings ) {
         var Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node ) );
         console.info( 'Action ' + key + ' executed with', $node );
 
-        if( $node.data( 'controls' ) ) {
-          $node.data( 'controls' )[ pckg ] = Control;
+        if( $node.data( 'athena-controls' )[pckg] ) {
+          $node.data( 'athena-controls' )[pckg]['instance'] = Control;
         } else {
-          $node.data( 'controls', {} ).data( 'controls' )[pckg] = Control;
+          $node.data( 'athena-controls')[ pckg ] = { 'instance': Control };
         }
-      } );
+        $node.trigger( 'athena-executed', [ pckg ] );
 
-      $node.data( 'athena', true );
+      } );
 
     }
 
@@ -156,7 +165,8 @@ Athena = function( settings ) {
       var $this = $( this ),
         $controls,
         keys = [],
-        required = [];
+        required = [],
+        numberOfControls = 0;
 
       $controls = $( UI_CONTROL_PATTERN, $this );
 
@@ -164,13 +174,46 @@ Athena = function( settings ) {
         $controls = $controls.add( $this );
       }
 
-      $controls = $controls.filter( function( item ) {
-        return $( item ).data( 'athena' ) ? false : true;
+      $controls.each( function( index, item ) {
+
+        var $item = $( item ),
+          athenaData;
+
+        athenaData = $item.data( 'athena-controls' );
+
+        if( athenaData === undefined ) {
+          $item.data( 'athena-controls', {} );
+          athenaData = $item.data( 'athena-controls' );
+        }
+
+      } );
+
+      $controls.filter( function( item ) {
+        var $item = $( item ),
+          athenaData,
+          isReady = true;
+
+        athenaData = $item.data( 'athena-controls' );
+
+        _.each( athenaData, function( item, index ) {
+          if( isReady && item.state !== 'ready' ) {
+            isReady = false;
+            return;
+          }
+        } );
+
+        return isReady;
+
       } );
 
       //Construct an array of required packages
       _.each( $controls, function( node, index ) {
-        var $node = $( node );
+        var $node = $( node ),
+          controls;
+        controls = $node.attr( ATTR ).split( ' ' );
+
+        numberOfControls += controls.length;
+
         _.each( $node.attr( ATTR ).split( ' ' ), function( key, index ) {
           var pckg = key.replace( /\:/g, '/' );
           if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ) {
@@ -189,6 +232,11 @@ Athena = function( settings ) {
           } );
           $controls.each( function( index, control ) {
             execute( $( control ) );
+            numberOfControls -= 1;
+            console.log(numberOfControls);
+            if( numberOfControls === 1 ) {
+              $this.trigger( 'athena-ready', [ $this ] );
+            }
           } );
         } );
       } catch( error ) {}
@@ -305,6 +353,9 @@ Athena = function( settings ) {
    * @param {Object} settings to be used in creation of controls
    */
   Athena.decorate = function( $node, keys, settings ) {
+    //otse keys = _.union( $node.attr( ATTR ).split( ' ' ), keys );
+    var nodeKeys = ( $node.attr( ATTR ) ) ? $node.attr( ATTR ).split( ' ' ) : [];
+    keys = _.union( nodeKeys, keys ); 
     return $node.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', settings );
   };
 
@@ -330,11 +381,7 @@ Athena = function( settings ) {
 
     var $body = $( 'body' );
     Athena.decorate( $body, ['ui:Abstract'] );
-
-    $body.bind( settings.namespace + '-ready', function( event ) {
-      console.info( 'Ready !!! ' );
-    } ).execute();
-
+    $body.execute();
   } );
 
 };

@@ -192,11 +192,11 @@ List =  Class.create( Abstract, ( function () {
 
           if( $item.hasClass( settings.selectFlag ) === false ) {
             $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
-            this.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
+            $element.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
           }
 
           // Set focus to the item that you've selected
-          // We do this for ally
+          // We do this for a11y
           $item.attr("tabindex", "-1").focus();
         }
 

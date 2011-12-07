@@ -12,7 +12,6 @@ RightTip = Class.create( Tip, ( function () {
        };
 
        _.defaults( settings, defaults );
-       console.log( settings );
        $super( $element, settings );
      }
   };
