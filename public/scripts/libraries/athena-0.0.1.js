@@ -149,6 +149,7 @@ Athena = function( settings ) {
         } else {
           $node.data( 'athena-controls')[ pckg ] = { 'instance': Control };
         }
+
         $node.trigger( 'athena-executed', [ pckg ] );
 
       } );
@@ -240,6 +241,12 @@ Athena = function( settings ) {
               $this.trigger( 'athena-ready', [ $this ] );
             }
           } );
+          
+          _.log("YOJIMG", "Athena executing", module);
+          if ( $this.is("body") ) {
+            $this.trigger("athena-ready");
+          }
+          
         } );
       } catch( error ) {}
 
@@ -333,7 +340,6 @@ Athena = function( settings ) {
 
   };
 
-
   /**
    * Factory for creating Controls.
    * @public
@@ -355,7 +361,9 @@ Athena = function( settings ) {
    * @param {Object} settings to be used in creation of controls
    */
   Athena.decorate = function( $node, keys, settings ) {
-    keys = _.union( $node.attr( ATTR ).split( ' ' ), keys );
+    var nodeKeys = ( $node.attr( ATTR ) ) ? $node.attr( ATTR ).split( ' ' ) : [];
+
+    keys = _.union( nodeKeys, keys );
     return $node.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', settings );
   };
 
