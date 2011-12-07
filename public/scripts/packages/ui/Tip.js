@@ -228,6 +228,7 @@ Tip =  Class.create( Abstract,  ( function () {
       if( settings.uri ) {
         $content = $tip.find( '.content' );
         require.ensure( ['ui/Loader'], function() {
+          //TODO: Factor out require statement use params instead
           var Loader = require( 'ui/Loader' );
           Loader = new Loader( $content, {} );
           Loader.on( 'loaded', function( event ) {
