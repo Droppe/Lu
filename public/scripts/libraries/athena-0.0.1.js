@@ -338,7 +338,6 @@ Athena = function( settings ) {
 
   };
 
-
   /**
    * Factory for creating Controls.
    * @public
