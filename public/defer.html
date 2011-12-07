@@ -50,79 +50,25 @@
 
 <body>
   <div id="container">
-    
     <form>
-      <fieldset>
-        <legend>Checkboxes</legend>
-
-        <button type="button" data-athena="ui:Button" data-athena-config="{
-          'ui:Button': {
-            action: 'select',
-            notify: '#revealContent1'
-          }
-        }">Select 1</button>
-        <button type="button" data-athena="ui:Button" data-athena-config="{
-          'ui:Button': {
-            action: 'unselect',
-            notify: '#revealContent1'
-          }
-        }">Unselect 1</button>
-
-        <label><input type="checkbox" name="myCheckBox1" value="on1" data-athena="ui:Button:Checkbox" aria-controls="revealContent1">1</label>
-        <label><input type="checkbox" checked="checked" name="myCheckBox2" value="on2" data-athena="ui:Button:Checkbox" aria-controls="revealContent2">2</label>
-
-        <span class="hidden" id="revealContent1" data-athena="ui:Container">
-          Extra content for 1.
-        </span>
-        <span class="hidden" id="revealContent2" data-athena="ui:Container">
-          Extra content for 2.
-        </span>
-
-      </fieldset>
-
-      <fieldset>
-        <legend>Radio Buttons -- in List</legend>
-        <ul data-athena="ui:List">
-          <li>
-            <label><input type="radio" name="myRadioBtn" value="on3" aria-controls="revealContent3" data-athena="ui:Button:Radio">3</label>
-            <span class="hidden" id="revealContent3" data-athena="ui:Container">
-              Extra content for 3.
-            </span>
-          </li>
-          <li>
-            <label><input type="radio" name="myRadioBtn" value="on4" aria-controls="revealContent4" data-athena="ui:Button:Radio">4</label>
-            <span class="hidden" id="revealContent4" data-athena="ui:Container">
-              Extra content for 4.
-            </span>
-          </li>
-          <li>
-            <label><input type="radio" name="myRadioBtn" value="on5" aria-controls="revealContent5" data-athena="ui:Button:Radio">5</label>
-            <span class="hidden" id="revealContent5" data-athena="ui:Container">
-              Extra content for 5.
-            </span>
-          </li>
-          <li>
-            <button type="button" data-athena="ui:Button:Select">Select Button</button>
-          </li>
-        </ul>
-      </fieldset>
-
+      
       <fieldset>
         <legend>Radio Buttons -- not in List</legend>
           <label><input type="radio" name="myRadioBtn2" value="on6" aria-controls="revealContent6" data-athena="ui:Button:Radio">6</label>
-          <span class="hidden" id="revealContent6" data-athena="ui:Container">
-            Extra content for 6.
-          </span>
           <label><input type="radio" name="myRadioBtn2" value="on7" aria-controls="revealContent7" data-athena="ui:Button:Radio">7</label>
-          <span class="hidden" id="revealContent7" data-athena="ui:Container">
-            Extra content for 7.
-          </span>
           <label><input type="radio" name="myRadioBtn2" value="on8" aria-controls="revealContent8" data-athena="ui:Button:Radio">8</label>
           <span class="hidden" id="revealContent8" data-athena="ui:Container">
             Extra content for 8.
           </span>
-      </fieldset>
+          <span class="hidden" id="revealContent6" data-athena="ui:Container">
+            Extra content for 6.
+          </span>
+          <span class="hidden" id="revealContent7" data-athena="ui:Container">
+            Extra content for 7.
+          </span>
 
+      </fieldset>
+      
       <fieldset>
         <legend>Select Options</legend>
         <select name="mySelect" data-athena="ui:Button:FormSelect">
@@ -131,7 +77,6 @@
           <option value="10" aria-controls="revealContent10">ten</option>
           <option value="11" aria-controls="revealContent11">eleven</option>                    
         </select>
-        
         <span class="hidden" id="revealContent9" data-athena="ui:Container">
           Extra content for 9.
         </span>
@@ -141,13 +86,9 @@
         <span class="hidden" id="revealContent11" data-athena="ui:Container">
           Extra content for 11.
         </span>
-        
       </fieldset>
-
     </form>
   </div>
-
 </body>
-
 </html>
 

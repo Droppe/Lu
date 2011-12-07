@@ -2,6 +2,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
   Abstract = require( 'ui/Abstract' ),
   Button;
 
+
 /**
  * Representation of a button element
  * @class Button
@@ -126,14 +127,15 @@ Button = Class.create( Abstract, ( function () {
         _.log("Button", action, $element);
 
         if( item || item === 0 ) {
-          $element.trigger( action, [ item ] );
+          Button.trigger( action, [ item ] );
         } else {
-          $element.trigger( action );
+          Button.trigger( action );
         }
       };
 
       // EVENT BINDINGS
       $element.on( settings.on, function ( event ) {
+
         event.preventDefault();
         // Oh, overloading the item!  The item can be a number or an Object
         // When it's a number - like index 0 - it's falsy unless we test it!

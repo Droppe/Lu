@@ -45,8 +45,8 @@ Container = Class.create( Abstract,  ( function () {
         // EVENTS
         onHide: "hide unselect",
         onShow: "show select",
-        actionHide: "hide",
-        actionShow: "show"
+        actionHide: "hidex",
+        actionShow: "showx"
       },
       /**
        * Classname for the hidden class from config
@@ -75,7 +75,7 @@ Container = Class.create( Abstract,  ( function () {
        */
       Container.hide = function () {
         $element.addClass(hiddenClass);
-        Container.trigger(settings.hiddenEvent);
+        Container.trigger(settings.actionHide);
       };
 
       /**
@@ -86,23 +86,22 @@ Container = Class.create( Abstract,  ( function () {
        */
       Container.show = function () {
         $element.removeClass(hiddenClass);
-        Container.trigger(settings.shownEvent);
+        Container.trigger(settings.actionShow);
       };
 
 
       // EVENT BINDINGS
       
-      // show
+      // Show
       $element.on( settings.onShow, function( event, item ){
-        _.log("Container", settings.onShow, $element);
-        event.stopPropagation();        
+        _.log("Container", settings.onShow, $element, item);      
+        event.preventDefault();
+        event.stopPropagation();
         
         var ok = true;
         
-        if (item) {
-          if ( typeof item === "string" && item !== $element.attr("id")) {
-            ok = false;
-          } 
+        if (item && typeof item === "string" && item !== $element.attr("id")) {
+          ok = false;
         }
         
         if (ok) {
@@ -113,7 +112,7 @@ Container = Class.create( Abstract,  ( function () {
         
       } );
 
-      // hide
+      // Hide
       $element.on( settings.onHide, function( event, item ){
         _.log("Container", settings.onHide, $element);
         event.stopPropagation();
