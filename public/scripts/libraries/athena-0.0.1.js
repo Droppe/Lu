@@ -360,7 +360,9 @@ Athena = function( settings ) {
    * @param {Object} settings to be used in creation of controls
    */
   Athena.decorate = function( $node, keys, settings ) {
-    keys = _.union( $node.attr( ATTR ).split( ' ' ), keys );
+    var nodeKeys = ( $node.attr( ATTR ) ) ? $node.attr( ATTR ).split( ' ' ) : [];
+
+    keys = _.union( nodeKeys, keys );
     return $node.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', settings );
   };
 
