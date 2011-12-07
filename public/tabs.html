@@ -82,16 +82,20 @@
                                                                        
     <!-- Tab panels -->
     <ul id="tabpanels" class="tab-panels" data-athena="ui:List">
-      <li id="tabpanel1" class="selected">
+      <li id="tabpanel1" class="selected" data-athena="ui:Container">
         Tab 1 panel
       </li>
-      <li id="tabpanel2">
-        Tab 2 panel
+      <li id="tabpanel2" data-athena="ui:Container" data-athena-config="{        
+        'ui:Container': {                                                                         
+          uri:'/miniprofile.html'                                                      
+        }                                                                              
+      }">
+        <div class="content"></div>
       </li>
-      <li id="tabpanel3">
+      <li id="tabpanel3" data-athena="ui:Container">
         Tab 3 panel
       </li>
-      <li id="tabpanel4">
+      <li id="tabpanel4" data-athena="ui:Container">
         Tab 4 panel
       </li>
     </ul>
