@@ -95,6 +95,8 @@ Container = Class.create( Abstract,  ( function () {
       /**
        * The "show"/"select" event handler
        * @method onShowHandler 
+       * @param {Object} event - JQuery event
+       * @param {Integer/Object} item - JQuery DOM object or number
        * @private
        * @return {Void} 
        */
@@ -107,23 +109,26 @@ Container = Class.create( Abstract,  ( function () {
         if (loader && !loaded) {
           loader.trigger( 'load', [ settings.uri ] );
         }
-        
-        if (item) {
-          if ( typeof item === "string" && item !== $element.attr("id")) {
+   
+        // item can be an integer or an object
+        if (item === 0 || item) {
+          // Only do something when item exists
+          if (typeof item === "string" && item !== $element.attr("id")) {
             ok = false;
           } 
-        }
-        
-        if (ok) {
-          Container.show();
-        } else {
-          Container.hide();
+          if (ok) {
+            Container.show();
+          } else {
+            Container.hide();
+          }
         }
       },
 
       /**
        * The "hide"/"unselect" event handler
        * @method onHideHandler 
+       * @param {Object} event - JQuery event
+       * @param {Integer/Object} item - JQuery DOM object or number
        * @private
        * @return {Void} 
        */
@@ -131,7 +136,12 @@ Container = Class.create( Abstract,  ( function () {
         _.log("Container.onHideHandler()", event, item);
 
         event.stopPropagation();
-        Container.hide();
+
+        // item can be an integer or an object
+        if (item === 0 || item) {
+          // Only do something when item exists
+          Container.hide();
+        }
       },
 
       /**
@@ -209,7 +219,7 @@ Container = Class.create( Abstract,  ( function () {
        * Passes a given event to the given node
        * @method passEventToChild
        * @param {Object} event - Event reference
-       * @param {Object} child - JDOM reference to a node element 
+       * @param {Integer/Object} child - JDOM reference to a node element 
        * @private
        * @return {Void}
        */
@@ -249,6 +259,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       Container.hide = function () {
+        _.log("Container.hide()");
         $element.addClass(hiddenClass);
         Container.trigger(settings.actionHide);
       };
@@ -260,6 +271,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       Container.show = function () {
+        _.log("Container.show()");
         $element.removeClass(hiddenClass);
         Container.trigger(settings.actionShow);
       };
