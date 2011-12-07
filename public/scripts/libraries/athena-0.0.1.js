@@ -223,10 +223,12 @@ Athena = function( settings ) {
       } );
 
       // Test to see if nessasary CommonJS interfaces exists
+       console.log( 'hello world' );
       try {
         window.require.setExpires( settings.moduleExpire );
         window.require.setModuleRoot( settings.moduleRoot );
         window.require.ensure( required, function( require, module, exports ) {
+          console.log( 'hello world 2' );
           _.each( required, function( requirement, index ) {
             packages[ requirement ] = require( requirement );
           } );
