@@ -23,10 +23,10 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-$( 'body' ).on( 'athena-executed', function( event, control ) {
-  console.log( $( this ).is( event.target ) );
-  console.log( 'control', control );
-} );
+// $( 'body' ).on( 'athena-executed', function( event, control ) {
+//   console.log( $( this ).is( event.target ) );
+//   console.log( 'control', control );
+// } );
 
 $( 'body' ).on( 'athena-ready', function( event, executed ) {
   console.log('YEAAAAA!!!!!!!', executed );
@@ -61,7 +61,8 @@ Athena = function( settings ) {
       var packages = {},
       on = $.fn.on,
       off = $.fn.off,
-      trigger = $.fn.trigger;
+      trigger = $.fn.trigger,
+      $deferred = $.Deferred();
 
     /**
      * Queues a control for execution with selected node.
@@ -234,16 +235,12 @@ Athena = function( settings ) {
           $controls.each( function( index, control ) {
             execute( $( control ) );
             numberOfControls -= 1;
-            console.log(numberOfControls);
-            if( numberOfControls === 1 ) {
+            //console.log(numberOfControls);
+            if( numberOfControls === 0 ) {
               $this.trigger( 'athena-ready', [ $this ] );
+              $deferred.resolve();
             }
           } );
-          
-          _.log("YOJIMG", "Athena executing", module);
-          if ( $this.is("body") ) {
-            $this.trigger("athena-ready");
-          }
           
         } );
       } catch( error ) {}
@@ -273,56 +270,78 @@ Athena = function( settings ) {
        return trigger.apply( $this, [event, parameters] );
     };
 
-     /**
-      * Notifies all observers of an event
-      * @method notify
-      * @public
-      * @param {String} A string containing a JavaScript event type, such as click or submit.
-      * @param {Array} Additional parameters to pass along to the event handler.
-      */
-     $.fn.notify = function( event, parameters ) {
-       var $this = $( this );
-       if( $this.data( '$observers' ) ) {
-         $this.data( '$observers' ).trigger( event, parameters );
-       }
-     };
+    /**
+     * Notifies all observers of an event
+     * @method notify
+     * @public
+     * @param {String} A string containing a JavaScript event type, such as click or submit.
+     * @param {Array} Additional parameters to pass along to the event handler.
+     */
+    $.fn.Xnotify = function( event, parameters ) {
+      var $this = $( this ),
+        $observers = $this.data( "$observers" );
 
-     /**
-      * Adds an observer
-      * @method observe
-      * @public
-      * @param {Array} $observer A jQuery collection of of observers.
-      */
-     $.fn.observe = function( $observer ) {
-       var $this = $( this );
-       if( $this.data( '$observers' ) ) {
-         $this.data( '$observers' ).add( $observer );
-       } else {
-         $this.data( '$observers', $observer );
-       }
-     };
+      if( $observers && $observers.length ) {
+        $this.data( '$observers' ).trigger( event, parameters );
+      }
+    
+    };
 
-     /**
-      * Removes an unobserve
-      * @method unobserve
-      * @public
-      * @param {Array} $observer A jQuery collection.
-      */
-     $.fn.unobserve = function( $observer ) {
-       var $this = $( this ),
-         $observers;
+    $.fn.notify = function( event, parameters ) {
+      var $this = $( this ),
+        $observerData = $this.data( "$observers" );
 
-       $observers = $this.data( '$observers' );
+      if ( $observerData && $observerData.length ) {
+        
+        $deferred.done( function () {
+          _.log("Deferred.done", $observerData);
+          $observerData.trigger( event, parameters );
+        });
 
-       if( $observers ){
-         $observers = $( _.reject( $observers, function( item, index ) {
-           return $observer.is( item );
-         } ) );
-         $this.data( '$observers', $observers );
-       }
-       return $this;
+      }
+    
+    };
 
-     };
+    /**
+     * Adds an observer
+     * @method observe
+     * @public
+     * @param {Array} $observer A jQuery collection of observers.
+     */
+    $.fn.observe = function( $observer ) {
+      var $this = $( this ),
+        $observerData = $this.data( '$observers' );
+
+      if ( $observerData && $observerData.length ) {
+        $this.data( '$observers' , $observerData.add( $observer ) );
+      } else {
+        $this.data( '$observers', $observer );
+      }
+
+    };
+
+    /**
+     * Removes an observer
+     * @method unobserve
+     * @public
+     * @param {Array} $observer A jQuery collection.
+     */
+    $.fn.unobserve = function( $observer ) {
+      var $this = $( this ),
+        $observers;
+
+      $observers = $this.data( '$observers' );
+
+      if( $observers ){
+        $observers = $( _.reject( $observers, function( item, index ) {
+          return $observer.is( item );
+        } ) );
+        $this.data( '$observers', $observers );
+      }
+
+      return $this;
+
+    };
 
   } ( jQuery ) );
 
