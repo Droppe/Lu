@@ -227,9 +227,8 @@ Tip =  Class.create( Abstract,  ( function () {
       //require the Loader and set up listeners if a uri was specifed
       if( settings.uri ) {
         $content = $tip.find( '.content' );
-        require.ensure( ['ui/Loader'], function() {
+        require.ensure( ['ui/Loader'], function( modules ) {
           //TODO: Factor out require statement use params instead
-          var Loader = require( 'ui/Loader' );
           Loader = new Loader( $content, {} );
           Loader.on( 'loaded', function( event ) {
             $tip.css( getPosition( false ) );

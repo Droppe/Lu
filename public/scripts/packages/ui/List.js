@@ -177,8 +177,7 @@ List =  Class.create( Abstract, ( function () {
        * @return {Object} List
        */  
       List.select = function( item ) {
-        _.log("List.select", "$items: ", $items);
-        
+
         var $item;
 
         // item can be an integer and 0 is falsy!
