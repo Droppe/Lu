@@ -160,7 +160,7 @@ Athena = function( settings ) {
 
     /**
      * Parses the DOM starting with selected element, requires necessary JS Files, and instantiates Athena controls. 
-     * @method getControl
+     * @method execute
      * @public
      * @param {String} id The id of returned control.
      */
@@ -279,16 +279,6 @@ Athena = function( settings ) {
      * @param {String} A string containing a JavaScript event type, such as click or submit.
      * @param {Array} Additional parameters to pass along to the event handler.
      */
-    $.fn.Xnotify = function( event, parameters ) {
-      var $this = $( this ),
-        $observers = $this.data( "$observers" );
-
-      if( $observers && $observers.length ) {
-        $this.data( '$observers' ).trigger( event, parameters );
-      }
-    
-    };
-
     $.fn.notify = function( event, parameters ) {
       var $this = $( this ),
         $observerData = $this.data( "$observers" );
@@ -319,7 +309,15 @@ Athena = function( settings ) {
         $this.data( '$observers', $observer );
       }
       
-      $this.data("$deferred", _.last($deferred) );
+      // Don't overwrite any existing Deferred object ??
+      // TODO: push Deferred onto an array?
+      if ( $this.data("$deferred") ) {
+        // tbd
+      }
+      else {
+        $this.data("$deferred", _.last($deferred) );        
+      }
+
 
     };
 
