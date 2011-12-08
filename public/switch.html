@@ -10,13 +10,15 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Buttons</title>
+  <title>Switch</title>
 
   <!-- Feature Detection -->
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
+    select.athena-switch,
     .hidden { display: none; }
+    
     .athena-switch-on2 { background-color: cyan; }
     .athena-switch-on { background-color: green; }
     .athena-switch-off { background-color: red; }
@@ -50,34 +52,13 @@
 
   <div id="container">
     
-    <div data-athena="ui:Container:Switch">
-      <button data-athena="ui:Button" data-athena-config="{
-        'ui:Button': {
-          action: 'change'
-        }
-      }">Click Me!</button>
-    </div>
-
-    <div data-athena="ui:Container:Switch" data-athena-config="{
-      'ui:Container:Switch' : {
-        states: [
-          {
-            className: 'athena-switch-off'
-          }, 
-          {
-            className: 'athena-switch-on'
-          },
-          {
-            className: 'athena-switch-on2'
-          }
-        ]
-      }
+    <div id="switcher" class="athena-switch" data-athena="ui:Container:Switch" data-athena-config="{
+      'ui:Container:Switch': {
+        states: [{yes: 'i want hamburger'}, {no: 'i want pizza'}]
+      } 
     }">
-      <button data-athena="ui:Button" data-athena-config="{
-        'ui:Button': {
-          action: 'change',
-        }
-      }">Multi Click Me!</button>
+      <button>hamburger</button>
+      <button>pizza</button>
     </div>
     
   </div>
