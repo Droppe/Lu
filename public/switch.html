@@ -49,8 +49,37 @@
 <body>
 
   <div id="container">
-    <button data-athena="ui:Button:Switch">Switch</button>
-    <button data-athena="ui:Button:MultiSwitch">MultiSwitch</button>
+    
+    <div data-athena="ui:Container:Switch">
+      <button data-athena="ui:Button" data-athena-config="{
+        'ui:Button': {
+          action: 'change'
+        }
+      }">Click Me!</button>
+    </div>
+
+    <div data-athena="ui:Container:Switch" data-athena-config="{
+      'ui:Container:Switch' : {
+        states: [
+          {
+            className: 'athena-switch-off'
+          }, 
+          {
+            className: 'athena-switch-on'
+          },
+          {
+            className: 'athena-switch-on2'
+          }
+        ]
+      }
+    }">
+      <button data-athena="ui:Button" data-athena-config="{
+        'ui:Button': {
+          action: 'change',
+        }
+      }">Multi Click Me!</button>
+    </div>
+    
   </div>
 
 </body>
