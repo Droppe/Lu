@@ -29,6 +29,11 @@ Dropdown =  Class.create( Abstract,  ( function () {
       var KEYUP_EVT = 'keyup',
           SELECT_EVT = 'select',
           SELECTED_EVT = 'selected',
+          // ARIA roles
+          ARIA_ROLE = "role",
+          ARIA_MENU = "menu",
+          ARIA_MENUITEM = "menuitem",
+          ARIA_HASPOPUP = "aria-haspopup",
 
       // INSTANCE PROPERTIES
       
@@ -113,6 +118,24 @@ Dropdown =  Class.create( Abstract,  ( function () {
       $hiddenInput,
 
       /**
+       * Initializes the Droplist control with ARIA attributes.
+       * Sets "role" to "menu", "menuitem" and "has-popup."
+       * @private
+       * @return {Void}
+       */
+      initARIARoles = function() {
+        var $items = $dropDownList.children("li");
+
+        $dropDownList.attr(ARIA_ROLE, ARIA_MENU).attr(ARIA_HASPOPUP, "true");
+
+        if ($items.length > 0) {
+          $items.each(function(index, node) {
+            $(node).attr(ARIA_ROLE, ARIA_MENUITEM);                    
+          });
+        }
+      },
+
+      /**
        * Initializes the Dropdown component
        * @method DropdownInit 
        * @param {Object} settings - Object literal containing settings which have been merged with default settings 
@@ -125,6 +148,9 @@ Dropdown =  Class.create( Abstract,  ( function () {
         // Get references to the styled dropdown selected item and the dropdown list
         $selectedItem = $( $element.children( "." + settings.selectedItem ) );
         $dropDownList = $( $element.children( "." + settings.dropDownList ) );
+
+        // Setup ARIA roles
+        initARIARoles();
 
         if ($parentForm.length === 1) {
           // If we're inside a form - only one parent form -, create hidden input field
@@ -265,6 +291,9 @@ Dropdown =  Class.create( Abstract,  ( function () {
             $item = $(event.target);
 
         switch (keyCode) {
+          case 27: // Escape
+            $dropDownList.hide();
+            break;
           case 38: // Up arrow
             $dropDownList.trigger("previous", $item);
             break;
@@ -292,6 +321,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
 
         switch (keyCode) {
           case 13: // Enter
+          case 27: // Escape
           case 32: // Space bar
             $dropDownList.hide();
             setFocus($selectedItem);
@@ -322,7 +352,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
-      
+     
       // Attach event listeners
       // Dropdown list
       $dropDownList.on(SELECT_EVT, selectDropdownHandler);
