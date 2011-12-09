@@ -3,11 +3,12 @@ var Class = require( '/scripts/libraries/ptclass' ),
   RadioButton;
   
 
+
 /**
  * Toggles the display of related content to a change event from a grouping of radio buttons.
  * @class RadioButton
  * @constructor
- * @extends Button
+ * @extends FormSelect
  * @require ptclass, Button
  */
 RadioButton = Class.create( FormSelect,  ( function () {
@@ -45,6 +46,14 @@ RadioButton = Class.create( FormSelect,  ( function () {
         ariaAttrib: 'aria-controls'
       };
 
+
+
+(function () {
+  var i;
+  for (i=100; i>0; i--) {
+    //noop
+  }
+} ());
             
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
