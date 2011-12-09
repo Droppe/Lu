@@ -1,5 +1,5 @@
 /*!
- * Athena UI Framwork v0.0.1
+ * Athena UI Framwork v0.0.2
  * https://github.com/iheartweb/AthenaUIFramework
  * Copyright (c) 2011 Robert Martone
  * 
@@ -23,12 +23,24 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
+var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
+  Athena;
+
+
 /*
  * Don't do Gilligan's Island if you want to be a serious actress.
  */
 
-var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
-  Athena;
+
+//Setup require statement
+if ( !window.require && !window.module ) {
+  window.require = function( id ) {
+    return window[ id ];
+  };
+  delete window.module;
+}
+
 
 Athena = function( settings ) {
   var Athena = this,
@@ -54,7 +66,7 @@ Athena = function( settings ) {
    * 
    * @public
    * @static
-   * @method unobserve
+   * @method isControl
    * @param {Object} $element a jQuery collection
    */
   Athena.isControl = function( $element ) {
@@ -62,12 +74,13 @@ Athena = function( settings ) {
   };
 
   /**
-   * 
+   * All child controls in the $element and the $element have been executed.
    * @public
    * @static
    * @method unobserve
    * @param {Object} $element a jQuery collection
    */
+  //Refactor Ready and Executed into one method
   Athena.isReady = function( $element ) {
     var $controls = Athena.getDescendants( $element ).filter( function( item ) {
       return Athena.isExecuted( $( item ) );
@@ -79,13 +92,16 @@ Athena = function( settings ) {
   };
 
   /**
-   * 
+   * All controls on a node have been executed.
    * @public
    * @static
    * @method unobserve
    * @param {Object} $element a jQuery collection
+   * @param {String} key The name of Athena component to test
+   * @return {Boolen} Whether or not the component is finished executing
    */
-  Athena.isExecuted = function( $element, id ) {
+   //Make key WORK!
+  Athena.isExecuted = function( $element, key ) {
     var isExecuted = $element.data( 'athena-controls' )['executed'];
     return ( $element.data( 'athena-controls' )['executed'] ) ? true : false;
   };
@@ -112,7 +128,8 @@ Athena = function( settings ) {
     var $controls,
        keys = [],
        required = [],
-       numberOfControls = 0;
+       numberOfControls = 0,
+       $deferred = [$.Deferred()];
     
    /**
     * Instantiates a control with selected element.
@@ -198,6 +215,8 @@ Athena = function( settings ) {
           //This could be a one off error.
           if( numberOfControls === 1 ) {
             $element.trigger( 'athena-ready', [ $element ] );
+            _.last($deferred).resolve();
+            $deferred.push( $.Deferred() );
           }
         } );
       } );
@@ -211,7 +230,7 @@ Athena = function( settings ) {
    * 
    * @public
    * @static
-   * @method unobserve
+   * @method notify
    * @param {Object} $element a jQuery collection
    */
   Athena.notify = function( $element, event, parameters ) {
@@ -222,10 +241,12 @@ Athena = function( settings ) {
       return $element;
     }
 
-    var $observers = data['$observers'];
+    $observers = data['$observers'];
 
-    if( $observers ) {
-      $observers.trigger( event, parameters );
+    if ( $observers && $observers.length ) {
+      $this.data( "$deferred" ).done( function () {
+        $observers.trigger( event, parameters );
+      });
     }
 
     return $element;
@@ -236,7 +257,7 @@ Athena = function( settings ) {
    * 
    * @public
    * @static
-   * @method unobserve
+   * @method observe
    * @param {Object} $element a jQuery collection
    */
   //Should we add an optional control id, so that observation can target a control
@@ -295,7 +316,7 @@ Athena = function( settings ) {
     if( $element.is( UI_CONTROL_PATTERN ) ) {
       $controls = $controls.add( $element );
     }
-    $controls.removeData( 'athena', 'athena-controls' );
+    $controls.removeData( 'athena', 'athena-controls', 'athena-config' );
     return $controls;
   };
 
@@ -319,23 +340,35 @@ Athena = function( settings ) {
   };
 
   /**
+   * Decorates a node with Athena markup instanciates controls.
+   * @public
+   * @static
+   * @param {Object} $element a jQuery collection
+   * @param {Object} keys to be decorated
+   * @param {Object} settings to be used in creation of controls
+   */
+  Athena.create = function( $element, keys, settings ) {
+    return Athena.execute( Athena.decorate( $element, keys, settings ) );
+  };
+
+  /**
    * Returns a control instance with id
    * @method getControl
    * @public
    * @static
    * @param {Object} $element a jQuery collection
-   * @param {String} id The id of returned control.
+   * @param {String} key The id of returned control.
    */
-  Athena.getControl = function( $element, id ) {
+  Athena.getControl = function( $element, key ) {
     var data = $element.data( 'athena-controls' );
     if( !data ) {
       return;
     }
-    return $element.data( 'athena-controls' )[id]['instance'];
+    return $element.data( 'athena-controls' )[key]['instance'];
   };
 
   /**
-   * Returns a controls object keyed by id
+   * Returns a controls object keyed by key
    * @method getControls
    * @public
    * @static
@@ -469,9 +502,12 @@ Athena = function( settings ) {
 
 };
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = new Athena( ATHENA_CONFIG );
-}
 
-localStorage.clear();
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === function ){
+    module.setExports( new Athena( ATHENA_CONFIG ) );
+  } else if( module.exports ) {
+   module.exports = new Athena( ATHENA_CONFIG ); 
+  }
+}
