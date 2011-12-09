@@ -12,6 +12,17 @@ var Class = require( '/scripts/libraries/ptclass' ),
  */
 Dropdown =  Class.create( Abstract,  ( function () {
 
+  // Constants
+  var KEYUP_EVT = 'keyup',
+    SELECT_EVT = 'select',
+    SELECTED_EVT = 'selected',
+    // ARIA roles
+    ARIA_ROLE = 'role',
+    ARIA_MENU = 'menu',
+    ARIA_MENUITEM = 'menuitem',
+    ARIA_HASPOPUP = 'aria-haspopup',
+    ARIA_PRESENTATION = 'presentation';
+
   // RETURN METHODS OBJECT 
   return {
     /**
@@ -23,19 +34,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
      * @param {Object} settings Configuration settings
      */    
     initialize: function ( $super, $element, settings ) {
-
       // PRIVATE
-      // Constants
-      var KEYUP_EVT = 'keyup',
-          SELECT_EVT = 'select',
-          SELECTED_EVT = 'selected',
-          // ARIA roles
-          ARIA_ROLE = "role",
-          ARIA_MENU = "menu",
-          ARIA_MENUITEM = "menuitem",
-          ARIA_HASPOPUP = "aria-haspopup",
-          ARIA_PRESENTATION = "presentation",
-
       // INSTANCE PROPERTIES
       
       /**
@@ -44,7 +43,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @type Object
        * @private
        */  
-      Dropdown = this,
+      var Dropdown = this,
 
       /**
        * Default configuration values
@@ -116,7 +115,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @type Object
        * @private
        */
-      $hiddenInput,
+      $hiddenInput;
 
       /**
        * Initializes the Droplist control with ARIA attributes.
@@ -124,35 +123,35 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @private
        * @return {Void}
        */
-      initARIARoles = function() {
-        var $items = $dropDownList.children("li");
+      function initARIARoles() {
+        var $items = $dropDownList.children( 'li' );
 
         // The menu has ARIA role "menu" and set "aria-haspopup"
-        if (!$dropDownList.attr(ARIA_ROLE)) {
-          $dropDownList.attr(ARIA_ROLE, ARIA_MENU).attr(ARIA_HASPOPUP, "true");
+        if ( !$dropDownList.attr( ARIA_ROLE ) ) {
+          $dropDownList.attr( ARIA_ROLE, ARIA_MENU ).attr( ARIA_HASPOPUP, 'true' );
         }
 
-        if ($items.length > 0) {
-          $items.each(function(index, node) {
+        if ( $items.length > 0 ) {
+          $items.each( function( index, node ) {
             var $kids,
-                $node = $(node);
+                $node = $( node );
 
             // Each link has ARIA role "presentation"
-            if (!$node.attr(ARIA_ROLE)) {
-              $node.attr(ARIA_ROLE, ARIA_PRESENTATION);
+            if ( !$node.attr( ARIA_ROLE ) ) {
+              $node.attr( ARIA_ROLE, ARIA_PRESENTATION );
             }
 
-            $kids = $node.children("a");
+            $kids = $node.children( 'a' );
 
-            if ($kids.length > 0) {
+            if ( $kids.length > 0 ) {
               // Get the first link and give it role "menuitem"
-              if (!$($kids[0]).attr(ARIA_ROLE)) {
-                $($kids[0]).attr(ARIA_ROLE, ARIA_MENUITEM);
+              if ( !$($kids[0] ).attr( ARIA_ROLE ) ) {
+                $( $kids[0] ).attr( ARIA_ROLE, ARIA_MENUITEM );
               }
             }
-          });
+          } );
         }
-      },
+      }
 
       /**
        * Initializes the Dropdown component
@@ -161,24 +160,23 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @private
        * @return {Void}
        */
-      DropdownInit = function( settings ) {
-        var $parentForm = $element.parents("form");
+      function DropdownInit( settings ) {
+        var $parentForm = $element.parents( 'form' );
 
         // Get references to the styled dropdown selected item and the dropdown list
-        $selectedItem = $( $element.children( "." + settings.selectedItem ) );
-        $dropDownList = $( $element.children( "." + settings.dropDownList ) );
+        $selectedItem = $( $element.children( '.' + settings.selectedItem ) );
+        $dropDownList = $( $element.children( '.' + settings.dropDownList ) );
 
         // Setup ARIA roles
         initARIARoles();
 
-        if ($parentForm.length === 1) {
+        if ( $parentForm.length === 1 ) {
           // If we're inside a form - only one parent form -, create hidden input field
           // Only one selection _not_ multiple yet...
           // Ok... this is suppose to be efficient...
-          $hiddenInput = $("<input type='hidden' name='" + settings.submitName + "' value='" + $selectedItem.html() + "' />").appendTo($($parentForm[0]));
+          $hiddenInput = $( "<input type='hidden' name='" + settings.submitName + "' value='" + $selectedItem.html() + "' />" ).appendTo( $( $parentForm[0] ) );
         }
-
-      },
+      }
 
       /**
        * Handles the list element select.  Fires the "select" event to the selected item and passes the selected element
@@ -188,9 +186,9 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @private
        * @return {Void}
        */
-      selectDropdownHandler = function( event, item ) {
+      function selectDropdownHandler( event, item ) {
         $selectedItem.trigger( SELECT_EVT, [item] );
-      },
+      }
 
       /**
        * Finds a collection of links that match a link and it's descendant classNameQuery 
@@ -200,21 +198,21 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @private
        * @return {Collection} Collection of JQuery DOM link elements
        */
-      findAthenaItems = function($ul, classNameQuery) {
+      function findAthenaItems( $ul, classNameQuery ) {
         var $elements;
 
-        if ($ul) {
+        if ( $ul ) {
           // Find the link in a list and find the "athena-item" class and if that's not 
           // there, get the JQuery DOM element for the <a>. 
-          $elements = $ul.find("a " + classNameQuery);
+          $elements = $ul.find( 'a ' + classNameQuery );
 
-          if ($elements.length === 0) {
-            $elements = $ul.find("a");
+          if ( $elements.length === 0 ) {
+            $elements = $ul.find( 'a' );
           }
         }
 
         return $elements; 
-      },
+      }
 
       /**
        * Handles the selected element.  Updates the selected element to be the new selected item.  The "selected item" 
@@ -225,35 +223,35 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @private
        * @return {Void}
        */
-      selectItemHandler = function(event, item) {
-        var $elements = findAthenaItems($dropDownList, ".athena-item"),
+      function selectItemHandler( event, item ) {
+        var $elements = findAthenaItems( $dropDownList, '.athena-item' ),
             $link;
 
         // If item is -1 then we don't know what value we've selected from the list
-        if (item > -1) {
-          if ($elements) {
-            $link = $($elements.get(item));
+        if ( item > -1 ) {
+          if ( $elements ) {
+            $link = $( $elements.get( item ) );
           }
 
-          if ($link && settings.updateSelectedItem) {
-            $selectedItem.html($link.html());
+          if ( $link && settings.updateSelectedItem ) {
+            $selectedItem.html( $link.html() );
           }
 
-          if ($link && $hiddenInput) {
+          if ( $link && $hiddenInput ) {
             // If it exists, update the hidden input field!
-            $hiddenInput.attr("value", $link.html());
+            $hiddenInput.attr( 'value', $link.html() );
           }
 
           // Hide the drop down list
           $dropDownList.hide();
 
           // Set focus on the selected item
-          setFocus($selectedItem);
+          setFocus( $selectedItem );
 
         } else {
           $dropDownList.toggle();
         }
-      },
+      }
     
       /**
        * Handler for the selected droplist item.  The handler triggers a "selected" event to the selectedItem.
@@ -263,9 +261,9 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @private
        * @return {Void}
        */
-      selectedDropdownHandler = function(event, item) {
-        $selectedItem.trigger(SELECTED_EVT, item);
-      },
+      function selectedDropdownHandler( event, item ) {
+        $selectedItem.trigger( SELECTED_EVT, item );
+      }
     
       /**
        * The "selected" element handler for the selected item.  Looks for the title or the name
@@ -276,25 +274,25 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @private
        * @return {Void}
        */
-      selectedItemHandler = function(event, item) {
-        var $item = $(item), 
+      function selectedItemHandler( event, item ) {
+        var $item = $( item ), 
             itemName;
 
         // This returns one element
-        itemName = findAthenaItems($item, ".athena-item").html(); 
+        itemName = findAthenaItems( $item, '.athena-item' ).html(); 
 
-        if (itemName) {
+        if ( itemName ) {
           // Update the selected item if we're suppose to
-          if (settings.updateSelectedItem) {
-            $selectedItem.html(itemName);
+          if ( settings.updateSelectedItem ) {
+            $selectedItem.html( itemName );
           }
 
           // If there's a hidden input, update the value!
-          if ($hiddenInput) {
-            $hiddenInput.attr("value", itemName);
+          if ( $hiddenInput ) {
+            $hiddenInput.attr( 'value', itemName );
           }
         }
-      },
+      }
 
       /**
        * Handles the keyup event and looks for keycodes 38 and 40.  These correspond to 
@@ -305,26 +303,26 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @param {Object} item An object or a number
        * @return {Void}
        */  
-      handleKeyup = function(event, item) {
+      function handleKeyup( event, item ) {
         var keyCode = event.keyCode,
-            $item = $(event.target);
+            $item = $( event.target );
 
         switch (keyCode) {
           case 27: // Escape
             $dropDownList.hide();
             break;
           case 38: // Up arrow
-            $dropDownList.trigger("previous", $item);
+            $dropDownList.trigger( 'previous', $item );
             break;
           case 40: // Down arrow 
-            $dropDownList.trigger("next", $item);
+            $dropDownList.trigger( 'next', $item );
           default:
             break;
         }
 
         // Maintain focus on the selected item
-        setFocus($selectedItem);
-      },
+        setFocus( $selectedItem );
+      }
 
       /**
        * Handles the keyup event when a list element has focus and looks for keycodes 13 and 32.  
@@ -335,19 +333,19 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @param {Object} item An object or a number
        * @return {Void}
        */  
-      handleKeyupDropDownList = function(event, item) {
+      function handleKeyupDropDownList( event, item ) {
         var keyCode = event.keyCode;
 
-        switch (keyCode) {
+        switch ( keyCode ) {
           case 13: // Enter
           case 27: // Escape
           case 32: // Space bar
             $dropDownList.hide();
-            setFocus($selectedItem);
+            setFocus( $selectedItem );
           default:
             break;
         }
-      },
+      }
 
       /**
        * Sets focus to a JQuery DOM node
@@ -356,37 +354,41 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @param {Object} $jNode JQuery DOM node reference
        * @return {Void}
        */  
-      setFocus = function($jNode) {
-        if ($jNode) {
-          $jNode.attr("tabindex", "0");
+      function setFocus( $jNode ) {
+        if ( $jNode ) {
+          $jNode.attr( 'tabindex', '0' );
           $jNode.focus();
         }
-      };
+      }
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
       // Initialize a bunch of stuff for the Dropdown component!
-      DropdownInit(settings);
+      DropdownInit( settings );
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
      
       // Attach event listeners
       // Dropdown list
-      $dropDownList.on(SELECT_EVT, selectDropdownHandler);
-      $dropDownList.on(KEYUP_EVT, handleKeyupDropDownList);
-      $dropDownList.on(SELECTED_EVT, selectedDropdownHandler);
+      $dropDownList.on( SELECT_EVT, selectDropdownHandler );
+      $dropDownList.on( KEYUP_EVT, handleKeyupDropDownList );
+      $dropDownList.on( SELECTED_EVT, selectedDropdownHandler );
 
       // Selected item window
-      $selectedItem.on(KEYUP_EVT, handleKeyup);
-      $selectedItem.on(SELECT_EVT, selectItemHandler); 
-      $selectedItem.on(SELECTED_EVT, selectedItemHandler); 
+      $selectedItem.on( KEYUP_EVT, handleKeyup );
+      $selectedItem.on( SELECT_EVT, selectItemHandler ); 
+      $selectedItem.on( SELECTED_EVT, selectedItemHandler ); 
     }
   };
-}()));
+}() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Dropdown;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Dropdown );
+  } else if( module.exports ) {
+   module.exports = Dropdown; 
+  }
 }
