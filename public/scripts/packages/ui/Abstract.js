@@ -155,7 +155,11 @@ Abstract = Class.create( ( function() {
   };
 }() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Abstract;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Abstract );
+  } else if( module.exports ) {
+   module.exports = Abstract; 
+  }
 }
