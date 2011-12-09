@@ -10,14 +10,12 @@ var Class = require( '/scripts/libraries/ptclass' ),
 
 Tip =  Class.create( Abstract,  ( function () {
 
-
-  var
-    //Observed events 
-    HIDE_EVENT = 'hide',
-    SHOW_EVENT = 'show',
-    //Stateful published events
-    HIDDEN_EVENT = 'hidden',
-    SHOWN_EVENT = 'shown';
+  //Observed events 
+  var HIDE_EVENT = 'hide',
+      SHOW_EVENT = 'show',
+      //Stateful published events
+      HIDDEN_EVENT = 'hidden',
+      SHOWN_EVENT = 'shown';
 
   return {
 
