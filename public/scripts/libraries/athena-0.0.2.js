@@ -63,14 +63,19 @@ Athena = function( settings ) {
   UI_CONTROL_PATTERN = '[' + ATTR + '*="ui:"]';
 
   /**
-   * 
+   * Returns true if the passed in element is a control an optional key can be used to match a speciffic Control
    * @public
    * @static
    * @method isControl
    * @param {Object} $element a jQuery collection
+   * @param {String} key The name of Athena component to test
    */
-  Athena.isControl = function( $element ) {
-    return $element.is( UI_CONTROL_PATTERN );
+  Athena.isControl = function( $element, key ) {
+    if( key ) {
+      return $element.filter( ATTR + '*=' + key ).length > 1;
+    } else {
+      return $element.is( UI_CONTROL_PATTERN );
+    }
   };
 
   /**
@@ -97,17 +102,15 @@ Athena = function( settings ) {
    * @static
    * @method unobserve
    * @param {Object} $element a jQuery collection
-   * @param {String} key The name of Athena component to test
-   * @return {Boolen} Whether or not the component is finished executing
+   * @return {Boolen} true if controls on $element are finished executing
    */
-   //Make key WORK!
-  Athena.isExecuted = function( $element, key ) {
+  Athena.isExecuted = function( $element ) {
     var isExecuted = $element.data( 'athena-controls' )['executed'];
     return ( $element.data( 'athena-controls' )['executed'] ) ? true : false;
   };
 
   /**
-   * 
+   * Returns an array of all Athena keys on $element
    * @public
    * @static
    * @method unobserve
@@ -118,10 +121,10 @@ Athena = function( settings ) {
   };
 
   /**
-   * 
+   * Parses the $element for Athena controls, loads, and instatiates them.
    * @public
    * @static
-   * @method load
+   * @method execute
    * @param {Object} $element a jQuery collection
    */
   Athena.execute = function( $element ) {
@@ -227,11 +230,13 @@ Athena = function( settings ) {
   }; 
 
   /**
-   * 
+   * Notifies observers of events
    * @public
    * @static
    * @method notify
    * @param {Object} $element a jQuery collection
+   * @param {string} event the event type
+   * @param {Array} $element extra arguments associated with the event
    */
   Athena.notify = function( $element, event, parameters ) {
     var data = $element.data( 'athena-controls' ),
@@ -254,13 +259,13 @@ Athena = function( settings ) {
   };
 
   /**
-   * 
+   * Add and $observer to an $element
    * @public
    * @static
    * @method observe
    * @param {Object} $element a jQuery collection
+   * @param {Object} $observer a jQuery collection
    */
-  //Should we add an optional control id, so that observation can target a control
   Athena.observe = function( $element, $observer ) {
     var data = $element.data( 'athena-controls' );
     if( !data ) {
@@ -278,7 +283,7 @@ Athena = function( settings ) {
   };
 
   /**
-   * 
+   * Remove an observer from an $element
    * @public
    * @static
    * @method unobserve
@@ -305,7 +310,7 @@ Athena = function( settings ) {
   };
 
   /**
-   * Destroys the binding of of a control to the $element
+   * Destroys the binding of an athena control to the $element
    * @public
    * @static
    * @method destroy
