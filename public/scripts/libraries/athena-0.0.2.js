@@ -435,7 +435,7 @@ Athena = function( settings ) {
         if( !controls ) {
           controls = {};
         }
-        controls['key'] = Athena.getControl( $element, key );
+        controls[key] = Athena.getControl( $element, key );
       }
     } );
 
@@ -528,7 +528,7 @@ Athena = function( settings ) {
       parameters[ 0 ] = $this;
 
       if( typeof Athena[method] === 'function' ) {
-        Athena[method].apply( $this, parameters );
+        return Athena[method].apply( $this, parameters );
       }
     };
 
