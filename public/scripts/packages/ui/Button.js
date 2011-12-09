@@ -27,6 +27,9 @@ Button = Class.create( Abstract, ( function () {
      * @param {Object} settings Configuration settings
      */    
     initialize: function ( $super, $element, settings ){
+      // PRIVATE
+      // Constants
+      var ARIA_ROLE = "role",
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -35,7 +38,7 @@ Button = Class.create( Abstract, ( function () {
        * @type Object
        * @private
        */
-      var Button = this,
+      Button = this,
       /**
        * Default configuration values for all instances
        * @property defaults
@@ -101,8 +104,11 @@ Button = Class.create( Abstract, ( function () {
         // If it's a link give it ARIA role button
         isLink = $element.is("a"); 
         if (isLink) {
-          // No need to check if role exists because JQuery won't add another one
-          $element.attr("role", "button");
+
+          // If "role" exists, do nothing... 
+          if (!$element.attr(ARIA_ROLE)) {
+            $element.attr(ARIA_ROLE, "button");
+          }
 
           $element.on("keyup", function(e) { 
               // Pressed space bar

@@ -178,7 +178,8 @@ List =  Class.create( Abstract, ( function () {
        */  
       List.select = function( item ) {
 
-        var $item;
+        var $item,
+            $links;
 
         // item can be an integer and 0 is falsy!
         if (item === 0 || item) {
@@ -190,8 +191,22 @@ List =  Class.create( Abstract, ( function () {
           }
 
           if( $item.hasClass( settings.selectFlag ) === false ) {
+
+            // Not selected 
+            // aria-selected applies to the link _not_ the list item!!!
             $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
+            // Set all links under $items to be aria-selected false
+            $items.find('a').attr("aria-selected", "false");
+
+            // Selected
             $element.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
+
+            $links = $item.find('a');
+
+            if ($links.length > 0) {
+              // Set aria-selected for the first link to "true"
+              $links.eq(0).attr("aria-selected", "true");
+            }
           }
 
           // Set focus to the item that you've selected

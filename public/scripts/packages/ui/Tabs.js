@@ -28,6 +28,12 @@ Tabs =  Class.create( Abstract,  ( function () {
       // Constants
       var SELECT_EVT = 'select',
           SELECTED_EVT = 'selected',
+          // ARIA roles
+          ARIA_TAB = 'tab',
+          ARIA_ROLE = 'role',
+          ARIA_TABLIST = 'tablist',
+          ARIA_TABPANEL = 'tabpanel',
+          ARIA_PRESENTATION = "presentation",
 
       // INSTANCE PROPERTIES
       
@@ -83,6 +89,47 @@ Tabs =  Class.create( Abstract,  ( function () {
       $tabPanels,
 
       /**
+       * Initializes the Tab control with ARIA attributes.
+       * Sets "role" to "tablist", "presentation" and "tab". 
+       * @private
+       * @return {Void}
+       */
+      initARIARoles = function() {
+        var $items = $tabList.children("li");
+
+        // Set ARIA role for "tablist"
+        if (!$tabList.attr(ARIA_ROLE)) { 
+          $tabList.attr(ARIA_ROLE, ARIA_TABLIST);
+        }
+
+        // Set ARIA role for "tabpanel"
+        if (!$tabPanels.attr(ARIA_ROLE)) {
+          $tabPanels.attr(ARIA_ROLE, ARIA_TABPANEL);
+        }
+
+        if ($items.length > 0) {
+          $items.each(function(index, node) {
+            var $kids,
+                $node = $(node);
+
+            // Each link has ARIA role "presentation"
+            if (!$node.attr(ARIA_ROLE)) {
+              $node.attr(ARIA_ROLE, ARIA_PRESENTATION);
+            }
+
+            $kids = $node.children("a");
+
+            if ($kids.length > 0) {
+              // Get the first link and give it role "menuitem"
+              if (!$($kids[0]).attr(ARIA_ROLE)) {
+                $($kids[0]).attr(ARIA_ROLE, ARIA_TAB);
+              }
+            }
+          });
+        }
+      },
+
+      /**
        * Initializes the tab component
        * @method tabInit 
        * @param {Object} settings - Object literal containing settings which have been merged with default settings 
@@ -93,6 +140,8 @@ Tabs =  Class.create( Abstract,  ( function () {
         // Get references to tablist, tabpanels and the current tab
         $tabPanels = $( $element.children( settings.tabPanels ) );
         $tabList = $( $element.children(settings.tabList) ); 
+
+        initARIARoles();
       },
 
       /**

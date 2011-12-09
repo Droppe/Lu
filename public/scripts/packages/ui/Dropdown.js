@@ -34,6 +34,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
           ARIA_MENU = "menu",
           ARIA_MENUITEM = "menuitem",
           ARIA_HASPOPUP = "aria-haspopup",
+          ARIA_PRESENTATION = "presentation",
 
       // INSTANCE PROPERTIES
       
@@ -126,11 +127,29 @@ Dropdown =  Class.create( Abstract,  ( function () {
       initARIARoles = function() {
         var $items = $dropDownList.children("li");
 
-        $dropDownList.attr(ARIA_ROLE, ARIA_MENU).attr(ARIA_HASPOPUP, "true");
+        // The menu has ARIA role "menu" and set "aria-haspopup"
+        if (!$dropDownList.attr(ARIA_ROLE)) {
+          $dropDownList.attr(ARIA_ROLE, ARIA_MENU).attr(ARIA_HASPOPUP, "true");
+        }
 
         if ($items.length > 0) {
           $items.each(function(index, node) {
-            $(node).attr(ARIA_ROLE, ARIA_MENUITEM);                    
+            var $kids,
+                $node = $(node);
+
+            // Each link has ARIA role "presentation"
+            if (!$node.attr(ARIA_ROLE)) {
+              $node.attr(ARIA_ROLE, ARIA_PRESENTATION);
+            }
+
+            $kids = $node.children("a");
+
+            if ($kids.length > 0) {
+              // Get the first link and give it role "menuitem"
+              if (!$($kids[0]).attr(ARIA_ROLE)) {
+                $($kids[0]).attr(ARIA_ROLE, ARIA_MENUITEM);
+              }
+            }
           });
         }
       },
