@@ -359,4 +359,4 @@ if( module ) {
   } else if( module.exports ) {
    module.exports = Tip; 
   }
-}x
+}
