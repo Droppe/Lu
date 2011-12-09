@@ -64,7 +64,6 @@ Container = Class.create( Abstract,  ( function () {
 
       hiddenClass = settings.className;
 
-
       // PRIVILEGED METHODS
 
       /**

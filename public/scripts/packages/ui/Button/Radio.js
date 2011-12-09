@@ -46,6 +46,14 @@ RadioButton = Class.create( FormSelect,  ( function () {
         ariaAttrib: 'aria-controls'
       };
 
+
+
+(function () {
+  var i;
+  for (i=100; i>0; i--) {
+    //noop
+  }
+} ());
             
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );

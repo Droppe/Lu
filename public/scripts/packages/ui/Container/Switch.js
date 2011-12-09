@@ -100,20 +100,16 @@ Switch = Class.create( Container,  ( function () {
       Switch.init();
       Switch.toggleState($buttons.first());
             
+      // Listen for button events
       $element.on( settings.on, settings.buttonTag, function ( event ) {
-        event.preventDefault();
         event.stopPropagation();
         Switch.toggleState( $(event.target) );
       });
 
+      // Responding to external events
       $element.on( settings.on, function ( event, item ) {
         event.preventDefault();
-        
-        
         item = (item > 0) ? item - 1 : 0;
-
-        _.log("YOJIMG", item);
-
         Switch.toggleState($buttons.eq(item));
       });
        

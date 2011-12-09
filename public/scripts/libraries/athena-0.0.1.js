@@ -23,14 +23,10 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// $( 'body' ).on( 'athena-executed', function( event, control ) {
-//   console.log( $( this ).is( event.target ) );
-//   console.log( 'control', control );
-// } );
-
 $( 'body' ).on( 'athena-ready', function( event, executed ) {
   console.log('YEAAAAA!!!!!!!', executed );
 } );
+
 
 var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
   Athena;
@@ -61,8 +57,7 @@ Athena = function( settings ) {
       var packages = {},
       on = $.fn.on,
       off = $.fn.off,
-      trigger = $.fn.trigger,
-      $deferred = [$.Deferred()];
+      trigger = $.fn.trigger;
       
 
     /**
@@ -236,12 +231,15 @@ Athena = function( settings ) {
           $controls.each( function( index, control ) {
             execute( $( control ) );
             numberOfControls -= 1;
-            //console.log(numberOfControls);
+                        
             if( numberOfControls === 0 ) {
-              $this.trigger( 'athena-ready', [ $this ] );
-              _.last($deferred).resolve();
-              $deferred.push( $.Deferred() );
+              $this.trigger( 'athena-ready', [ $this ] );              
             }
+
+            if ( $(control).data("$deferred") ) {
+              $(control).data("$deferred").resolve();
+            }
+            
           } );
           
         } );
@@ -285,9 +283,18 @@ Athena = function( settings ) {
 
       if ( $observerData && $observerData.length ) {
         
-        $this.data("$deferred").done( function () {
-          $observerData.trigger( event, parameters );
+        $observerData.each(function (index, item) {
+          var $item = $(item);
+          if ( $item.data("$deferred") ) {
+            // If the deferred object is already resolved
+            // adding a new .done() fires the trigger method
+            // immediately.
+            $item.data("$deferred").done( function () {
+              $item.trigger( event, parameters );
+            });
+          }
         });
+        
 
       }
     
@@ -303,20 +310,29 @@ Athena = function( settings ) {
       var $this = $( this ),
         $observerData = $this.data( '$observers' );
 
+      if (!$this.length) {
+        return;
+      }
+
       if ( $observerData && $observerData.length ) {
         $this.data( '$observers' , $observerData.add( $observer ) );
       } else {
         $this.data( '$observers', $observer );
       }
       
-      // Don't overwrite any existing Deferred object ??
-      // TODO: push Deferred onto an array?
-      if ( $this.data("$deferred") ) {
-        // tbd
-      }
-      else {
-        $this.data("$deferred", _.last($deferred) );        
-      }
+      $observer.each( function (index, item) {
+
+        console.debug($this, " is creating deferreds for ", item);
+
+
+        // Don't overwrite any existing Deferred object ??
+        if ( $(item).data("$deferred") ) {
+          // tbd -- do nothing?
+        }
+        else {
+          $(item).data("$deferred", $.Deferred() );
+        }        
+      });
 
 
     };

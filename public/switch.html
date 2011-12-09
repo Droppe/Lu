@@ -19,14 +19,16 @@
     .athena-switch { overflow: hidden; *zoom: 1; }
     .athena-switch button {
       border: 1px solid #ccc;
-      border-radius: 0 10px 10px 0;
+      border-radius: 0;
       font-size: 25px;
       float: left;
-      margin: 0;
+      margin: 0 -1px 0 0;
     }
     .athena-switch button:first-child {
-      border-radius: 10px 0 0 10px;
-      margin-right: -1px;
+      border-radius: 10px 0 0 10px;     
+    }
+    .athena-switch button:last-child {
+      border-radius: 0 10px 10px 0;
     }
     .athena-switch button[disabled] {
       background-color: #000;
@@ -61,13 +63,15 @@
 
   <div id="container">
     
-    <div id="switcher" class="athena-switch" data-athena="ui:Container:Switch" data-athena-config="{
+    <div id="switcher1" class="athena-switch" data-athena="ui:Container:Switch" data-athena-config="{
       'ui:Container:Switch': {
         states: [{yes: 'i want hamburger'}, {no: 'i want pizza'}]
       } 
     }">
-      <button>hamburger</button><button>pizza</button>
+      <button type="button" value="">hamburger</button><button type="button">pizza</button>
     </div>
+
+
 
     <button data-athena="ui:Button:Select" data-athena-config="{
       'ui:Button:Select': {
@@ -89,6 +93,30 @@
         item: 3
       }
     }">This shouldn't work</button>
+
+    
+    
+    
+    <div id="switcher2" class="athena-switch" data-athena="ui:Container:Switch" data-athena-config="{
+      'ui:Container:Switch': {
+        states: ['trubeedoobydoo', 'falsywalsey', 'yessssss']
+      } 
+    }">
+      <button type="button" value="">true</button><button type="button">false</button>
+      <button type="button">now!</button>
+    </div>
+
+
+    <div id="switcher3" class="athena-switch" data-athena="ui:Container:Switch" data-athena-config="{
+      'ui:Container:Switch': {
+        buttonTag: 'a',
+        states: ['trubeedoobydoo2', 'falsywalsey2', 'yessssss2']
+      } 
+    }">
+<a href="#">one</a>
+<a href="#">two</a>
+<a href="#">three</a>
+    </div>
 
     
   </div>
