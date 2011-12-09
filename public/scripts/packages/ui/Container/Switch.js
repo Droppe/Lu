@@ -46,8 +46,7 @@ Switch = Class.create( Container,  ( function () {
       defaults = {
         buttonTag: "button",
         on: "click select change",
-        action: "switch",
-        className: "athena-switch"
+        action: "switch"
       },
       /**
        * An array of objects representing available states f
@@ -75,18 +74,21 @@ Switch = Class.create( Container,  ( function () {
        * Sets the state of the switch 
        * @method toggleState
        * @public
-       * @param {Object} button The button that was clicked
+       * @param {Object} $btn The button that was clicked
        * @return {Object} The Switch instance (for chaining)
        */
-      Switch.toggleState = function (button) {
-        var $button = $(button),
-        index = $buttons.index($button),
-        state = (states) ? states[index] : null;
+      Switch.toggleState = function ($btn) {
+        var index, state;
         
-        _.log("Switch.toggleState", button, state);
-        $button.attr(DISABLED, DISABLED);
-        $buttons.not($button).removeAttr(DISABLED);
-        Switch.trigger( settings.action, [  state ] );
+        if ( $btn.length ) {
+          index = $buttons.index($btn);
+          state = (states) ? states[index] : null;
+          _.log("Switch.toggleState", $btn, state);
+          $btn.attr(DISABLED, DISABLED);
+          $buttons.not($btn).removeAttr(DISABLED);
+          Switch.trigger( settings.action, [  state ] );
+        }
+        
         return Switch;
       };
       
@@ -100,7 +102,19 @@ Switch = Class.create( Container,  ( function () {
             
       $element.on( settings.on, settings.buttonTag, function ( event ) {
         event.preventDefault();
-        Switch.toggleState(event.target);
+        event.stopPropagation();
+        Switch.toggleState( $(event.target) );
+      });
+
+      $element.on( settings.on, function ( event, item ) {
+        event.preventDefault();
+        
+        
+        item = (item > 0) ? item - 1 : 0;
+
+        _.log("YOJIMG", item);
+
+        Switch.toggleState($buttons.eq(item));
       });
        
     }

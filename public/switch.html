@@ -16,13 +16,22 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    select.athena-switch,
-    .hidden { display: none; }
-    
-    .athena-switch-on2 { background-color: cyan; }
-    .athena-switch-on { background-color: green; }
-    .athena-switch-off { background-color: red; }
-    
+    .athena-switch { overflow: hidden; *zoom: 1; }
+    .athena-switch button {
+      border: 1px solid #ccc;
+      border-radius: 0 10px 10px 0;
+      font-size: 25px;
+      float: left;
+      margin: 0;
+    }
+    .athena-switch button:first-child {
+      border-radius: 10px 0 0 10px;
+      margin-right: -1px;
+    }
+    .athena-switch button[disabled] {
+      background-color: #000;
+      color: #fff;
+    }
   </style>
 
   <!-- Bootstrap:Util -->
@@ -57,9 +66,30 @@
         states: [{yes: 'i want hamburger'}, {no: 'i want pizza'}]
       } 
     }">
-      <button>hamburger</button>
-      <button>pizza</button>
+      <button>hamburger</button><button>pizza</button>
     </div>
+
+    <button data-athena="ui:Button:Select" data-athena-config="{
+      'ui:Button:Select': {
+        notify: '#switcher',
+        item: 1
+      }
+    }">Select a Burger</button>
+
+    <button data-athena="ui:Button:Select" data-athena-config="{
+      'ui:Button:Select': {
+        notify: '#switcher',
+        item: 2
+      }
+    }">Select Pizza</button>
+
+    <button data-athena="ui:Button:Select" data-athena-config="{
+      'ui:Button:Select': {
+        notify: '#switcher',
+        item: 3
+      }
+    }">This shouldn't work</button>
+
     
   </div>
 
