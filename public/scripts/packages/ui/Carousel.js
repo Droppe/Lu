@@ -11,6 +11,19 @@ var Class = require( '/scripts/libraries/ptclass' ),
  */
 Carousel =  Class.create( List, ( function() {
 
+  var MAX_EVENT = 'max',
+    MIN_EVENT = 'min',
+    PLAY_EVENT = 'play'
+    PLAYING_EVENT = 'playing',
+    PAUSE_EVENT = 'pause',
+    PAUSED_EVENT = 'paused',
+    FIRST_EVENT = 'first',
+    LAST_EVENT = 'last',
+    SELECT_EVENT = 'select',
+    SELECTED_EVENT = 'selected',
+    PREVIOUS_EVENT = 'previous',
+    NEXT_EVENT = 'next';
+
   // RETURN METHODS OBJECT
   return {
     /**
@@ -21,7 +34,7 @@ Carousel =  Class.create( List, ( function() {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */
-    initialize: function ( $super, $element, settings ){
+    initialize: function ( $super, $element, settings ) {
 
       // PRIVATE INSTANCE PROPERTIES
 
@@ -32,85 +45,86 @@ Carousel =  Class.create( List, ( function() {
        * @private
        */  
       var Carousel = this,
-      /**
-       * Default configuration values
-       * @property defaults
-       * @type Object
-       * @private
-       * @final
-       */
-      defaults = {
         /**
-         * Number of times to cycle through carousel items when playing, set to -1 to repeat forever
+         * Default configuration values
+         * @property defaults
+         * @type Object
+         * @private
+         * @final
+         */
+        defaults = {
+          /**
+           * Number of times to cycle through carousel items when playing, set to -1 to repeat forever
+           * @property repeat
+           * @type Number
+           * @private
+           */
+          repeat: -1,
+          /**
+           * Automatically calls play on instantiation if set to true
+           * @property repeat
+           * @type Boolean
+           * @private
+           * @final
+           */
+          autoplay: true,
+          /**
+           * The time in milliseconds to remain on an item while playing
+           * @property delay
+           * @type Number
+           * @private
+           * @final
+           */
+          delay: 3000,
+          /**
+           * A selector scoped to the $element that matches carousel panels
+           * @property repeat
+           * @type String
+           * @private
+           * @final
+           */
+          panels: '.panels',
+          /**
+           * A selector scoped to the $element that matches carousel items
+           * @property repeat
+           * @type String
+           * @private
+           * @final
+           */
+          items: '.items',
+          /**
+           * The CSS class that designates a selected panel
+           * @property selectFlag
+           * @default 'selected'
+           * @type String
+           * @final
+           * @private
+          */
+          activeFlag: 'active'
+
+        },
+        /**
+         * Integer value signalling whether the carousel is set to repeat
          * @property repeat
-         * @type Number
+         * @type Type Number
          * @private
          */
-        repeat: -1,
+        repeat,
         /**
-         * Automatically calls play on instantiation if set to true
-         * @property repeat
+         * Flag signalling the playing state of the carousel
+         * @property playing
          * @type Boolean
+         * @default false
          * @private
-         * @final
          */
-        autoplay: true,
+        playing = false,
         /**
-         * The time in milliseconds to remain on an item while playing
-         * @property delay
-         * @type Number
+         * The collection of panels in the carousel
+         * @property $panels
+         * @type Object
          * @private
-         * @final
          */
-        delay: 3000,
-        /**
-         * A selector scoped to the $element that matches carousel panels
-         * @property repeat
-         * @type String
-         * @private
-         * @final
-         */
-        panels: '.panels',
-        /**
-         * A selector scoped to the $element that matches carousel items
-         * @property repeat
-         * @type String
-         * @private
-         * @final
-         */
-        items: '.items',
-        /**
-         * The CSS class that designates a selected panel
-         * @property selectFlag
-         * @default 'selected'
-         * @type String
-         * @final
-         * @private
-        */
-        activeFlag: 'active'
-      },
-      /**
-       * Integer value signalling whether the carousel is set to repeat
-       * @property repeat
-       * @type Type Number
-       * @private
-       */
-      repeat,
-      /**
-       * Flag signalling the playing state of the carousel
-       * @property playing
-       * @type Boolean
-       * @default false
-       * @private
-       */
-      playing = false,
-      /**
-       * The collection of panels in the carousel
-       * @property $panels
-       * @type Object
-       * @private
-       */
-      $panels;
+        $panels;
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -145,7 +159,7 @@ Carousel =  Class.create( List, ( function() {
               }
             }, settings.delay );
           }() );
-          Carousel.trigger( 'playing' );
+          Carousel.trigger( PLAYING_EVENT, [ $element ] );
         }
         return Carousel;
       };
@@ -159,20 +173,20 @@ Carousel =  Class.create( List, ( function() {
       Carousel.pause = function() {
         if( playing ) {
           playing = false;
-          Carousel.trigger( 'paused' );
+          Carousel.trigger( PAUSED_EVENT, $element );
         }
         return Carousel;
       };
 
       // EVENT BINDINGS
-      Carousel.on( 'selected', function( event, $item ) {
+      Carousel.on( SELECTED_EVENT, function( event, $item ) {
          var $panel = $item.closest( $panels );
          if( $panel.hasClass( settings.activeFlag ) === false ) {
            $panels.removeClass( settings.activeFlag );
            $panel.addClass( settings.activeFlag );
          }
       } );
-      Carousel.on( 'max', function( event ) {
+      Carousel.on( MAX_EVENT, function( event ) {
        event.stopPropagation();
        if( playing && repeat !== 0 ) {
          repeat -= 1;
@@ -183,15 +197,15 @@ Carousel =  Class.create( List, ( function() {
          Carousel.first();
        }
       } );
-      Carousel.on( 'min', function( event ) {
+      Carousel.on( MIN_EVENT, function( event ) {
        event.stopPropagation();
        Carousel.last();
       } );
-      Carousel.on( 'play', function( event ) {
+      Carousel.on( PLAY_EVENT, function( event ) {
        event.stopPropagation();
        Carousel.play();
       } );
-      Carousel.on( 'pause next previous first last select', function( event, item ) {
+      Carousel.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT].join( ' ' ), function( event, item ) {
         event.stopPropagation();
         Carousel.pause();
       } );
@@ -205,7 +219,11 @@ Carousel =  Class.create( List, ( function() {
 
 }() ));
 
-//EXPORT TO ATHENA FRAMEWORK
-if( module && module.exports ) {
-  module.exports = Carousel;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Carousel );
+  } else if( module.exports ) {
+   module.exports = Carousel; 
+  }
 }

@@ -64,7 +64,7 @@ Athena = function( settings ) {
     window.require = function( id ) {
       var id = id.split( '/' ).pop();
       id.reverse();
-      return window[ id.join() ) ];
+      return window[ id.join('') ];
     };
     delete window.module;
   }
