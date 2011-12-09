@@ -33,26 +33,18 @@ var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
  */
 
 
-//Setup require statement
-if ( !window.require && !window.module ) {
-  window.require = function( id ) {
-    return window[ id ];
-  };
-  delete window.module;
-}
-
-
 Athena = function( settings ) {
   var Athena = this,
     defaults = {
       namespace: 'athena',
       debug: false,
       moduleRoot: "/scripts/packages",
-      // inject -- cache for one day
-      moduleExpire: 1440 
+      moduleExpire: 1440,
+      useCommonJSLoader: true,
+      prefixes: ['ui']
     },
     ATTR,
-    UI_CONTROL_PATTERN,
+    UI_CONTROL_PATTERN = [],
     packages = {};
 
   settings = settings || {};
@@ -60,7 +52,20 @@ Athena = function( settings ) {
   _.defaults( settings, defaults );
 
   ATTR = 'data-' + settings.namespace;
-  UI_CONTROL_PATTERN = '[' + ATTR + '*="ui:"]';
+
+  _.each( settings.prefixes, function( item, index ) {
+    UI_CONTROL_PATTERN.push('[' + ATTR + '*="' + item + ':"]');
+  } );
+
+  UI_CONTROL_PATTERN = UI_CONTROL_PATTERN.join(', ');
+
+  //Setup require statement
+  if ( !typeof window.require === 'function' && !window.module || !ATHENA_CONFIG.useCommonJSLoader ) {
+    window.require = function( id ) {
+      return window[ _.last( id.split( '/' ) ) ];
+    };
+    delete window.module;
+  }
 
   /**
    * Returns true if the passed in element is a control an optional key can be used to match a speciffic Control

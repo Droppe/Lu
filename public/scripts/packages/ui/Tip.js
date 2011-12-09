@@ -230,14 +230,14 @@ Tip =  Class.create( Abstract,  ( function () {
         require.ensure( ['ui/Loader'], function( require, module, exports ) {
           var id = 'ui/Loader',
             Loader;
-          
+
           Loader = require( id );
           Loader = new Loader( $content, {} );
 
          Loader.on( 'loaded', function( event ) {
            $tip.css( getPosition( false ) );
          } );
-         $element.one( 'shown.athena.tip', function( event ) {
+         $element.one( 'shown', function( event ) {
            Loader.trigger( 'load', [ settings.uri ] );
          } );
 
