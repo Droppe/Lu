@@ -10,14 +10,12 @@ var Class = require( '/scripts/libraries/ptclass' ),
 
 Tip =  Class.create( Abstract,  ( function () {
 
-
-  var
-    //Observed events 
-    HIDE_EVENT = 'hide',
-    SHOW_EVENT = 'show',
-    //Stateful published events
-    HIDDEN_EVENT = 'hidden',
-    SHOWN_EVENT = 'shown';
+  //Observed events 
+  var HIDE_EVENT = 'hide',
+      SHOW_EVENT = 'show',
+      //Stateful published events
+      HIDDEN_EVENT = 'hidden',
+      SHOWN_EVENT = 'shown';
 
   return {
 
@@ -227,17 +225,22 @@ Tip =  Class.create( Abstract,  ( function () {
       //require the Loader and set up listeners if a uri was specifed
       if( settings.uri ) {
         $content = $tip.find( '.content' );
-        require.ensure( ['ui/Loader'], function() {
-          //TODO: Factor out require statement use params instead
-          var Loader = require( 'ui/Loader' );
+        require.ensure( ['ui/Loader'], function( require, module, exports ) {
+          var id = 'ui/Loader',
+            Loader;
+
+          Loader = require( id );
           Loader = new Loader( $content, {} );
-          Loader.on( 'loaded', function( event ) {
-            $tip.css( getPosition( false ) );
-          } );
-          $element.on( 'shown', function( event ) {
-            Loader.trigger( 'load', [ settings.uri ] );
-          } );
+
+         Loader.on( 'loaded', function( event ) {
+           $tip.css( getPosition( false ) );
+         } );
+         $element.one( 'shown', function( event ) {
+           Loader.trigger( 'load', [ settings.uri ] );
+         } );
+
         } );
+
       }
 
       /**
@@ -267,7 +270,7 @@ Tip =  Class.create( Abstract,  ( function () {
       /**
        * Hide the tip
        * @privelaged
-       * @method show
+       * @method hide
        */
       Tip.hide = function() {
         if( shown === true ) {
@@ -347,7 +350,11 @@ Tip =  Class.create( Abstract,  ( function () {
 
 }() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Tip;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Tip );
+  } else if( module.exports ) {
+   module.exports = Tip; 
+  }
 }

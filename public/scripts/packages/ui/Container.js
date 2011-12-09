@@ -45,27 +45,215 @@ Container = Class.create( Abstract,  ( function () {
         // EVENTS
         onHide: "hide unselect",
         onShow: "show select",
-        actionHide: "hidex",
-        actionShow: "showx"
+        actionHide: "hide",
+        actionShow: "show"
       },
+
+      /**
+       * JQuery DOM reference to the parent of the Container
+       * @property $parent 
+       * @type Object 
+       * @private
+       */
+      $parent,
+
+      /**
+       * JQuery DOM reference to the "content" of the Container
+       * Defined by the "class" content
+       * @property $parent 
+       * @type Object 
+       * @private
+       */
+      $content,
+
       /**
        * Classname for the hidden class from config
        * @property hiddenClass
        * @type String
        * @private
        */
-      hiddenClass;
-                  
-      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
-      _.defaults( settings, defaults );
+      hiddenClass,
 
-      // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      /**
+       * Reference to an instance of the Loader control
+       * @property loader 
+       * @type Object 
+       * @private
+       */
+      loader,
 
-      hiddenClass = settings.className;
+      /**
+       * Denotes whether the Container has dynamically loaded the data/content
+       * @property loaded 
+       * @type Boolean 
+       * @private
+       */
+      loaded = false,
+     
+      // Private methods
+      // Event handlers
+      /**
+       * The "show"/"select" event handler
+       * @method onShowHandler 
+       * @param {Object} event - JQuery event
+       * @param {Integer/Object} item - JQuery DOM object or number
+       * @private
+       * @return {Void} 
+       */
+      onShowHandler = function( event, item ){
+        _.log("Container.onShowHandler()", event, item);
+        event.stopPropagation();        
+        
+        var ok = true;
+
+        if (loader && !loaded) {
+          loader.trigger( 'load', [ settings.uri ] );
+        }
+   
+        // item can be an integer or an object
+        if (item === 0 || item) {
+          // Only do something when item exists
+          if (typeof item === "string" && item !== $element.attr("id")) {
+            ok = false;
+          } 
+          if (ok) {
+            Container.show();
+          } else {
+            Container.hide();
+          }
+        }
+      },
 
       // PRIVILEGED METHODS
 
+      /**
+       * The "hide"/"unselect" event handler
+       * @method onHideHandler 
+       * @param {Object} event - JQuery event
+       * @param {Integer/Object} item - JQuery DOM object or number
+       * @private
+       * @return {Void} 
+       */
+      onHideHandler = function( event, item ){
+        _.log("Container.onHideHandler()", event, item);
+
+        event.stopPropagation();
+
+        // item can be an integer or an object
+        if (item === 0 || item) {
+          // Only do something when item exists
+          Container.hide();
+        }
+      },
+
+      /**
+       * Binds all events for the Container 
+       * @method bindEvents 
+       * @private
+       * @return {Void} 
+       */
+      bindEvents = function() {
+        _.log("Container.bindEvents()");
+
+        // show
+        $element.on( settings.onShow, onShowHandler);
+
+        // hide
+        $element.on( settings.onHide, onHideHandler);
+
+        if ($parent) {
+          // Parent with "data-athena" and tag is not <body>
+          // then listen for show and hide events
+          // The idea is that if the Container is inside another Athena
+          // control like a List, the event from the List will pass down to 
+          // the control
+          $parent.on(settings.onShow + " " + settings.onHide, passEventToChild);
+        }
+      },
+
+      /**
+       * If the settings.uri exists, initialize the URI for the data loader.
+       * @method initializeURI 
+       * @private
+       * @return {Void} 
+       */
+      initializeURI = function() {
+        _.log("Container.initializeURI()");
+
+        if( settings.uri ) {
+          $content = $element.find( '.content' );
+
+          if ($content) {
+            require.ensure( ['ui/Loader'], function() {
+              // Loader is the class!!! 
+              var Loader = require( 'ui/Loader' );
+              loader = new Loader( $content, {} );
+              loader.on( 'loaded', function( event ) {
+                // Set flag so we don't make another request!
+                loaded = true;
+              } );
+            } );
+          }
+        }
+      },
+
+      /**
+       * Gets the closest $parent of the Container if the $parent is a Athena object ( has the attribute "data-athena" )
+       * and is not the <body> 
+       * @method getAthenaParent
+       * @private
+       * @return {Object} $parent - JDOM reference to the parent of the Container
+       */
+      getAthenaParent = function() {
+        _.log("Container.getAthenaParent()");
+
+        var $parent,
+            $parents = $element.parents("[data-athena]").not("body");
+
+        if ($parents.length > 0) {
+          $parent = $parents.eq(0); 
+        }
+
+        return $parent;
+      },
+
+      /**
+       * Passes a given event to the given node
+       * @method passEventToChild
+       * @param {Object} event - Event reference
+       * @param {Integer/Object} child - JDOM reference to a node element 
+       * @private
+       * @return {Void}
+       */
+      passEventToChild = function(event, child) {
+          _.log("Container.passEventToChild()", event, child);
+
+          event.stopPropagation();
+
+          var $localChild,
+              items = $parent.children(),
+              elementIndex = items.index($element);
+
+
+          // Check to see if item is a Object or integer
+          if (typeof child === "number") {
+            if (items.length > 0) {
+              $localChild = $(items[child]);
+            }
+          } else {
+            $localChild = $(child); 
+          }
+
+          // We test so we don't go nuts triggering each child!
+          // Only when the $element is the same as the child do
+          // we fire the event
+          if ($localChild && elementIndex === child) {
+            // The event made into a JQuery Event
+            $element.trigger(jQuery.Event(event), $localChild);
+          }
+      };
+                  
+      // PRIVILEGED METHODS
       /**
        * Hides the related content.
        * @method hide
@@ -73,6 +261,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       Container.hide = function () {
+        _.log("Container.hide()");
         $element.addClass(hiddenClass);
         Container.trigger(settings.actionHide);
       };
@@ -84,39 +273,49 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       Container.show = function () {
+        _.log("Container.show()");
         $element.removeClass(hiddenClass);
         Container.trigger(settings.actionShow);
       };
 
+      /**
+       * Returns the computed height of the Container; result has no units
+       * @method getHeight 
+       * @public
+       * @return {Integer} Computed height of the Container
+       */
+      Container.getHeight = function() {
+        _.log("Container.getHeight()");
+        return $element.height();
+      };
 
-      // EVENT BINDINGS
+      /**
+       * Returns the computed width of the Container; result has no units
+       * @method getWidth
+       * @public
+       * @return {Integer} Computed width of the Container
+       */
+      Container.getWidth = function() {
+        _.log("Container.getWidth()");
+        return $element.width();
+      };
+
+      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      _.defaults( settings, defaults );
+
+      // CALL THE PARENT'S CONSTRUCTOR
+      $super( $element, settings );
+
+      // Get a reference to the parent
+      $parent = getAthenaParent();
+
+      hiddenClass = settings.className;
+
+      // Initialize URI 
+      initializeURI();
       
-      // Show
-      $element.on( settings.onShow, function( event, item ){
-        _.log("Container", settings.onShow, $element, item);      
-        event.preventDefault();
-        event.stopPropagation();
-        
-        var ok = true;
-        
-        if (item && typeof item === "string" && item !== $element.attr("id")) {
-          ok = false;
-        }
-        
-        if (ok) {
-          Container.show();
-        } else {
-          Container.hide();
-        }
-        
-      } );
-
-      // Hide
-      $element.on( settings.onHide, function( event, item ){
-        _.log("Container", settings.onHide, $element);
-        event.stopPropagation();
-        Container.hide();
-      } );
+      // EVENT BINDINGS
+      bindEvents();
 
     }
   };  

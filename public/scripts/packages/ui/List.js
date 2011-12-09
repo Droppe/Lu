@@ -11,6 +11,14 @@ var Class = require( '/scripts/libraries/ptclass' ),
  */
 List =  Class.create( Abstract, ( function () {
 
+  // PRIVATE CONSTANTS
+  var NEXT = 'next',
+    LAST = 'last',
+    FIRST = 'first',
+    PREVIOUS = 'previous',
+    VERTICAL = 'vertical',
+    HORIZONTAL = 'horizontal';
+
   //RETURN METHODS OBJECT 
   return {
     /**
@@ -23,14 +31,6 @@ List =  Class.create( Abstract, ( function () {
      */    
     initialize: function ( $super, $element, settings ){
 
-      // PRIVATE CONSTANTS
-      var NEXT = 'next',
-          LAST = 'last',
-          FIRST = 'first',
-          PREVIOUS = 'previous',
-          VERTICAL = 'vertical',
-          HORIZONTAL = 'horizontal',
-
       // PRIVATE INSTANCE PROPERTIES
       /**
        * Instance of Button
@@ -38,7 +38,7 @@ List =  Class.create( Abstract, ( function () {
        * @type Object
        * @private
        */  
-      List = this,
+      var List = this,
 
       /**
        * Default configuration values
@@ -177,9 +177,9 @@ List =  Class.create( Abstract, ( function () {
        * @return {Object} List
        */  
       List.select = function( item ) {
-        _.log("List.select", "$items: ", $items);
-        
-        var $item;
+
+        var $item,
+            $links;
 
         // item can be an integer and 0 is falsy!
         if (item === 0 || item) {
@@ -191,13 +191,27 @@ List =  Class.create( Abstract, ( function () {
           }
 
           if( $item.hasClass( settings.selectFlag ) === false ) {
+
+            // Not selected 
+            // aria-selected applies to the link _not_ the list item!!!
             $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
+            // Set all links under $items to be aria-selected false
+            $items.find( 'a' ).attr( 'aria-selected', 'false' );
+
+            $links = $item.find( 'a' );
+
+            if ($links.length > 0) {
+              // Set aria-selected for the first link to "true"
+              $links.eq(0).attr( 'aria-selected', 'true' );
+            }
+            
+            // Selected
             $element.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
           }
 
           // Set focus to the item that you've selected
           // We do this for a11y
-          $item.attr("tabindex", "-1").focus();
+          $item.attr( 'tabindex', '-1' ).focus();
         }
 
         return List;

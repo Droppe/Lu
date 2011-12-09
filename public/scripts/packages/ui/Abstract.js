@@ -87,12 +87,10 @@ Abstract = Class.create( ( function() {
       $observe = $( settings.observe );
 
       //Observe elements passed into $observe
-      //$observe.observe( $element );
-      $observe.athena('observe', $element);
+      $observe.athena( 'observe', $element );
 
       //Register elements passed in notify as observers
-      //$element.observe( $notify );
-      $element.athena('observe', $notify);
+      $element.athena( 'observe', $notify );
 
       // PRIVATE METHODS
 
@@ -140,7 +138,7 @@ Abstract = Class.create( ( function() {
        * @param {Array} $observer A jQuery collection to be added to the observers list
        */
       Abstract.observe = function( $observer ) {
-        return $element.observe( $observer );
+        return $element.athena( 'observe', $observer );
       };
 
       /**
@@ -150,14 +148,18 @@ Abstract = Class.create( ( function() {
        * @param {Array} $subscriber A jQuery collection to unsubscribe
        */
       Abstract.unobserve = function( $observer ) {
-        return $element.unobserve( $observer );
+        return $element.athena( 'unobserve', $observer );
       };
 
     }
   };
 }() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Abstract;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Abstract );
+  } else if( module.exports ) {
+   module.exports = Abstract; 
+  }
 }

@@ -19,7 +19,11 @@ BelowTip = Class.create( Tip, ( function () {
 
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = BelowTip;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( RightTip );
+  } else if( module.exports ) {
+   module.exports = LeftTip; 
+  }
 }

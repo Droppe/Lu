@@ -47,7 +47,7 @@ Checkbox = Class.create( Button,  ( function () {
         actionUncheck: 'unselect',
         ariaAttrib: 'aria-controls'
       };
-            
+
 
       // Get the notify target from the config or from the ARIA-controls attribute
 
