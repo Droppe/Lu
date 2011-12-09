@@ -227,7 +227,7 @@ Athena = function( settings ) {
           execute( $( control ) );
           numberOfControls -= 1;
           //This could be a one off error.
-          if( numberOfControls === 1 ) {
+          if( numberOfControls === 0 ) {
             $element.trigger( 'athena-ready', [ $element ] );
           }
           // Resolve any deferred objects stored within the control's data object.
