@@ -62,7 +62,9 @@ Athena = function( settings ) {
   //Setup require statement
   if ( !typeof window.require === 'function' && !window.module || !ATHENA_CONFIG.useCommonJSLoader ) {
     window.require = function( id ) {
-      return window[ _.last( id.split( '/' ) ) ];
+      var id = id.split( '/' ).pop();
+      id.reverse();
+      return window[ id.join() ) ];
     };
     delete window.module;
   }

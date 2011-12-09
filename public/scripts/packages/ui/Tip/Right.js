@@ -18,7 +18,11 @@ RightTip = Class.create( Tip, ( function () {
 
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = RightTip;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( RightTip );
+  } else if( module.exports ) {
+   module.exports = RightTip; 
+  }
 }
