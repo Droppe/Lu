@@ -10,7 +10,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-LoadButton = Class.create( Button,  ( function () {
+LoadButton = Class.create( Button, ( function () {
 
    // RETURN METHODS OBJECT
    return {
@@ -47,7 +47,11 @@ LoadButton = Class.create( Button,  ( function () {
   
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = LoadButton;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( LoadButton );
+  } else if( module.exports ) {
+   module.exports = LoadButton; 
+  }
 }
