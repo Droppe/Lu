@@ -354,7 +354,7 @@ Tip =  Class.create( Abstract,  ( function () {
 
 //Export to Common JS Loader
 if( module ) {
-  if( typeof module.setExports === function ){
+  if( typeof module.setExports === 'function' ){
     module.setExports( Tip );
   } else if( module.exports ) {
    module.exports = Tip; 

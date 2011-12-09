@@ -505,7 +505,7 @@ Athena = function( settings ) {
 
 //Export to Common JS Loader
 if( module ) {
-  if( typeof module.setExports === function ){
+  if( typeof module.setExports === 'function' ){
     module.setExports( new Athena( ATHENA_CONFIG ) );
   } else if( module.exports ) {
    module.exports = new Athena( ATHENA_CONFIG ); 
