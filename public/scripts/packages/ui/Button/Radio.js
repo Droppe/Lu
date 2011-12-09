@@ -58,13 +58,13 @@ RadioButton = Class.create( FormSelect,  ( function () {
        */      
       function getNotifyIds() {
         var ids = [];
-        $('input[type="radio"][name="' + $element.attr("name") + '"]', $element.closest("form")).each( function(index, item) {
+        $( 'input[type="radio"][name="' + $element.attr("name") + '"]', $element.closest("form") ).each( function(index, item) {
           var id = $(item).attr(defaults.ariaAttrib);
-          if (id) {
-            ids.push( "#" + id);
+          if ( id ) {
+            ids.push( "#" + id );
           }
         });
-        _.log("Radio.getNotifyIds", ids);
+        _.log( 'Radio.getNotifyIds', ids );
         return ids;
       }
 

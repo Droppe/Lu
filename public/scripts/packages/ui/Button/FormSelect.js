@@ -62,7 +62,7 @@ FormSelect = Class.create( Button,  ( function () {
        */      
       function getNotifyIds() {
         var ids = [];
-        $("option", $element).each( function(index, item) {
+        $( "option" , $element).each( function(index, item) {
           var id = $(item).attr(defaults.ariaAttrib);
           if (id) {
             ids.push( "#" + id);
