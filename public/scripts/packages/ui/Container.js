@@ -124,6 +124,8 @@ Container = Class.create( Abstract,  ( function () {
         }
       },
 
+      // PRIVILEGED METHODS
+
       /**
        * The "hide"/"unselect" event handler
        * @method onHideHandler 
