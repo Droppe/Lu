@@ -27,6 +27,7 @@
  * Don't do Gilligan's Island if you want to be a serious actress.
  */
 
+
 var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
   Athena;
 
@@ -57,6 +58,7 @@ Athena = function( settings ) {
    * @method unobserve
    * @param {Object} $element a jQuery collection
    */
+
   Athena.isControl = function( $element ) {
     return $element.is( UI_CONTROL_PATTERN );
   };
@@ -146,6 +148,7 @@ Athena = function( settings ) {
       $node.trigger( 'athena-executed', [keys] );
       $node.data( 'athena-controls' )[ 'executed' ] = true;
     }
+
 
     $controls = Athena.getDescendants( $element );
 

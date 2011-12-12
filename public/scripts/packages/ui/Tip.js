@@ -171,7 +171,7 @@ Tip =  Class.create( Abstract,  ( function () {
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      //Instancetiate the tip
+      //Instantiate the tip
       $tip = $( _.template( settings.template, { content: settings.content } ) );
 
       //transfer the styles from the target to the tip if style is not specified
