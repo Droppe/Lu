@@ -158,8 +158,8 @@ Athena = function( settings ) {
       _.each( keys, function( key, index ) {
         var pckg = key.replace( /\:/g, '/' ),
           Control;
-
-        Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node ) );
+        config = Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
+        Control = new packages[pckg]( $node, config );
         console.info( 'Action ' + key + ' executed with', $node );
 
         if( $node.data( 'athena-controls' )[key] ) {
@@ -190,7 +190,7 @@ Athena = function( settings ) {
     } );
 
     //Filter out controls that are already executed
-    $controls.filter( function( index, item ) {
+    $controls = $controls.filter( function( index, item ) {
       return Athena.isExecuted( $( item ) ) ? false : true;
     } );
     
@@ -240,7 +240,7 @@ Athena = function( settings ) {
    * Notifies observers of events
    * @public
    * @static
-   * @method notify
+   * @method notifys
    * @param {Object} $element a jQuery collection
    * @param {string} event the event type
    * @param {Array} $element extra arguments associated with the event
@@ -256,9 +256,9 @@ Athena = function( settings ) {
     $observers = data['$observers'];
 
     if ( $observers && $observers.length ) {
-      $this.data( "$deferred" ).done( function () {
+      // $this.data( "$deferred" ).done( function () {
         $observers.trigger( event, parameters );
-      });
+      // });
     }
 
     return $element;
@@ -274,17 +274,26 @@ Athena = function( settings ) {
    * @param {Object} $observer a jQuery collection
    */
   Athena.observe = function( $element, $observer ) {
-    var data = $element.data( 'athena-controls' );
-    if( !data ) {
-      return $element;
-    }
-    var $observers = data['$observers'];
-    if( $observers ) {
-      $observers = $observers.add( $observer );
-    } else {
-      $observers = $observer;
-    }
-    $element.data( 'athena-controls' )[ '$observers' ] = $observers;
+    $element.each( function( index, item ) {
+      var $item = $( item ),
+        $observers,
+        data;
+
+      data = $item.data( 'athena-controls' );
+
+      if( !data ) {
+        return;
+      }
+
+      $observers = data['$observers'];
+
+      if( $observers && $observers.length ) {
+        $observers = $observers.add( $observer );
+      } else {
+        $observers = $observer;
+      }
+      $item.data( 'athena-controls' )[ '$observers' ] = $observers;
+    } );
 
     return $element;
   };

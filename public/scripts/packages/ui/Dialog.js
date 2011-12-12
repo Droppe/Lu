@@ -83,7 +83,11 @@ Dialog = Class.create( Abstract,  ( function () {
   
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Dialog;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ) {
+    module.setExports( Dialog );
+  } else if( module.exports ) {
+   module.exports = Dialog; 
+  }
 }

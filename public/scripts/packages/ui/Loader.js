@@ -14,6 +14,9 @@ Loader = Class.create( Abstract, ( function () {
 
   // GLOBAL STATICS
 
+  var LOADED_EVENT = 'LOADED',
+    LOADING_EVENT = 'LOADING';
+
   // RETURN METHODS OBJECT
   return {
     /**
@@ -41,12 +44,6 @@ Loader = Class.create( Abstract, ( function () {
          * @final
          */
         defaults = {
-          /**
-           * @property loadingFlag css flag to be added to loader when loading
-           * @type Object
-           * @private
-           */
-          loadingFlag: 'loading',
           /**
            * Method to be used when populating target nodes content. Expects: replace || append || prepend
            * @property method 
@@ -82,8 +79,8 @@ Loader = Class.create( Abstract, ( function () {
           content,
           $content;
 
-        Loader.trigger( 'loading' );
-        $element.addClass( settings.loadingFlag );
+        Loader.trigger( LOADING_EVENT );
+        $element.addClass( 'athena-loading' );
 
         function inject( content ) {
           switch( settings.method ) {
@@ -98,7 +95,7 @@ Loader = Class.create( Abstract, ( function () {
               break;
           }
           $element.removeClass( settings.loadingFlag );
-          Loader.trigger( 'loaded' );
+          Loader.trigger( LOADED_EVENT );
         }
 
         if ( explodedURL.path === '' ) {
@@ -145,7 +142,11 @@ Loader = Class.create( Abstract, ( function () {
 
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Loader;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ) {
+    module.setExports( Loader );
+  } else if( module.exports ) {
+   module.exports = Loader; 
+  }
 }

@@ -1,16 +1,16 @@
 var Class = require( '/scripts/libraries/ptclass' ),
   Button = require( 'ui/Button' ),
-  SelectButton;
+  SwitchButton;
 
 /**
  * Representation of a button element preconfigured with a 'next' event
- * @class SelectButton
+ * @class SwitchButton
  * @constructor
  * @extends Button
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-SelectButton = Class.create( Button, ( function () {
+SwitchButton = Class.create( Button, ( function () {
 
    // RETURN METHODS OBJECT
    return {
@@ -34,21 +34,13 @@ SelectButton = Class.create( Button, ( function () {
         * @final
         */
        var defaults = {
-          action: 'select'
-        },
-        controls;
+         action: 'state'
+         states: [true, false]
+         state: 0
+       };
 
-       if( !settings.item && settings.item !== 0 ) {
-         if( $element.is( 'button' ) ) {
-           controls = $element.attr( 'aria-controls' );
-         } else if ( $element.is( 'a' ) ) {
-           controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
-         }
-         if( controls ) {
-           settings.item = $( '#' + controls );
-         } else {
-           settings.item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' ) );
-         }
+       if ( settings.states ) {
+         settings.states = settings.states.split[' '];
        }
 
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -64,8 +56,8 @@ SelectButton = Class.create( Button, ( function () {
 //Export to Common JS Loader
 if( module ) {
   if( typeof module.setExports === 'function' ){
-    module.setExports( SelectButton );
+    module.setExports( SwitchButton );
   } else if( module.exports ) {
-   module.exports = SelectButton; 
+    module.exports = SwitchButton; 
   }
 }

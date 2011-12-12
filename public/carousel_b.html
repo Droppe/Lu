@@ -16,7 +16,7 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    .items .selected {
+    .items .athena-selected {
       color: red;
     }
   </style>
@@ -46,25 +46,28 @@
 <body>
   <div id="carousel"  class="panel" data-athena="ui:Carousel" data-athena-config="{
     'ui:Carousel': {
-      observe: '#control_panel button'
+      observe: '#control_panel [role*=\'button\'], #control_panel button'
     }
   }">
     <ol class="items">
-      <li class="selected">One</li>
+      <li id="item-one" class="athena-selected">One</li>
       <li>Two</li>
       <li>Three</li>
-      <li>Four</li>
+      <li id="item-four">Four</li>
     </ol>
   </div>
   <div id="control_panel">
-    <button data-athena="ui:Button:Previous">Previous</button>
+    <button role="button" data-athena="ui:Button:Previous">Previous</button>
+    <button role="button" aria-controls="item-one" data-athena="ui:Button:Select">One</button>
     <ol>
-      <li><button data-athena="ui:Button:Select">One</button></li>
-      <li><button data-athena="ui:Button:Select">Two</button></li>
-      <li><button data-athena="ui:Button:Select">Three</button></li>
-      <li><button data-athena="ui:Button:Select">Four</button></li>
+      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: 0 } }">One</button></li>
+      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: 1 } }">Two</button></li>
+      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: 2 } }">Three</button></li>
+      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: 3 } }">Four</button></li>
+      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: '#item-five' } }">Five</button></li>
     </ol>
-    <button data-athena="ui:Button:Next">Next</button>
+    <a href="#item-four" role="button" data-athena="ui:Button:Select">Four</a>
+    <button role="button" data-athena="ui:Button:Next">Next</button>
   </div>
 
 </body>

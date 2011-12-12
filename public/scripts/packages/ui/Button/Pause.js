@@ -50,8 +50,8 @@ PauseButton = Class.create( Button, ( function () {
 //Export to Common JS Loader
 if( module ) {
   if( typeof module.setExports === 'function' ){
-    module.setExports( PauseTip );
+    module.setExports( PauseButton );
   } else if( module.exports ) {
-   module.exports = PauseTip; 
+   module.exports = PauseButton; 
   }
 }

@@ -87,11 +87,13 @@ Abstract = Class.create( ( function() {
       $observe = $( settings.observe );
 
       //Observe elements passed into $observe
-      $observe.athena( 'observe', $element );
-
+      if( $observe.length > 0 ) {
+        $observe.athena( 'observe', $element );
+      }
       //Register elements passed in notify as observers
-      $element.athena( 'observe', $notify );
-
+      if( $notify.length > 0 ) {
+        $element.athena( 'observe', $notify );
+      }
       // PRIVATE METHODS
 
       // PRIVILEGED METHODS

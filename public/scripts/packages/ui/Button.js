@@ -14,8 +14,6 @@ var Class = require( '/scripts/libraries/ptclass' ),
  */ 
 Button = Class.create( Abstract, ( function () {
 
-  // GLOBAL STATICS
-
   // RETURN METHODS OBJECT
   return {
     /**
@@ -28,8 +26,6 @@ Button = Class.create( Abstract, ( function () {
      */    
     initialize: function ( $super, $element, settings ){
       // PRIVATE
-      // Constants
-      var ARIA_ROLE = "role",
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -38,58 +34,73 @@ Button = Class.create( Abstract, ( function () {
        * @type Object
        * @private
        */
-      Button = this,
-      /**
-       * Default configuration values for all instances
-       * @property defaults
-       * @type Object
-       * @private
-       * @final
-       */
-      defaults = {
-        on: 'click'
-      },
-      /**
-       * Target item used in event data
-       * @property action
-       * @type Object
-       * @private
-       */
-      item,
+      var Button = this,
 
-       /**
-        * Custom event name
-        * @property action
-        * @type Object
-        * @private
-        */
-      action,
+        /**
+         * Default configuration values for all instances
+         * @property defaults
+         * @type Object
+         * @private
+         * @final
+         */
+        defaults = {
+          on: 'click'
+        },
 
-       /**
-        * Flag to denote whether the button component is a <button> or <a>
-        * @property isLink 
-        * @type Boolean 
-        * @private
-        */
-      isLink = false;
-    
-       
+        /**
+         * Item used as a parameter for selected events
+         * @property item
+         * @type  String | Number
+         * @private
+         */
+        item,
+
+        /**
+         * 
+         * @property state
+         * @type Number
+         * @private
+         */
+        state = 0,
+
+        /**
+         * 
+         * @property states
+         * @type Array
+         * @private
+         */
+        states,
+
+         /**
+          * Custom event name
+          * @property action
+          * @type Object
+          * @private
+          */
+        action,
+
+         /**
+          * Flag to denote whether the button component is a <button> or <a>
+          * @property isAnchor 
+          * @type Boolean 
+          * @private
+          */
+        isAnchor = $element.is( 'a' );
+
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
+      action = settings.action;
+      states = settings.states;
+
+      if( states && !settings.state ) {
+        settings.state = 0;
+      }
+
+      state = settings.state;
+
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
-
-      action = settings.action;
-
-      // Try to figure out what to select...
-      if( action === 'select' ) {
-        if( settings.item ) {
-          item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
-        } else {
-          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] ) || '0';
-        }
-      }
 
       // PRIVATE METHODS
 
@@ -101,69 +112,61 @@ Button = Class.create( Abstract, ( function () {
        * @return {Void}
        */
       function setupAlly() {
-        // If it's a link give it ARIA role button
-        isLink = $element.is("a"); 
-        if (isLink) {
-
+        var ARIA_ROLE = "role";
+        if ( isAnchor ) {
           // If "role" exists, do nothing... 
-          if (!$element.attr(ARIA_ROLE)) {
-            $element.attr(ARIA_ROLE, "button");
+          if ( !$element.attr( ARIA_ROLE ) ) {
+            $element.attr( ARIA_ROLE, 'button' );
           }
 
-          $element.on("keyup", function(e) { 
-              // Pressed space bar
-              if (e.keyCode === 32) {   
-                Button.triggerAction(action, item);
-              } 
-          });
+          $element.on( 'keyup', function( event ) { 
+            // Pressed space bar
+            if ( event.keyCode === 32 ) {   
+              $element.trigger( settings.on );
+            } 
+          } );
         }  
       }
-      
-      // PRIVILEDGED METHODS
-      
-      /**
-       * Fires an event with the action and associated object/number
-       * @method triggerAction
-       * @param {String} action - ex. "select", "next", "prev"
-       * @param {Object|Number} item - Normally an object but can be a number
-       * @private
-       * @return {Void}
-       */
-      Button.triggerAction = function (action, item) {
-        _.log("Button", action, $element);
-
-        if( item || item === 0 ) {
-          Button.trigger( action, [ item ] );
-        } else {
-          Button.trigger( action );
-        }
-      };
 
       // EVENT BINDINGS
-      $element.on( settings.on, function ( event ) {
-
+      $element.on( settings.on, function( event ) {
+        var parameters = [];
         event.preventDefault();
-        // Oh, overloading the item!  The item can be a number or an Object
-        // When it's a number - like index 0 - it's falsy unless we test it!
-        Button.triggerAction(action, item);
-
-        // For accessibility.  When a link behaves as a button, we prevent the default behavior - i.e. link out -
+        // For accessibility. When a link behaves as a button, we prevent the default behavior - i.e. link out -
         // and set focus on the link.
-        if (isLink) {
-          $element.focus();
+        if ( isAnchor ) {
+          $element.focus();  
         }
+
+        if( item || item === 0 ) {
+          parameters.push( settings.item );
+        }
+        if( states && state ) {
+          if ( state < states.length - 1 ) {
+            state += 1;
+          } else {
+            state = 0;
+          }
+          parameters.push( states[0] );
+        }
+
+        Button.trigger( action, parameters );
+
       } );
-      
-      
+
       // Setup accessibility - ally 
       setupAlly();
-      
+
     }
   };
 
-}() ));
+}() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Button;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Button );
+  } else if( module.exports ) {
+    module.exports = SButton; 
+  }
 }
