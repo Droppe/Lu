@@ -305,7 +305,7 @@ Athena = function( settings ) {
       }
 
       $item.data( 'athena-controls' )[ '$observers' ] = $observers;
-      console.log( $item.data( 'athena-controls' )[ '$observers' ] );
+
     } );
     return $element;
   };

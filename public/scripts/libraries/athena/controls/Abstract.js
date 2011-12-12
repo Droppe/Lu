@@ -88,7 +88,6 @@ Abstract = Class.create( ( function() {
 
       //Observe elements passed into $observe
       if( $observe.length > 0 ) {
-        console.log( 'WTF' );
         $observe.athena( 'observe', $element );
       }
       //Register elements passed in notify as observers
