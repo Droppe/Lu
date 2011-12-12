@@ -169,7 +169,7 @@ Athena = function( settings ) {
         }
 
       } );
-      
+
       data[ 'Deferred' ].resolve();
       $node.trigger( 'athena-executed', [keys] );
       $node.data( 'athena-controls' )[ 'executed' ] = true;
