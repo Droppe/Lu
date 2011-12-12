@@ -76,6 +76,13 @@
   <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a'} }">Switch A</button>
   <button role="button" data-athena="Button:Switch">Switch</button>
 
+  <script type="text/javascript" charset="utf-8">
+    $( 'body' ).on( 'athena-ready', function() {
+      var $this = $( this );
+      console.log( 'HEYA', $this.athena( 'getDescendants' ) );
+    } );
+  </script>
+
 </body>
 
 </html>

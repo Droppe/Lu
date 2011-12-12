@@ -236,6 +236,7 @@ Tip =  Class.create( Abstract,  ( function () {
            $tip.css( getPosition( false ) );
          } );
          $element.one( 'shown', function( event ) {
+           console.log( 'hello' );
            Loader.trigger( 'load', [ settings.uri ] );
          } );
 
@@ -278,7 +279,7 @@ Tip =  Class.create( Abstract,  ( function () {
             if( !stuck || !settings.sticky ) {
               $tip.off( 'mouseenter.athena.tip' );
               $tip.off( 'mouseleave.athena.tip' );
-              $tip.remove();
+              //$tip.remove();
               shown = false;
               $element.trigger( HIDDEN_EVENT, $tip );
             }
