@@ -109,7 +109,7 @@ Switch = Class.create( Container,  ( function () {
       // Responding to external events
       $element.on( settings.on, function ( event, item ) {
         event.preventDefault();
-        item = (item > 0) ? item - 1 : 0;
+        item = (item > 0 ) ? item - 1 : 0;
         Switch.toggleState($buttons.eq(item));
       });
        

@@ -12,7 +12,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
  */ 
-Button = Class.create( Abstract, ( function () {
+Button = Class.create( Abstract, ( function() {
 
   // RETURN METHODS OBJECT
   return {
@@ -24,7 +24,7 @@ Button = Class.create( Abstract, ( function () {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ){
+    initialize: function( $super, $element, settings ) {
       // PRIVATE
 
       // PRIVATE INSTANCE PROPERTIES
@@ -57,11 +57,11 @@ Button = Class.create( Abstract, ( function () {
 
         /**
          * 
-         * @property state
+         * @property index
          * @type Number
          * @private
          */
-        state = 0,
+        index,
 
         /**
          * 
@@ -90,15 +90,16 @@ Button = Class.create( Abstract, ( function () {
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      action = settings.action;
-      states = settings.states;
       item = settings.item;
+      states = settings.states;
 
-      if( states && !settings.state ) {
-        settings.state = 0;
+      if( states && !settings.index ) {
+        settings.index = 0;
       }
+      index = settings.index;
 
-      state = settings.state;
+      action = settings.action;
+
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
@@ -131,26 +132,36 @@ Button = Class.create( Abstract, ( function () {
 
       // EVENT BINDINGS
       $element.on( settings.on, function( event ) {
-        var parameters = [];
         event.preventDefault();
+
+        var parameters = [];
         // For accessibility we focus on the link.
         if ( isAnchor ) {
           $element.focus();  
         }
 
-        if( item || item === 0 ) {
-          parameters.push( item );
+        switch( action ) {
+          case 'select':
+            if( item || item === 0 ) {
+              parameters.push( item );
+            }
+            break;
+          case 'switch':
+            if( states && index !== undefined ) {
+              if ( index < states.length - 1 ) {
+                index += 1;
+              } else {
+                index = 0;
+              }
+              parameters.push( states[index] );
+            }
+            break;
+          default:
         }
-        if( states && state ) {
-          if ( state < states.length - 1 ) {
-            state += 1;
-          } else {
-            state = 0;
-          }
-          parameters.push( states[state] );
-        }
-        Button.trigger( action, parameters );
 
+        Button.trigger( action, parameters ); 
+
+        console.log( 'ATHENA_BUTTON ::', action, parameters );
       } );
 
       // Setup accessibility - ally 
@@ -166,6 +177,6 @@ if( module ) {
   if( typeof module.setExports === 'function' ){
     module.setExports( Button );
   } else if( module.exports ) {
-    module.exports = SButton; 
+    module.exports = Button; 
   }
 }
