@@ -92,6 +92,7 @@ Button = Class.create( Abstract, ( function () {
 
       action = settings.action;
       states = settings.states;
+      item = settings.item;
 
       if( states && !settings.state ) {
         settings.state = 0;
@@ -132,14 +133,13 @@ Button = Class.create( Abstract, ( function () {
       $element.on( settings.on, function( event ) {
         var parameters = [];
         event.preventDefault();
-        // For accessibility. When a link behaves as a button, we prevent the default behavior - i.e. link out -
-        // and set focus on the link.
+        // For accessibility we focus on the link.
         if ( isAnchor ) {
           $element.focus();  
         }
 
         if( item || item === 0 ) {
-          parameters.push( settings.item );
+          parameters.push( item );
         }
         if( states && state ) {
           if ( state < states.length - 1 ) {
@@ -147,9 +147,8 @@ Button = Class.create( Abstract, ( function () {
           } else {
             state = 0;
           }
-          parameters.push( states[0] );
+          parameters.push( states[state] );
         }
-
         Button.trigger( action, parameters );
 
       } );

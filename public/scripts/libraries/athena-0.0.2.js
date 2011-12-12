@@ -155,7 +155,8 @@ Athena = function( settings ) {
     */
     function execute( $node ) {
       var config = $node.data( 'athena-config' ),
-       keys = Athena.getKeys( $node );
+       keys = Athena.getKeys( $node ),
+       data = $node.data( 'athena-controls' );
 
       config = config || '{}';
 
@@ -173,7 +174,8 @@ Athena = function( settings ) {
         }
 
       } );
-
+      
+      data[ 'Deferred' ].resolve();
       $node.trigger( 'athena-executed', [keys] );
       $node.data( 'athena-controls' )[ 'executed' ] = true;
     }
@@ -189,7 +191,9 @@ Athena = function( settings ) {
         athenaData;
       athenaData = $item.data( 'athena-controls' );
       if( athenaData === undefined ) {
-        $item.data( 'athena-controls', {} );
+        $item.data( 'athena-controls', {
+          'Deferred': $.Deferred()
+        } );
       }
     } );
 
@@ -197,24 +201,24 @@ Athena = function( settings ) {
     $controls = $controls.filter( function( index, item ) {
       return Athena.isExecuted( $( item ) ) ? false : true;
     } );
-    
+
     //Construct an array of required packages
     _.each( $controls, function( node, index ) {
       var $node = $( node ),
         controls;
-    
+
       controls = Athena.getKeys( $node );
       numberOfControls += controls.length;
-    
+
       _.each( controls, function( key, index ) {
         var pckg = key.replace( /\:/g, '/' );
         if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ) {
           required.push( pckg );
         }
       } );
-    
+
     } );
-    
+
     // Test to see if necessary CommonJS interfaces exists
     try {
       window.require.setExpires( settings.moduleExpire );
@@ -224,16 +228,12 @@ Athena = function( settings ) {
           packages[ requirement ] = require( requirement );
         } );
         $controls.each( function( index, control ) {
-          execute( $( control ) );
+          var $control = $( control );
+          execute( $control );
           numberOfControls -= 1;
-          //This could be a one off error.
           if( numberOfControls === 0 ) {
             $element.trigger( 'athena-ready', [ $element ] );
           }
-          // Resolve any deferred objects stored within the control's data object.
-          if ( $(control).data("$deferred") ) {
-            $(control).data("$deferred").resolve();
-          }          
         } );
       } );
     } catch( error ) {}
@@ -262,17 +262,21 @@ Athena = function( settings ) {
 
     $observers = data['$observers'];
 
-    $observers.each(function (index, item) {
-      var $item = $(item);
-      if ( $item.data("$deferred") ) {
-        // If the deferred object is already resolved
-        // adding a new .done() fires the enclosed function
-        // immediately.
-        $item.data("$deferred").done( function () {
-          $item.trigger( event, parameters );
-        });
-      }
-    });
+    if( $observers ) {
+      $observers.each( function ( index, item ) {
+        var $item = $( item ),
+          data;
+        data = $item.data( 'athena-controls' );
+        if ( data['Deferred'] ) {
+          // If the deferred object is already resolved
+          // adding a new .done() fires the enclosed function
+          // immediately.
+          data['Deferred'].done( function () {
+            $item.trigger( event, parameters );
+          } );
+        }
+      } );
+    }
 
     return $element;
 
@@ -306,22 +310,10 @@ Athena = function( settings ) {
       } else {
         $observers = $observer;
       }
+
       $item.data( 'athena-controls' )[ '$observers' ] = $observers;
+
     } );
-
-    // Create and store a new Deferred object for each new
-    // $observer passed into this method
-    $observer.each( function (index, item) {
-
-      // Don't overwrite any existing Deferred object ??
-      if ( $(item).data("$deferred") ) {
-        // tbd -- do nothing?
-      }
-      else {
-        $(item).data("$deferred", $.Deferred() );
-      }        
-    });
-
     return $element;
   };
 
@@ -345,10 +337,7 @@ Athena = function( settings ) {
     $observers = data['$observers'];
 
     if( $observers ){
-      $observers = $( _.reject( $observers, function( item, index ) {
-        return $observer.is( item );
-      } ) );
-      $element.data( 'athena-controls' )['$observers'] = $observers;
+      $element.data( 'athena-controls' )['$observers'] = $observers.not( $observer );
     }
     return $element;
   };
@@ -547,9 +536,11 @@ Athena = function( settings ) {
      * @public
      */
     $.fn.trigger = function( event, parameters ) {
-       var $this = $( this );
+      var $this = $( this );
+      if( Athena.isControl( $this ) ) {
        Athena.notify( $this, event, parameters );
-       return trigger.apply( $this, [event, parameters] );
+      }
+      return trigger.apply( $this, [event, parameters] );
     };
 
   } ( jQuery ) );

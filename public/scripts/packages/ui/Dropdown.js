@@ -13,9 +13,9 @@ var Class = require( '/scripts/libraries/ptclass' ),
 Dropdown =  Class.create( Abstract,  ( function () {
 
   // Constants
-  var KEYUP_EVT = 'keyup',
-    SELECT_EVT = 'select',
-    SELECTED_EVT = 'selected',
+  var KEYUP_EVENT = 'keyup',
+    SELECT_EVENT = 'select',
+    SELECTED_EVENT = 'selected',
     // ARIA roles
     ARIA_ROLE = 'role',
     ARIA_MENU = 'menu',
@@ -187,7 +187,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       function selectDropdownHandler( event, item ) {
-        $selectedItem.trigger( SELECT_EVT, [item] );
+        $selectedItem.trigger( SELECT_EVENT, [item] );
       }
 
       /**
@@ -262,7 +262,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       function selectedDropdownHandler( event, item ) {
-        $selectedItem.trigger( SELECTED_EVT, item );
+        $selectedItem.trigger( SELECTED_EVENT, item );
       }
     
       /**
@@ -307,7 +307,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
         var keyCode = event.keyCode,
             $item = $( event.target );
 
-        switch (keyCode) {
+        switch ( keyCode ) {
           case 27: // Escape
             $dropDownList.hide();
             break;
@@ -372,14 +372,14 @@ Dropdown =  Class.create( Abstract,  ( function () {
      
       // Attach event listeners
       // Dropdown list
-      $dropDownList.on( SELECT_EVT, selectDropdownHandler );
-      $dropDownList.on( KEYUP_EVT, handleKeyupDropDownList );
-      $dropDownList.on( SELECTED_EVT, selectedDropdownHandler );
+      $dropDownList.on( SELECT_EVENT, selectDropdownHandler );
+      $dropDownList.on( KEYUP_EVENT, handleKeyupDropDownList );
+      $dropDownList.on( SELECTED_EVENT, selectedDropdownHandler );
 
       // Selected item window
-      $selectedItem.on( KEYUP_EVT, handleKeyup );
-      $selectedItem.on( SELECT_EVT, selectItemHandler ); 
-      $selectedItem.on( SELECTED_EVT, selectedItemHandler ); 
+      $selectedItem.on( KEYUP_EVENT, handleKeyup );
+      $selectedItem.on( SELECT_EVENT, selectItemHandler ); 
+      $selectedItem.on( SELECTED_EVENT, selectedItemHandler ); 
     }
   };
 }() ) );
