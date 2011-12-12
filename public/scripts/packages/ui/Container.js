@@ -45,8 +45,8 @@ Container = Class.create( Abstract,  ( function () {
         // EVENTS
         onHide: "hide unselect",
         onShow: "show select",
-        actionHide: "hide",
-        actionShow: "show"
+        actionHide: "hidden",
+        actionShow: "shown"
       },
 
       /**
@@ -96,7 +96,7 @@ Container = Class.create( Abstract,  ( function () {
        * The "show"/"select" event handler
        * @method onShowHandler 
        * @param {Object} event - JQuery event
-       * @param {Integer/Object} item - JQuery DOM object or number
+       * @param {String} item - The ID of the selected container.
        * @private
        * @return {Void} 
        */
@@ -109,19 +109,23 @@ Container = Class.create( Abstract,  ( function () {
         if (loader && !loaded) {
           loader.trigger( 'load', [ settings.uri ] );
         }
-   
+                     
         // item can be an integer or an object
-        if (item === 0 || item) {
-          // Only do something when item exists
+        if (item) {
+          // Show the item if the selected container equals this instance
           if (typeof item === "string" && item !== $element.attr("id")) {
             ok = false;
           } 
-          if (ok) {
-            Container.show();
-          } else {
-            Container.hide();
-          }
         }
+
+        // show() unless item is specified.  Otherwise, if the selected container 
+        // matches this instance, show(), else hide().
+        if (ok) {
+          Container.show();
+        } else {
+          Container.hide();
+        }
+
       },
 
       // PRIVILEGED METHODS
@@ -130,20 +134,15 @@ Container = Class.create( Abstract,  ( function () {
        * The "hide"/"unselect" event handler
        * @method onHideHandler 
        * @param {Object} event - JQuery event
-       * @param {Integer/Object} item - JQuery DOM object or number
        * @private
        * @return {Void} 
        */
-      onHideHandler = function( event, item ){
-        _.log("Container.onHideHandler()", event, item);
+      onHideHandler = function( event ){
+        _.log("Container.onHideHandler()", event);
 
         event.stopPropagation();
+        Container.hide();
 
-        // item can be an integer or an object
-        if (item === 0 || item) {
-          // Only do something when item exists
-          Container.hide();
-        }
       },
 
       /**
@@ -162,11 +161,11 @@ Container = Class.create( Abstract,  ( function () {
         $element.on( settings.onHide, onHideHandler);
 
         if ($parent) {
-          // Parent with "data-athena" and tag is not <body>
-          // then listen for show and hide events
+          // If parent with "data-athena" and tag is not <body>
+          // then listen for show and hide events.
           // The idea is that if the Container is inside another Athena
           // control like a List, the event from the List will pass down to 
-          // the control
+          // the control.
           $parent.on(settings.onShow + " " + settings.onHide, passEventToChild);
         }
       },
