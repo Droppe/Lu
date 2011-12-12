@@ -33,6 +33,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -41,7 +43,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
 
 </head>
@@ -49,8 +51,8 @@
 <body>
 
   <div id="container">
-    <button data-athena="ui:Button" data-athena-config="{'ui:Button':{action: 'next'}}">Plain Next</button>
-    <button data-athena="ui:Button" data-athena-config="{'ui:Button':{action: 'previous'}}">Plain Previous</button>    
+    <button data-athena="Button" data-athena-config="{'Button':{action: 'next'}}">Plain Next</button>
+    <button data-athena="Button" data-athena-config="{'Button':{action: 'previous'}}">Plain Previous</button>    
   </div>
 
 </body>

@@ -60,6 +60,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -68,14 +70,14 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
 
 </head>
 
 <body>
 
-  <div id="container" data-athena="ui:Carousel">
+  <div id="container" data-athena="Carousel">
     <ol class="panels">
       <li class="active">
         <ol class="items">
@@ -128,56 +130,56 @@
     </ol>
     <ul id="controls">
       <li>
-        <button role="button" data-athena="ui:Button:Previous">&laquo; Previous</button>
+        <button role="button" data-athena="Button:Previous">&laquo; Previous</button>
       </li>
       <li>
-        <button role="button" data-athena="ui:Button:Pause">Pause</button>
+        <button role="button" data-athena="Button:Pause">Pause</button>
       </li>
       <li>
-        <button role="button" data-athena="ui:Button:Play">Play</button>
+        <button role="button" data-athena="Button:Play">Play</button>
       </li>
       <li>
         <ol>
           <li>
-            <button role="button" data-athena="ui:Button:Select">1</button>
+            <button role="button" data-athena="Button:Select">1</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">2</button>
+            <button role="button" data-athena="Button:Select">2</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">3</button>
+            <button role="button" data-athena="Button:Select">3</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">4</button>
+            <button role="button" data-athena="Button:Select">4</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">5</button>
+            <button role="button" data-athena="Button:Select">5</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">6</button>
+            <button role="button" data-athena="Button:Select">6</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">7</button>
+            <button role="button" data-athena="Button:Select">7</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">8</button>
+            <button role="button" data-athena="Button:Select">8</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">9</button>
+            <button role="button" data-athena="Button:Select">9</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">10</button>
+            <button role="button" data-athena="Button:Select">10</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">11</button>
+            <button role="button" data-athena="Button:Select">11</button>
           </li>
           <li>
-            <button role="button" data-athena="ui:Button:Select">12</button>
+            <button role="button" data-athena="Button:Select">12</button>
           </li>
         </ol>
       </li>
       <li>
-        <button role="button" data-athena="ui:Button:Next">Next &raquo;</button>
+        <button role="button" data-athena="Button:Next">Next &raquo;</button>
       </li>
     </li>
   </div>

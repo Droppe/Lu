@@ -45,6 +45,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -53,7 +55,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
   <!-- JS -->
 
@@ -62,40 +64,40 @@
 <body>
   <h1>Tabs Example</h1>
 
-  <div id="tabs" data-athena="ui:Tabs">
+  <div id="tabs" data-athena="Tabs">
     <!-- Tablist -->
-    <ul id="tablist" class="tab-list" data-athena="ui:List">
+    <ul id="tablist" class="tab-list" data-athena="List">
       <!-- Tabs -->
       <li class="athena-selected">
-        <a href="#tabpanel1" data-athena="ui:Button:Select">Tab 1</a>
+        <a href="#tabpanel1" data-athena="Button:Select">Tab 1</a>
       </li>
       <li>
-        <a href="#tabpanel2" data-athena="ui:Button:Select">Tab 2</a>
+        <a href="#tabpanel2" data-athena="Button:Select">Tab 2</a>
       </li>
       <li>
-        <a href="#tabpanel3" data-athena="ui:Button:Select">Tab 3</a>
+        <a href="#tabpanel3" data-athena="Button:Select">Tab 3</a>
       </li>
       <li>
-        <a href="#tabpanel4" data-athena="ui:Button:Select">Tab 4</a>
+        <a href="#tabpanel4" data-athena="Button:Select">Tab 4</a>
       </li>
     </ul>
 
     <!-- Tab panels -->
-    <ul id="tabpanels" class="tab-panels" data-athena="ui:List">
-      <li id="tabpanel1" class="selected" data-athena="ui:Container">
+    <ul id="tabpanels" class="tab-panels" data-athena="List">
+      <li id="tabpanel1" class="selected" data-athena="Container">
         Tab 1 panel
       </li>
-      <li id="tabpanel2" data-athena="ui:Container" data-athena-config="{
-        'ui:Container': {
+      <li id="tabpanel2" data-athena="Container" data-athena-config="{
+        'Container': {
             uri:'/miniprofile.html'
         }
       }">
         <div class="content"></div>
       </li>
-      <li id="tabpanel3" data-athena="ui:Container">
+      <li id="tabpanel3" data-athena="Container">
         Tab 3 panel
       </li>
-      <li id="tabpanel4" data-athena="ui:Container">
+      <li id="tabpanel4" data-athena="Container">
         Tab 4 panel
       </li>
     </ul>

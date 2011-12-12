@@ -32,6 +32,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -40,7 +42,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
 
 
@@ -51,7 +53,7 @@
 <body>
   
   
-  <div id="carousel" data-athena="ui:Carousel">
+  <div id="carousel" data-athena="Carousel">
    
     <ol id="car-list" class="items">
       <li class="athena-selected">one</li>
@@ -61,14 +63,14 @@
       <li>five</li>
     </ol>
 
-    <button id="btn-prev" data-athena="ui:Button:Previous">Previous</button>
-    <button id="btn-next" data-athena="ui:Button:Next">Next</button>
+    <button id="btn-prev" data-athena="Button:Previous">Previous</button>
+    <button id="btn-next" data-athena="Button:Next">Next</button>
 
 
   </div>
 
 
-  <div id="carousel2" data-athena="ui:Carousel">
+  <div id="carousel2" data-athena="Carousel">
     <ol id="car-list2" class="items">
       <li>one</li>
       <li class="selected">two</li>
@@ -76,23 +78,23 @@
       <li>four</li>
       <li>five</li>
     </ol>
-    <button id="btn-prev2" data-athena="ui:Button" data-athena-config="{
-      'ui:Button': {
+    <button id="btn-prev2" data-athena="Button" data-athena-config="{
+      'Button': {
         action: 'previous'
       }
     }">Previous</button>
-    <button id="btn-next2" data-athena="ui:Button" data-athena-config="{
-      'ui:Button': {
+    <button id="btn-next2" data-athena="Button" data-athena-config="{
+      'Button': {
         action: 'next'
       }
     }">Next</button>
-    <button id="btn-play2" data-athena="ui:Button" data-athena-config="{
-      'ui:Button': {
+    <button id="btn-play2" data-athena="Button" data-athena-config="{
+      'Button': {
         action: 'play'
       }
     }">Play</button>
-    <button id="btn-stop2" data-athena="ui:Button" data-athena-config="{
-      'ui:Button': {
+    <button id="btn-stop2" data-athena="Button" data-athena-config="{
+      'Button': {
         action: 'pause'
       }
     }">Pause</button>

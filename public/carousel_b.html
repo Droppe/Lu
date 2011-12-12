@@ -31,6 +31,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -39,13 +41,13 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
 </head>
 
 <body>
-  <div id="carousel"  class="panel" data-athena="ui:Carousel" data-athena-config="{
-    'ui:Carousel': {
+  <div id="carousel"  class="panel" data-athena="Carousel" data-athena-config="{
+    'Carousel': {
       observe: '#control_panel [role*=\'button\'], #control_panel button'
     }
   }">
@@ -57,22 +59,22 @@
     </ol>
   </div>
   <div id="control_panel">
-    <button role="button" data-athena="ui:Button:Previous">Previous</button>
-    <button role="button" aria-controls="item-one" data-athena="ui:Button:Select">One</button>
+    <button role="button" data-athena="Button:Previous">Previous</button>
+    <button role="button" aria-controls="item-one" data-athena="Button:Select">One</button>
     <ol>
-      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: 0 } }">One</button></li>
-      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: 1 } }">Two</button></li>
-      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: 2 } }">Three</button></li>
-      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: 3 } }">Four</button></li>
-      <li><button data-athena="ui:Button:Select" data-athena-config="{ 'ui:Button:Select': { item: '#item-five' } }">Five</button></li>
+      <li><button data-athena="Button:Select" data-athena-config="{ 'Button:Select': { item: 0 } }">One</button></li>
+      <li><button data-athena="Button:Select" data-athena-config="{ 'Button:Select': { item: 1 } }">Two</button></li>
+      <li><button data-athena="Button:Select" data-athena-config="{ 'Button:Select': { item: 2 } }">Three</button></li>
+      <li><button data-athena="Button:Select" data-athena-config="{ 'Button:Select': { item: 3 } }">Four</button></li>
+      <li><button data-athena="Button:Select" data-athena-config="{ 'Button:Select': { item: '#item-five' } }">Five</button></li>
     </ol>
-    <a href="#item-four" role="button" data-athena="ui:Button:Select">Four</a>
-    <button role="button" data-athena="ui:Button:Next">Next</button>
+    <a href="#item-four" role="button" data-athena="Button:Select">Four</a>
+    <button role="button" data-athena="Button:Next">Next</button>
   </div>
-  <button role="button" data-athena="ui:Button:Switch" data-athena-config="{ 'ui:Button:Switch': { states: 'a b c'} }">Switch ABC</button>
-  <button role="button" data-athena="ui:Button:Switch" data-athena-config="{ 'ui:Button:Switch': { states: 'a b'} }">Switch AB</button>
-  <button role="button" data-athena="ui:Button:Switch" data-athena-config="{ 'ui:Button:Switch': { states: 'a'} }">Switch A</button>
-  <button role="button" data-athena="ui:Button:Switch">Switch</button>
+  <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b c'} }">Switch ABC</button>
+  <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b'} }">Switch AB</button>
+  <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a'} }">Switch A</button>
+  <button role="button" data-athena="Button:Switch">Switch</button>
 
 </body>
 

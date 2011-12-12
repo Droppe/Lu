@@ -47,7 +47,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
   <!-- JS -->
 
@@ -57,94 +57,94 @@
 
   <h1>Styled Dropdowns</h1>
 
-  <div class="styled-dropdown" data-athena="ui:Dropdown">
+  <div class="styled-dropdown" data-athena="Dropdown">
     <h2>Styled Dropdown #1</h2>
 
-    <a href="#" class="athena-selected-item" data-athena="ui:Button:Select">
+    <a href="#" class="athena-selected-item" data-athena="Button:Select">
       Option 1
     </a>
 
     <!-- Styled dropdown -->
-    <ul class="athena-dropdown-list" data-athena="ui:List" data-athena-config="{'ui:List' : { direction: 'vertical' }}">
+    <ul class="athena-dropdown-list" data-athena="List" data-athena-config="{'List' : { direction: 'vertical' }}">
       <!-- Options -->
       <li class="selected">
-        <a href="#" data-athena="ui:Button:Select">Option 1</a>
+        <a href="#" data-athena="Button:Select">Option 1</a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">Option 2</a>
+        <a href="#" data-athena="Button:Select">Option 2</a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">Option 3</a>
+        <a href="#" data-athena="Button:Select">Option 3</a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">Option 4</a>
+        <a href="#" data-athena="Button:Select">Option 4</a>
       </li>
     </ul>
                                                                        
   </div>
 
-  <div class="styled-dropdown" data-athena="ui:Dropdown" data-athena-config="{
-      'ui:Dropdown': {
+  <div class="styled-dropdown" data-athena="Dropdown" data-athena-config="{
+      'Dropdown': {
       updateSelectedItem: false
     }
   }">
 
     <h2>Styled Dropdown #2 No Item Update</h2>
 
-    <a href="#" class="athena-selected-item" data-athena="ui:Button:Select">
+    <a href="#" class="athena-selected-item" data-athena="Button:Select">
       No update      
     </a>
 
     <!-- Styled dropdown -->
-    <ul class="athena-dropdown-list" data-athena="ui:List" data-athena-config="{'ui:List' : { direction: 'vertical' }}">
+    <ul class="athena-dropdown-list" data-athena="List" data-athena-config="{'List' : { direction: 'vertical' }}">
       <!-- Options -->
       <li class="selected">
-        <a href="#" data-athena="ui:Button:Select">Option 1</a>
+        <a href="#" data-athena="Button:Select">Option 1</a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">Option 2</a>
+        <a href="#" data-athena="Button:Select">Option 2</a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">Option 3</a>
+        <a href="#" data-athena="Button:Select">Option 3</a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">Option 4</a>
+        <a href="#" data-athena="Button:Select">Option 4</a>
       </li>
     </ul>
                                                                        
   </div>
 
   <form method="get" action="/">
-  <div class="styled-dropdown" data-athena="ui:Dropdown"> 
+  <div class="styled-dropdown" data-athena="Dropdown"> 
     <h2>Styled Dropdown #3 in a form</h2>
 
-    <a href="#" class="athena-selected-item" data-athena="ui:Button:Select">
+    <a href="#" class="athena-selected-item" data-athena="Button:Select">
       Apple      
     </a>
 
     <!-- Styled dropdown -->
-    <ul class="athena-dropdown-list" data-athena="ui:List" data-athena-config="{'ui:List' : { direction: 'vertical' }}">
+    <ul class="athena-dropdown-list" data-athena="List" data-athena-config="{'List' : { direction: 'vertical' }}">
       <!-- Options -->
       <li class="selected">
-        <a href="#" data-athena="ui:Button:Select">
+        <a href="#" data-athena="Button:Select">
           <span class="athena-item">Apple</span>
           <span>Red fruit</span>
         </a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">
+        <a href="#" data-athena="Button:Select">
           <span class="athena-item">Banana</span>
           <span>Long and yellow</span>
         </a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">
+        <a href="#" data-athena="Button:Select">
           <span class="athena-item" style="display:inline;">Cantaloupe</span>
           <img src="http://www.freshfoodcentral.com/uploads/Melons/melons-20060723-cantaloupe-02.jpg" style="width:40px;height:40px;" alt="Fresh, juicy cantaloupe">
         </a>
       </li>
       <li>
-        <a href="#" data-athena="ui:Button:Select">Donut</a>
+        <a href="#" data-athena="Button:Select">Donut</a>
       </li>
     </ul>
                                                                        

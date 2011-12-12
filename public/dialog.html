@@ -25,6 +25,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -33,7 +35,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
     require.addRule(/jquery\.ui/, {
       path: function(module) {
         return ["/scripts/libraries/jquery-ui-1.8.16", module].join("/") + ".js"
@@ -49,21 +51,21 @@
 
 <body>
 
-  <button data-athena="ui:Button" data-athena-config="{
-    'ui:Button': {
+  <button data-athena="Button" data-athena-config="{
+    'Button': {
       action: 'open',
       notify: '#dialog'
     }
   }">Open Dialog (notify)</button>
-  <button data-athena="ui:Button" data-athena-config="{
-    'ui:Button': {
+  <button data-athena="Button" data-athena-config="{
+    'Button': {
       action: 'close',
       notify: '#dialog'
     }
   }">Close Dialog (notify)</button>
 
-  <div id="dialog" title="Dialog Title (drag me)" data-athena="ui:Dialog" data-athena-config="{ 
-    'ui:Dialog': {
+  <div id="dialog" title="Dialog Title (drag me)" data-athena="Dialog" data-athena-config="{ 
+    'Dialog': {
       width: 600,
       draggable: true,
       resizable: true,
@@ -72,8 +74,8 @@
     }
   }">
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    <button id="btn-close-bubble" data-athena="ui:Button" data-athena-config="{
-      'ui:Button': {
+    <button id="btn-close-bubble" data-athena="Button" data-athena-config="{
+      'Button': {
         action: 'close'
       }
     }">Close Dialog (bubble)</button>

@@ -31,6 +31,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -39,7 +41,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
 
 </head>
@@ -47,8 +49,8 @@
 <body>
 
   <div id="container">
-    <div id="loader" data-athena="ui:Loader">
-      <a href="/InjectTest.html#loader" data-athena="ui:Button:Load">Click Me</a>
+    <div id="loader" data-athena="Loader">
+      <a href="/InjectTest.html#loader" data-athena="Button:Load">Click Me</a>
     </div>
   </div>
 

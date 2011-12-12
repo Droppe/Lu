@@ -29,6 +29,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -37,7 +39,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
 
 </head>
@@ -52,8 +54,8 @@
         <legend>Checkboxes</legend>
         <label>
           1
-          <input type="checkbox" name="myCheckBox1" value="on" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
+          <input type="checkbox" name="myCheckBox1" value="on" data-athena="Reveal" data-athena-config="{
+            'Reveal':{
               targetNode: '#revealContent1'
             }
           }">
@@ -64,8 +66,8 @@
 
         <label>
           2
-          <input type="checkbox" name="myCheckBox2" value="on" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
+          <input type="checkbox" name="myCheckBox2" value="on" data-athena="Reveal" data-athena-config="{
+            'Reveal':{
               targetNode: '#revealContent2'
             }
           }">
@@ -76,8 +78,8 @@
 
         <label>
           3
-          <input type="checkbox" name="myCheckBox3" value="on" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
+          <input type="checkbox" name="myCheckBox3" value="on" data-athena="Reveal" data-athena-config="{
+            'Reveal':{
               targetNode: '#revealContent3'
             }
           }">
@@ -91,8 +93,8 @@
         <legend>Radio Buttons</legend>
         <label>
           4
-          <input type="radio" name="myRadio" value="on" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
+          <input type="radio" name="myRadio" value="on" data-athena="Reveal" data-athena-config="{
+            'Reveal':{
               targetNode: '#revealContent4'
             }
           }">
@@ -102,8 +104,8 @@
         </div>
         <label>
           5
-          <input type="radio" name="myRadio" value="on" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
+          <input type="radio" name="myRadio" value="on" data-athena="Reveal" data-athena-config="{
+            'Reveal':{
               targetNode: '#revealContent5'
             }
           }">
@@ -113,8 +115,8 @@
         </div>
         <label>
           6
-          <input type="radio" name="myRadio" value="on" data-athena="ui:Reveal" data-athena-config="{
-            'ui:Reveal':{
+          <input type="radio" name="myRadio" value="on" data-athena="Reveal" data-athena-config="{
+            'Reveal':{
               targetNode: '#revealContent6'
             }
           }">
@@ -125,8 +127,8 @@
       </fieldset>
       <fieldset>
         <legend>Select Dropdown</legend>
-        <select name="mySelect" data-athena="ui:Reveal" data-athena-config="{
-          'ui:Reveal':{
+        <select name="mySelect" data-athena="Reveal" data-athena-config="{
+          'Reveal':{
             targetNode: {
               '7': '#revealContent7',
               '8': '#revealContent8',

@@ -82,7 +82,7 @@
 
 <h1>Facets</h1>
 
-<body data-athena="ui:Abstract" data-athena-config="{
+<body data-athena="Abstract" data-athena-config="{
     ui:Abstract: {
       subscribe: 'button'
     }
@@ -91,18 +91,18 @@
   <div id="main">
     
     <div id="sidebar">
-      <div id="facet1" class="facet loader" data-athena="ui:ShowMore" data-athena-config="{
+      <div id="facet1" class="facet loader" data-athena="ShowMore" data-athena-config="{
         ui:ShowMore: {
           show: 6,
           nodes: 'li'
         }
       }">
-        <ul data-athena="ui:List.Checkbox ui:Loader" data-athena-config="{
-          'ui:List.Checkbox': {
+        <ul data-athena="List.Checkbox ui:Loader" data-athena-config="{
+          'List.Checkbox': {
             action: 'facetChanged',
             notify: '.loader'
           },
-          'ui:Loader': {
+          'Loader': {
             source: 'http://...'
           }
         }">
@@ -130,27 +130,27 @@
           </li>
         </ul>
         <button class="show-more">Show more...</button>
-        <div data-athena="ui:Typeahead" data-athena-config="{
-          'ui:Typeahead': {
+        <div data-athena="Typeahead" data-athena-config="{
+          'Typeahead': {
             url: 'http://...'
             out: 'handleTypeAhead'
           }
         }">
-          <input data-athena="ui:GhostLabel" data-athena-config="{}" type="text" name="CC" class="type-ahead exclude hint yui-ac-input" id="CC-type-ahead" autocomplete="off">        
+          <input data-athena="GhostLabel" data-athena-config="{}" type="text" name="CC" class="type-ahead exclude hint yui-ac-input" id="CC-type-ahead" autocomplete="off">        
         </div>
       </div>
-      <div id="facet2" class="facet loader" data-athena="ui:ShowMore" data-athena-config="{
+      <div id="facet2" class="facet loader" data-athena="ShowMore" data-athena-config="{
         ui:ShowMore: {
           show: 6,
           nodes: 'li'
         }
       }">
-        <ul data-athena="ui:List.Checkbox ui:Loader" data-athena-config="{
+        <ul data-athena="List.Checkbox ui:Loader" data-athena-config="{
           ui:List.Checkbox: {
             action: 'facetChanged',
             notify: '.loader'
           },
-          'ui:Loader': {
+          'Loader': {
             source: 'http://...'
           }
         }">
@@ -179,18 +179,18 @@
         </ul>
         <button class="show-more">Show more...</button>        
       </div>
-      <div id="facet3" class="facet loader" data-athena="ui:ShowMore" data-athena-config="{
+      <div id="facet3" class="facet loader" data-athena="ShowMore" data-athena-config="{
         ui:ShowMore: {
           show: 6,
           nodes: 'li'
         }
       }">
-        <ul data-athena="ui:List.Checkbox ui:Loader" data-athena-config="{
+        <ul data-athena="List.Checkbox ui:Loader" data-athena-config="{
           ui:List.Checkbox: {
             action: 'facetChanged',
             notify: '.loader'
           },
-          'ui:Loader': {
+          'Loader': {
             source: 'http://...'
           }
         }">
@@ -220,35 +220,35 @@
         <button class="show-more">Show more...</button>        
       </div>
     </div>
-    <div id="pivot-bar" class="loader" data-athena="ui:List ui:Loader" data-athena-config="{'ui:List':{
+    <div id="pivot-bar" class="loader" data-athena="List ui:Loader" data-athena-config="{'List':{
       action: 'pivotChanged',
       notify: '.facet'    
-    },'ui:Loader':{
+    },'Loader':{
       source: 'http://...'
     }}">
       <ul class="query-params-list">
         <li class="pivot-bar-item" data-li-pivot-facet-id="N" data-li-pivot-facet-value="F" id="pb-F-N">
-          1st Connections <a class="remove-pivot remove-pivot-facet" href="#" data-athena="ui:Button" 
+          1st Connections <a class="remove-pivot remove-pivot-facet" href="#" data-athena="Button" 
           data-athena-config="{
-            'ui:Button': {              
+            'Button': {              
               action: 'remove',
               notify: '.facets'
             }
           }">remove</a>
         </li>
         <li class="pivot-bar-item" data-li-pivot-facet-id="N" data-li-pivot-facet-value="S" id="pb-S-N">
-          2nd Connections <a class="remove-pivot remove-pivot-facet" href="#" data-athena="ui:Button" 
+          2nd Connections <a class="remove-pivot remove-pivot-facet" href="#" data-athena="Button" 
           data-athena-config="{
-            'ui:Button': {              
+            'Button': {              
               action: 'remove',
               notify: '.facets'
             }
           }">remove</a>
         </li>
         <li class="pivot-bar-item" data-li-pivot-facet-id="N" data-li-pivot-facet-value="A" id="pb-A-N">
-          Group Members <a class="remove-pivot remove-pivot-facet" href="#" data-athena="ui:Button" 
+          Group Members <a class="remove-pivot remove-pivot-facet" href="#" data-athena="Button" 
           data-athena-config="{
-            'ui:Button': {              
+            'Button': {              
               action: 'remove',
               notify: '.facets'              
             }
@@ -256,7 +256,7 @@
         </li>
       </ul>
     </div>
-    <div id="results-ajax" class="loader" data-athena="ui:List ui:Loader" data-athena-config="{'ui:List':{},'ui:Loader':{
+    <div id="results-ajax" class="loader" data-athena="List ui:Loader" data-athena-config="{'List':{},'Loader':{
       source: 'http://...'
     }}"></div>
   

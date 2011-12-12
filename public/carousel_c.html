@@ -31,6 +31,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -39,15 +41,15 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
 
 </head>
 
 <body>
 
-  <div id="container" class="panel" data-athena="ui:Carousel" data-athena-config="{
-    'ui:Carousel': {
+  <div id="container" class="panel" data-athena="Carousel" data-athena-config="{
+    'Carousel': {
       observe: '#control_panel button'
     }
    }">
@@ -59,16 +61,16 @@
       <li>Four</li>
     </ol>
 
-    <button data-athena="ui:Button:Previous">Previous</button>
-    <button data-athena="ui:Button:Next">Next</button>
+    <button data-athena="Button:Previous">Previous</button>
+    <button data-athena="Button:Next">Next</button>
 
   </div>
   <div id="control_panel">
     <ol>
-      <li><button data-athena="ui:Button:Select">One</button></li>
-      <li><button data-athena="ui:Button:Select">Two</button></li>
-      <li><button data-athena="ui:Button:Select">Three</button></li>
-      <li><button data-athena="ui:Button:Select">Four</button></li>
+      <li><button data-athena="Button:Select">One</button></li>
+      <li><button data-athena="Button:Select">Two</button></li>
+      <li><button data-athena="Button:Select">Three</button></li>
+      <li><button data-athena="Button:Select">Four</button></li>
     </ol>
   </div>
 

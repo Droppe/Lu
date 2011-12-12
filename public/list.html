@@ -31,6 +31,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -39,7 +41,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena-0.0.2'], function() {} );
+    require.ensure( ['athena'], function() {} );
   </script>
 
 </head>
@@ -48,7 +50,7 @@
 
   <div id="container">
 
-    <ol id="list" data-athena="ui:List">
+    <ol id="list" data-athena="List">
       <li class="selected">one</li>
       <li>two</li>
       <li>three</li>
@@ -56,31 +58,31 @@
       <li>five</li>
     </ol>
 
-    <button data-athena="ui:Button" data-athena-config="{
-      'ui:Button':{
+    <button data-athena="Button" data-athena-config="{
+      'Button':{
         action: 'first',
         notify: '#list'
     }}">
       first
     </button>
 
-    <button data-athena="ui:Button" data-athena-config="{
-      'ui:Button':{
+    <button data-athena="Button" data-athena-config="{
+      'Button':{
         action: 'previous',
         notify: '#list'
     }}">
       previous
     </button>
     
-    <button data-athena="ui:Button:Next" data-athena-config="{
-      'ui:Button:Next':{
+    <button data-athena="Button:Next" data-athena-config="{
+      'Button:Next':{
         notify: '#list'
     }}">
       next
     </button>
 
-    <button data-athena="ui:Button" data-athena-config="{
-      'ui:Button':{
+    <button data-athena="Button" data-athena-config="{
+      'Button':{
         action: 'last',
         notify: '#list'
     }}">

@@ -46,6 +46,8 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
   <script type="text/javascript" charset="utf-8">
     ATHENA_CONFIG = {
       debug: true
@@ -63,8 +65,8 @@
 
   <div id="container">
     
-    <div id="switcher1" class="athena-switch" data-athena="ui:Container:Switch" data-athena-config="{
-      'ui:Container:Switch': {
+    <div id="switcher1" class="athena-switch" data-athena="Container:Switch" data-athena-config="{
+      'Container:Switch': {
         states: [{yes: 'i want hamburger'}, {no: 'i want pizza'}]
       } 
     }">
@@ -73,22 +75,22 @@
 
 
 
-    <button data-athena="ui:Button:Select" data-athena-config="{
-      'ui:Button:Select': {
+    <button data-athena="Button:Select" data-athena-config="{
+      'Button:Select': {
         notify: '#switcher',
         item: 1
       }
     }">Select a Burger</button>
 
-    <button data-athena="ui:Button:Select" data-athena-config="{
-      'ui:Button:Select': {
+    <button data-athena="Button:Select" data-athena-config="{
+      'Button:Select': {
         notify: '#switcher',
         item: 2
       }
     }">Select Pizza</button>
 
-    <button data-athena="ui:Button:Select" data-athena-config="{
-      'ui:Button:Select': {
+    <button data-athena="Button:Select" data-athena-config="{
+      'Button:Select': {
         notify: '#switcher',
         item: 3
       }
@@ -97,8 +99,8 @@
     
     
     
-    <div id="switcher2" class="athena-switch" data-athena="ui:Container:Switch" data-athena-config="{
-      'ui:Container:Switch': {
+    <div id="switcher2" class="athena-switch" data-athena="Container:Switch" data-athena-config="{
+      'Container:Switch': {
         states: ['trubeedoobydoo', 'falsywalsey', 'yessssss']
       } 
     }">
@@ -107,8 +109,8 @@
     </div>
 
 
-    <div id="switcher3" class="athena-switch" data-athena="ui:Container:Switch" data-athena-config="{
-      'ui:Container:Switch': {
+    <div id="switcher3" class="athena-switch" data-athena="Container:Switch" data-athena-config="{
+      'Container:Switch': {
         buttonTag: 'a',
         states: ['trubeedoobydoo2', 'falsywalsey2', 'yessssss2']
       } 
