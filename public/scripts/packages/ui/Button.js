@@ -12,9 +12,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
  */ 
-Button = Class.create( Abstract, ( function () {
-
-  // GLOBAL STATICS
+Button = Class.create( Abstract, ( function() {
 
   // RETURN METHODS OBJECT
   return {
@@ -26,10 +24,8 @@ Button = Class.create( Abstract, ( function () {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ){
+    initialize: function( $super, $element, settings ) {
       // PRIVATE
-      // Constants
-      var ARIA_ROLE = "role",
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -38,58 +34,75 @@ Button = Class.create( Abstract, ( function () {
        * @type Object
        * @private
        */
-      Button = this,
-      /**
-       * Default configuration values for all instances
-       * @property defaults
-       * @type Object
-       * @private
-       * @final
-       */
-      defaults = {
-        on: 'click'
-      },
-      /**
-       * Target item used in event data
-       * @property action
-       * @type Object
-       * @private
-       */
-      item,
+      var Button = this,
 
-       /**
-        * Custom event name
-        * @property action
-        * @type Object
-        * @private
-        */
-      action,
+        /**
+         * Default configuration values for all instances
+         * @property defaults
+         * @type Object
+         * @private
+         * @final
+         */
+        defaults = {
+          on: 'click'
+        },
 
-       /**
-        * Flag to denote whether the button component is a <button> or <a>
-        * @property isLink 
-        * @type Boolean 
-        * @private
-        */
-      isLink = false;
-    
-       
+        /**
+         * Item used as a parameter for selected events
+         * @property item
+         * @type  String | Number
+         * @private
+         */
+        item,
+
+        /**
+         * 
+         * @property index
+         * @type Number
+         * @private
+         */
+        index,
+
+        /**
+         * 
+         * @property states
+         * @type Array
+         * @private
+         */
+        states,
+
+         /**
+          * Custom event name
+          * @property action
+          * @type Object
+          * @private
+          */
+        action,
+
+         /**
+          * Flag to denote whether the button component is a <button> or <a>
+          * @property isAnchor 
+          * @type Boolean 
+          * @private
+          */
+        isAnchor = $element.is( 'a' );
+
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      item = settings.item;
+      states = settings.states;
+
+      if( states && !settings.index ) {
+        settings.index = 0;
+      }
+      index = settings.index;
 
       action = settings.action;
 
-      // Try to figure out what to select...
-      if( action === 'select' ) {
-        if( settings.item ) {
-          item = ( typeof settings.item === 'number' ) ? settings.item : $( settings.item );
-        } else {
-          item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' )[ 0 ] ) || '0';
-        }
-      }
+
+      // CALL THE PARENT'S CONSTRUCTOR
+      $super( $element, settings );
 
       // PRIVATE METHODS
 
@@ -101,69 +114,69 @@ Button = Class.create( Abstract, ( function () {
        * @return {Void}
        */
       function setupAlly() {
-        // If it's a link give it ARIA role button
-        isLink = $element.is("a"); 
-        if (isLink) {
-
+        var ARIA_ROLE = "role";
+        if ( isAnchor ) {
           // If "role" exists, do nothing... 
-          if (!$element.attr(ARIA_ROLE)) {
-            $element.attr(ARIA_ROLE, "button");
+          if ( !$element.attr( ARIA_ROLE ) ) {
+            $element.attr( ARIA_ROLE, 'button' );
           }
 
-          $element.on("keyup", function(e) { 
-              // Pressed space bar
-              if (e.keyCode === 32) {   
-                Button.triggerAction(action, item);
-              } 
-          });
+          $element.on( 'keyup', function( event ) { 
+            // Pressed space bar
+            if ( event.keyCode === 32 ) {   
+              $element.trigger( settings.on );
+            } 
+          } );
         }  
       }
-      
-      // PRIVILEDGED METHODS
-      
-      /**
-       * Fires an event with the action and associated object/number
-       * @method triggerAction
-       * @param {String} action - ex. "select", "next", "prev"
-       * @param {Object|Number} item - Normally an object but can be a number
-       * @private
-       * @return {Void}
-       */
-      Button.triggerAction = function (action, item) {
-        _.log("Button", action, $element);
-
-        if( item || item === 0 ) {
-          Button.trigger( action, [ item ] );
-        } else {
-          Button.trigger( action );
-        }
-      };
 
       // EVENT BINDINGS
-      $element.on( settings.on, function ( event ) {
-
+      $element.on( settings.on, function( event ) {
         event.preventDefault();
-        // Oh, overloading the item!  The item can be a number or an Object
-        // When it's a number - like index 0 - it's falsy unless we test it!
-        Button.triggerAction(action, item);
 
-        // For accessibility.  When a link behaves as a button, we prevent the default behavior - i.e. link out -
-        // and set focus on the link.
-        if (isLink) {
-          $element.focus();
+        var parameters = [];
+        // For accessibility we focus on the link.
+        if ( isAnchor ) {
+          $element.focus();  
         }
+
+        switch( action ) {
+          case 'select':
+            if( item || item === 0 ) {
+              parameters.push( item );
+            }
+            break;
+          case 'switch':
+            if( states && index !== undefined ) {
+              if ( index < states.length - 1 ) {
+                index += 1;
+              } else {
+                index = 0;
+              }
+              parameters.push( states[index] );
+            }
+            break;
+          default:
+        }
+
+        Button.trigger( action, parameters ); 
+
+        console.log( 'ATHENA_BUTTON ::', action, parameters );
       } );
-      
-      
+
       // Setup accessibility - ally 
       setupAlly();
-      
+
     }
   };
 
-}() ));
+}() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Button;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Button );
+  } else if( module.exports ) {
+    module.exports = Button; 
+  }
 }

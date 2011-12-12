@@ -1,16 +1,16 @@
 var Class = require( '/scripts/libraries/ptclass' ),
   Button = require( 'ui/Button' ),
-  OpenButton;
+  OffButton;
 
 /**
  * Representation of a button element preconfigured with a 'next' event
- * @class OpenButton
+ * @class OnButton
  * @constructor
  * @extends Button
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-OpenButton = Class.create( Button, ( function () {
+OnButton = Class.create( Button, ( function () {
 
    // RETURN METHODS OBJECT
    return {
@@ -34,7 +34,7 @@ OpenButton = Class.create( Button, ( function () {
         * @final
         */
        var defaults = {
-         action: 'open'
+         action: 'off'
        };
        
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -50,8 +50,8 @@ OpenButton = Class.create( Button, ( function () {
 //Export to Common JS Loader
 if( module ) {
   if( typeof module.setExports === 'function' ){
-    module.setExports( OpenButton );
+    module.setExports( OnButton );
   } else if( module.exports ) {
-   module.exports = OpenButton; 
+   module.exports = OnButton; 
   }
 }

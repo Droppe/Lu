@@ -163,7 +163,8 @@ Athena = function( settings ) {
           Control,
           nodeData;
 
-        Control = new packages[pckg]( $node, new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node ) );
+        config = Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
+        Control = new packages[pckg]( $node, config );
         console.info( 'Action ' + key + ' executed with', $node );
         
         nodeData = Athena.getData( $node, key );
@@ -175,7 +176,9 @@ Athena = function( settings ) {
         }
 
       } );
-
+      
+      //data[ 'Deferred' ].resolve();
+      
       $node.trigger( 'athena-executed', [keys] );
       Athena.setData( $node, { 'executed': true } );
     }
@@ -200,24 +203,23 @@ Athena = function( settings ) {
       return Athena.isExecuted( $( item ) ) ? false : true;
     } );
 
-    
     //Construct an array of required packages
     _.each( $controls, function( node, index ) {
       var $node = $( node ),
         controls;
-    
+
       controls = Athena.getKeys( $node );
       numberOfControls += controls.length;
-    
+
       _.each( controls, function( key, index ) {
         var pckg = key.replace( /\:/g, '/' );
         if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ) {
           required.push( pckg );
         }
       } );
-    
+
     } );
-    
+
     // Test to see if necessary CommonJS interfaces exists
     try {
       window.require.setExpires( settings.moduleExpire );
@@ -229,9 +231,7 @@ Athena = function( settings ) {
         $controls.each( function( index, control ) {
           var defObj,
             $control = $(control);
-          
-          _.log("YOJIMG", "executing", control);
-          
+                    
           execute( $control );
           numberOfControls -= 1;
           
@@ -241,9 +241,6 @@ Athena = function( settings ) {
 
           // Resolve any deferred objects stored within the control's data object.
           defObj = Athena.getData( $control, '$deferred' );
-          if (defObj) {
-            _.log("YOJIMG", defObj, "defObj.isResolved?", defObj.isResolved() );
-          }
           
           if ( defObj && !defObj.isResolved() ) {
             defObj.resolve();
@@ -262,7 +259,7 @@ Athena = function( settings ) {
    * Notifies observers of events
    * @public
    * @static
-   * @method notify
+   * @method notifys
    * @param {Object} $element a jQuery collection
    * @param {string} event the event type
    * @param {Array} $element extra arguments associated with the event
@@ -276,29 +273,31 @@ Athena = function( settings ) {
       return $element;
     }
 
-    $observers = data['$observers'];
+    $observers = data[ '$observers' ];
 
-    $observers.each(function (index, item) {
-      var $item = $(item),
-        itemData = Athena.getData( $item ),
-        itemDeferred = itemData['$deferred'];
-      
-      if ( itemDeferred  ) {
-        // If the deferred object is already resolved
-        // adding a new .done() fires the enclosed function
-        // immediately.
-        itemDeferred.done( function () {
-          $item.trigger( event, parameters );
-        });
-      }
-    });
-
+    if ($observers) {
+      $observers.each(function (index, item) {
+        var $item = $(item),
+          itemData = Athena.getData( $item ),
+          itemDeferred = itemData[ '$deferred' ];
+    
+        if ( itemDeferred  ) {
+          // If the deferred object is already resolved
+          // adding a new .done() fires the enclosed function
+          // immediately.
+          itemDeferred.done( function () {
+            $item.trigger( event, parameters );
+          } );
+        }
+      });
+    }
+  
     return $element;
 
   };
 
   /**
-   * Add and $observer to an $element
+   * Add an $observer to an $element
    * @public
    * @static
    * @method observe
@@ -307,6 +306,7 @@ Athena = function( settings ) {
    * @return {Object} The target element (allows chaining)
    */
   Athena.observe = function( $element, $observer ) {
+
     var data = Athena.getData( $element ),
       $observers;
       
@@ -323,19 +323,14 @@ Athena = function( settings ) {
       var $item = $(item),
         itemData = Athena.getData( $item );
       
-      _.log("YOJIMG", "new observer", item, "for", $element);
-      
-      
       // Don't overwrite any existing Deferred object ??
       if ( itemData['$deferred'] ) {
         // tbd -- do nothing?
-        _.log("YOJIMG", item, "deferred exists");
       }
       else {
         Athena.setData( $item, { '$deferred': $.Deferred() } );
       }        
     });
-
 
     data[ '$observers' ] = $observers.add($observer);
 
@@ -607,9 +602,11 @@ Athena = function( settings ) {
      * @public
      */
     $.fn.trigger = function( event, parameters ) {
-       var $this = $( this );
+      var $this = $( this );
+      if( Athena.isControl( $this ) ) {
        Athena.notify( $this, event, parameters );
-       return trigger.apply( $this, [event, parameters] );
+      }
+      return trigger.apply( $this, [event, parameters] );
     };
 
   } ( jQuery ) );

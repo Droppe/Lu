@@ -225,31 +225,31 @@ Container = Class.create( Abstract,  ( function () {
        * @private
        * @return {Void}
        */
-      passEventToChild = function(event, child) {
-          _.log("Container.passEventToChild()", event, child);
+      passEventToChild = function( event, child ) {
+          _.log( "Container.passEventToChild()", event, child );
 
           event.stopPropagation();
 
           var $localChild,
               items = $parent.children(),
-              elementIndex = items.index($element);
+              elementIndex = items.index( $element );
 
 
           // Check to see if item is a Object or integer
-          if (typeof child === "number") {
-            if (items.length > 0) {
-              $localChild = $(items[child]);
+          if ( typeof child === "number" ) {
+            if ( items.length > 0 ) {
+              $localChild = $( items[child] );
             }
           } else {
-            $localChild = $(child); 
+            $localChild = $( child ); 
           }
 
           // We test so we don't go nuts triggering each child!
           // Only when the $element is the same as the child do
           // we fire the event
-          if ($localChild && elementIndex === child) {
+          if ( $localChild && elementIndex === child ) {
             // The event made into a JQuery Event
-            $element.trigger(jQuery.Event(event), $localChild);
+            $element.trigger( jQuery.Event( event ) );
           }
       };
                   
@@ -321,7 +321,11 @@ Container = Class.create( Abstract,  ( function () {
   };  
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Container;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Container );
+  } else if( module.exports ) {
+   module.exports = Container; 
+  }
 }

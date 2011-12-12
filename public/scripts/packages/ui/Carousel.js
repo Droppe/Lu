@@ -11,8 +11,8 @@ var Class = require( '/scripts/libraries/ptclass' ),
  */
 Carousel =  Class.create( List, ( function() {
 
-  var MAX_EVENT = 'max',
-    MIN_EVENT = 'min',
+  var MAXED_EVENT = 'maxed',
+    FLOORED_EVENT = 'floored',
     PLAY_EVENT = 'play'
     PLAYING_EVENT = 'playing',
     PAUSE_EVENT = 'pause',
@@ -186,7 +186,7 @@ Carousel =  Class.create( List, ( function() {
            $panel.addClass( settings.activeFlag );
          }
       } );
-      Carousel.on( MAX_EVENT, function( event ) {
+      Carousel.on( MAXED_EVENT, function( event ) {
        event.stopPropagation();
        if( playing && repeat !== 0 ) {
          repeat -= 1;
@@ -197,7 +197,7 @@ Carousel =  Class.create( List, ( function() {
          Carousel.first();
        }
       } );
-      Carousel.on( MIN_EVENT, function( event ) {
+      Carousel.on( FLOORED_EVENT, function( event ) {
        event.stopPropagation();
        Carousel.last();
       } );

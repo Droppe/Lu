@@ -1,20 +1,19 @@
 var Class = require( '/scripts/libraries/ptclass' ),
   Button = require( 'ui/Button' ),
-  Switch;
+  SwitchButton;
 
 /**
- * Representation of a stateful button element
- * @class Switch
+ * Representation of a button element preconfigured with a 'next' event
+ * @class SwitchButton
  * @constructor
  * @extends Button
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Switch = Class.create( Button,  ( function () {
+SwitchButton = Class.create( Button, ( function () {
 
    // RETURN METHODS OBJECT
    return {
-     
      /**
       * PTClass constructor 
       * @method initialize
@@ -28,94 +27,37 @@ Switch = Class.create( Button,  ( function () {
        // PRIVATE INSTANCE PROPERTIES
 
        /**
-        * Instance of Switch
-        * @property Switch
-        * @type Object
-        * @private
-        */     
-       var Switch = this,
-
-       /**
         * Default configuration values
         * @property defaults
         * @type Object
         * @private
         * @final
         */
-       defaults = {
-         action: 'change',
-         states: [
-          {
-            state: "OFF",
-            label: "off",
-            className: "athena-switch-off"
-          }, 
-          {
-            state: "ON",
-            label: "on",
-            className: "athena-switch-on"
-          }
-         ]
-       },
-       /**
-        * List of states for the switch
-        * @property states
-        * @type Array
-        * @private
-        */
-       states,
-       i = 0,
-       statesLen,
-       lastState,
-       activeState;
-       
+       var defaults = {
+         action: 'switch',
+         states: [true, false],
+         index: 0
+       };
+
+       if ( settings.states ) {
+         settings.states = settings.states.split( ' ' );
+       }
+
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
        _.defaults( settings, defaults );
-   
+
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
-       
-       states = settings.states;
-       statesLen = states.length;
-       activeState = states[i];
-       
-       /**
-        * Sets the state of the switch 
-        * @method toggleState
-        * @public
-        * @return {Object} the Switch instance (for chaining)
-        */       
-       Switch.toggleState = function () {
-         
-         lastState = activeState;
-         
-         // Increment counter
-         ++i;
-
-         // Reset the counter if at the end of the array
-         if ( i === statesLen ) {
-           i = 0;
-         }
-         
-         activeState = states[i];
-         
-         $element.removeClass(lastState.className).addClass(activeState.className);
-         
-         _.log("Switch", "state", activeState);
-         return Switch;
-       };
-              
-       $element.on( settings.on, function ( event ) {
-         event.preventDefault();
-         Switch.toggleState();
-       });
-       
      }
   };
   
-}() ));
+}() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Switch;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( SwitchButton );
+  } else if( module.exports ) {
+    module.exports = SwitchButton; 
+  }
 }

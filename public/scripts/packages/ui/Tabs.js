@@ -12,8 +12,8 @@ var Class = require( '/scripts/libraries/ptclass' ),
  */
 Tabs =  Class.create( Abstract,  ( function () {
 
-  var SELECT_EVT = 'select',
-    SELECTED_EVT = 'selected',
+  var SELECT_EVENT = 'select',
+    SELECTED_EVENT = 'selected',
     ARIA_TAB = 'tab',
     ARIA_ROLE = 'role',
     ARIA_TABLIST = 'tablist',
@@ -148,7 +148,7 @@ Tabs =  Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       function selectTabHandler( event, item ) {
-        $tabPanels.trigger( SELECT_EVT, [item] );
+        $tabPanels.trigger( SELECT_EVENT, [item] );
       }
 
       /**
@@ -165,8 +165,9 @@ Tabs =  Class.create( Abstract,  ( function () {
           // Get the index of the item
           index = items.index(item);
 
+          console.log( 'hello' );
         // Fire the select with the index value
-        $tabPanels.trigger( SELECT_EVT, [index] );
+        $tabPanels.trigger( SELECT_EVENT, [index] );
       };
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -179,8 +180,8 @@ Tabs =  Class.create( Abstract,  ( function () {
       $super( $element, settings );
       
       // Attach event listeners
-      $tabList.on( SELECT_EVT, selectTabHandler );
-      $tabList.on( SELECTED_EVT, selectedTabHandler );
+      $tabList.on( SELECT_EVENT, selectTabHandler );
+      $tabList.on( SELECTED_EVENT, selectedTabHandler );
 
     }
 

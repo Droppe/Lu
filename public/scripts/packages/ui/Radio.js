@@ -1,5 +1,5 @@
 var Class = require( '/scripts/libraries/ptclass' ),
-  FormSelect = require( 'ui/Button/FormSelect' ),
+  FormSelect = require( 'ui/FormSelect' ),
   RadioButton;
   
 

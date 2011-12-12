@@ -10,7 +10,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-PauseButton = Class.create( Button,  ( function () {
+PauseButton = Class.create( Button, ( function () {
 
    // RETURN METHODS OBJECT
    return {
@@ -45,9 +45,13 @@ PauseButton = Class.create( Button,  ( function () {
      }
   };
   
-}() ));
+}() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = PauseButton;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( PauseButton );
+  } else if( module.exports ) {
+   module.exports = PauseButton; 
+  }
 }

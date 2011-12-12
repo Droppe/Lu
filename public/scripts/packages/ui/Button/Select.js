@@ -10,7 +10,7 @@ var Class = require( '/scripts/libraries/ptclass' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-SelectButton = Class.create( Button,  ( function () {
+SelectButton = Class.create( Button, ( function () {
 
    // RETURN METHODS OBJECT
    return {
@@ -34,20 +34,38 @@ SelectButton = Class.create( Button,  ( function () {
         * @final
         */
        var defaults = {
-         action: 'select'
-       };
-       
+          action: 'select'
+        },
+        controls;
+
+       if( !settings.item && settings.item !== 0 ) {
+         if( $element.is( 'button' ) ) {
+           controls = $element.attr( 'aria-controls' );
+         } else if ( $element.is( 'a' ) ) {
+           controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
+         }
+         if( controls ) {
+           settings.item = $( '#' + controls );
+         } else {
+           settings.item = $( 'li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' ) );
+         }
+       }
+
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
        _.defaults( settings, defaults );
-   
+
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
      }
   };
   
-}() ));
+}() ) );
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = SelectButton;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( SelectButton );
+  } else if( module.exports ) {
+   module.exports = SelectButton; 
+  }
 }

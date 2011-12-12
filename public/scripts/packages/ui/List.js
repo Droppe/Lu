@@ -11,13 +11,18 @@ var Class = require( '/scripts/libraries/ptclass' ),
  */
 List =  Class.create( Abstract, ( function () {
 
-  // PRIVATE CONSTANTS
-  var NEXT = 'next',
-    LAST = 'last',
-    FIRST = 'first',
-    PREVIOUS = 'previous',
+  //CONSTANTS
+  var NEXT_EVENT = 'next',
+    LAST_EVENT = 'last',
+    FIRST_EVENT = 'first',
+    PREVIOUS_EVENT = 'previous',
+    FLOORED_EVENT = 'floored',
+    MAXED_EVENT = 'maxed',
+    SELECT_EVENT = 'select',
+    SELECTED_EVENT = 'selected',
     VERTICAL = 'vertical',
-    HORIZONTAL = 'horizontal';
+    HORIZONTAL = 'horizontal',
+    SELECTED_FLAG = 'athena-selected';
 
   //RETURN METHODS OBJECT 
   return {
@@ -29,7 +34,7 @@ List =  Class.create( Abstract, ( function () {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ){
+    initialize: function ( $super, $element, settings ) {
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -40,40 +45,32 @@ List =  Class.create( Abstract, ( function () {
        */  
       var List = this,
 
-      /**
-       * Default configuration values
-       * @property defaults
-       * @type Object
-       * @private
-       * @final
-       */
-      defaults = {
-         /**
-          * The CSS class that designates a selected list item
-          * @property selectFlag
-          * @default 'selected'
-          * @type String
-          * @final
+        /**
+         * Default configuration values
+         * @property defaults
+         * @type Object
+         * @private
+         * @final
          */
-         selectFlag: 'selected',
+        defaults = {
 
-         /**
-          * Denotes the behavior of left, right, top and down arrow keys.
-          * @property direction 
-          * @default 'horizontal'
-          * @type String
-          * @final
+           /**
+            * Denotes the behavior of left, right, top and down arrow keys.
+            * @property direction 
+            * @default 'horizontal'
+            * @type String
+            * @final
+           */
+           orientation: HORIZONTAL
+        },
+        /**
+         * JQuery collection of like items in the list
+         * @property $items
+         * @type Object
+         * @private
          */
-         direction: HORIZONTAL
-      },
-      /**
-       * JQuery collection of like items in the list
-       * @property $items
-       * @type Object
-       * @private
-       */
-      $items,
-     
+        $items;
+
       /**
        * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
        * arrows.  Left and up correspond to action "previous" and right and next correspond to "next". 
@@ -83,45 +80,45 @@ List =  Class.create( Abstract, ( function () {
        * @param {Object} item An object or a number
        * @return {Void}
        */  
-      handleKeyup = function(event) {
+      function handleKeyup( event ) {
         var keyCode = event.keyCode,
-            item = $(event.target);
+            item = $( event.target );
 
-        // A "vertical" list direction means that the up and down arrow keys work
-        if (settings.direction === VERTICAL) {  
-          switch (keyCode) {
+        // A "vertical" list orentation means that the up and down arrow keys work
+        if ( settings.orentation === VERTICAL ) {  
+          switch ( keyCode ) {
             case 38: // Up arrow
-              List.trigger(PREVIOUS, item);
+              List.previous();
               break;
             case 40: // Down arrow 
-              List.trigger(NEXT, item);
+              List.next();
             default:
               break;
           }
         } else {
-          // By default, list direction is "horizontal" and left and right arrows work 
-          switch (keyCode) {
+          // By default, list orentation is "horizontal" and left and right arrows work 
+          switch ( keyCode ) {
             case 37: // Left arrow
-              List.trigger(PREVIOUS, item);
+              List.previous();
               break;
             case 39: // Right arrow
-              List.trigger(NEXT, item);
+              List.next();
             default:
               break;
           }
         }
 
-        switch (keyCode) {
+        switch ( keyCode ) {
           case 36: // Home key
-            List.trigger(FIRST, item);
+            List.first();
             break;
           case 35: // Last key
-            List.trigger(LAST, item);
+            List.last();
           default:
             break;
         }
-      };
 
+      }
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -139,12 +136,6 @@ List =  Class.create( Abstract, ( function () {
       } else {
         $items = $element.children();
       }
-
-      // PRIVATE METHODS
-      // n/a
-
-
-      // PRIVILEGED METHODS
 
       /**
        * Append a new item to $element
@@ -169,49 +160,49 @@ List =  Class.create( Abstract, ( function () {
         $( $item, $items ).remove();
         return List;
       };
+
       /**
        * Select an item in the list
        * @method select
        * @public
-       * @param {Integer|Object} item The index of the item to select, or a JQuery instance of the item.
+       * @param {Integer|String|Object} item The index of the item to select, a css selector, or a JQuery collection containting the item.
        * @return {Object} List
        */  
       List.select = function( item ) {
-
         var $item,
             $links;
 
-        // item can be an integer and 0 is falsy!
-        if (item === 0 || item) {
+        if ( item !== undefined ) {
 
-          if( typeof item === 'number' || typeof item === 'string') {
+          if( typeof item === 'number' || typeof item === 'string' ) {
             $item = $items.eq( item );
           } else {
-            $item = $(item);
+            $item = item;
           }
 
-          if( $item.hasClass( settings.selectFlag ) === false ) {
-
-            // Not selected 
+          if( $item.hasClass( SELECTED_FLAG ) === false && $item.is( $items ) ) {
+            // Not selected
             // aria-selected applies to the link _not_ the list item!!!
-            $items.filter( '.' + settings.selectFlag ).removeClass( settings.selectFlag );
+            $items.filter( '.' + SELECTED_FLAG ).removeClass( SELECTED_FLAG );
             // Set all links under $items to be aria-selected false
             $items.find( 'a' ).attr( 'aria-selected', 'false' );
 
             $links = $item.find( 'a' );
 
-            if ($links.length > 0) {
+            if ( $links.length > 0 ) {
               // Set aria-selected for the first link to "true"
-              $links.eq(0).attr( 'aria-selected', 'true' );
+              $links.eq( 0 ).attr( 'aria-selected', 'true' );
             }
-            
+
             // Selected
-            $element.trigger( 'selected', [$item.addClass( settings.selectFlag ), this.index()] );
+            $element.trigger( SELECTED_EVENT, [ $item.addClass( SELECTED_FLAG ) ] );
+
           }
 
           // Set focus to the item that you've selected
           // We do this for a11y
           $item.attr( 'tabindex', '-1' ).focus();
+
         }
 
         return List;
@@ -228,7 +219,7 @@ List =  Class.create( Abstract, ( function () {
         if(  List.hasNext() ) {
           increment = 1;
         } else {
-           List.trigger( 'max' );
+          List.trigger( MAXED_EVENT, $element );
         }
         List.select( $items.eq( List.index() + increment ) );
 
@@ -247,11 +238,11 @@ List =  Class.create( Abstract, ( function () {
         if( List.hasPrevious() ) {
           decrement = 1;
         } else {
-           List.trigger( 'min' );
+           List.trigger( FLOORED_EVENT, $element );
         }
 
-        List.select( $items.eq( this.index() - decrement ) );
-        return this;
+        List.select( $items.eq( List.index() - decrement ) );
+        return List;
       };
 
       /**
@@ -306,7 +297,7 @@ List =  Class.create( Abstract, ( function () {
         var ndx = -1;
         _.each( $items, function( item, index ) {
           var $item = $( item );
-          if( $item.hasClass( settings.selectFlag ) ) {
+          if( $item.hasClass( SELECTED_FLAG ) ) {
             ndx = index;
             return;
           }
@@ -346,35 +337,40 @@ List =  Class.create( Abstract, ( function () {
 
 
       // EVENT BINDINGS
-      $element.on( 'select', function( event, item ) {
+      $element.on( SELECT_EVENT, function( event, item ) {
         event.stopPropagation();
-        List.select( item );
+        if( item || item === 0 ) {
+          List.select( item );
+        }
       } );
-      $element.on( NEXT, function( event, item ) {
+      $element.on( NEXT_EVENT, function( event ) {
         event.stopPropagation();
         List.next();
       } );
-      $element.on( PREVIOUS, function( event, item ) {
+      $element.on( PREVIOUS_EVENT, function( event ) {
         event.stopPropagation();
         List.previous();
       } );
-      $element.on( FIRST, function( event, item ) {
+      $element.on( FIRST_EVENT, function( event ) {
         event.stopPropagation();
         List.first();
       } );
-      $element.on( LAST, function( event, item ) {
+      $element.on( LAST_EVENT, function( event ) {
         event.stopPropagation();
         List.last();
       } );
-      $element.on('keyup', handleKeyup);
-
+      $element.on( 'keyup', handleKeyup );
     }
   };
 
 }() ));
 
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = List;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( List );
+  } else if( module.exports ) {
+   module.exports = List; 
+  }
 }
