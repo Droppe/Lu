@@ -3,12 +3,10 @@ var Class = require( '/scripts/libraries/ptclass' ),
   SwitchButton;
 
 /**
- * Representation of a button element preconfigured with a 'next' event
+ * Representation of a button element preconfigured with a 'switch' event
  * @class SwitchButton
  * @constructor
  * @extends Button
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  */
 SwitchButton = Class.create( Button, ( function () {
 

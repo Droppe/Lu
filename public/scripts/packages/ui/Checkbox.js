@@ -1,5 +1,5 @@
 var Class = require( '/scripts/libraries/ptclass' ),
-  Button = require( 'ui/Button' ),
+  Button = require( 'ui/Button/Switch' ),
   Checkbox;
 
 /**
@@ -45,8 +45,15 @@ Checkbox = Class.create( Button,  ( function () {
         on: 'change',
         actionCheck: 'select',
         actionUncheck: 'unselect',
-        ariaAttrib: 'aria-controls'
-      };
+        ariaAttrib: 'aria-controls',
+        states: 'unchecked checked'
+      },
+      /**
+       * Describes the current state of the checkbox
+       * @property checkedState
+       * @type String
+       */
+      checkedState;
 
 
       // Get the notify target from the config or from the ARIA-controls attribute
@@ -71,10 +78,19 @@ Checkbox = Class.create( Button,  ( function () {
         return !!( $element.prop("checked") );
       };
       
-      // PRIVILEDGED METHODS
+      // PRIVILEGED METHODS
       Checkbox.triggerAction = function () {
-        var action = ( isChecked() ) ? settings.actionCheck : settings.actionUncheck;
-        _.log("Checkbox", action, $element);
+        var action = settings.actionUncheck,
+          index = 0;
+        
+        if ( isChecked() ) {
+         action = settings.actionCheck;
+         index = 1;
+        }
+
+        checkedState = settings.states[index];
+        
+        _.log("Checkbox", action, checkedState, $element);
         Checkbox.trigger(action);
       };
 
