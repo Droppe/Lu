@@ -57,7 +57,6 @@ Checkbox = Class.create( Button,  ( function () {
 
 
       // Get the notify target from the config or from the ARIA-controls attribute
-
       settings.notify = settings.notify || ( "#" + $element.attr(defaults.ariaAttrib) );
             
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES

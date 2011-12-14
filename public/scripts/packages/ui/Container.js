@@ -43,8 +43,8 @@ Container = Class.create( Abstract,  ( function () {
         // CSS
         className: "hidden",
         // EVENTS
-        onHide: "hide unselect",
-        onShow: "show select",
+        onHide: "hide unselect unselected",
+        onShow: "show select selected",
         actionHide: "hidden",
         actionShow: "shown"
       },
@@ -96,7 +96,7 @@ Container = Class.create( Abstract,  ( function () {
        * The "show"/"select" event handler
        * @method onShowHandler 
        * @param {Object} event - JQuery event
-       * @param {String} item - The ID of the selected container.
+       * @param {String|Object} item - The ID or JQuery object for the selected container.
        * @private
        * @return {Void} 
        */
@@ -113,9 +113,15 @@ Container = Class.create( Abstract,  ( function () {
         // item can be an integer or an object
         if (item) {
           // Show the item if the selected container equals this instance
-          if (typeof item === "string" && item !== $element.attr("id")) {
+          if ( $element.is($(item)) ) {
+            ok = true;
+          }
+          else if (typeof item === "string" && item !== $element.attr("id")) {
             ok = false;
           } 
+          else {
+            ok = false;
+          }
         }
 
         // show() unless item is specified.  Otherwise, if the selected container 
