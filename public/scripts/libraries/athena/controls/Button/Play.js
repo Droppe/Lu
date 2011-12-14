@@ -11,6 +11,8 @@ var Class = require( 'class' ),
  * @param {Object} settings Configuration properties for this instance
  */
 PlayButton = Class.create( Button, ( function () {
+  var PLAYING_EVENT = 'playing',
+    PAUSED_EVENT = 'paused';
 
   // RETURN METHODS OBJECT
   return {
@@ -49,12 +51,12 @@ PlayButton = Class.create( Button, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      PlayButton.on( 'playing', function( event ) {
+      PlayButton.on( PLAYING_EVENT, function( event ) {
         event.stopImmediatePropagation();
         PlayButton.disable();
       } );
 
-      PlayButton.on( 'paused', function( event ) {
+      PlayButton.on( PAUSED_EVENT, function( event ) {
         event.stopImmediatePropagation();
         PlayButton.enable();
       } );

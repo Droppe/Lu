@@ -52,10 +52,16 @@
 <body>
   <div id="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { 'autoplay': false, namespace: 'carousel' } }">
     <ol class="items">
-      <li id="item-one" class="athena-selected">One</li>
-      <li>Two</li>
+      <li id="item-one">One</li>
+      <li class="athena-selected">Two</li>
       <li>Three</li>
       <li id="item-four">Four</li>
+    </ol>
+    <ol>
+      <li><button data-athena="Button:Select">One</button></li>
+      <li><button data-athena="Button:Select">Two</button></li>
+      <li><button data-athena="Button:Select">Three</button></li>
+      <li><button data-athena="Button:Select">Four</button></li>
     </ol>
     <button role="button" data-athena="Button:Previous">Previous</button>
     <button role="button" data-athena="Button:Play">Play</button>
