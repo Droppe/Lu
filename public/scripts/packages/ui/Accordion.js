@@ -41,7 +41,7 @@ Accordion =  Class.create( List, ( function () {
          * @final
          */
         defaults = {
-          orientation: 'vertical',
+          orientation: 'horizontal',
           notify: '[data-athena="ui:Container"]'
         },
         /**
