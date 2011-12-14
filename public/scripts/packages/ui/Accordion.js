@@ -66,13 +66,19 @@ Accordion =  Class.create( List, ( function () {
         event.stopPropagation();
         $panels.trigger("hide");
         
-        if ( item.data("open") ) {
-          item.data("open", false);
-        }
-        else {
-          item.trigger("show").data("open", true);          
-        }
+        _.log("YOJIMG100", item.is($last) );
         
+        if ( item.is($last) ) {
+          if ( item.data("open") ) {
+            $last = item.trigger("hide").data("open", false);
+          }
+          else {
+            $last = item.trigger("show").data("open", true);
+          }
+        } 
+        else {
+          $last = item.trigger("show").data("open", true);
+        }
 
       });
 
