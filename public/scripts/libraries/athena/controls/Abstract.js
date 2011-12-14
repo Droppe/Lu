@@ -68,32 +68,45 @@ Abstract = Class.create( ( function() {
        */
       $notify,
       /**
-       * The namespace that all events will be fired into and listed for in. 
+       * The namespace used in all event bindings
        * See http://docs.jquery.com/Namespaced_Events.
        * @property namespace
        * @private
-       * @type {String}
+       * @type {Object}
        */
-      namespace = '';
+      namespace;
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      if( settings.namespace ) {
-        namespace = '.' + settings.namespace;
+      namespace = settings.namespace;
+
+      if( !namespace ) {
+        namespace = $element.athena( 'getParent', function( index, item ) {
+          var namespace = $( item ).athena( 'getControl' ).getNamespace();
+          if( namespace ) {
+            return true
+          };
+          return false;
+        } );
+        if( namespace.length > 0 ) {
+          namespace = namespace.athena( 'getControl' ).getNamespace();
+        }
       }
 
-      $notify = $( settings.notify );
       $observe = $( settings.observe );
+      $notify = $( settings.notify ).add( $element.athena( 'getDescendants' ) ).add( $observe );
 
       //Observe elements passed into $observe
-      if( $observe.length > 0 ) {
+      if( $observe.length ) {
         $observe.athena( 'observe', $element );
       }
+
       //Register elements passed in notify as observers
       if( $notify.length > 0 ) {
         $element.athena( 'observe', $notify );
       }
+
       // PRIVATE METHODS
 
       // PRIVILEGED METHODS
@@ -106,7 +119,14 @@ Abstract = Class.create( ( function() {
        * @param {Function} handler The callback function
        */
       Abstract.on = function( type, handler ) {
-        return $element.on( type + namespace, handler );
+        if( namespace ) {
+          type = type.split( ' ' );
+          _.each( type, function( item, index ) {
+            type[index] = item + '.' + namespace;
+          } );
+          type = type.join( ' ' );
+        }
+        return $element.on( type, handler );
       };
 
       /**
@@ -116,7 +136,11 @@ Abstract = Class.create( ( function() {
        * @param {String} type The type of event
        */
       Abstract.off = function( type ) {
-        return $element.off( type + namespace );
+        if( namespace ) {
+          return $element.off( type + namespace );
+        } else {
+          return $element.off( type );
+        }
       };
 
       /**
@@ -127,10 +151,7 @@ Abstract = Class.create( ( function() {
        * @param {Array} parameters Extra arguments to pass through to the subscribed event handler
        */
       Abstract.trigger = function( type, parameters ) {
-        $element.trigger( type + namespace + ':before', parameters );
-        $element.trigger( type + namespace, parameters );
-        $element.trigger( type + namespace + ':after', parameters );
-        return $element;
+        return $element.trigger( type, parameters );
       };
 
       /**
@@ -153,6 +174,27 @@ Abstract = Class.create( ( function() {
         return $element.athena( 'unobserve', $observer );
       };
 
+      /**
+       * Gets the current namspace
+       * @method getNamespace
+       * @public
+       * @return namespace
+       */
+      Abstract.getNamespace = function(){
+        return namespace;
+      };
+
+      /**
+       * Sets the namespace
+       * @method setNamespace
+       * @public
+       * @param {String} value the new namespace
+       * @return namespace
+       */
+      Abstract.setNamespace = function( value ){
+        namespace = value;
+        return namespace;
+      };
     }
   };
 }() ) );

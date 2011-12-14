@@ -48,7 +48,9 @@
 <body>
   <div id="carousel"  class="panel" data-athena="Carousel" data-athena-config="{
     'Carousel': {
-      observe: '#control_panel [role*=\'button\'], #control_panel button'
+      observe: '#control_panel [role*=\'button\'], #control_panel button',
+      namespace: 'carousel',
+      autoplay: false
     }
   }">
     <ol class="items">
@@ -59,7 +61,7 @@
     </ol>
   </div>
   <div id="control_panel">
-    <button role="button" data-athena="Button:Previous">Previous</button>
+    <!-- <button role="button" data-athena="Button:Previous">Previous</button>
     <button role="button" aria-controls="item-one" data-athena="Button:Select">One</button>
     <ol>
       <li><button data-athena="Button:Select" data-athena-config="{ 'Button:Select': { item: 0 } }">One</button></li>
@@ -69,19 +71,17 @@
       <li><button data-athena="Button:Select" data-athena-config="{ 'Button:Select': { item: '#item-five' } }">Five</button></li>
     </ol>
     <a href="#item-four" role="button" data-athena="Button:Select">Four</a>
-    <button role="button" data-athena="Button:Next">Next</button>
+    <button role="button" data-athena="Button:Next">Next</button> -->
+    <div data-athena="Switcher" data-athena-config="{ 'Switcher': { namespace: 'carousel' } }">
+      <button id="playButton" role="button" data-athena="Button:Play">Play</button>
+      <button role="button" data-athena="Button:Pause">Pause</button>
+    </div>
   </div>
-  <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b c'} }">Switch ABC</button>
+  <!-- <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b c'} }">Switch ABC</button>
   <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b'} }">Switch AB</button>
   <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a'} }">Switch A</button>
   <button role="button" data-athena="Button:Switch">Switch</button>
-
-  <script type="text/javascript" charset="utf-8">
-    $( 'body' ).on( 'athena-ready', function() {
-      var $this = $( this );
-      console.log( 'HEYA', $this.athena( 'getDescendants' ) );
-    } );
-  </script>
+  <input type="checkbox" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'selected unselected', on:'change'} }"/> -->
 
 </body>
 

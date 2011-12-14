@@ -337,29 +337,29 @@ List =  Class.create( Abstract, ( function () {
 
 
       // EVENT BINDINGS
-      $element.on( SELECT_EVENT, function( event, item ) {
+      List.on( SELECT_EVENT, function( event, item ) {
         event.stopPropagation();
         if( item || item === 0 ) {
           List.select( item );
         }
       } );
-      $element.on( NEXT_EVENT, function( event ) {
+      List.on( NEXT_EVENT, function( event ) {
         event.stopPropagation();
         List.next();
       } );
-      $element.on( PREVIOUS_EVENT, function( event ) {
+      List.on( PREVIOUS_EVENT, function( event ) {
         event.stopPropagation();
         List.previous();
       } );
-      $element.on( FIRST_EVENT, function( event ) {
+      List.on( FIRST_EVENT, function( event ) {
         event.stopPropagation();
         List.first();
       } );
-      $element.on( LAST_EVENT, function( event ) {
+      List.on( LAST_EVENT, function( event ) {
         event.stopPropagation();
         List.last();
       } );
-      $element.on( 'keyup', handleKeyup );
+      List.on( 'keyup', handleKeyup );
     }
   };
 

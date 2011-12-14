@@ -236,7 +236,6 @@ Tip =  Class.create( Abstract,  ( function () {
            $tip.css( getPosition( false ) );
          } );
          $element.one( 'shown', function( event ) {
-           console.log( 'hello' );
            Loader.trigger( 'load', [ settings.uri ] );
          } );
 

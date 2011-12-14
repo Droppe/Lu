@@ -16,8 +16,11 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    .items .athena-selected {
+    .items > .athena-selected {
       color: red;
+    }
+    .athena-selected * {
+      color: black;
     }
   </style>
 
@@ -47,29 +50,18 @@
 </head>
 
 <body>
-
-  <div id="container" data-athena="Carousel">
-
+  <div id="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { 'autoplay': false, namespace: 'carousel' } }">
     <ol class="items">
-      <li class="athena-selected">One</li>
+      <li id="item-one" class="athena-selected">One</li>
       <li>Two</li>
       <li>Three</li>
-      <li>Four</li>
+      <li id="item-four">Four</li>
     </ol>
-
-    <button type="button" data-athena="Button:Previous">Previous</button>
-
-    <ol>
-      <li><button type="button" data-athena="Button:Select">One</button></li>
-      <li><button type="button" data-athena="Button:Select">Two</button></li>
-      <li><button type="button" data-athena="Button:Select">Three</button></li>
-      <li><button type="button" data-athena="Button:Select">Four</button></li>
-    </ol>
-
-    <button type="button" data-athena="Button:Next">Next</button>
-
+    <button role="button" data-athena="Button:Previous">Previous</button>
+    <button role="button" data-athena="Button:Play">Play</button>
+    <button role="button" data-athena="Button:Pause">Pause</button>
+    <button role="button" data-athena="Button:Next">Next</button>
   </div>
-
 </body>
 
 </html>

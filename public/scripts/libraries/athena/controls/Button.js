@@ -124,17 +124,44 @@ Button = Class.create( Abstract, ( function() {
           $element.on( 'keyup', function( event ) { 
             // Pressed space bar
             if ( event.keyCode === 32 ) {   
-              $element.trigger( settings.on );
+              Button.trigger( settings.on );
             } 
           } );
         }  
       }
 
+      /**
+       * Disables the Button by adding a disabled attribute (inputs and buttons only) and a the class athena-disabled
+       * @method disable 
+       * @private
+       * @return {Void}
+       */
+      Button.disable = function() {
+        if( $element.is( 'button, input' ) ) {
+          $element.prop( 'disabled', 'disabled' );
+        }
+        $element.addClass( 'athena-disabled' );
+      };
+
+      /**
+       * Enables the Button by removing a disabled attribute (inputs and buttons only) and the class athena-disabled
+       * @method disable 
+       * @private
+       * @return {Void}
+       */
+      Button.enable = function() {
+        if( $element.is( 'button, input' ) ) {
+          $element.removeProp( 'disabled' );
+        }
+        $element.removeClass( 'athena-disabled' );
+      };
+
       // EVENT BINDINGS
-      $element.on( settings.on, function( event ) {
+      Button.on( settings.on, function( event ) {
         event.preventDefault();
 
         var parameters = [];
+
         // For accessibility we focus on the link.
         if ( isAnchor ) {
           $element.focus();  
@@ -158,14 +185,13 @@ Button = Class.create( Abstract, ( function() {
             break;
           default:
         }
-
         Button.trigger( action, parameters ); 
 
-        console.log( 'ATHENA_BUTTON ::', action, parameters );
       } );
 
       // Setup accessibility - ally 
       setupAlly();
+      Button.enable();
 
     }
   };

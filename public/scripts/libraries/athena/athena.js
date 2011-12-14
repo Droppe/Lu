@@ -84,7 +84,7 @@ Athena = function( settings ) {
    * All child controls in the $element and the $element have been executed.
    * @public
    * @static
-   * @method unobserve
+   * @method isReady
    * @param {Object} $element a jQuery collection
    * @return {Boolean} True if all child controls have been executed
    */
@@ -103,7 +103,7 @@ Athena = function( settings ) {
    * All controls on a node have been executed.
    * @public
    * @static
-   * @method unobserve
+   * @method isExecuted
    * @param {Object} $element a jQuery collection
    * @return {Boolean} True if controls on $element are finished executing
    */
@@ -116,7 +116,7 @@ Athena = function( settings ) {
    * Returns an array of all Athena keys on $element
    * @public
    * @static
-   * @method unobserve
+   * @method getKeys
    * @param {Object} $element a jQuery collection
    * @return {Array} An array of Athena keys 
    */
@@ -171,7 +171,9 @@ Athena = function( settings ) {
       } );
 
       data[ 'Deferred' ].resolve();
-      $node.trigger( 'athena-executed', [keys] );
+     _.each( Athena.getControls( $node ), function( item, index ) {
+        item.trigger( 'athena-executed', [keys] );
+      } );
       $node.data( 'athena-controls' )[ 'executed' ] = true;
     }
 
@@ -265,10 +267,14 @@ Athena = function( settings ) {
           // adding a new .done() fires the enclosed function
           // immediately.
           data['Deferred'].done( function () {
-            $item.trigger( event, parameters );
+            _.each( Athena.getControls( $item ), function( item, index ) {
+              item.trigger( event, parameters );
+            } );
           } );
+
         }
       } );
+
     }
 
     return $element;
@@ -392,14 +398,24 @@ Athena = function( settings ) {
    * @static
    * @param {Object} $element a jQuery collection
    * @param {String} key The id of returned control.
-   * @return {Object} The specified Athena control
+   * @return {Object} The specified Athena control or the first control found if none specified
    */
   Athena.getControl = function( $element, key ) {
-    var data = $element.data( 'athena-controls' );
+    var data = $element.data( 'athena-controls' ),
+      instance;
     if( !data ) {
       return null;
     }
-    return $element.data( 'athena-controls' )[key]['instance'];
+    if( key ) {
+      instance =  data[key]['instance'];
+    } else {
+      _.each( data, function( item, index ) {
+        if( !instance ) {
+          instance = item['instance'];
+        }
+      } );
+    }
+    return instance;
   };
 
   /**
@@ -474,7 +490,7 @@ Athena = function( settings ) {
    * @public
    * @static
    * @param {Object} $element a jQuery collection
-   * @param {String} filter an optional css selector to use as a filter
+   * @param {String || function || Object} filter a css selector, jQuery collection or function to be used as a filter
    * @return {Object} A Jquery collection representing the parent
    */
   Athena.getParent = function( $element, filter ) {
@@ -510,6 +526,7 @@ Athena = function( settings ) {
    */
   ( function( $ ) {
     var trigger = $.fn.trigger;
+        on = $.fn.on;
 
     $.fn.athena = function() {
       var $this = $( this ),
@@ -530,12 +547,37 @@ Athena = function( settings ) {
      * @public
      */
     $.fn.trigger = function( event, parameters ) {
-      var $this = $( this );
+      var $this = $( this ),
+        $descendants;
+
       if( Athena.isControl( $this ) ) {
-       Athena.notify( $this, event, parameters );
+        //$descendants = Athena.getDescendants( $this );
+        Athena.notify( $this, event, parameters );
+        //$descendants.trigger( 'athena-notify', [{ event: event.split( '.' )[0], parameters:parameters }] );
       }
       return trigger.apply( $this, [event, parameters] );
     };
+
+    // $.fn.on = function() {
+    //   var $this = $( this ),
+    //     handler,
+    //     parameters;
+    // 
+    //   if( Athena.isControl( $this ) ) {
+    //     parameters = Array.prototype.slice.call( arguments );
+    //     _.each( parameters, function( parameter, index ) {
+    //       if( typeof parameter === 'function' ) {
+    //         parameters[index] = function( ) {
+    //           var parameters = Array.prototype.slice.call( arguments );
+    //           parameter.apply( $this, parameters );
+    //         }
+    //       }
+    //     } );
+    //     return on.apply( $this, parameters );
+    //   } else {
+    //     return on.apply( $this, arguments );
+    //   }
+    // };
 
   } ( jQuery ) );
 

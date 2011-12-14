@@ -25,23 +25,40 @@ PauseButton = Class.create( Button, ( function () {
      initialize: function ( $super, $element, settings ) {
 
        // PRIVATE INSTANCE PROPERTIES
-
        /**
-        * Default configuration values
-        * @property defaults
+        * Instance of PlayButton
+        * @property PlayButton
         * @type Object
         * @private
-        * @final
         */
-       var defaults = {
-         action: 'pause'
-       };
+       var PauseButton = this,
+         /**
+          * Default configuration values
+          * @property defaults
+          * @type Object
+          * @private
+          * @final
+          */
+         defaults = {
+           action: 'pause'
+         };
        
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
        _.defaults( settings, defaults );
    
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
+
+       PauseButton.on( 'playing', function( event ) {
+         event.stopImmediatePropagation();
+         PauseButton.enable();
+       } );
+
+       PauseButton.on( 'paused', function( event ) {
+         event.stopImmediatePropagation();
+         PauseButton.disable();
+       } );
+
      }
   };
   
