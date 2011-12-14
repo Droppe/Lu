@@ -12,6 +12,9 @@ var Class = require( 'class' ),
  */
 PauseButton = Class.create( Button, ( function () {
 
+  var PLAYING_EVENT = 'playing',
+    PAUSED_EVENT = 'paused';
+
    // RETURN METHODS OBJECT
    return {
      /**
@@ -49,12 +52,12 @@ PauseButton = Class.create( Button, ( function () {
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
 
-       PauseButton.on( 'playing', function( event ) {
+       PauseButton.on( PLAYING_EVENT, function( event ) {
          event.stopPropagation();
          PauseButton.enable();
        } );
 
-       PauseButton.on( 'paused', function( event ) {
+       PauseButton.on( PAUSED_EVENT, function( event ) {
          event.stopPropagation();
          PauseButton.disable();
        } );

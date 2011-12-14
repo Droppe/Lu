@@ -195,7 +195,7 @@ List =  Class.create( Abstract, ( function () {
             }
 
             // Selected
-            $element.trigger( SELECTED_EVENT, [ $item.addClass( SELECTED_FLAG ) ] );
+            List.trigger( SELECTED_EVENT, [ $item.addClass( SELECTED_FLAG ), List.index() ] );
 
           }
 
@@ -216,10 +216,10 @@ List =  Class.create( Abstract, ( function () {
        */
       List.next = function() {
         var increment = 0;
-        if(  List.hasNext() ) {
+        if( List.hasNext() ) {
           increment = 1;
         } else {
-          List.trigger( MAXED_EVENT, $element );
+          List.trigger( MAXED_EVENT, [ $element ] );
         }
         List.select( $items.eq( List.index() + increment ) );
 
@@ -238,11 +238,12 @@ List =  Class.create( Abstract, ( function () {
         if( List.hasPrevious() ) {
           decrement = 1;
         } else {
-           List.trigger( FLOORED_EVENT, $element );
+           List.trigger( FLOORED_EVENT, [ $element ] );
         }
 
         List.select( $items.eq( List.index() - decrement ) );
         return List;
+
       };
 
       /**
@@ -294,15 +295,7 @@ List =  Class.create( Abstract, ( function () {
        * @return {Number} The index of the selected item
        */
       List.index = function() {
-        var ndx = -1;
-        _.each( $items, function( item, index ) {
-          var $item = $( item );
-          if( $item.hasClass( SELECTED_FLAG ) ) {
-            ndx = index;
-            return;
-          }
-        } );
-        return ndx;
+        return $items.index( $items.filter( '.' + SELECTED_FLAG ) );
       };
 
       /**
@@ -360,6 +353,9 @@ List =  Class.create( Abstract, ( function () {
         List.last();
       } );
       List.on( 'keyup', handleKeyup );
+
+      List.trigger( SELECTED_EVENT, [ List.current(), List.index() ] );
+
     }
   };
 
