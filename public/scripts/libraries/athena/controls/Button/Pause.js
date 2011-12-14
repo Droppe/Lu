@@ -50,12 +50,12 @@ PauseButton = Class.create( Button, ( function () {
        $super( $element, settings );
 
        PauseButton.on( 'playing', function( event ) {
-         event.stopImmediatePropagation();
+         event.stopPropagation();
          PauseButton.enable();
        } );
 
        PauseButton.on( 'paused', function( event ) {
-         event.stopImmediatePropagation();
+         event.stopPropagation();
          PauseButton.disable();
        } );
 

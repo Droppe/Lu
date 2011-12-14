@@ -72,10 +72,8 @@
     </ol>
     <a href="#item-four" role="button" data-athena="Button:Select">Four</a>
     <button role="button" data-athena="Button:Next">Next</button> -->
-    <div data-athena="Switcher" data-athena-config="{ 'Switcher': { namespace: 'carousel' } }">
-      <button id="playButton" role="button" data-athena="Button:Play">Play</button>
-      <button role="button" data-athena="Button:Pause">Pause</button>
-    </div>
+      <button id="playButton" role="button" data-athena="Button:Play" data-athena-config="{ 'Button:Play': { namespace: 'carousel' } }">Play</button>
+      <button role="button" data-athena="Button:Pause" data-athena-config="{ 'Button:Pause': { namespace: 'carousel' } }">Pause</button>
   </div>
   <!-- <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b c'} }">Switch ABC</button>
   <button role="button" data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b'} }">Switch AB</button>

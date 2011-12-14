@@ -149,7 +149,6 @@ Carousel =  Class.create( List, ( function() {
        */
       Carousel.play = function() {
         if( playing === false ) {
-            console.log( 'playing' );
           repeat = settings.repeat;
           playing = true;
           ( function recurse() {
@@ -173,7 +172,6 @@ Carousel =  Class.create( List, ( function() {
        */
       Carousel.pause = function() {
         if( playing ) {
-          console.log( 'paused' );
           playing = false;
           Carousel.trigger( PAUSED_EVENT, [ $element ] );
         }
