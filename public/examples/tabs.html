@@ -1,0 +1,107 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]> <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]> <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Tabs</title>
+
+  <!-- Application Styles -->
+  <style type="text/css" media="screen">
+    .selected { font-weight: bold; }
+  </style>
+
+  <style type="text/css">
+    .tab-list li {
+      display: inline-block;
+    }
+
+    .tab-panels li {
+      display: none;
+    }
+
+    .tab-panels li.athena-selected {
+      display: block;
+      font-weight: bold;
+    }
+  </style>
+
+  <!-- Feature Detection -->
+  <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/helpers.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
+
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    ATHENA_CONFIG = {
+      debug: true
+    };
+  </script>
+
+  <script type="text/javascript" charset="utf-8">
+    localStorage.clear();
+    require.ensure( ['athena'], function() {} );
+  </script>
+  <!-- JS -->
+
+</head>
+
+<body>
+  <h1>Tabs Example</h1>
+
+  <div id="tabs" data-athena="Tabs">
+    <!-- Tablist -->
+    <ul id="tablist" class="tab-list" data-athena="List">
+      <!-- Tabs -->
+      <li class="athena-selected">
+        <a href="#tabpanel1" data-athena="Button:Select">Tab 1</a>
+      </li>
+      <li>
+        <a href="#tabpanel2" data-athena="Button:Select">Tab 2</a>
+      </li>
+      <li>
+        <a href="#tabpanel3" data-athena="Button:Select">Tab 3</a>
+      </li>
+      <li>
+        <a href="#tabpanel4" data-athena="Button:Select">Tab 4</a>
+      </li>
+    </ul>
+
+    <!-- Tab panels -->
+    <ul id="tabpanels" class="tab-panels" data-athena="List">
+      <li id="tabpanel1" class="selected" data-athena="Container">
+        Tab 1 panel
+      </li>
+      <li id="tabpanel2" data-athena="Container" data-athena-config="{
+        'Container': {
+            uri:'/miniprofile.html'
+        }
+      }">
+        <div class="content"></div>
+      </li>
+      <li id="tabpanel3" data-athena="Container">
+        Tab 3 panel
+      </li>
+      <li id="tabpanel4" data-athena="Container">
+        Tab 4 panel
+      </li>
+    </ul>
+  </div>
+
+</body>
+</html>
