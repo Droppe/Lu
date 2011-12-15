@@ -165,7 +165,6 @@ Tabs =  Class.create( Abstract,  ( function () {
           // Get the index of the item
           index = items.index(item);
 
-          console.log( 'hello' );
         // Fire the select with the index value
         $tabPanels.trigger( SELECT_EVENT, [index] );
       };

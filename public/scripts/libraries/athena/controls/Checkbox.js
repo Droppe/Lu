@@ -1,5 +1,5 @@
 var Class = require( 'class' ),
-  Button = require( 'athena/Button' ),
+  Button = require( 'athena/Button/Switch' ),
   Checkbox;
 
 /**
@@ -45,12 +45,18 @@ Checkbox = Class.create( Button,  ( function () {
         on: 'change',
         actionCheck: 'select',
         actionUncheck: 'unselect',
-        ariaAttrib: 'aria-controls'
-      };
+        ariaAttrib: 'aria-controls',
+        states: 'unchecked checked'
+      },
+      /**
+       * Describes the current state of the checkbox
+       * @property checkedState
+       * @type String
+       */
+      checkedState;
 
 
       // Get the notify target from the config or from the ARIA-controls attribute
-
       settings.notify = settings.notify || ( "#" + $element.attr(defaults.ariaAttrib) );
             
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -71,10 +77,19 @@ Checkbox = Class.create( Button,  ( function () {
         return !!( $element.prop("checked") );
       };
       
-      // PRIVILEDGED METHODS
+      // PRIVILEGED METHODS
       Checkbox.triggerAction = function () {
-        var action = ( isChecked() ) ? settings.actionCheck : settings.actionUncheck;
-        _.log("Checkbox", action, $element);
+        var action = settings.actionUncheck,
+          index = 0;
+        
+        if ( isChecked() ) {
+         action = settings.actionCheck;
+         index = 1;
+        }
+
+        checkedState = settings.states[index];
+        
+        _.log("Checkbox", action, checkedState, $element);
         Checkbox.trigger(action);
       };
 
@@ -86,7 +101,11 @@ Checkbox = Class.create( Button,  ( function () {
   };  
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Checkbox;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Checkbox );
+  } else if( module.exports ) {
+    module.exports = Checkbox; 
+  }
 }

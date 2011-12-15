@@ -3,7 +3,7 @@ var Class = require( 'class' ),
   OpenButton;
 
 /**
- * Representation of a button element preconfigured with a 'next' event
+ * Representation of a button element preconfigured with an 'open' event
  * @class OpenButton
  * @constructor
  * @extends Button

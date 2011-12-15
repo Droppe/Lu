@@ -3,7 +3,6 @@ var Class = require( 'class' ),
   RadioButton;
   
 
-
 /**
  * Toggles the display of related content to a change event from a grouping of radio buttons.
  * @class RadioButton
