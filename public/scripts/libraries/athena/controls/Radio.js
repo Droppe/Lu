@@ -1,5 +1,5 @@
 var Class = require( 'class' ),
-  FormSelect = require( 'athena/Button/FormSelect' ),
+  FormSelect = require( 'athena/FormSelect' ),
   RadioButton;
   
 
