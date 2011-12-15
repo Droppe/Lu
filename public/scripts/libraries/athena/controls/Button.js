@@ -188,19 +188,6 @@ Button = Class.create( Abstract, ( function() {
         Button.trigger( action, parameters ); 
       } );
 
-      // EVENT BINDINGS
-      $element.on( settings.on, function( event ) {
-        event.preventDefault();
-        
-        // For accessibility we focus on the link.
-        if ( isAnchor ) {
-          $element.focus();  
-        }
-
-        Button.triggerAction();
-
-      } );
-
       // Setup accessibility - ally 
       setupAlly();
       Button.enable();
