@@ -233,21 +233,6 @@ Carousel =  Class.create( List, ( function() {
          }
       } );
 
-      Carousel.on( MAXED_EVENT, function( event ) {
-       event.stopPropagation();
-       if( playing && repeat !== 0 ) {
-         repeat -= 1;
-         //Carousel.first();
-       } else if ( playing && repeat < 0 ){
-         //Carousel.first();
-       } else {
-         //Carousel.first();
-       }
-      } );
-      Carousel.on( FLOORED_EVENT, function( event ) {
-       event.stopPropagation();
-       //Carousel.last();
-      } );
       Carousel.on( PLAY_EVENT, function( event ) {
         event.stopPropagation();
         Carousel.play();
