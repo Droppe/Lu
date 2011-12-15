@@ -129,7 +129,7 @@ List =  Class.create( Abstract, ( function () {
       //Scan for items from the provided selector, or default to the children of the container.
       if ( settings.items ) {
         if( typeof settings.items === 'string' ) {
-          $items =  $element.children( settings.items ).children();
+          $items = $element.children( settings.items ).children();
         } else {
           $items = settings.items.children();
         }

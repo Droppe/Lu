@@ -87,8 +87,6 @@ Button = Class.create( Abstract, ( function() {
           */
         isAnchor = $element.is( 'a' );
 
-      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
-      _.defaults( settings, defaults );
 
       item = settings.item;
       states = settings.states;
@@ -100,6 +98,8 @@ Button = Class.create( Abstract, ( function() {
 
       action = settings.action;
 
+      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
@@ -186,6 +186,18 @@ Button = Class.create( Abstract, ( function() {
           default:
         }
         Button.trigger( action, parameters ); 
+      } );
+
+      // EVENT BINDINGS
+      $element.on( settings.on, function( event ) {
+        event.preventDefault();
+        
+        // For accessibility we focus on the link.
+        if ( isAnchor ) {
+          $element.focus();  
+        }
+
+        Button.triggerAction();
 
       } );
 
