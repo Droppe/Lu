@@ -12,19 +12,29 @@ var Class = require( 'class' ),
  */
 NextButton = Class.create( Button, ( function () {
 
-   // RETURN METHODS OBJECT
-   return {
-     /**
-      * PTClass constructor 
-      * @method initialize
-      * @public
-      * @param {Object} $super Pointer to superclass constructor
-      * @param {Object} $element JQuery object for the element wrapped by the component
-      * @param {Object} settings Configuration settings
-      */    
-     initialize: function ( $super, $element, settings ) {
+  var MAXED_EVENT = 'maxed',
+    SELECTED_EVENT = 'selected';
 
-       // PRIVATE INSTANCE PROPERTIES
+  // RETURN METHODS OBJECT
+  return {
+   /**
+    * PTClass constructor 
+    * @method initialize
+    * @public
+    * @param {Object} $super Pointer to superclass constructor
+    * @param {Object} $element JQuery object for the element wrapped by the component
+    * @param {Object} settings Configuration settings
+    */    
+   initialize: function ( $super, $element, settings ) {
+
+     // PRIVATE INSTANCE PROPERTIES
+     /**
+      * Instance of NextButton
+      * @property Button
+      * @type Object
+      * @private
+      */
+      var NextButton = this,
 
        /**
         * Default configuration values
@@ -33,19 +43,31 @@ NextButton = Class.create( Button, ( function () {
         * @private
         * @final
         */
-       var defaults = {
-         action: 'next'
-       };
-       
-       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
-       _.defaults( settings, defaults );
-   
-       // CALL THE PARENT'S CONSTRUCTOR
-       $super( $element, settings );
-     }
+        defaults = {
+          action: 'next'
+        };
+
+     // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+     _.defaults( settings, defaults );
+
+     // CALL THE PARENT'S CONSTRUCTOR
+     $super( $element, settings );
+
+     NextButton.on( SELECTED_EVENT, function( event ) {
+         NextButton.enable();
+     } );
+
+     NextButton.on( MAXED_EVENT, function( event, $subject ) {
+       var Control = $subject.athena( 'getControl' );
+       if( !Control.hasNext() ) {
+         NextButton.disable();
+       }
+     } );
+
+   }
   };
   
-}() ));
+}() ) );
 
 //Export to Common JS Loader
 if( module ) {

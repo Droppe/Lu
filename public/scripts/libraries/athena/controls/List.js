@@ -170,7 +170,7 @@ List =  Class.create( Abstract, ( function () {
        */  
       List.select = function( item ) {
         var $item,
-            $links;
+          $links;
 
         if ( item !== undefined ) {
 
@@ -181,6 +181,7 @@ List =  Class.create( Abstract, ( function () {
           }
 
           if( $item.hasClass( SELECTED_FLAG ) === false && $item.is( $items ) ) {
+
             // Not selected
             // aria-selected applies to the link _not_ the list item!!!
             $items.filter( '.' + SELECTED_FLAG ).removeClass( SELECTED_FLAG );
@@ -194,8 +195,17 @@ List =  Class.create( Abstract, ( function () {
               $links.eq( 0 ).attr( 'aria-selected', 'true' );
             }
 
-            // Selected
-            List.trigger( SELECTED_EVENT, [ $item.addClass( SELECTED_FLAG ), List.index() ] );
+            $item.addClass( SELECTED_FLAG );
+
+            if( !List.hasPrevious() ) {
+              List.trigger( FLOORED_EVENT, [ $element ] )
+            }
+
+            if( !List.hasNext() ) {
+              List.trigger( MAXED_EVENT, [ $element ] )
+            }
+
+            List.trigger( SELECTED_EVENT, [ $item, List.index() ] );
 
           }
 
@@ -215,14 +225,9 @@ List =  Class.create( Abstract, ( function () {
        * @return {Object} List
        */
       List.next = function() {
-        var increment = 0;
         if( List.hasNext() ) {
-          increment = 1;
-        } else {
-          List.trigger( MAXED_EVENT, [ $element ] );
+          List.select( List.index() + 1 );
         }
-        List.select( $items.eq( List.index() + increment ) );
-
         return List;
       };
 
@@ -233,17 +238,10 @@ List =  Class.create( Abstract, ( function () {
        * @return {Object} List
        */  
       List.previous = function() {
-        var decrement = 0;
-
         if( List.hasPrevious() ) {
-          decrement = 1;
-        } else {
-           List.trigger( FLOORED_EVENT, [ $element ] );
+          List.select( List.index() - 1 );
         }
-
-        List.select( $items.eq( List.index() - decrement ) );
         return List;
-
       };
 
       /**
@@ -328,7 +326,6 @@ List =  Class.create( Abstract, ( function () {
         return $items.length;
       };
 
-
       // EVENT BINDINGS
       List.on( SELECT_EVENT, function( event, item ) {
         event.stopPropagation();
@@ -353,10 +350,10 @@ List =  Class.create( Abstract, ( function () {
         List.last();
       } );
       List.on( 'keyup', handleKeyup );
-
       List.trigger( SELECTED_EVENT, [ List.current(), List.index() ] );
 
     }
+
   };
 
 }() ));
