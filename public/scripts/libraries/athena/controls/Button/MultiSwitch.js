@@ -53,16 +53,16 @@ MultiSwitch = Class.create( Switch,  ( function () {
           
          ]
        };
-       
+
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
        _.defaults( settings, defaults );
-   
+
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
-       
+
      }
   };
-  
+
 }() ));
 
 //Export to CommonJS Loader

@@ -1,16 +1,16 @@
-var Class = require( 'class' ),
-  Container = require( 'athena/Container' ),
-  Switch;
+var Class = require( '/scripts/libraries/ptclass' ),
+  Container = require( 'ui/Container' ),
+  Switcher;
 
 /**
  * Representation of a stateful button element
- * @class Switch
+ * @class Switcher
  * @constructor
  * @extends Container
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
-Switch = Class.create( Container,  ( function () {
+Switcher = Class.create( Container,  ( function () {
 
   var DISABLED = "disabled";
 
@@ -29,12 +29,12 @@ Switch = Class.create( Container,  ( function () {
       // PRIVATE INSTANCE PROPERTIES
 
       /**
-       * Instance of Switch
-       * @property Switch
+       * Instance of Switcher
+       * @property Switcher
        * @type Object
        * @private
        */     
-      var Switch = this,
+      var Switcher = this,
 
       /**
        * Default configuration values
@@ -56,7 +56,7 @@ Switch = Class.create( Container,  ( function () {
        */
       states = [],
       /**
-       * The buttons within the Switch container
+       * The buttons within the Switcher container
        * @property buttons
        * @type Object
        */
@@ -75,49 +75,54 @@ Switch = Class.create( Container,  ( function () {
        * @method toggleState
        * @public
        * @param {Object} $btn The button that was clicked
-       * @return {Object} The Switch instance (for chaining)
+       * @return {Object} The Switcher instance (for chaining)
        */
-      Switch.toggleState = function ($btn) {
+      Switcher.toggleState = function ($btn) {
         var index, state;
         
         if ( $btn.length ) {
           index = $buttons.index($btn);
           state = (states) ? states[index] : null;
-          _.log("Switch.toggleState", $btn, state);
+          _.log("Switcher.toggleState", $btn, state);
           $btn.attr(DISABLED, DISABLED);
           $buttons.not($btn).removeAttr(DISABLED);
-          Switch.trigger( settings.action, [  state ] );
+          Switcher.trigger( settings.action, [  state ] );
         }
         
-        return Switch;
+        return Switcher;
       };
       
-      Switch.init = function () {
+      Switcher.init = function () {
         $buttons = $(settings.buttonTag, $element);
         $buttons.first().attr(DISABLED, DISABLED); 
       };
 
-      Switch.init();
-      Switch.toggleState($buttons.first());
+      Switcher.init();
+      Switcher.toggleState($buttons.first());
             
       // Listen for button events
       $element.on( settings.on, settings.buttonTag, function ( event ) {
         event.stopPropagation();
-        Switch.toggleState( $(event.target) );
+        Switcher.toggleState( $(event.target) );
       });
 
       // Responding to external events
       $element.on( settings.on, function ( event, item ) {
         event.preventDefault();
         item = (item > 0 ) ? item - 1 : 0;
-        Switch.toggleState($buttons.eq(item));
+        Switcher.toggleState($buttons.eq(item));
       });
        
     }
   };
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Switch;
+
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Switcher );
+  } else if( module.exports ) {
+   module.exports = Switcher; 
+  }
 }
