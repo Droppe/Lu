@@ -12,18 +12,27 @@ var Class = require( 'class' ),
  */
 PreviousButton = Class.create( Button, ( function () {
 
-   // RETURN METHODS OBJECT
-   return {
-     /**
-      * PTClass constructor 
-      * @method initialize
-      * @public
-      * @param {Object} $super Pointer to superclass constructor
-      * @param {Object} $element JQuery object for the element wrapped by the component
-      * @param {Object} settings Configuration settings
-      */    
-     initialize: function ( $super, $element, settings ) {
+  var FLOORED_EVENT = 'floored',
+      SELECTED_EVENT = 'selected';
 
+  // RETURN METHODS OBJECT
+  return {
+    /**
+    * PTClass constructor 
+    * @method initialize
+    * @public
+    * @param {Object} $super Pointer to superclass constructor
+    * @param {Object} $element JQuery object for the element wrapped by the component
+    * @param {Object} settings Configuration settings
+    */    
+    initialize: function ( $super, $element, settings ) {
+     /**
+      * Instance of PreviousButton
+      * @property Button
+      * @type Object
+      * @private
+      */
+      var PreviousButton = this,
        // PRIVATE INSTANCE PROPERTIES
 
        /**
@@ -33,16 +42,28 @@ PreviousButton = Class.create( Button, ( function () {
         * @private
         * @final
         */
-       var defaults = {
+       defaults = {
          action: 'previous'
        };
-       
-       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
-       _.defaults( settings, defaults );
-   
-       // CALL THE PARENT'S CONSTRUCTOR
-       $super( $element, settings );
-     }
+
+      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      _.defaults( settings, defaults );
+
+      // CALL THE PARENT'S CONSTRUCTOR
+      $super( $element, settings );
+
+      PreviousButton.on( FLOORED_EVENT, function( event, $subject ) {
+
+        var Control = $subject.athena( 'getControl' );
+
+        if( !Control.hasPrevious() ) {
+          PreviousButton.disable();
+        }
+
+      } );
+
+
+    }
   };
   
 }() ) );
