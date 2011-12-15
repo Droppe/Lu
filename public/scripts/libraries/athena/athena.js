@@ -108,7 +108,7 @@ Athena = function( settings ) {
    * @return {Boolean} True if controls on $element are finished executing
    */
   Athena.isExecuted = function( $element ) {
-    return (( Athena.getData( $element, 'executed' ) ) ? true : false);
+    return ( ( Athena.getData( $element, 'executed' ) ) ? true : false );
   };
 
   /**
@@ -556,7 +556,7 @@ Athena = function( settings ) {
    */
   Athena.getData = function ( $element, key ) {
     var data = $element.data( 'athena-controls' );
-    return ( (key) ? data[key] : data );
+    return ( ( key ) ? data[key] : data );
   };
 
   /**
@@ -579,7 +579,7 @@ Athena = function( settings ) {
     // Mixin the new data with the current data.
     // Since currentData is a pointer to the current jQuery data set,
     // we don't need to explicitly re-call $element.data()
-    $.extend(true, currentData, data);      
+    $.extend( true, currentData, data );      
     
     return $element;
   };

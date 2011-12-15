@@ -1,4 +1,4 @@
-var Class = require( '/scripts/libraries/ptclass' ),
+var Class = require( 'class' ),
   Container = require( 'ui/Container' ),
   Switcher;
 
