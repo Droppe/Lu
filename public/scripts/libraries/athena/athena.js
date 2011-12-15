@@ -27,7 +27,6 @@
 var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
   Athena;
 
-
 /*
  * Don't do Gilligan's Island if you want to be a serious actress.
  */
@@ -107,7 +106,7 @@ Athena = function( settings ) {
    * @return {Boolean} True if controls on $element are finished executing
    */
   Athena.isExecuted = function( $element ) {
-    return ( ( Athena.getData( $element, 'executed' ) ) ? true : false );
+    return ( getData( $element, 'executed' ) ? true : false );
   };
 
   /**
@@ -160,24 +159,16 @@ Athena = function( settings ) {
         Control = new packages[pckg]( $node, config );
         console.info( 'Action ' + key + ' executed with', $node );
         
-      nodeData = Athena.getData( $node, key );
+        nodeData = getData( $node, key );
 
-        if( nodeData ) {
-          nodeData['instance'] = Control;
-        } else {
-          nodeData = { 'instance': Control };
-        }
+        setData($node, {'instance': Control});
 
       } );
-
-      data[ DEFERRED ].resolve();
-
-
 
      _.each( Athena.getControls( $node ), function( item, index ) {
         item.trigger( 'athena-executed', [keys] );
       } );
-      Athena.setData( $node, { 'executed': true } );
+      setData( $node, { 'executed': true } );
     }
 
     $controls = Athena.getDescendants( $element );
@@ -188,18 +179,16 @@ Athena = function( settings ) {
     
     $controls.each( function( index, item ) {
       var $item = $( item ),
-        athenaData = Athena.getData( $item );
+        athenaData = getData( $item );
         
-      if( athenaData === undefined ) {
-        Athena.setData( $item, {} );
+      if( !athenaData ) {
+        setData( $item, {} );
       }
     } );
 
-
-
     //Filter out controls that are already executed
     $controls = $controls.filter( function( index, item ) {
-      return Athena.isExecuted( $( item ) ) ? false : true;
+      return (Athena.isExecuted( $( item ) ) ? false : true);
     } );
 
     //Construct an array of required packages
@@ -226,10 +215,11 @@ Athena = function( settings ) {
         _.each( required, function( requirement, index ) {
           packages[ requirement ] = require( requirement );
         } );
+                
         $controls.each( function( index, control ) {
           var defObj,
-            $control = $(control);
-                    
+            $control = $(control);                    
+          
           execute( $control );
           numberOfControls -= 1;
           
@@ -238,7 +228,7 @@ Athena = function( settings ) {
           }
 
           // Resolve any deferred objects stored within the control's data object.
-          defObj = Athena.getData( $control, DEFERRED );
+          defObj = getData( $control, DEFERRED );
           
           if ( defObj && !defObj.isResolved() ) {
             defObj.resolve();
@@ -263,7 +253,7 @@ Athena = function( settings ) {
    * @return {Object} The target element (allows chaining)
    */
   Athena.notify = function( $element, event, parameters ) {
-    var data = Athena.getData( $element ),
+    var data = getData( $element ),
       $observers;
 
     if( !data ) {
@@ -275,7 +265,7 @@ Athena = function( settings ) {
     if ($observers) {
       $observers.each(function (index, item) {
         var $item = $(item),
-          itemData = Athena.getData( $item ),
+          itemData = getData( $item ),
           itemDeferred = itemData[ DEFERRED ];
     
         if ( itemDeferred  ) {
@@ -309,7 +299,7 @@ Athena = function( settings ) {
    */
   Athena.observe = function( $element, $observer ) {
 
-    var data = Athena.getData( $element ),
+    var data = getData( $element ),
       $observers;
       
     if( !data ) {
@@ -323,14 +313,16 @@ Athena = function( settings ) {
     // Filter out only the NEW observers
     $observer.not($observers).each( function (index, item) {
       var $item = $(item),
-        itemData = Athena.getData( $item );
+        itemData = getData( $item ),
+        temp = {};
       
       // Don't overwrite any existing Deferred object ??
       if ( itemData['$deferred'] ) {
         // tbd -- do nothing?
       }
       else {
-        Athena.setData( $item, { DEFERRED : $.Deferred() } );
+        temp[ DEFERRED ] = $.Deferred();
+        setData( $item, temp );
       }        
     });
 
@@ -349,7 +341,7 @@ Athena = function( settings ) {
    * @return {Object} The target element (allows chaining)
    */
   Athena.unobserve = function( $element, $observer ) {
-    var data = Athena.getData( $element ),
+    var data = getData( $element ),
       $observers;
 
     if( !data ) {
@@ -362,7 +354,7 @@ Athena = function( settings ) {
       $observers = $( _.reject( $observers, function( item, index ) {
         return $observer.is( item );
       } ) );
-      Athena.setData( $element, {'$observers': $observers} );
+      setData( $element, {'$observers': $observers} );
     }
     return $element;
   };
@@ -429,7 +421,7 @@ Athena = function( settings ) {
    * @return {Object} The specified Athena control or the first control found if none specified
    */
   Athena.getControl = function( $element, key ) {
-    var data = Athena.getData( $element ),
+    var data = getData( $element ),
       instance;
       
     if( !data ) {
@@ -458,7 +450,7 @@ Athena = function( settings ) {
    * @return {Object} The Athena controls associated with the given element
    */
   Athena.getControls = function( $element ) {
-    var data = Athena.getData( $element ),
+    var data = getData( $element ),
       keys,
       controls = null;
 
@@ -566,7 +558,7 @@ Athena = function( settings ) {
       return ( (key) ? data[key] : data );
     }
     else {
-      return {};
+      return null;
     }
   }
 
@@ -577,21 +569,24 @@ Athena = function( settings ) {
    * @public
    * @param {Object} $element A jQuery collection
    * @param {Object} data An object containing the new data to store
-   * * @return {Object} The target element (allows chaining)
+   * @return {Object} The target element (allows chaining)
    */
   function setData( $element, data ) {
-    var currentData = Athena.getData( $element );
+    var currentData = getData( $element );
+    
+    if (!currentData) {
+      $element.data( 'athena-controls', {} );
+      currentData = getData( $element );
+    }
       
-    // Mixin the new data with the current data.
+    // Mixin the new data object with the current data object.
     // Since currentData is a pointer to the current jQuery data set,
-    // we don't need to explicitly re-call $element.data()
+    // we shouldn't need to explicitly re-call $element.data()...?
     $.extend(true, currentData, data);      
     
     return $element;
   }
   
-  
-
   /**
    * Bind Athena to jQuery.
    * @private
@@ -619,6 +614,8 @@ Athena = function( settings ) {
      * Wrap jQuery's 'trigger' with Athena functionality. See: http://api.jquery.com/trigger/
      * @method trigger
      * @public
+     * @param {String} event An event type
+     * @param {Array} parameters Additional data to be passed to the callback handler
      */
     $.fn.trigger = function( event, parameters ) {
       var $this = $( this ),
