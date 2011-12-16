@@ -134,8 +134,8 @@ Tabs =  Class.create( Abstract,  ( function () {
        */
       function tabInit( settings ) {
         // Get references to tablist, tabpanels and the current tab
-        $tabPanels = $( $element.children( settings.tabPanels ) );
-        $tabList = $( $element.children( settings.tabList ) );
+        $tabPanels = $( settings.tabPanels, $element );
+        $tabList = $( settings.tabList, $element );
         initARIARoles();
       }
 
