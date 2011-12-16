@@ -81,18 +81,34 @@ Abstract = Class.create( ( function() {
 
       namespace = settings.namespace;
 
+
       if( !namespace ) {
         namespace = $element.athena( 'getParent', function( index, item ) {
-          var namespace = $( item ).athena( 'getControl' ).getNamespace();
+
+
+          var control = $( item ).athena( 'getControl' ),
+            namespace;
+
+          if (!control) {
+            return false;
+          }
+          
+          namespace = control.getNamespace();
+          
+          
           if( namespace ) {
-            return true
+            return true;
           };
           return false;
         } );
+        
         if( namespace.length > 0 ) {
           namespace = namespace.athena( 'getControl' ).getNamespace();
         }
       }
+      
+      console.debug("Abstract namespace", namespace);
+      
 
       $observe = $( settings.observe );
       $notify = $( settings.notify ).add( $element.athena( 'getDescendants' ) );
@@ -102,7 +118,7 @@ Abstract = Class.create( ( function() {
       }
 
       //Register elements passed in notify as observers
-      if( $notify.length > 0 ) {
+      if( $notify.length ) {
         $element.athena( 'observe', $notify );
       }
 
@@ -125,6 +141,7 @@ Abstract = Class.create( ( function() {
           } );
           type = type.join( ' ' );
         }
+        console.debug("Abstract.on", type, handler, namespace);
         return $element.on( type, handler );
       };
 
@@ -150,6 +167,7 @@ Abstract = Class.create( ( function() {
        * @param {Array} parameters Extra arguments to pass through to the subscribed event handler
        */
       Abstract.trigger = function( type, parameters ) {
+        _.log("Abstract.trigger", $element, type, parameters);
         return $element.trigger( type, parameters );
       };
 

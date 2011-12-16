@@ -1,5 +1,5 @@
-var Class = require( '/scripts/libraries/ptclass' ),
-  List = require( 'ui/List' ),
+var Class = require( 'class' ),
+  List = require( 'athena/List' ),
   Accordion;
 
 /**
@@ -65,8 +65,6 @@ Accordion =  Class.create( List, ( function () {
       $element.on("select", function (event, item) {
         event.stopPropagation();
         $panels.trigger("hide");
-        
-        _.log("YOJIMG100", item.is($last) );
         
         if ( item.is($last) ) {
           if ( item.data("open") ) {

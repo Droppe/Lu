@@ -43,8 +43,8 @@ Container = Class.create( Abstract,  ( function () {
         // CSS
         className: "hidden",
         // EVENTS
-        onHide: "hide unselect unselected",
-        onShow: "show select selected",
+        onHide: "hide unselect",
+        onShow: "show select",
         actionHide: "hidden",
         actionShow: "shown"
       },
@@ -113,12 +113,12 @@ Container = Class.create( Abstract,  ( function () {
         // item can be an integer or an object
         if (item) {
           // Show the item if the selected container equals this instance
-          if ( $element.is($(item)) ) {
+          if (typeof item === "string" && item === $element.attr("id")) {
+            ok = true;
+          } 
+          else if ( $element.is($(item)) ) {
             ok = true;
           }
-          else if (typeof item === "string" && item !== $element.attr("id")) {
-            ok = false;
-          } 
           else {
             ok = false;
           }
@@ -134,7 +134,6 @@ Container = Class.create( Abstract,  ( function () {
 
       },
 
-      // PRIVILEGED METHODS
 
       /**
        * The "hide"/"unselect" event handler
@@ -160,11 +159,11 @@ Container = Class.create( Abstract,  ( function () {
       bindEvents = function() {
         _.log("Container.bindEvents()");
 
-        // show
-        $element.on( settings.onShow, onShowHandler);
+        // Show
+        Container.on( settings.onShow, onShowHandler);
 
-        // hide
-        $element.on( settings.onHide, onHideHandler);
+        // Hide
+        Container.on( settings.onHide, onHideHandler);
 
         if ($parent) {
           // If parent with "data-athena" and tag is not <body>
