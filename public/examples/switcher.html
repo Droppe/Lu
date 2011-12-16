@@ -1,0 +1,135 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]> <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]> <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Switcher</title>
+
+  <!-- Feature Detection -->
+  <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
+
+  <style type="text/css" media="screen">
+
+    .athena-switch-on {
+      background-color: #fef;
+    }
+
+    .athena-switch-off {
+      background-color: #ded;
+    }
+
+    .athena-switch-a {
+      background-color: #000;
+    }
+
+    .athena-switch-b {
+      background-color: #888;
+    }
+
+    .athena-switch-c {
+      background-color: #fff;
+    }
+
+    .inject,
+    .athena {
+      display: block;
+      float: left;
+      background: #f0f;
+      opacity: .25;
+      width: 50px;
+      height: 50px;
+      margin: 10px;
+    }
+    
+    .athena-switch-athena .athena {
+      opacity: 1;
+    }
+
+    .athena-switch-inject .inject {
+      opacity: 1;
+    }
+
+    .athena-switch-all .inject,
+    .athena-switch-all .athena {
+      opacity: 1;
+    }
+
+  </style>
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/helpers.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
+
+  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    ATHENA_CONFIG = {
+      debug: true
+    };
+  </script>
+
+  <script type="text/javascript" charset="utf-8">
+    localStorage.clear();
+    require.ensure( ['athena'], function() {} );
+  </script>
+
+</head>
+
+<body>
+  <div id="switcher" data-athena="Switcher" data-athena-config="{ 'Switcher': { 'states': { 'on': {}, 'off': {} } } }">
+    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'on' } }">ON</button>
+    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'off' } }">OFF</button>
+  </div>
+  <br/>
+  <div id="switcher-b" data-athena="Switcher" data-athena-config="{ 'Switcher': { 'states': 'on off' } }">
+    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'on off' } }">ON/OFF</button>
+  </div>
+  <br/>
+  <div id="switcher-c" data-athena="Switcher" data-athena-config="{ 'Switcher': { 'states': 'a b c' } }">
+    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a' } }">A</button>
+    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'b' } }">B</button>
+    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'c' } }">C</button>
+    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b c' } }">A/B/C</button>
+    <button data-athena="Button:Switch">Switch</button>
+  </div>
+  <div data-athena="Switcher" data-athena-config="{ 'Switcher': { 'states': 'inject athena all' } }">
+    <ul>
+      <li>
+        <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'inject' } }">Inject</button>
+      </li>
+      <li>
+        <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'athena' } }">Athena</button>
+      </li>
+      <li>
+        <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'all' } }">All</button>
+      </li>
+    </ul>
+    <ul>
+      <li class="inject">A</li>
+      <li class="athena">B</li>
+      <li class="athena">C</li>
+      <li class="athena">D</li>
+      <li class="athena">E</li>
+      <li class="inject">F</li>
+      <li class="inject">G</li>
+      <li class="inject">H</li>
+    </ul>
+  </div>
+  <br/>
+</body>
+
+</html>
+

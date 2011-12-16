@@ -32,13 +32,14 @@ SwitchButton = Class.create( Button, ( function () {
         * @final
         */
        var defaults = {
-         action: 'switch',
-         states: [true, false],
-         index: 0
-       };
+         action: 'switch'
+       },
+       states;
 
-       if ( settings.states ) {
-         settings.states = settings.states.split( ' ' );
+       states = settings.states;
+
+       if( typeof states === 'string' ) {
+         settings.states = states = states.split( ' ' );
        }
 
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -46,6 +47,7 @@ SwitchButton = Class.create( Button, ( function () {
 
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
+
      }
   };
   
