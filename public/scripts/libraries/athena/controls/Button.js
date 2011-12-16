@@ -188,7 +188,6 @@ Button = Class.create( Abstract, ( function() {
         Button.trigger( action, parameters ); 
       } );
 
-
       // Setup accessibility - ally 
       setupAlly();
       Button.enable();

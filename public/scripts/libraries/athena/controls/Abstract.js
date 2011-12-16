@@ -112,7 +112,6 @@ Abstract = Class.create( ( function() {
 
       $observe = $( settings.observe );
       $notify = $( settings.notify ).add( $element.athena( 'getDescendants' ) );
-
       //Observe elements passed into $observe
       if( $observe.length ) {
         $observe.athena( 'observe', $element );
