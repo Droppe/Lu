@@ -102,7 +102,7 @@ Checkbox = Class.create( Abstract,  ( function () {
       Checkbox.triggerAction();
       
       // EVENT LISTENERS
-      Checkbox.on(settings.on, function(event, item) {
+      Checkbox.on(settings.on, function(event) {
         event.stopPropagation();
         Checkbox.triggerAction();
       });

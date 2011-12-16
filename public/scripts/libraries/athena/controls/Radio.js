@@ -1,5 +1,5 @@
 var Class = require( 'class' ),
-  FormSelect = require( 'athena/FormSelect' ),
+  FormSelect = require( 'athena/Abstract' ),
   RadioButton;
   
 
@@ -42,18 +42,11 @@ RadioButton = Class.create( FormSelect,  ( function () {
        * @final
        */
       defaults = {
+        on: 'change',
+        action: 'select',
         ariaAttrib: 'aria-controls'
       };
 
-
-
-(function () {
-  var i;
-  for (i=100; i>0; i--) {
-    //noop
-  }
-} ());
-            
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
         
@@ -77,7 +70,7 @@ RadioButton = Class.create( FormSelect,  ( function () {
       }
 
       // Get the notify target(s) from the config or from the ARIA-controls attribute
-       settings.notify = settings.notify || getNotifyIds().join();
+      settings.notify = settings.notify || getNotifyIds().join();
        
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
@@ -93,12 +86,16 @@ RadioButton = Class.create( FormSelect,  ( function () {
         var action = settings.action,
         item = $('input:[type="radio"][name="' + $element.attr("name") + '"]:checked', $element.closest("form")).attr(settings.ariaAttrib) || "--";
 
-        //_.log("Radio.triggerAction", "$element", $element, settings.notify);
-        $element.trigger(action, [item]);
+        _.log("Radio.triggerAction", "$element", $element, settings.notify);
+        RadioButton.trigger(settings.action, item);
       };
 
       RadioButton.triggerAction();
 
+      RadioButton.on(settings.on, function (event) {
+        event.stopPropagation();
+        RadioButton.triggerAction();
+      });
     }
   };  
 }() ));
