@@ -16,7 +16,13 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-  .hidden { display: none; }
+    .cntr {
+      border: 1px dashed #ccc;
+      display: inline-block;
+      margin: 10px;
+      width: 40%;
+    }  
+    .hidden { display: none; }
   </style>
 
   <!-- Bootstrap:Util -->
@@ -45,12 +51,6 @@
   </script>
 
 
-<style>
-  .selected {
-    xborder: 1px dashed red;
-  }
-</style>
-
 </head>
 
 <body>
@@ -58,12 +58,33 @@
     
     <form>
       <fieldset>
-        <legend>Checkbox notifying Container</legend>
+        <legend>Checkbox Notifying Container</legend>
 
         <label><input type="checkbox" name="myCheckBox1" value="on1" data-athena="Checkbox" aria-controls="revealContent1">1</label>
 
-        <span class="hidden" id="revealContent1" data-athena="Container">
-          Extra content for 1. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+        <span class="hidden cntr" id="revealContent1" data-athena="Container">
+          Extra content for Checkbox 1. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </span>
+
+      </fieldset>
+
+      <fieldset>
+        <legend>Radio Notifying Container</legend>
+
+        <label><input type="radio" name="myRadio1" value="on2" data-athena="Radio" aria-controls="revealContent2">2</label>
+        <label><input type="radio" name="myRadio1" value="on3" data-athena="Radio" aria-controls="revealContent3">3</label>
+
+        <span class="hidden cntr" id="revealContent2" data-athena="Container">
+          Extra content for Radio 2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+          dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+          sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </span>
+        <span class="hidden cntr" id="revealContent3" data-athena="Container">
+          Extra content for Radio 3. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
           dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
           sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
