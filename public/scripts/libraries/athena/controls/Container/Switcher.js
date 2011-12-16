@@ -1,5 +1,5 @@
-var Class = require( '/scripts/libraries/ptclass' ),
-  Container = require( 'ui/Container' ),
+var Class = require( 'class' ),
+  Container = require( 'athena/Container' ),
   Switcher;
 
 /**
