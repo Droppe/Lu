@@ -159,7 +159,7 @@ Athena = function( settings ) {
         Control = new packages[pckg]( $node, config );
         console.info( 'Action ' + key + ' executed with', $node );
 
-        nodeData = Athena.getData( $node, key );
+        nodeData = getData( $node, key );
 
         if( nodeData ) {
           nodeData['instance'] = Control;
@@ -167,7 +167,7 @@ Athena = function( settings ) {
           nodeData = {};
           nodeData[key] = {};
           nodeData[key]['instance'] = Control;
-          Athena.setData( $node, nodeData );
+          setData( $node, nodeData );
         }
 
       } );
@@ -227,7 +227,7 @@ Athena = function( settings ) {
           }
 
           // Resolve any deferred objects stored within the control's data object.
-          defObj = Athena.getData( $control, 'Deferred' );
+          defObj = getData( $control, DEFERRED );
 
           if ( defObj ) { 
             if( !defObj.isResolved() ) {
@@ -317,7 +317,7 @@ Athena = function( settings ) {
         temp = {};
       
       // Don't overwrite any existing Deferred object ??
-      if ( itemData['Deferred'] ) {
+      if ( itemData[DEFERRED] ) {
         // tbd -- do nothing?
       }
       else {
@@ -579,13 +579,13 @@ Athena = function( settings ) {
    * Sets the JQuery data object for an Athena control 
    * within the 'athena-controls' namespace
    * @method setData
-   * @public
+   * @private
    * @param {Object} $element A jQuery collection
    * @param {Object} data An object containing the new data to store
    * @return {Object} The target element (allows chaining)
    */
   function setData( $element, data ) {
-    var currentData = Athena.getData( $element );
+    var currentData = getData( $element );
     if ( _.keys( currentData ).length === 0 ) {
       $element.data( 'athena-controls', {} );
       currentData = getData( $element );
