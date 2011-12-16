@@ -88,6 +88,12 @@ Button = Class.create( Abstract, ( function() {
         isAnchor = $element.is( 'a' );
 
 
+      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      _.defaults( settings, defaults );
+
+      // CALL THE PARENT'S CONSTRUCTOR
+      $super( $element, settings );
+
       item = settings.item;
       states = settings.states;
 
@@ -98,11 +104,6 @@ Button = Class.create( Abstract, ( function() {
 
       action = settings.action;
 
-      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
-      _.defaults( settings, defaults );
-
-      // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
 
       // PRIVATE METHODS
 
@@ -131,7 +132,7 @@ Button = Class.create( Abstract, ( function() {
       }
 
       /**
-       * Disables the Button by adding a disabled attribute (inputs and buttons only) and a the class athena-disabled
+       * Disables the Button by adding a disabled attribute (inputs and buttons only) and the class athena-disabled
        * @method disable 
        * @private
        * @return {Void}
@@ -158,6 +159,7 @@ Button = Class.create( Abstract, ( function() {
 
       // EVENT BINDINGS
       Button.on( settings.on, function( event ) {
+        _.log("Button.on", $element, settings.on, event);
         event.preventDefault();
 
         var parameters = [];

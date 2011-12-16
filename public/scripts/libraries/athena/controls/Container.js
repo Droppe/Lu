@@ -113,12 +113,12 @@ Container = Class.create( Abstract,  ( function () {
         // item can be an integer or an object
         if (item) {
           // Show the item if the selected container equals this instance
-          if ( $element.is($(item)) ) {
+          if (typeof item === "string" && item === $element.attr("id")) {
+            ok = true;
+          } 
+          else if ( $element.is($(item)) ) {
             ok = true;
           }
-          else if (typeof item === "string" && item !== $element.attr("id")) {
-            ok = false;
-          } 
           else {
             ok = false;
           }

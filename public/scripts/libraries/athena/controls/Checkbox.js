@@ -1,5 +1,5 @@
 var Class = require( 'class' ),
-  Button = require( 'athena/Button/Switch' ),
+  Abstract = require( 'athena/Abstract' ),
   Checkbox;
 
 /**
@@ -7,10 +7,10 @@ var Class = require( 'class' ),
  * from a checkbox or other single element.
  * @class Checkbox
  * @constructor
- * @extends Container
+ * @extends Abstract
  * @requires ptclass, Container
  */
-Checkbox = Class.create( Button,  ( function () {
+Checkbox = Class.create( Abstract,  ( function () {
 
   // RETURN METHODS OBJECT
   return {
@@ -43,10 +43,11 @@ Checkbox = Class.create( Button,  ( function () {
        */
       defaults = {
         on: 'change',
+        action: 'select',
         actionCheck: 'select',
         actionUncheck: 'unselect',
         ariaAttrib: 'aria-controls',
-        states: 'unchecked checked'
+        states: ['unchecked', 'checked']
       },
       /**
        * Describes the current state of the checkbox
@@ -88,6 +89,9 @@ Checkbox = Class.create( Button,  ( function () {
         }
 
         checkedState = settings.states[index];
+
+        settings.action = ( isChecked() ) ? settings.actionUnCheck : settings.action;
+
         
         _.log("Checkbox", action, checkedState, $element);
         Checkbox.trigger(action);
@@ -96,6 +100,13 @@ Checkbox = Class.create( Button,  ( function () {
 
       // Initially hide the extra content unless the checkbox is checked
       Checkbox.triggerAction();
+      
+      // EVENT LISTENERS
+      Checkbox.on(settings.on, function(event, item) {
+        event.stopPropagation();
+        Checkbox.triggerAction();
+      });
+      
  
     }
   };  
