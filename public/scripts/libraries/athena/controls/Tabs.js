@@ -148,7 +148,7 @@ Tabs =  Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       function selectTabHandler( event, item ) {
-        $tabPanels.trigger( SELECT_EVENT, [item] );
+        Tabs.trigger( SELECT_EVENT, [item] );
       }
 
       /**
@@ -166,7 +166,7 @@ Tabs =  Class.create( Abstract,  ( function () {
           index = items.index(item);
 
         // Fire the select with the index value
-        $tabPanels.trigger( SELECT_EVENT, [index] );
+        Tabs.trigger( SELECT_EVENT, [index] );
       };
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
@@ -179,8 +179,8 @@ Tabs =  Class.create( Abstract,  ( function () {
       $super( $element, settings );
       
       // Attach event listeners
-      $tabList.on( SELECT_EVENT, selectTabHandler );
-      $tabList.on( SELECTED_EVENT, selectedTabHandler );
+      Tabs.on( SELECT_EVENT, selectTabHandler );
+      Tabs.on( SELECTED_EVENT, selectedTabHandler );
 
     }
 
