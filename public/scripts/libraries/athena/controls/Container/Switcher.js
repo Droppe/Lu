@@ -70,6 +70,20 @@ Switcher = Class.create( Container,  ( function () {
       
       states = settings.states;
 
+
+      // PRIVATE METHODS
+      /**
+       * Inits the switcher 
+       * @method init
+       * @private
+       * @return {Void
+       */
+      function init () {
+        $buttons = $(settings.buttonTag, $element);
+        $buttons.first().attr(DISABLED, DISABLED); 
+      };
+      
+      // PRIVILEGED METHODS
       /**
        * Sets the state of the switch 
        * @method toggleState
@@ -78,12 +92,13 @@ Switcher = Class.create( Container,  ( function () {
        * @return {Object} The Switcher instance (for chaining)
        */
       Switcher.toggleState = function ($btn) {
-        var index, state;
+        _.log("Switcher.toggleState", "$element:", $element, "$btn:", $btn);
+        var index, 
+          state;
         
         if ( $btn.length ) {
           index = $buttons.index($btn);
           state = (states) ? states[index] : null;
-          _.log("Switcher.toggleState", $btn, state);
           $btn.attr(DISABLED, DISABLED);
           $buttons.not($btn).removeAttr(DISABLED);
           Switcher.trigger( settings.action, [  state ] );
@@ -92,12 +107,8 @@ Switcher = Class.create( Container,  ( function () {
         return Switcher;
       };
       
-      Switcher.init = function () {
-        $buttons = $(settings.buttonTag, $element);
-        $buttons.first().attr(DISABLED, DISABLED); 
-      };
 
-      Switcher.init();
+      init();
       Switcher.toggleState($buttons.first());
             
       // Listen for button events

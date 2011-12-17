@@ -70,28 +70,29 @@
         states: [{yes: 'i want hamburger'}, {no: 'i want pizza'}]
       } 
     }">
-      <button type="button" value="">hamburger</button><button type="button">pizza</button>
+      <button type="button" value="yes">hamburger</button>
+      <button type="button" value="no">pizza</button>
     </div>
 
 
 
-    <button data-athena="Button:Select" data-athena-config="{
+    <button value="yes" data-athena="Button:Select" data-athena-config="{
       'Button:Select': {
-        notify: '#switcher',
+        notify: '#switcher1',
         item: 1
       }
     }">Select a Burger</button>
 
-    <button data-athena="Button:Select" data-athena-config="{
+    <button value="no" data-athena="Button:Select" data-athena-config="{
       'Button:Select': {
-        notify: '#switcher',
+        notify: '#switcher1',
         item: 2
       }
     }">Select Pizza</button>
 
     <button data-athena="Button:Select" data-athena-config="{
       'Button:Select': {
-        notify: '#switcher',
+        notify: '#switcher1',
         item: 3
       }
     }">This shouldn't work</button>
@@ -110,7 +111,7 @@
 
 
     <div id="switcher3" class="athena-switch" data-athena="Container:Switcher" data-athena-config="{
-      'Container:Switch': {
+      'Container:Switcher': {
         buttonTag: 'a',
         states: ['trubeedoobydoo2', 'falsywalsey2', 'yessssss2']
       } 
