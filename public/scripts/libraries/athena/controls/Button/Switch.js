@@ -23,7 +23,13 @@ SwitchButton = Class.create( Button, ( function () {
      initialize: function ( $super, $element, settings ) {
 
        // PRIVATE INSTANCE PROPERTIES
-
+       /**
+        * Instance of Button
+        * @property Button
+        * @type Object
+        * @private
+        */
+       var SwitchButton = this,
        /**
         * Default configuration values
         * @property defaults
@@ -31,22 +37,33 @@ SwitchButton = Class.create( Button, ( function () {
         * @private
         * @final
         */
-       var defaults = {
-         action: 'switch'
-       },
-       states;
+        defaults = {
+          action: 'switch'
+        },
+        states;
+
+       if( typeof settings.states === 'string' ) {
+         settings.states = settings.states.split( ' ' );
+       }
 
        states = settings.states;
-
-       if( typeof states === 'string' ) {
-         settings.states = states = states.split( ' ' );
-       }
 
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
        _.defaults( settings, defaults );
 
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
+
+       SwitchButton.on( 'switched', function( event, $subject, state, meta ) {
+         event.stopPropagation();
+          if( states ) {
+           if( states.length === 1 && _.indexOf( states, state ) ) {
+             SwitchButton.disable();
+           } else {
+             SwitchButton.enable();
+           }
+          }
+       } );
 
      }
   };

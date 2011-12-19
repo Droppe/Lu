@@ -171,6 +171,8 @@ Tip =  Class.create( Abstract,  ( function () {
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
+      $super( $element, settings );
+
       //Instantiate the tip
       $tip = $( _.template( settings.template, { content: settings.content } ) );
 
@@ -240,7 +242,6 @@ Tip =  Class.create( Abstract,  ( function () {
          } );
 
         } );
-
       }
 
       /**
@@ -278,16 +279,16 @@ Tip =  Class.create( Abstract,  ( function () {
             if( !stuck || !settings.sticky ) {
               $tip.off( 'mouseenter.athena.tip' );
               $tip.off( 'mouseleave.athena.tip' );
-              //$tip.remove();
+              $tip.remove();
               shown = false;
-              $element.trigger( HIDDEN_EVENT, $tip );
+              Tip.trigger( HIDDEN_EVENT, $tip );
             }
           }, settings.delay );
         }
       };
 
       //Event Listeners
-      $element.on( 'mouseenter', function( event ) {
+      Tip.on( 'mouseenter', function( event ) {
         //set up a listener on the document to be used in determing if the user has moused out of the threshold
         $document.on( 'mousemove.athena.tip', function( event ) {
           var clientX = event.clientX,
@@ -323,7 +324,7 @@ Tip =  Class.create( Abstract,  ( function () {
         } );
         Tip.show();
       } );
-      $element.on( 'focus', function( event ) {
+      Tip.on( 'focus', function( event ) {
         event.stopPropagation();
         $element.on( 'blur.athena.tip', function( event ) {
           event.stopPropagation();
@@ -336,11 +337,11 @@ Tip =  Class.create( Abstract,  ( function () {
       } );
 
       //Listen to theese events from other controls
-      $element.on( HIDE_EVENT, function( event ) {
+      Tip.on( HIDE_EVENT, function( event ) {
         event.stopPropagation();
         Tip.hide();
       } );
-      $element.on( SHOW_EVENT, function( event ) {
+      Tip.on( SHOW_EVENT, function( event ) {
         event.stopPropagation();
         Tip.show();
       } );

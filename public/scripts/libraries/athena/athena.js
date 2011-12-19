@@ -157,7 +157,6 @@ Athena = function( settings ) {
 
         config = Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
         Control = new packages[pckg]( $node, config );
-        console.info( 'Action ' + key + ' executed with', $node );
 
         nodeData = getData( $node, key );
 
@@ -186,13 +185,21 @@ Athena = function( settings ) {
 
     //Filter out controls that are already executed
     $controls = $controls.filter( function( index, item ) {
-      return (Athena.isExecuted( $( item ) ) ? false : true);
+      return ( Athena.isExecuted( $( item ) ) ? false : true );
     } );
 
-    //Construct an array of required packages
+    //Construct an array of required packages && init the Deferred Object
     _.each( $controls, function( node, index ) {
       var $node = $( node ),
+        Deferred,
         controls;
+
+      Deferred = getData( $node, 'Deferred' );
+
+
+      if( !Deferred ) {
+        setData( $node, { 'Deferred': $.Deferred() } );
+      }
 
       controls = Athena.getKeys( $node );
       numberOfControls += controls.length;
@@ -203,7 +210,6 @@ Athena = function( settings ) {
         if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ) {
           required.push( pckg );
         }
-
       } );
 
     } );
@@ -240,9 +246,7 @@ Athena = function( settings ) {
 
       } );
 
-    } catch( error ) {
-      _.log("ERROR IN EXECUTE", error);
-    }
+    } catch( error ) {}
     return $element;
 
   }; 
@@ -258,30 +262,24 @@ Athena = function( settings ) {
    * @return {Object} The target element (allows chaining)
    */
   Athena.notify = function( $element, event, parameters ) {
-    var data = getData( $element ),
-      $observers;
+    var $observers = getData( $element, '$observers' );
 
-    if( _.keys( data ).length === 0 ) {
-      return $element;
-    }
+    if ( $observers ) {
+      $observers.each( function ( index, item ) {
+        var $item = $( item ),
+          Deferred;
 
-    $observers = data[ '$observers' ];
+        Deferred = getData( $item, 'Deferred' );
 
-    if ($observers) {
-      $observers.each(function (index, item) {
-        var $item = $(item),
-          itemData = getData( $item ),
-          itemDeferred = itemData[ DEFERRED ];
-    
-        if ( itemDeferred  ) {
+        if ( Deferred ) {
           // If the deferred object is already resolved
           // adding a new .done() fires the enclosed function
           // immediately.
-          itemDeferred.done( function () {
-            //$item.trigger( event, parameters );
+          Deferred.done( function () {
             _.each( Athena.getControls( $item ), function( item, index ) {
               item.trigger( event, parameters );
             } );
+
           } );
 
         }
@@ -304,30 +302,12 @@ Athena = function( settings ) {
    */
   Athena.observe = function( $element, $observer ) {
 
-    var data = getData( $element ),
-      $observers;
+    var $observers = getData( $element, '$observers' ) || $( [] );
 
-    $observers = data['$observers'] || $( [] );
+    $observer = $observer.not( $observers );
+    $observers = $observers.add( $observer );
 
-    // Create and store a new Deferred object for each new
-    // $observer passed into this method
-    // Filter out only the NEW observers
-    $observer.not($observers).each( function (index, item) {
-      var $item = $(item),
-        itemData = getData( $item ),
-        temp = {};
-      
-      // Don't overwrite any existing Deferred object ??
-      if ( itemData[DEFERRED] ) {
-        // tbd -- do nothing?
-      }
-      else {
-        temp[ DEFERRED ] = $.Deferred();
-        setData( $item, temp );
-      }
-    });
-
-    data['$observers'] = $observers.add( $observer );
+    setData( $element, { '$observers': $observers } );
 
     return $element;
 
@@ -556,7 +536,6 @@ Athena = function( settings ) {
    * @return {Object} The data object
    */
   function getData( $element, key ) {
-    
     var data = $element.data( 'athena-controls' ),
       ret;
 
@@ -569,10 +548,10 @@ Athena = function( settings ) {
     } else if( key ) {
       ret = undefined;
     } else {
-      $element.data( 'athena-controls', {} );
+      $element.data('athena-controls', {} );
       ret = {};
     }
-    
+
     return ret;
   };
 
@@ -586,17 +565,8 @@ Athena = function( settings ) {
    * @return {Object} The target element (allows chaining)
    */
   function setData( $element, data ) {
-    var currentData = getData( $element );
-    if ( _.keys( currentData ).length === 0 ) {
-      $element.data( 'athena-controls', {} );
-      currentData = getData( $element );
-    }
-
     // Mixin the new data with the current data.
-    // Since currentData is a pointer to the current jQuery data set,
-    // we don't need to explicitly re-call $element.data()
-    //$element.data( 'athena-controls', $.extend( true, currentData, data ) );
-    $.extend( true, currentData, data );
+    $element.data( 'athena-controls', $.extend( true, getData( $element ), data ) );
     return $element;
   };
 
@@ -635,9 +605,7 @@ Athena = function( settings ) {
         $descendants;
 
       if( Athena.isControl( $this ) ) {
-        $descendants = Athena.getDescendants( $this );
         Athena.notify( $this, event, parameters );
-        $descendants.trigger( 'athena-notify', [{ event: event.split( '.' )[0], parameters:parameters }] );
       }
       return trigger.apply( $this, [event, parameters] );
     };
@@ -651,9 +619,11 @@ Athena = function( settings ) {
     //     parameters = Array.prototype.slice.call( arguments );
     //     _.each( parameters, function( parameter, index ) {
     //       if( typeof parameter === 'function' ) {
-    //         parameters[index] = function( ) {
+    //         parameters[index] = function() {
     //           var parameters = Array.prototype.slice.call( arguments );
-    //           parameter.apply( $this, parameters );
+    //           if( !parameters[0].isImmediatePropagationStopped() ) {
+    //            parameter.apply( $this, parameters );
+    //           }
     //         }
     //       }
     //     } );

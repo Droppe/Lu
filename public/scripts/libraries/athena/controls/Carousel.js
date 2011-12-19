@@ -224,15 +224,6 @@ Carousel =  Class.create( List, ( function() {
         return Carousel;
       };
 
-      // EVENT BINDINGS
-      Carousel.on( SELECTED_EVENT, function( event, $item ) {
-         var $panel = $item.closest( $panels );
-         if( $panel.hasClass( settings.activeFlag ) === false ) {
-           $panels.removeClass( settings.activeFlag );
-           $panel.addClass( settings.activeFlag );
-         }
-      } );
-
       Carousel.on( PLAY_EVENT, function( event ) {
         event.stopPropagation();
         Carousel.play();

@@ -62,7 +62,7 @@ Switcher = Class.create( Abstract,  ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
       
-      settings.states = settings.states || { true: true, false: false };
+      settings.states = settings.states || { on: 'on', off: 'off' };
 
       if( typeof settings.states === 'string' ) {
         settings.states = settings.states.split( ' ' );
@@ -118,7 +118,6 @@ Switcher = Class.create( Abstract,  ( function () {
           keys = _.keys( states );
           index = _.indexOf( keys, state );
           value = ( index < keys.length - 1 ) ? keys[index + 1] : keys[0];
-          console.log( keys, state, index );
         }
 
         Switcher.setState( value );
