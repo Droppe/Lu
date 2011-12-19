@@ -228,6 +228,8 @@ List =  Class.create( Abstract, ( function () {
       List.next = function() {
         if( List.hasNext() ) {
           List.select( List.index() + 1 );
+        } else {
+          List.trigger( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT );
         }
         return List;
       };
@@ -241,6 +243,8 @@ List =  Class.create( Abstract, ( function () {
       List.previous = function() {
         if( List.hasPrevious() ) {
           List.select( List.index() - 1 );
+        } else {
+          List.trigger( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT );
         }
         return List;
       };
@@ -336,11 +340,7 @@ List =  Class.create( Abstract, ( function () {
       } );
       List.on( NEXT_EVENT, function( event ) {
         event.stopPropagation();
-        if( List.hasNext() ) {
-          List.next();
-        } else {
-          List.trigger( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT );
-        }
+        List.next();
       } );
       List.on( PREVIOUS_EVENT, function( event ) {
         event.stopPropagation();
