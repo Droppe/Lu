@@ -224,22 +224,12 @@ Carousel =  Class.create( List, ( function() {
         return Carousel;
       };
 
-      // EVENT BINDINGS
-      Carousel.on( SELECTED_EVENT, function( event, $item ) {
-         var $panel = $item.closest( $panels );
-         if( $panel.hasClass( settings.activeFlag ) === false ) {
-           $panels.removeClass( settings.activeFlag );
-           $panel.addClass( settings.activeFlag );
-         }
-      } );
-
       Carousel.on( PLAY_EVENT, function( event ) {
         event.stopPropagation();
         Carousel.play();
       } );
       Carousel.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT].join( ' ' ), function( event, item ) {
         event.stopPropagation();
-        console.log('event type', event.type );
         Carousel.pause();
       } );
 

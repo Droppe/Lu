@@ -106,8 +106,8 @@ Abstract = Class.create( ( function() {
               parameters = Array.prototype.slice.call( arguments ),
               $observers;
 
-            $observers = $this.athena( 'getParent' ).add( $this.data( 'athena-controls' )[ '$observers' ] );
-            $this.data( 'athena-controls' )[ '$observers' ].trigger( adapt[1] );
+            $observers = $this.data( 'athena-controls' )[ '$observers' ];
+            $observers.trigger( adapt[1] );
 
           } );
         }
@@ -141,7 +141,6 @@ Abstract = Class.create( ( function() {
       // PRIVATE METHODS
       function on() {
         var parameters = Array.prototype.slice.call( arguments );
-
         if( namespace ) {
           parameters[0] = parameters[0].split( ' ' );
           _.each( parameters[0], function( item, index ) {
@@ -149,10 +148,11 @@ Abstract = Class.create( ( function() {
           } );
           parameters[0] = parameters[0].join( ' ' );
         }
+
         return $element.on.apply( $element, parameters );
       }
 
-      function one () {
+      function one() {
         var parameters = Array.prototype.slice.call( arguments );
 
         if( namespace ) {
@@ -253,12 +253,6 @@ Abstract = Class.create( ( function() {
         namespace = value;
         return namespace;
       };
-
-      on( 'athena-notify', function( event, notify ) {
-        var $this = $( this );
-        event.stopPropagation();
-        $this.trigger( notify.type );
-      } );
 
     }
   };

@@ -20,6 +20,7 @@ List =  Class.create( Abstract, ( function () {
     MAXED_EVENT = 'maxed',
     SELECT_EVENT = 'select',
     SELECTED_EVENT = 'selected',
+    OUT_OF_BOUNDS_EVENT = 'out-of-bounds',
     VERTICAL = 'vertical',
     HORIZONTAL = 'horizontal',
     SELECTED_FLAG = 'athena-selected';
@@ -335,7 +336,11 @@ List =  Class.create( Abstract, ( function () {
       } );
       List.on( NEXT_EVENT, function( event ) {
         event.stopPropagation();
-        List.next();
+        if( List.hasNext() ) {
+          List.next();
+        } else {
+          List.trigger( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT );
+        }
       } );
       List.on( PREVIOUS_EVENT, function( event ) {
         event.stopPropagation();
