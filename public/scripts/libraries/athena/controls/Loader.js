@@ -49,7 +49,7 @@ Loader = Class.create( Abstract, ( function () {
            * @property method 
            * @type {String}
            */
-          method: 'replace'
+          method: 'append'
         },
         /**
          * The node that the content is put into

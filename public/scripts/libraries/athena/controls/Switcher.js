@@ -118,7 +118,6 @@ Switcher = Class.create( Abstract,  ( function () {
           keys = _.keys( states );
           index = _.indexOf( keys, state );
           value = ( index < keys.length - 1 ) ? keys[index + 1] : keys[0];
-          console.log( keys, state, index );
         }
 
         Switcher.setState( value );

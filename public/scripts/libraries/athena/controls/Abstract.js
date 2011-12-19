@@ -74,45 +74,15 @@ Abstract = Class.create( ( function() {
        * @private
        * @type {Object}
        */
-      namespace;
+      namespace,
+      adapt;
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      namespace = settings.namespace;
-
-
-      if( !namespace ) {
-        namespace = $element.athena( 'getParent', function( index, item ) {
-
-
-          var control = $( item ).athena( 'getControl' ),
-            namespace;
-
-          if (!control) {
-            return false;
-          }
-          
-          namespace = control.getNamespace();
-          
-          
-          if( namespace ) {
-            return true;
-          };
-          return false;
-        } );
-        
-        if( namespace.length > 0 ) {
-          namespace = namespace.athena( 'getControl' ).getNamespace();
-        }
-      }
-      
-      console.debug("Abstract namespace", namespace);
-      
-
       $observe = $( settings.observe );
       $notify = $( settings.notify ).add( $element.athena( 'getDescendants' ) );
-      //Observe elements passed into $observe
+
       if( $observe.length ) {
         $observe.athena( 'observe', $element );
       }
@@ -122,7 +92,95 @@ Abstract = Class.create( ( function() {
         $element.athena( 'observe', $notify );
       }
 
+      namespace = settings.namespace;
+
+      adapt = settings.adapt;
+
+      if( adapt ) {
+        if( typeof adapt === 'string' ) {
+          adapt = adapt.split( ' ' );
+        }
+        if( typeof adapt[0] === 'string' ) {
+          on( adapt[0], function() {
+            var $this = $( this ),
+              parameters = Array.prototype.slice.call( arguments ),
+              $observers;
+
+            $observers = $this.athena( 'getParent' ).add( $this.data( 'athena-controls' )[ '$observers' ] );
+            $this.data( 'athena-controls' )[ '$observers' ].trigger( adapt[1] );
+
+          } );
+        }
+      }
+
+      if( !namespace ) {
+        namespace = $element.athena( 'getParent', function( index, item ) {
+          var control = $( item ).athena( 'getControl' ),
+            namespace;
+
+          if ( !control ) {
+            return false;
+          }
+
+          namespace = control.getNamespace();
+
+          if( namespace ) {
+            return true;
+          };
+
+          return false;
+
+        } );
+
+        if( namespace.length > 0 ) {
+          namespace = namespace.athena( 'getControl' ).getNamespace();
+        }
+
+      }
+
       // PRIVATE METHODS
+      function on() {
+        var parameters = Array.prototype.slice.call( arguments );
+
+        if( namespace ) {
+          parameters[0] = parameters[0].split( ' ' );
+          _.each( parameters[0], function( item, index ) {
+            parameters[0][index] = item + '.' + namespace;
+          } );
+          parameters[0] = parameters[0].join( ' ' );
+        }
+        return $element.on.apply( $element, parameters );
+      }
+
+      function one () {
+        var parameters = Array.prototype.slice.call( arguments );
+
+        if( namespace ) {
+          parameters[0] = parameters[0].split( ' ' );
+          _.each( parameters[0], function( item, index ) {
+            parameters[0][index] = item + '.' + namespace;
+          } );
+          parameters[0] = parameters[0].join( ' ' );
+        }
+        return $element.one.apply( $element, parameters );
+      }
+
+      function trigger() {
+        var parameters = Array.prototype.slice.call( arguments );
+        return $element.trigger.apply( $element, parameters );
+      }
+
+      function off() {
+        var parameters = Array.prototype.slice.call( arguments );
+        if( namespace ) {
+          parameters[0] = parameters[0].split( ' ' );
+          _.each( parameters[0], function( item, index ) {
+            parameters[0][index] = item + '.' + namespace;
+          } );
+          parameters[0] = parameters[0].join( ' ' );
+        }
+        return $element.off.apply( $element, parameters );
+      }
 
       // PRIVILEGED METHODS
 
@@ -130,46 +188,29 @@ Abstract = Class.create( ( function() {
        * Creates an event listener for a type
        * @method on
        * @public
-       * @param {String} type The type of event
-       * @param {Function} handler The callback function
        */
-      Abstract.on = function( type, handler ) {
-        if( namespace ) {
-          type = type.split( ' ' );
-          _.each( type, function( item, index ) {
-            type[index] = item + '.' + namespace;
-          } );
-          type = type.join( ' ' );
-        }
-        console.debug("Abstract.on", type, handler, namespace);
-        return $element.on( type, handler );
-      };
+      Abstract.on = on;
+
+      /**
+       * Creates an event listener for a type, fires exactly once.
+       * @method one
+       * @public
+       */
+      Abstract.one = one;
 
       /**
        * Unbinds event listeners of a type
        * @method off
        * @public
-       * @param {String} type The type of event
        */
-      Abstract.off = function( type ) {
-        if( namespace ) {
-          return $element.off( type + namespace );
-        } else {
-          return $element.off( type );
-        }
-      };
+      Abstract.off = off;
 
       /**
        * Fires a custom event 
        * @method trigger
        * @public
-       * @param {String} type The type of event
-       * @param {Array} parameters Extra arguments to pass through to the subscribed event handler
        */
-      Abstract.trigger = function( type, parameters ) {
-        _.log("Abstract.trigger", $element, type, parameters);
-        return $element.trigger( type, parameters );
-      };
+      Abstract.trigger = trigger;
 
       /**
        * Observe events
@@ -212,6 +253,13 @@ Abstract = Class.create( ( function() {
         namespace = value;
         return namespace;
       };
+
+      on( 'athena-notify', function( event, notify ) {
+        var $this = $( this );
+        event.stopPropagation();
+        $this.trigger( notify.type );
+      } );
+
     }
   };
 }() ) );

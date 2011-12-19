@@ -83,7 +83,6 @@ Switcher = Class.create( Container,  ( function () {
         if ( $btn.length ) {
           index = $buttons.index($btn);
           state = (states) ? states[index] : null;
-          _.log("Switcher.toggleState", $btn, state);
           $btn.attr(DISABLED, DISABLED);
           $buttons.not($btn).removeAttr(DISABLED);
           Switcher.trigger( settings.action, [  state ] );

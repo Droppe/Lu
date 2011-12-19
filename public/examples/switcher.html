@@ -17,6 +17,88 @@
 
   <style type="text/css" media="screen">
 
+    #container {
+      margin: 250px auto;
+      width: 600px;
+      font-size: 13px;
+      line-height: 18px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    .tip {
+      display: block;
+      position: absolute;
+      padding: 5px;
+      font-size: 11px;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      opacity: .95;
+    }
+    .tip.above,
+    .tip.below {
+      margin-left: -5px;
+    }
+    .tip.above {
+      margin-top: -11px;
+    }
+    .tip.below {
+      margin-top: 0px;
+    }
+    .tip.right,
+    .tip.left {
+      margin-top: -3px;
+    }
+    .tip.right {
+      margin-left: 0px;
+    }
+    .tip.left {
+      margin-left: -11px;
+    }
+    .tip .content {
+      background-color: #fff;
+      border: 2px solid #ddd;
+      color: #333;
+      max-width: 200px;
+      padding: 3px 8px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 3px;
+    }
+    .tip .arrow {
+      height: 0;
+      position: absolute;
+    }
+    .tip.above .arrow {
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid #dedede;
+        bottom: 0;
+        left: 50%;
+        margin-left: -5px;
+    }
+    .tip.below .arrow {
+      border-bottom: 5px solid #ccc;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      left: 50%;
+      margin-left: -5px;
+      top: 0;
+    }
+    .tip.left .arrow {
+      border-left: 5px solid #ccc;
+      border-bottom: 5px solid transparent;
+      border-top: 5px solid transparent;
+      top: 50%;
+      margin-top: -5px;
+      right: 0;
+    }
+    .tip.right .arrow {
+      border-right: 5px solid #ccc;
+      border-bottom: 5px solid transparent;
+      border-top: 5px solid transparent;
+      top: 50%;
+      margin-top: -5px;
+      left: 0;
+    }
+
     .athena-switch-on {
       background-color: #fef;
     }
@@ -43,8 +125,8 @@
       float: left;
       background: #f0f;
       opacity: .25;
-      width: 50px;
-      height: 50px;
+      width: 100px;
+      height: 100px;
       margin: 10px;
     }
     
@@ -60,6 +142,7 @@
     .athena-switch-all .athena {
       opacity: 1;
     }
+    
 
   </style>
 
@@ -118,14 +201,30 @@
       </li>
     </ul>
     <ul>
-      <li class="inject">A</li>
-      <li class="athena">B</li>
-      <li class="athena">C</li>
-      <li class="athena">D</li>
-      <li class="athena">E</li>
-      <li class="inject">F</li>
-      <li class="inject">G</li>
-      <li class="inject">H</li>
+      <li class="inject">
+        <a href="#" title="A" data-athena="Tip:Left">A</a>
+      </li>
+      <li class="athena">
+        <a href="#" title="B" data-athena="Tip:Left">B</a>
+      </li>
+      <li class="athena">
+        <a href="#" title="C" data-athena="Tip:Left">C</a>
+      </li>
+      <li class="inject">
+        <a href="#" title="D" data-athena="Tip:Left">D</a>
+      </li>
+      <li class="athena">
+        <a href="#" title="E" data-athena="Tip:Left">E</a>
+      </li>
+      <li class="athena">
+        <a href="#" class="miniprofile" title="Chris Sacheri, Retired" data-athena="Tip:Right" data-athena-config="{ 'Tip:Right': { uri:'miniprofile.html' } }">F</a>
+      </li>
+      <li class="inject">
+        <a href="#" title="G" data-athena="Tip:Left">G</a>
+      </li>
+      <li class="inject">
+        <a href="#" title="H" data-athena="Tip:Left">H</a>
+      </li>
     </ul>
   </div>
   <br/>
