@@ -286,7 +286,7 @@ Tip =  Class.create( Abstract,  ( function () {
             if( !stuck || !settings.sticky ) {
               $tip.off( 'mouseenter.athena.tip' );
               $tip.off( 'mouseleave.athena.tip' );
-              //$tip.remove();
+              $tip.remove();
               shown = false;
               Tip.trigger( HIDDEN_EVENT, $tip );
             }

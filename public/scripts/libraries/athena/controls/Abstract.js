@@ -94,24 +94,27 @@ Abstract = Class.create( ( function() {
 
       namespace = settings.namespace;
 
-      adapt = settings.adapt;
+      //adapt = settings.adapt;
 
-      if( adapt ) {
-        if( typeof adapt === 'string' ) {
-          adapt = adapt.split( ' ' );
-        }
-        if( typeof adapt[0] === 'string' ) {
-          on( adapt[0], function() {
-            var $this = $( this ),
-              parameters = Array.prototype.slice.call( arguments ),
-              $observers;
-
-            $observers = $this.data( 'athena-controls' )[ '$observers' ];
-            $observers.trigger( adapt[1] );
-
-          } );
-        }
-      }
+      // if( adapt ) {
+      //   if( typeof adapt === 'string' ) {
+      //     adapt = adapt.split( ' ' );
+      //   }
+      //   if( typeof adapt[0] === 'string' ) {
+      //     on( adapt[0], function() {
+      //       var $this = $( this ),
+      //         parameters = Array.prototype.slice.call( arguments ),
+      //         $observers;
+      // 
+      //       //$observers = $this.data( 'athena-controls' )[ '$observers' ];
+      //       //$observers = $element.athena( 'getParent' ).athena( 'getControl' );
+      //       //console.log( $element.athena( 'getParent' ) );
+      //       //$element.athena( 'getParent' ).trigger( 'hello' );
+      //       //$observers.trigger( adapt[1] );
+      // 
+      //     } );
+      //   }
+      // }
 
       if( !namespace ) {
         namespace = $element.athena( 'getParent', function( index, item ) {

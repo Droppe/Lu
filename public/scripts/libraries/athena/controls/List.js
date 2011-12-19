@@ -361,7 +361,7 @@ List =  Class.create( Abstract, ( function () {
 
   };
 
-}() ));
+}() ) );
 
 
 //Export to Common JS Loader
