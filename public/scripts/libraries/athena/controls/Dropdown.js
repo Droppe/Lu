@@ -261,8 +261,8 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * @private
        * @return {Void}
        */
-      function selectedDropdownHandler( event, item ) {
-        $selectedItem.trigger( SELECTED_EVENT, item );
+      function selectedDropdownHandler( event, item, index ) {
+        $selectedItem.trigger( SELECTED_EVENT, [item, index] );
       }
     
       /**
@@ -270,11 +270,12 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * which will display in the selected item.
        * @param {Event} event - Athena event
        * @param {Object} item - JQuery DOM element
+       * @param {Integer} index - Index of the selected item 
        * @method selectedItemHandler
        * @private
        * @return {Void}
        */
-      function selectedItemHandler( event, item ) {
+      function selectedItemHandler( event, item, index ) {
         var $item = $( item ), 
             itemName;
 
@@ -312,10 +313,10 @@ Dropdown =  Class.create( Abstract,  ( function () {
             $dropDownList.hide();
             break;
           case 38: // Up arrow
-            $dropDownList.trigger( 'previous', $item );
+              $dropDownList.trigger( 'previous', [$item] );
             break;
           case 40: // Down arrow 
-            $dropDownList.trigger( 'next', $item );
+              $dropDownList.trigger( 'next', [$item] );
           default:
             break;
         }
