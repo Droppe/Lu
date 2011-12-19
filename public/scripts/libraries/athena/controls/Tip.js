@@ -180,8 +180,15 @@ Tip =  Class.create( Abstract,  ( function () {
       if( settings.style ) {
         $tip.addClass( settings.placement + ' ' + settings.style );
       } else {
-        $tip.addClass( settings.placement + ' ' + $element.attr( 'class' ) );
+        if( $element.attr( 'class' ) ) {
+          console.log( $tip.attr('class'), settings.placement + ' ' + $element.attr( 'class' ) );
+          $tip.addClass( settings.placement + ' ' + $element.attr( 'class' ) );
+          console.log( $tip.attr('class'), settings.placement + ' ' + $element.attr( 'class' ) );
+        } else {
+          $tip.addClass( settings.placement );
+        }
       }
+
 
       /**
        * Used to determine the position of the tip
@@ -279,7 +286,7 @@ Tip =  Class.create( Abstract,  ( function () {
             if( !stuck || !settings.sticky ) {
               $tip.off( 'mouseenter.athena.tip' );
               $tip.off( 'mouseleave.athena.tip' );
-              $tip.remove();
+              //$tip.remove();
               shown = false;
               Tip.trigger( HIDDEN_EVENT, $tip );
             }

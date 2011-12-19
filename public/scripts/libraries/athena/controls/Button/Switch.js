@@ -22,15 +22,15 @@ SwitchButton = Class.create( Button, ( function () {
       */    
      initialize: function ( $super, $element, settings ) {
 
-       // PRIVATE INSTANCE PROPERTIES
-       /**
-        * Instance of Button
-        * @property Button
-        * @type Object
-        * @private
-        */
-       var SwitchButton = this,
-       /**
+      // PRIVATE INSTANCE PROPERTIES
+      /**
+       * Instance of Button
+       * @property Button
+       * @type Object
+       * @private
+      */
+      var SwitchButton = this,
+        /**
         * Default configuration values
         * @property defaults
         * @type Object
@@ -42,32 +42,32 @@ SwitchButton = Class.create( Button, ( function () {
         },
         states;
 
-       if( typeof settings.states === 'string' ) {
-         settings.states = settings.states.split( ' ' );
-       }
+        if( typeof settings.states === 'string' ) {
+          settings.states = settings.states.split( ' ' );
+        }
 
-       states = settings.states;
+        states = settings.states;
 
-       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
-       _.defaults( settings, defaults );
+        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+        _.defaults( settings, defaults );
 
-       // CALL THE PARENT'S CONSTRUCTOR
-       $super( $element, settings );
+        // CALL THE PARENT'S CONSTRUCTOR
+        $super( $element, settings );
 
-       SwitchButton.on( 'switched', function( event, $subject, state, meta ) {
-         event.stopPropagation();
+        SwitchButton.on( 'switched', function( event, $subject, state, meta ) {
+          event.stopPropagation();
           if( states ) {
-           if( states.length === 1 && _.indexOf( states, state ) ) {
+           if( states.length === 1 && _.indexOf( states, state ) !== -1 ) {
              SwitchButton.disable();
            } else {
              SwitchButton.enable();
            }
           }
-       } );
+        } );
 
      }
   };
-  
+
 }() ) );
 
 //Export to Common JS Loader

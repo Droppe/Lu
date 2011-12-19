@@ -86,7 +86,7 @@ List =  Class.create( Abstract, ( function () {
             item = $( event.target );
 
         // A "vertical" list orentation means that the up and down arrow keys work
-        if ( settings.orentation === VERTICAL ) {  
+        if ( settings.orientation === VERTICAL ) {  
           switch ( keyCode ) {
             case 38: // Up arrow
               List.previous();
@@ -97,7 +97,7 @@ List =  Class.create( Abstract, ( function () {
               break;
           }
         } else {
-          // By default, list orentation is "horizontal" and left and right arrows work 
+          // By default, list orientation is "horizontal" and left and right arrows work 
           switch ( keyCode ) {
             case 37: // Left arrow
               List.previous();
@@ -234,6 +234,8 @@ List =  Class.create( Abstract, ( function () {
       List.next = function() {
         if( List.hasNext() ) {
           List.select( List.index() + 1 );
+        } else {
+          List.trigger( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT );
         }
         return List;
       };
@@ -247,6 +249,8 @@ List =  Class.create( Abstract, ( function () {
       List.previous = function() {
         if( List.hasPrevious() ) {
           List.select( List.index() - 1 );
+        } else {
+          List.trigger( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT );
         }
         return List;
       };
@@ -364,11 +368,7 @@ List =  Class.create( Abstract, ( function () {
       } );
       List.on( NEXT_EVENT, function( event ) {
         event.stopPropagation();
-        if( List.hasNext() ) {
-          List.next();
-        } else {
-          List.trigger( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT );
-        }
+        List.next();
       } );
       List.on( PREVIOUS_EVENT, function( event ) {
         event.stopPropagation();
