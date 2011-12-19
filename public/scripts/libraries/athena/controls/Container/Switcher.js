@@ -1,5 +1,5 @@
-var Class = require( '/scripts/libraries/ptclass' ),
-  Container = require( 'ui/Container' ),
+var Class = require( 'class' ),
+  Container = require( 'athena/Container' ),
   Switcher;
 
 /**
@@ -70,6 +70,20 @@ Switcher = Class.create( Container,  ( function () {
       
       states = settings.states;
 
+
+      // PRIVATE METHODS
+      /**
+       * Inits the switcher 
+       * @method init
+       * @private
+       * @return {Void
+       */
+      function init () {
+        $buttons = $(settings.buttonTag, $element);
+        $buttons.first().attr(DISABLED, DISABLED); 
+      };
+      
+      // PRIVILEGED METHODS
       /**
        * Sets the state of the switch 
        * @method toggleState
@@ -78,7 +92,9 @@ Switcher = Class.create( Container,  ( function () {
        * @return {Object} The Switcher instance (for chaining)
        */
       Switcher.toggleState = function ($btn) {
-        var index, state;
+        _.log("Switcher.toggleState", "$element:", $element, "$btn:", $btn);
+        var index, 
+          state;
         
         if ( $btn.length ) {
           index = $buttons.index($btn);
@@ -91,12 +107,8 @@ Switcher = Class.create( Container,  ( function () {
         return Switcher;
       };
       
-      Switcher.init = function () {
-        $buttons = $(settings.buttonTag, $element);
-        $buttons.first().attr(DISABLED, DISABLED); 
-      };
 
-      Switcher.init();
+      init();
       Switcher.toggleState($buttons.first());
             
       // Listen for button events
