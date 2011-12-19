@@ -68,7 +68,7 @@ Tabs =  Class.create( Abstract,  ( function () {
         },
 
         /**
-         * A JDOM reference to a tablist 
+         * JQuery object for the set of tabs
          * @property $tabList
          * @type Object
          * @private
@@ -76,12 +76,28 @@ Tabs =  Class.create( Abstract,  ( function () {
         $tabList,
 
         /**
-         * The collection of tab panels for tabs 
+         * JQuery object for the set of tab panels
          * @property $tabPanels
          * @type Object
          * @private
          */
-        $tabPanels;
+        $tabPanels,
+
+        /**
+         * The Athena control for the set of tabs
+         * @property $tabList
+         * @type Object
+         * @private
+         */
+        TabList,
+
+        /**
+         * The Athena control for the set of tab panels
+         * @property $tabPanels
+         * @type Object
+         * @private
+         */
+        TabPanels;
 
       /**
        * Initializes the Tab control with ARIA attributes.
@@ -135,7 +151,9 @@ Tabs =  Class.create( Abstract,  ( function () {
       function tabInit( settings ) {
         // Get references to tablist, tabpanels and the current tab
         $tabPanels = $( settings.tabPanels, $element );
+        TabPanels = $tabPanels.athena('getControl', 'List');
         $tabList = $( settings.tabList, $element );
+        TabList = $tabList.athena('getControl', 'List');
         initARIARoles();
       }
 
@@ -151,41 +169,41 @@ Tabs =  Class.create( Abstract,  ( function () {
         //Tabs.trigger( SELECT_EVENT, [item] );
       }
 
-      /**
-       * Handles the selected tab event.  Fires the "selected" event to the tab panels and an index in an array 
-       * @param {Event} event - Athena event
-       * @param {Object} item - JQuery DOM element
-       * @method selectedTabHandler 
-       * @private
-       * @return {Void}
-       */
-      function selectedTabHandler( event, item ) {
-        var items,
-          index = null;
-        
-        // Get the parent and the children
-        if (item) {
-          items = item.parent().children();
-          // Get the index of the item
-          index = items.index(item);
-        }
-        
-        // Fire the select with the index value
-        //Tabs.trigger( SELECT_EVENT, [index] );
-      };
+      // /**
+      //  * Handles the selected tab event.  Fires the "selected" event to the tab panels and an index in an array 
+      //  * @param {Event} event - Athena event
+      //  * @param {Object} item - JQuery DOM element
+      //  * @method selectedTabHandler 
+      //  * @private
+      //  * @return {Void}
+      //  */
+      // function selectedTabHandler( event, item ) {
+      //   var items,
+      //     index = null;
+      //   
+      //   // Get the parent and the children
+      //   if (item) {
+      //     items = item.parent().children();
+      //     // Get the index of the item
+      //     index = items.index(item);
+      //   }
+      //   
+      //   // Fire the select with the index value
+      //   Tabs.trigger( SELECT_EVENT, [index] );
+      // };
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
       // Initialize a bunch of stuff for the tabs!
-      tabInit( settings );
+      //tabInit( settings );
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
       
       // Attach event listeners
-      Tabs.on( SELECT_EVENT, selectTabHandler );
-      Tabs.on( SELECTED_EVENT, selectedTabHandler );
+      // Tabs.on( SELECT_EVENT, selectTabHandler );
+      // Tabs.on( SELECTED_EVENT, selectedTabHandler );
 
     }
 

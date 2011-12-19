@@ -94,13 +94,14 @@
 
     <h1>List with Internal Control</h1>
     <ol class="list" id="list2" data-athena="List">
-      <li class="athena-selected"><a href="" role="button" data-athena="Button:Select">one</a></li>
-      <li><a href="" role="button" data-athena="Button:Select">two</a></li>
-      <li><a href="" role="button" data-athena="Button:Select">three</a></li>
-      <li><a href="" role="button" data-athena="Button:Select">four</a></li>
-      <li><a href="" role="button" data-athena="Button:Select">five</a></li>
+      <li class="athena-selected"><a href="#1" role="button" data-athena="Button:Select">one</a></li>
+      <li><a href="#2" role="button" data-athena="Button:Select">two</a></li>
+      <li><a href="#3" role="button" data-athena="Button:Select">three</a></li>
+      <li><button type="button" data-athena="Button:Select">four</button></li>
+      <li><button type="button" data-athena="Button:Select" data-athena-config="{
+        'Button:Select': { item: 0 }
+      }">five</button></li>
     </ol>
-
 
 
   </div>
