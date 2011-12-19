@@ -198,11 +198,11 @@ List =  Class.create( Abstract, ( function () {
             $item.addClass( SELECTED_FLAG );
 
             if( !List.hasPrevious() ) {
-              List.trigger( FLOORED_EVENT, [ $element ] )
+              List.trigger( FLOORED_EVENT, [ $element ] );
             }
 
             if( !List.hasNext() ) {
-              List.trigger( MAXED_EVENT, [ $element ] )
+              List.trigger( MAXED_EVENT, [ $element ] );
             }
 
             List.trigger( SELECTED_EVENT, [ $item, List.index() ] );
@@ -328,6 +328,7 @@ List =  Class.create( Abstract, ( function () {
 
       // EVENT BINDINGS
       List.on( SELECT_EVENT, function( event, item ) {
+        _.log("List.on", SELECT_EVENT, $element, item);
         event.stopPropagation();
         if( item || item === 0 ) {
           List.select( item );

@@ -198,6 +198,7 @@ Athena = function( settings ) {
       numberOfControls += controls.length;
 
       _.each( controls, function( key, index ) {
+
         var pckg = settings.namespace + '/' + key.replace( /:/g, '/' );
         if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ) {
           required.push( pckg );

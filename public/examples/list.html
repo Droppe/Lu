@@ -10,13 +10,13 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Buttons</title>
+  <title>List</title>
 
   <!-- Feature Detection -->
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    #list .selected {
+    .list .athena-selected {
       color: red;
     }
   </style>
@@ -50,8 +50,9 @@
 
   <div id="container">
 
-    <ol id="list" data-athena="List">
-      <li class="selected">one</li>
+    <h1>List with External Control</h1>
+    <ol class="list" id="list1" data-athena="List">
+      <li class="athena-selected">one</li>
       <li>two</li>
       <li>three</li>
       <li>four</li>
@@ -61,7 +62,7 @@
     <button data-athena="Button" data-athena-config="{
       'Button':{
         action: 'first',
-        notify: '#list'
+        notify: '#list1'
     }}">
       first
     </button>
@@ -69,14 +70,14 @@
     <button data-athena="Button" data-athena-config="{
       'Button':{
         action: 'previous',
-        notify: '#list'
+        notify: '#list1'
     }}">
       previous
     </button>
     
     <button data-athena="Button:Next" data-athena-config="{
       'Button:Next':{
-        notify: '#list'
+        notify: '#list1'
     }}">
       next
     </button>
@@ -84,10 +85,23 @@
     <button data-athena="Button" data-athena-config="{
       'Button':{
         action: 'last',
-        notify: '#list'
+        notify: '#list1'
     }}">
       last
     </button>
+
+
+
+    <h1>List with Internal Control</h1>
+    <ol class="list" id="list2" data-athena="List">
+      <li class="athena-selected"><a href="" role="button" data-athena="Button:Select">one</a></li>
+      <li><a href="" role="button" data-athena="Button:Select">two</a></li>
+      <li><a href="" role="button" data-athena="Button:Select">three</a></li>
+      <li><a href="" role="button" data-athena="Button:Select">four</a></li>
+      <li><a href="" role="button" data-athena="Button:Select">five</a></li>
+    </ol>
+
+
 
   </div>
 
