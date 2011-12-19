@@ -86,7 +86,7 @@ List =  Class.create( Abstract, ( function () {
             item = $( event.target );
 
         // A "vertical" list orentation means that the up and down arrow keys work
-        if ( settings.orentation === VERTICAL ) {  
+        if ( settings.orientation === VERTICAL ) {  
           switch ( keyCode ) {
             case 38: // Up arrow
               List.previous();
@@ -97,7 +97,7 @@ List =  Class.create( Abstract, ( function () {
               break;
           }
         } else {
-          // By default, list orentation is "horizontal" and left and right arrows work 
+          // By default, list orientation is "horizontal" and left and right arrows work 
           switch ( keyCode ) {
             case 37: // Left arrow
               List.previous();
