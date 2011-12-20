@@ -294,8 +294,12 @@ Tip =  Class.create( Abstract,  ( function () {
         }
       };
 
-      //Event Listeners
-      Tip.on( 'mouseenter', function( event ) {
+      /**
+       * Function to run on mouseenter. Must be named so we can pass it specifically to jQuery's off.
+       * @private
+       * @method mouseenterEvent
+       */
+      function mouseenterEvent ( event ) {
         //set up a listener on the document to be used in determing if the user has moused out of the threshold
         $document.on( 'mousemove.athena.tip', function( event ) {
           var pageX = event.pageX,
@@ -305,11 +309,11 @@ Tip =  Class.create( Abstract,  ( function () {
             width = $element.width(),
             height = $element.height();
 
-            /**
-             * Returns true if the mouse is within the threshold area
-             * @private
-             * @method isMouseInside
-             */
+          /**
+           * Returns true if the mouse is within the threshold area
+           * @private
+           * @method isMouseInside
+           */
           function isMouseInside() {
             if( pageX < left - settings.threshold - settings.offsetLeft ) {
               return false;
@@ -325,12 +329,15 @@ Tip =  Class.create( Abstract,  ( function () {
 
           if( !isMouseInside() ) {
             Tip.hide();
-            $document.off( 'mousemove.athena.tip' );
+            $document.off( 'mousemove.athena.tip', mouseenterEvent );
           }
 
         } );
         Tip.show();
-      } );
+      }
+
+      //Event Listeners
+      Tip.on( 'mouseenter', mouseenterEvent);
       Tip.on( 'focus', function( event ) {
         event.stopPropagation();
         $element.on( 'blur.athena.tip', function( event ) {
