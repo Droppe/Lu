@@ -127,7 +127,6 @@ List =  Class.create( Abstract, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      _.log("List", "instantiating for", $element);
 
       //Scan for items from the provided selector, or default to the children of the container.
       if ( settings.items ) {
@@ -341,15 +340,11 @@ List =  Class.create( Abstract, ( function () {
 
       // EVENT BINDINGS
       List.on( SELECT_EVENT, function( event, item ) {
-        _.log("List.on", SELECT_EVENT, $element, item);
         event.stopPropagation();
         
         // Check for number (list index)
-        if ( _.isNumber(item) ) {
-          List.select( item );
-        }
         // Check for string (CSS Selector)
-        if ( _.isString(item) ) {
+        if ( _.isNumber(item) || _.isString(item) ) {
           List.select( item );
         }
         // Check for JQuery object
@@ -385,8 +380,6 @@ List =  Class.create( Abstract, ( function () {
         List.last();
       } );
       List.on( 'keyup', handleKeyup );
-      //List.trigger( SELECTED_EVENT, [ List.current(), List.index() ] );
-
     }
 
   };
