@@ -86,7 +86,7 @@ List =  Class.create( Abstract, ( function () {
             item = $( event.target );
 
         // A "vertical" list orentation means that the up and down arrow keys work
-        if ( settings.orentation === VERTICAL ) {  
+        if ( settings.orientation === VERTICAL ) {  
           switch ( keyCode ) {
             case 38: // Up arrow
               List.previous();
@@ -97,7 +97,7 @@ List =  Class.create( Abstract, ( function () {
               break;
           }
         } else {
-          // By default, list orentation is "horizontal" and left and right arrows work 
+          // By default, list orientation is "horizontal" and left and right arrows work 
           switch ( keyCode ) {
             case 37: // Left arrow
               List.previous();
@@ -175,9 +175,15 @@ List =  Class.create( Abstract, ( function () {
 
         if ( item !== undefined ) {
 
-          if( typeof item === 'number' || typeof item === 'string' ) {
+          // Item is an index number
+          if( typeof item === 'number' ) {
             $item = $items.eq( item );
-          } else {
+          } 
+          // Item is a string/CSS selector
+          else if ( typeof item === 'string' )
+            $item = $items.filter( item );
+          // Item is a JQuery object
+          else {
             $item = item;
           }
 
@@ -199,11 +205,11 @@ List =  Class.create( Abstract, ( function () {
             $item.addClass( SELECTED_FLAG );
 
             if( !List.hasPrevious() ) {
-              List.trigger( FLOORED_EVENT, [ $element ] )
+              List.trigger( FLOORED_EVENT, [ $element ] );
             }
 
             if( !List.hasNext() ) {
-              List.trigger( MAXED_EVENT, [ $element ] )
+              List.trigger( MAXED_EVENT, [ $element ] );
             }
 
             List.trigger( SELECTED_EVENT, [ $item, List.index() ] );
@@ -333,10 +339,32 @@ List =  Class.create( Abstract, ( function () {
 
       // EVENT BINDINGS
       List.on( SELECT_EVENT, function( event, item ) {
+        _.log("List.on", SELECT_EVENT, $element, item);
         event.stopPropagation();
-        if( item || item === 0 ) {
+        
+        // Check for number (list index)
+        if ( _.isNumber(item) ) {
           List.select( item );
         }
+        // Check for string (CSS Selector)
+        if ( _.isString(item) ) {
+          List.select( item );
+        }
+        // Check for JQuery object
+        else if ( _.isObject(item) ) {
+
+          // We need to ensure that [item] is a descendant of our List
+          item = $element.find(item);
+          
+          // Now check for empty JQuery object
+          if ( item.length < 1) {
+            item = $(event.target).closest('li').index();
+          }
+
+          List.select( item );
+
+        }
+        
       } );
       List.on( NEXT_EVENT, function( event ) {
         event.stopPropagation();

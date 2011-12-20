@@ -3,14 +3,14 @@ var Class = require( 'class' ),
   Tabs;
 
 /**
- * The Tabs component is a subclass of Abstract and consists of a tablist, tabs and tabpanels.
- * @class Tabs 
- * @constructor
- * @extends Abstract 
- * @param {HTMLElement} element The HTML element containing this component
- * @param {Object} settings Configuration properties for this instance
- */
-Tabs =  Class.create( Abstract,  ( function () {
+* The Tabs component is a subclass of Abstract and consists of a tablist, tabs and tabpanels.
+* @class Tabs
+* @constructor
+* @extends Abstract
+* @param {HTMLElement} element The HTML element containing this component
+* @param {Object} settings Configuration properties for this instance
+*/
+Tabs = Class.create( Abstract, ( function () {
 
   var SELECT_EVENT = 'select',
     SELECTED_EVENT = 'selected',
@@ -20,86 +20,102 @@ Tabs =  Class.create( Abstract,  ( function () {
     ARIA_TABPANEL = 'tabpanel',
     ARIA_PRESENTATION = 'presentation';
 
-  // RETURN METHODS OBJECT 
+  // RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor 
-     * @method initialize
-     * @public
-     * @param {Object} $super Pointer to superclass constructor
-     * @param {Object} $element JQuery object for the element wrapped by the component
-     * @param {Object} settings Configuration settings
-     */    
+* PTClass constructor
+* @method initialize
+* @public
+* @param {Object} $super Pointer to superclass constructor
+* @param {Object} $element JQuery object for the element wrapped by the component
+* @param {Object} settings Configuration settings
+*/
     initialize: function ( $super, $element, settings ) {
 
       /**
-       * Instance of Tabs 
-       * @property Tabs 
-       * @type Object
-       * @private
-       */  
+* Instance of Tabs
+* @property Tabs
+* @type Object
+* @private
+*/
       var Tabs = this,
 
         /**
-         * Default configuration values
-         * @property defaults
-         * @type Object
-         * @private
-         * @final
-         */
+* Default configuration values
+* @property defaults
+* @type Object
+* @private
+* @final
+*/
         defaults = {
           /**
-           * A selector scoped to the $element that matches the tablist 
-           * @property tabList
-           * @type String
-           * @private
-           * @final
-           */
+* A selector scoped to the $element that matches the tablist
+* @property tabList
+* @type String
+* @private
+* @final
+*/
           tabList: '.tab-list',
 
           /**
-           * A selector scoped to the $element that matches tabpanels 
-           * @property tabPanels 
-           * @type String
-           * @private
-           * @final
-           */
+* A selector scoped to the $element that matches tabpanels
+* @property tabPanels
+* @type String
+* @private
+* @final
+*/
           tabPanels: '.tab-panels'
         },
 
         /**
-         * A JDOM reference to a tablist 
-         * @property $tabList
-         * @type Object
-         * @private
-         */
+* JQuery object for the set of tabs
+* @property $tabList
+* @type Object
+* @private
+*/
         $tabList,
 
         /**
-         * The collection of tab panels for tabs 
-         * @property $tabPanels
-         * @type Object
-         * @private
-         */
-        $tabPanels;
+* JQuery object for the set of tab panels
+* @property $tabPanels
+* @type Object
+* @private
+*/
+        $tabPanels,
+
+        /**
+* The Athena control for the set of tabs
+* @property $tabList
+* @type Object
+* @private
+*/
+        TabList,
+
+        /**
+* The Athena control for the set of tab panels
+* @property $tabPanels
+* @type Object
+* @private
+*/
+        TabPanels;
 
       /**
-       * Initializes the Tab control with ARIA attributes.
-       * Sets "role" to "tablist", "presentation" and "tab". 
-       * @private
-       * @return {Void}
-       */
+* Initializes the Tab control with ARIA attributes.
+* Sets "role" to "tablist", "presentation" and "tab".
+* @private
+* @return {Void}
+*/
       function initARIARoles() {
         var $items = $tabList.children( 'li' );
 
         // Set ARIA role for "tablist"
-        if ( !$tabList.attr( ARIA_ROLE ) ) { 
-          //$tabList.attr( ARIA_ROLE, ARIA_TABLIST );
+        if ( !$tabList.attr( ARIA_ROLE ) ) {
+          $tabList.attr( ARIA_ROLE, ARIA_TABLIST );
         }
 
         // Set ARIA role for "tabpanel"
         if ( !$tabPanels.attr( ARIA_ROLE ) ) {
-          //$tabPanels.attr( ARIA_ROLE, ARIA_TABPANEL );
+          $tabPanels.attr( ARIA_ROLE, ARIA_TABPANEL );
         }
 
         if ( $items.length > 0 ) {
@@ -126,63 +142,68 @@ Tabs =  Class.create( Abstract,  ( function () {
       }
 
       /**
-       * Initializes the tab component
-       * @method tabInit 
-       * @param {Object} settings - Object literal containing settings which have been merged with default settings 
-       * @private
-       * @return {Void}
-       */
+* Initializes the tab component
+* @method tabInit
+* @param {Object} settings - Object literal containing settings which have been merged with default settings
+* @private
+* @return {Void}
+*/
       function tabInit( settings ) {
         // Get references to tablist, tabpanels and the current tab
-        $tabPanels = $( settings.tabPanels, $element ).athena( 'getControl', 'List' );
-        $tabList = $( settings.tabList, $element ).athena( 'getControl', 'List' );
-        //initARIARoles();
+        $tabPanels = $( settings.tabPanels, $element );
+        TabPanels = $tabPanels.athena('getControl', 'List');
+        $tabList = $( settings.tabList, $element );
+        TabList = $tabList.athena('getControl', 'List');
+        initARIARoles();
       }
 
       /**
-       * Handles the tab select.  Fires the "select" event to the tab panels and passes the selected element
-       * @param {Event} event - Athena event
-       * @param {Object} item - JQuery DOM element
-       * @method selectTabHandler 
-       * @private
-       * @return {Void}
-       */
+* Handles the tab select. Fires the "select" event to the tab panels and passes the selected element
+* @param {Event} event - Athena event
+* @param {Object} item - JQuery DOM element
+* @method selectTabHandler
+* @private
+* @return {Void}
+*/
       function selectTabHandler( event, item ) {
-        //$tabPanels.trigger( SELECT_EVENT, [ item ] );
+        //Tabs.trigger( SELECT_EVENT, [item] );
       }
 
-      /**
-       * Handles the selected tab event.  Fires the "select" event to the tab panels and an index in an array 
-       * @param {Event} event - Athena event
-       * @param {Object} item - JQuery DOM element
-       * @method selectedTabHandler 
-       * @private
-       * @return {Void}
-       */
-      function selectedTabHandler( event, item ) {
-        // Get the parent and the children
-        var items = item.parent().children(),
-          // Get the index of the item
-          index = items.index(item);
-
-        // Fire the select with the index value
-        //$tabPanels.trigger( SELECT_EVENT, [index] );
-      };
+      // /**
+      // * Handles the selected tab event. Fires the "selected" event to the tab panels and an index in an array
+      // * @param {Event} event - Athena event
+      // * @param {Object} item - JQuery DOM element
+      // * @method selectedTabHandler
+      // * @private
+      // * @return {Void}
+      // */
+      // function selectedTabHandler( event, item ) {
+      // var items,
+      // index = null;
+      //
+      // // Get the parent and the children
+      // if (item) {
+      // items = item.parent().children();
+      // // Get the index of the item
+      // index = items.index(item);
+      // }
+      //
+      // // Fire the select with the index value
+      // Tabs.trigger( SELECT_EVENT, [index] );
+      // };
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
       // Initialize a bunch of stuff for the tabs!
-      tabInit( settings );
+      //tabInit( settings );
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
       
       // Attach event listeners
-      $tabsList.on( SELECTED_EVENT, function( event, item, index ) {
-        //$tabPanels.trigger( SELECT_EVENT );
-      } );
-      //Tabs.on( SELECTED_EVENT, selectedTabHandler );
+      // Tabs.on( SELECT_EVENT, selectTabHandler );
+      // Tabs.on( SELECTED_EVENT, selectedTabHandler );
 
     }
 
@@ -195,6 +216,6 @@ if( module ) {
   if( typeof module.setExports === 'function' ) {
     module.setExports( Tabs );
   } else if( module.exports ) {
-   module.exports = Tabs; 
+   module.exports = Tabs;
   }
 }
