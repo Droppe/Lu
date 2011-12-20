@@ -101,7 +101,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Void} 
        */
       onShowHandler = function( event, item ){
-        _.log("Container.onShowHandler()", event, item);
+        _.log("Container.onShowHandler()", $element, event, item);
         event.stopPropagation();        
         
         var ok = true;
@@ -171,7 +171,7 @@ Container = Class.create( Abstract,  ( function () {
           // The idea is that if the Container is inside another Athena
           // control like a List, the event from the List will pass down to 
           // the control.
-          $parent.on(settings.onShow + " " + settings.onHide, passEventToChild);
+          //$parent.on(settings.onShow + " " + settings.onHide, passEventToChild);
         }
       },
 
@@ -230,7 +230,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       passEventToChild = function( event, child ) {
-          _.log( "Container.passEventToChild()", event, child );
+          _.log( "Container.passEventToChild", $element, event, child );
 
           event.stopPropagation();
 
@@ -265,7 +265,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       Container.hide = function () {
-        _.log("Container.hide()");
+        _.log("Container.hide", $element);
         $element.addClass(hiddenClass);
         Container.trigger(settings.actionHide);
       };
@@ -277,7 +277,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Void}
        */
       Container.show = function () {
-        _.log("Container.show()");
+        _.log("Container.show", $element);
         $element.removeClass(hiddenClass);
         Container.trigger(settings.actionShow);
       };

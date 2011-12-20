@@ -127,6 +127,8 @@ List =  Class.create( Abstract, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
+      _.log("List", "instantiating for", $element);
+
       //Scan for items from the provided selector, or default to the children of the container.
       if ( settings.items ) {
         if( typeof settings.items === 'string' ) {
@@ -383,7 +385,7 @@ List =  Class.create( Abstract, ( function () {
         List.last();
       } );
       List.on( 'keyup', handleKeyup );
-      List.trigger( SELECTED_EVENT, [ List.current(), List.index() ] );
+      //List.trigger( SELECTED_EVENT, [ List.current(), List.index() ] );
 
     }
 
