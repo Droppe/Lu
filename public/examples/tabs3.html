@@ -14,26 +14,19 @@
 
   <!-- Application Styles -->
   <style type="text/css" media="screen">
-    .selected { font-weight: bold; }
-  </style>
 
-  <style type="text/css">
     .tab-list li {
-      display: inline-block;
+     display: inline-block;
     }
-
+    
     .athena-hidden {
       display: none;
     }
-
+    
     .athena-selected {
-      display: block;
-      font-weight: bold;
       background-color: cyan;
     }
-    
-    
-    
+
   </style>
 
   <!-- Feature Detection -->
@@ -76,36 +69,19 @@
       <li class="athena-selected">
         <a href="#tabpanel1" data-athena="Button:Select">Tab 1</a>
       </li>
-      <li>
+      <li class="">
         <a href="#tabpanel2" data-athena="Button:Select">Tab 2</a>
-      </li>
-      <li>
-        <a href="#tabpanel3" data-athena="Button:Select">Tab 3</a>
-      </li>
-      <li>
-        <a href="#tabpanel4" data-athena="Button:Select">Tab 4</a>
       </li>
     </ul>
     
     <!-- Tab panels -->
-    <ul id="tabpanels" class="tab-panels" data-athena="List">
-      <li id="tabpanel1" class="" data-athena="Container">
-        Tab 1 panel
-      </li>
-      <li id="tabpanel2" class="athena-hidden" data-athena="Container" data-athena-config="{
-        'Container': {
-            uri: 'miniprofile.html'
-        }
-      }">
-        <div class="content"></div>
-      </li>
-      <li id="tabpanel3" class="athena-hidden" data-athena="Container">
-        Tab 3 panel
-      </li>
-      <li id="tabpanel4" class="athena-hidden" data-athena="Container">
-        Tab 4 panel
-      </li>
-    </ul>
+    <div id="tabpanel1" class="" data-athena="Container">
+      Tab 1 panel
+    </div>
+    <div id="tabpanel2" class="athena-hidden" data-athena="Container">
+      Tab 2 panel
+    </div>
+    
   </div>
 
 </body>

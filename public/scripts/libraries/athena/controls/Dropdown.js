@@ -306,17 +306,20 @@ Dropdown =  Class.create( Abstract,  ( function () {
        */  
       function handleKeyup( event, item ) {
         var keyCode = event.keyCode,
-            $item = $( event.target );
+            $item = $( event.target ),
+            list =  $dropDownList.athena( 'getControl', 'List' );
 
         switch ( keyCode ) {
           case 27: // Escape
             $dropDownList.hide();
             break;
+
           case 38: // Up arrow
-              $dropDownList.trigger( 'previous', [$item] );
+            list.previous();
             break;
+
           case 40: // Down arrow 
-              $dropDownList.trigger( 'next', [$item] );
+            list.next();
           default:
             break;
         }

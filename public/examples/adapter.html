@@ -10,13 +10,18 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Container</title>
+  <title>Abstract</title>
 
   <!-- Feature Detection -->
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-  .athena-hidden { display: none; }
+    #container .athena-selected * {
+      color: black;
+    }
+    #container .athena-selected {
+      color: red;
+    }
   </style>
 
   <!-- Bootstrap:Util -->
@@ -45,27 +50,29 @@
 </head>
 
 <body>
+
   <div id="container">
-        
-
-    <button data-athena="Button" data-athena-config="{
-      'Button':{
-        action: 'select',
-        notify: '.unrelated'
+    <ul id="list" data-athena="List">
+      <li class="athena-selected">
+        A
+      </li>
+      <li class="">
+        B
+      </li>
+      <li class="">
+        C
+      </li>
+    </ul>
+    <button data-athena="Button:Next" data-athena-config="{
+      'Button:Next': {
+        notify: '#list'
       }
-    }">Show</button>
-    
-    <button data-athena="Button" data-athena-config="{
-      'Button':{
-        action: 'unselect',
-        notify: '.unrelated'
+    }">Next</button>
+    <button data-athena="Button:Previous" data-athena-config="{
+      'Button:Previous': {
+        notify: '#list'
       }
-    }">Hide</button>
-
-    <div class="unrelated athena-hidden" data-athena="Container">
-      This is some completely unrelated content, DOM-wise.
-    </div>
-
+    }">Previous</button>
   </div>
 
 </body>
