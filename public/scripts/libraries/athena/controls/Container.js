@@ -41,7 +41,7 @@ Container = Class.create( Abstract,  ( function () {
        */
       defaults = {
         // CSS
-        className: "hidden",
+        className: "athena-hidden",
         // EVENTS
         onHide: "hide unselect",
         onShow: "show select",
