@@ -294,30 +294,34 @@ Tip =  Class.create( Abstract,  ( function () {
         }
       };
 
-      //Event Listeners
-      Tip.on( 'mouseenter', function( event ) {
+      /**
+       * Function to run on mouseenter. Must be named so we can pass it specifically to jQuery's off.
+       * @private
+       * @method mouseenterEvent
+       */
+      function mouseenterEvent ( event ) {
         //set up a listener on the document to be used in determing if the user has moused out of the threshold
         $document.on( 'mousemove.athena.tip', function( event ) {
-          var clientX = event.clientX,
-            clientY = event.clientY,
+          var pageX = event.pageX,
+            pageY = event.pageY,
             left = $element.offset().left,
             top = $element.offset().top,
             width = $element.width(),
             height = $element.height();
 
-            /**
-             * Returns true if the mouse is within the threshold area
-             * @private
-             * @method isMouseInside
-             */
+          /**
+           * Returns true if the mouse is within the threshold area
+           * @private
+           * @method isMouseInside
+           */
           function isMouseInside() {
-            if( clientX < left - settings.threshold - settings.offsetLeft ) {
+            if( pageX < left - settings.threshold - settings.offsetLeft ) {
               return false;
-            } else if( clientY < top - settings.threshold - settings.offsetTop ) {
+            } else if( pageY < top - settings.threshold - settings.offsetTop ) {
               return false;
-            } else if ( clientX > left + width + settings.threshold + settings.offsetLeft ) {
+            } else if ( pageX > left + width + settings.threshold + settings.offsetLeft ) {
               return false;
-            } else if ( clientY > top + height + settings.threshold + settings.offsetTop ) {
+            } else if ( pageY > top + height + settings.threshold + settings.offsetTop ) {
               return false;
             }
             return true;
@@ -325,12 +329,15 @@ Tip =  Class.create( Abstract,  ( function () {
 
           if( !isMouseInside() ) {
             Tip.hide();
-            $document.off( 'mousemove.athena.tip' );
+            $document.off( 'mousemove.athena.tip', mouseenterEvent );
           }
 
         } );
         Tip.show();
-      } );
+      }
+
+      //Event Listeners
+      Tip.on( 'mouseenter', mouseenterEvent);
       Tip.on( 'focus', function( event ) {
         event.stopPropagation();
         $element.on( 'blur.athena.tip', function( event ) {
