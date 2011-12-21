@@ -91,7 +91,7 @@ Carousel =  Class.create( List, ( function() {
            * @private
            * @final
            */
-          items: '.items',
+          items: '.athena-carousel-items',
           /**
            * The CSS class that designates a selected panel
            * @property selectFlag
