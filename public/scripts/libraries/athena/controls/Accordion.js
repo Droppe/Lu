@@ -44,9 +44,15 @@ Accordion =  Class.create( List, ( function () {
          * @final
          */
         defaults = {
-          orientation: 'horizontal',
           notify: '[data-athena*="Container"]'
         },
+        /**
+         * JQuery collection of accordion toggle-buttons in the list
+         * @property $buttons
+         * @type Object
+         * @private
+         */
+        $buttons,
         /**
          * JQuery collection of like items in the list
          * @property $panels
@@ -69,28 +75,32 @@ Accordion =  Class.create( List, ( function () {
       $super( $element, settings );
 
       $panels = $(settings.notify, $element);
+      $buttons = $('[data-athena*="Button:Select"]', $element);
       
       $last = $panels.not("." + HIDDEN_CSS).eq(0);
         
-      $element.on("select", function (event, item) {
+      Accordion.on("select", function (event, item) {
+        _.log("Accordion.on", $element, event, item);
         event.stopPropagation();
         
         if ( !item.is($last) ) {
           $panels.trigger(HIDE);
-          $last = item.trigger(SHOW);          
+          $last = item.trigger(SHOW);
+          $buttons.trigger("selected", [item]);
         }
         else if ( item.hasClass(HIDDEN_CSS) ) {
           $panels.trigger(HIDE);
           $last = item.trigger(SHOW);
+          $buttons.trigger("selected", [item]);
         }
         else {
           $panels.trigger(HIDE);
         }
-        
 
+      
 
       });
-
+        
     }
 
   };
