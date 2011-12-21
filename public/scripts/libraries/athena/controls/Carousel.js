@@ -23,7 +23,7 @@ Carousel =  Class.create( List, ( function() {
     SELECTED_EVENT = 'selected',
     PREVIOUS_EVENT = 'previous',
     NEXT_EVENT = 'next',
-    OUT_OF_BOUNDS_EVENT = 'out_of_bounds';
+    OUT_OF_BOUNDS_EVENT = 'out-of-bounds';
 
   // RETURN METHODS OBJECT
   return {
@@ -182,6 +182,7 @@ Carousel =  Class.create( List, ( function() {
        * @return {Object} List
        */  
       Carousel.previous = function() {
+        console.log( 'previous' );
         Carousel.select( Carousel.index() - 1 );
         return Carousel;
       };
@@ -195,44 +196,39 @@ Carousel =  Class.create( List, ( function() {
         Carousel.pause();
       } );
       Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT, function( event ) {
-        var $target = $( event.target ),
-          controls;
+        var controls;
 
         event.stopPropagation();
 
-        $target = $( event.target );
+        Carousel.next();
 
-        if( $target.is( $element ) ) {
-          Carousel.next();
-        } else {
-          controls = $target.athena( 'getControls' );
-          _.each( controls, function( item, index ) {
-            if ( typeof item.first === 'function' ) {
-              item.first();
-            }
-          } );
-        }
+        controls = Carousel.current().athena( 'getControls' );
+        _.each( controls, function( item, index ) {
+          if ( typeof item.first === 'function' ) {
+            item.first();
+          }
+        } );
+
       } );
-
       Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT, function( event ) {
-        var $target = $( event.target ),
-          controls;
-
-        console.log( 'hello' );
+        var controls;
 
         event.stopPropagation();
 
-        $target = $( event.target );
+        Carousel.previous();
 
-        if( $target.is( $element ) ) {
-          Carousel.next();
-        } else {
-          controls = $target.athena( 'getControls' );
-          _.each( controls, function( item, index ) {
-            if ( typeof item.last === 'function' ) {
-              item.last();
-            }
-          } );
+        controls = Carousel.current().athena( 'getControls' );
+        _.each( controls, function( item, index ) {
+          if ( typeof item.last === 'function' ) {
+            item.last();
+          }
+        } );
+      } );
+      Carousel.on( SELECTED_EVENT, function( event, item ) {
+        if( item.is( Carousel.items() ) ) {
+          event.stopPropagation();
+          console.log( 'YAY!!!', item );
+          Carousel.select( item );
         }
       } );
 

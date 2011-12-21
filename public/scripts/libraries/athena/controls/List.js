@@ -200,40 +200,48 @@ List =  Class.create( Abstract, ( function () {
             $item = item;
           }
 
-          if( $item.hasClass( SELECTED_FLAG ) === false && $item.is( $items ) ) {
+            if( $item.is( $items ) ) {
 
-            // Not selected
-            // aria-selected applies to the link _not_ the list item!!!
-            $items.filter( '.' + SELECTED_FLAG ).removeClass( SELECTED_FLAG );
-            // Set all links under $items to be aria-selected false
-            $items.find( 'a' ).attr( 'aria-selected', 'false' );
+              if( $item.hasClass( SELECTED_FLAG ) === false ) {
 
-            $links = $item.find( 'a' );
+                // Not selected
+                // aria-selected applies to the link _not_ the list item!!!
+                $items.filter( '.' + SELECTED_FLAG ).removeClass( SELECTED_FLAG );
+                // Set all links under $items to be aria-selected false
+                $items.find( 'a' ).attr( 'aria-selected', 'false' );
 
-            if ( $links.length > 0 ) {
-              // Set aria-selected for the first link to "true"
-              $links.eq( 0 ).attr( 'aria-selected', 'true' );
+                $links = $item.find( 'a' );
+
+                if ( $links.length > 0 ) {
+                  // Set aria-selected for the first link to "true"
+                  $links.eq( 0 ).attr( 'aria-selected', 'true' );
+                }
+
+                $item.addClass( SELECTED_FLAG );
+
+                if( !List.hasPrevious() ) {
+                  List.trigger( FLOORED_EVENT, [ $element ] );
+                }
+
+                if( !List.hasNext() ) {
+                  List.trigger( MAXED_EVENT, [ $element ] );
+                }
+
+                // Set focus to the item that you've selected
+                // We do this for a11y
+                $item.attr( 'tabindex', '-1' ).focus();
+
+                List.trigger( SELECTED_EVENT, [ $item, List.index() ] );
+
+              }
+
             }
 
-            $item.addClass( SELECTED_FLAG );
+          } else {
 
-            if( !List.hasPrevious() ) {
-              List.trigger( FLOORED_EVENT, [ $element ] );
-            }
-
-            if( !List.hasNext() ) {
-              List.trigger( MAXED_EVENT, [ $element ] );
-            }
-
-            List.trigger( SELECTED_EVENT, [ $item, List.index() ] );
+            List.trigger( OUT_OF_BOUNDS_EVENT );
 
           }
-
-          // Set focus to the item that you've selected
-          // We do this for a11y
-          $item.attr( 'tabindex', '-1' ).focus();
-
-        }
 
         return List;
       };

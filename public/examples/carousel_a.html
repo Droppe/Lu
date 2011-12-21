@@ -16,6 +16,12 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
+    #one, #two, #three {
+      
+    }
+    #one.athena-selected, #two.athena-selected, #three.athena-selected {
+      display: block;
+    }
     .athena-selected * {
       color: black;
     }
@@ -29,6 +35,7 @@
       padding: 20px;
       width: 600px;
     }
+
   </style>
 
   <!-- Bootstrap:Util -->
@@ -91,8 +98,9 @@
   <div class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { autoplay: false } }">
 
     <ol class="athena-carousel-items">
-      <li id="one" class="athena-selected">
-        <ol data-athena="List" data-athena-config="{ 'List': { observe: '#one [data-athena*=Button]' } }">
+      <li id="one" class="athena-selected" data-athena="List" data-athena-config="{ 'List': { observe: '#one-button' } }">
+        <h2>One</h2>
+        <ol>
           <li class="athena-selected">A</li>
           <li class="">B</li>
           <li class="">C</li>
@@ -100,16 +108,32 @@
         <button data-athena="Button:Previous">Previous</button>
         <button data-athena="Button:Next">Next</button>
       </li>
-      <li id="two">
-        <ol data-athena="List" data-athena-config="{ 'List': { observe: '#two [data-athena*=Button]' } }">
-          <li class="">A</li>
-          <li class="">B</li>
-          <li class="">C</li>
+      <li id="two" data-athena="List" data-athena-config="{ 'List': { observe: '#two-button' } }">
+        <h2>Two</h2>
+        <ol>
+          <li class="athena-selected">A</li>
+          <li>B</li>
+          <li>C</li>
+        </ol>
+        <button data-athena="Button:Previous">Previous</button>
+        <button data-athena="Button:Next">Next</button>
+      </li>
+      <li id="three" data-athena="List" data-athena-config="{ 'List': { observe: '#three-button' } }">
+        <h2>Three</h2>
+        <ol>
+          <li class="athena-selected">A</li>
+          <li>B</li>
+          <li>C</li>
         </ol>
         <button data-athena="Button:Previous">Previous</button>
         <button data-athena="Button:Next">Next</button>
       </li>
     </ol>
+    <button id="one-button" data-athena="Button:First">One</button>
+    <button id="two-button" data-athena="Button:First">Two</button>
+    <button id="three-button" data-athena="Button:First">Three &mdash; ah, ah, aahhhhh.</button>
+    <button data-athena="Button:Previous">Previous</button>
+    <button data-athena="Button:Next">Next</button>
   </div>
 
 </body>
