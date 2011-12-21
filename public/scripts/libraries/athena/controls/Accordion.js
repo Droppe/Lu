@@ -11,6 +11,9 @@ var Class = require( 'class' ),
 Accordion =  Class.create( List, ( function () {
 
   //CONSTANTS
+  var HIDDEN_CSS = "athena-hidden",
+    HIDE = "hide",
+    SHOW = "show";
 
   //RETURN METHODS OBJECT 
   return {
@@ -42,7 +45,7 @@ Accordion =  Class.create( List, ( function () {
          */
         defaults = {
           orientation: 'horizontal',
-          notify: '[data-athena="ui:Container"]'
+          notify: '[data-athena*="Container"]'
         },
         /**
          * JQuery collection of like items in the list
@@ -51,6 +54,11 @@ Accordion =  Class.create( List, ( function () {
          * @private
          */
         $panels,
+        /**
+         * The last-selected panel
+         * @property $last
+         * @type Object
+         */
         $last;
 
 
@@ -61,22 +69,25 @@ Accordion =  Class.create( List, ( function () {
       $super( $element, settings );
 
       $panels = $(settings.notify, $element);
+      
+      $last = $panels.not("." + HIDDEN_CSS).eq(0);
         
       $element.on("select", function (event, item) {
         event.stopPropagation();
-        $panels.trigger("hide");
         
-        if ( item.is($last) ) {
-          if ( item.data("open") ) {
-            $last = item.trigger("hide").data("open", false);
-          }
-          else {
-            $last = item.trigger("show").data("open", true);
-          }
-        } 
-        else {
-          $last = item.trigger("show").data("open", true);
+        if ( !item.is($last) ) {
+          $panels.trigger(HIDE);
+          $last = item.trigger(SHOW);          
         }
+        else if ( item.hasClass(HIDDEN_CSS) ) {
+          $panels.trigger(HIDE);
+          $last = item.trigger(SHOW);
+        }
+        else {
+          $panels.trigger(HIDE);
+        }
+        
+
 
       });
 
