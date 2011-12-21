@@ -41,7 +41,8 @@ Container = Class.create( Abstract,  ( function () {
        */
       defaults = {
         // CSS
-        className: "athena-hidden",
+        hiddenClassName: "athena-hidden",
+        selectedClassName: "athena-selected",
         // EVENTS
         onHide: "hide unselect",
         onShow: "show select",
@@ -73,6 +74,14 @@ Container = Class.create( Abstract,  ( function () {
        * @private
        */
       hiddenClass,
+
+      /**
+       * Classname for the selected class from config
+       * @property selectedClass
+       * @type String
+       * @private
+       */
+      selectedClass,
 
       /**
        * Reference to an instance of the Loader control
@@ -164,15 +173,6 @@ Container = Class.create( Abstract,  ( function () {
 
         // Hide
         Container.on( settings.onHide, onHideHandler);
-
-        if ($parent) {
-          // If parent with "data-athena" and tag is not <body>
-          // then listen for show and hide events.
-          // The idea is that if the Container is inside another Athena
-          // control like a List, the event from the List will pass down to 
-          // the control.
-          //$parent.on(settings.onShow + " " + settings.onHide, passEventToChild);
-        }
       },
 
       /**
@@ -267,6 +267,7 @@ Container = Class.create( Abstract,  ( function () {
       Container.hide = function () {
         _.log("Container.hide", $element);
         $element.addClass(hiddenClass);
+        $element.removeClass(selectedClass);
         Container.trigger(settings.actionHide);
       };
 
@@ -278,6 +279,7 @@ Container = Class.create( Abstract,  ( function () {
        */
       Container.show = function () {
         _.log("Container.show", $element);
+        $element.addClass(selectedClass);
         $element.removeClass(hiddenClass);
         Container.trigger(settings.actionShow);
       };
@@ -313,7 +315,8 @@ Container = Class.create( Abstract,  ( function () {
       // Get a reference to the parent
       $parent = getAthenaParent();
 
-      hiddenClass = settings.className;
+      hiddenClass = settings.hiddenClassName;
+      selectedClass = settings.selectedClassName;
 
       // Initialize URI 
       initializeURI();

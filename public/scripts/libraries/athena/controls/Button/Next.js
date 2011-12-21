@@ -54,10 +54,12 @@ NextButton = Class.create( Button, ( function () {
      $super( $element, settings );
 
      NextButton.on( SELECTED_EVENT, function( event ) {
-         NextButton.enable();
+       _.log("NextButton.on", $element, event);
+       NextButton.enable();
      } );
 
      NextButton.on( MAXED_EVENT, function( event, $subject ) {
+       _.log("NextButton.on", $element, event);
        var Control = $subject.athena( 'getControl' );
        if( !Control.hasNext() ) {
          NextButton.disable();
