@@ -22,12 +22,20 @@
       display: inline-block;
     }
 
+    .tab-panels li {
+      /* Hide the tab-panels */
+      display: none;
+    }
+
+    .tab-panels li.athena-selected {
+      display: block;
+    }
+
     .athena-hidden {
       display: none;
     }
 
-    .athena-selected {
-      display: block;
+    .tab-list li.athena-selected {
       font-weight: bold;
       background-color: cyan;
     }
@@ -88,24 +96,23 @@
     </ul>
     
     <!-- Tab panels -->
-    
-      <div id="tabpanel1" class="" data-athena="Container">
+    <ul id="tabpanels" class="tab-panels" data-athena="List">
+      <li id="tabpanel1" class="" data-athena="Container">
         Tab 1 panel
-      </div>
-      <div id="tabpanel2" class="athena-hidden" data-athena="Container" data-athena-config="{
+      </li>
+      <li id="tabpanel2" class="" data-athena="Container" data-athena-config="{
         'Container': {
             uri: 'miniprofile.html'
         }
       }">
         <div class="content"></div>
-      </div>
-      <div id="tabpanel3" class="athena-hidden" data-athena="Container">
+      </li>
+      <li id="tabpanel3" class="" data-athena="Container">
         Tab 3 panel
-      </div>
-      <div id="tabpanel4" class="athena-hidden" data-athena="Container">
+      </li>
+      <li id="tabpanel4" class="" data-athena="Container">
         Tab 4 panel
-      </div>
-
+      </li>
   </div>
 
 </body>
