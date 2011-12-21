@@ -369,6 +369,7 @@ List =  Class.create( Abstract, ( function () {
         
       } );
       List.on( NEXT_EVENT, function( event ) {
+        _.log("List.on", $element, event);
         event.stopPropagation();
         List.next();
       } );

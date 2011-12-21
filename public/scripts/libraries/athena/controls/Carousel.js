@@ -13,7 +13,7 @@ Carousel =  Class.create( List, ( function() {
 
   var MAXED_EVENT = 'maxed',
     FLOORED_EVENT = 'floored',
-    PLAY_EVENT = 'play'
+    PLAY_EVENT = 'play',
     PLAYING_EVENT = 'playing',
     PAUSE_EVENT = 'pause',
     PAUSED_EVENT = 'paused',
@@ -229,6 +229,7 @@ Carousel =  Class.create( List, ( function() {
         Carousel.play();
       } );
       Carousel.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT].join( ' ' ), function( event, item ) {
+        _.log("Carousel.on", $element, event, item);
         event.stopPropagation();
         Carousel.pause();
       } );

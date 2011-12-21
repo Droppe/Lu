@@ -159,7 +159,7 @@ Button = Class.create( Abstract, ( function() {
 
       // EVENT BINDINGS
       Button.on( settings.on, function( event ) {
-
+        _.log("Button.on", $element, event);
         event.preventDefault();
 
         var parameters = [];

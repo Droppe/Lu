@@ -53,6 +53,7 @@ PreviousButton = Class.create( Button, ( function () {
       $super( $element, settings );
 
       PreviousButton.on( FLOORED_EVENT, function( event, $subject ) {
+        _.log("PreviousButton.on", $element, event, $subject);
 
         var Control = $subject.athena( 'getControl' );
 

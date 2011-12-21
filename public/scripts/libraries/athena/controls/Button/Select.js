@@ -66,7 +66,7 @@ SelectButton = Class.create( Button, ( function () {
 
      SelectButton.on( SELECTED_EVENT, function( event, item, index ) {
        event.stopPropagation();
-       _.log("Button::Select", item, index);
+       _.log("Button.on", $element, event, item, index);
        if( item.is( settings.item ) || index === settings.item ) {
          SelectButton.disable();
        } else {

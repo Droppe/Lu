@@ -42,7 +42,7 @@
   </script>
 
 
-  <link type="text/css" rel="stylesheet" href="http://meyerweb.com/eric/tools/css/reset/reset.css">
+  <link type="text/css" rel="stylesheet" href="reset.css">
   
   <style type="text/css" media="screen">
 
@@ -67,6 +67,9 @@
       font-size: 1.0em;
     }
     
+    strong {
+      font-weight: bold;
+    }
     em {
       font-style: italic;
     }
@@ -105,6 +108,34 @@
       padding: 1em;
     }
 
+    .items li {
+      display: none;
+      overflow: hidden;
+    }
+    
+    .items img,
+    .items p {
+      float: left;
+    }
+    
+    .items img {
+      width: 250px;
+    }
+
+    .items p {
+      width: 75%;
+      margin-left: 1em;
+    }
+    
+    .items li.athena-selected {
+      display: block;
+    }
+
+    .control-buttons {
+      float: right;
+      margin-right: 2em;
+      margin-top: -2em;
+    }
 
     .athena-hidden { display: none; }
   </style>
@@ -123,7 +154,10 @@
 
     <h2>Menu</h2>
     
-    <div class="tabs" data-athena="Tabs">
+    <div class="tabs" data-athena="Tabs" data-athena-config="{
+      'Tabs': {
+      }
+    }">
       <h3>TOC</h3>
       <ul class="tab-list" data-athena="List">
         <li class="athena-selected"><a href="#sandwiches" role="button" data-athena="Button:Select">Sandwiches</a></li>
@@ -134,131 +168,17 @@
 
       <div id="sandwiches" class="tab-panels" data-athena="Container">
         <h3>Sandwiches</h3>
-        <ul class="list">
-          <li class="athena-selected">
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="sandwich">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-          <li>
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="sandwich">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-          <li>
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="sandwich">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-        </ul>
-        <div class="control-buttons">
-          <button type="button" class="previous">previous</button>
-          <button type="button" class="next">next</button>
-        </div>
-      </div>
-      
-      <div id="sides" class="tab-panels athena-hidden" data-athena="Container">
-        <h3>Sides</h3>
-        <ul class="list">
-          <li class="athena-selected">
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="side dish">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-          <li>
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="side dish">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-          <li>
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="side dish">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-        </ul>
-        <div class="control-buttons">
-          <button type="button" class="previous">previous</button>
-          <button type="button" class="next">next</button>
-        </div>
-      </div>
-      
-      <div id="drinks" class="tab-panels athena-hidden" data-athena="Container">
-        <h3>Drinks</h3>
-        <ul class="list">
-          <li class="athena-selected">
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="drink">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-          <li>
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="drink">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-          <li>
-            <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="drink">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-              pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
-              est laborum. 
-            </p>
-          </li>
-        </ul>
-        <div class="control-buttons">
-          <button type="button" class="previous">previous</button>
-          <button type="button" class="next">next</button>
-        </div>
-      </div>
-
-      <div id="desserts" class="tab-panels athena-hidden" data-athena="Container">
-          <h3>Desserts</h3>
-          <ul class="list">
+        
+        <div class="carousel" data-athena="Carousel" data-athena-config="{
+          Carousel: { 
+            autoplay: false
+          }
+        }">
+          <ul class="items">
             <li class="athena-selected">
-              <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="drink">
+              <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="sandwich">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                <strong>One!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
                 magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
                 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
                 pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
@@ -266,9 +186,9 @@
               </p>
             </li>
             <li>
-              <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="drink">
+              <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="sandwich">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                <strong>Two!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
                 magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
                 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
                 pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
@@ -276,9 +196,9 @@
               </p>
             </li>
             <li>
-              <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="drink">
+              <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="sandwich">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                <strong>Three!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
                 magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
                 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
                 pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
@@ -287,11 +207,149 @@
             </li>
           </ul>
           <div class="control-buttons">
-            <button type="button" class="previous">previous</button>
-            <button type="button" class="next">next</button>
+            <button type="button" class="previous" data-athena="Button:Previous">previous</button>
+            <button type="button" class="next" data-athena="Button:Next">next</button>
           </div>
         </div>
+      </div>
+      
+      <div id="sides" class="tab-panels athena-hidden" data-athena="Container">
+        <h3>Sides</h3>
+        <div class="carousel" data-athena="Carousel" data-athena-config="{
+          Carousel: { 
+            autoplay: false
+          }
+        }">
+          <ul class="items">
+            <li class="athena-selected">
+              <img src="http://arbys.com/assets/templates/images/sides/ARB11_MdFriesgreenlarge.png" alt="side dish">
+              <p>
+                <strong>One!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                est laborum. 
+              </p>
+            </li>
+            <li>
+              <img src="http://arbys.com/assets/templates/images/sides/ARB11_MdFriesgreenlarge.png" alt="side dish">
+              <p>
+                <strong>Two!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                est laborum. 
+              </p>
+            </li>
+            <li>
+              <img src="http://arbys.com/assets/templates/images/sides/ARB11_MdFriesgreenlarge.png" alt="side dish">
+              <p>
+                <strong>Three!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                est laborum. 
+              </p>
+            </li>
+          </ul>
+          <div class="control-buttons">
+            <button type="button" class="previous" data-athena="Button:Previous">previous</button>
+            <button type="button" class="next" data-athena="Button:Next">next</button>
+          </div>
+        </div>
+      </div>
+      
+      <div id="drinks" class="tab-panels athena-hidden" data-athena="Container">
+        <h3>Drinks</h3>
+        <div class="carousel" data-athena="Carousel" data-athena-config="{
+          Carousel: { 
+            autoplay: false
+          }
+        }">
+          <ul class="items">
+            <li class="athena-selected">
+              <img src="http://arbys.com/assets/templates/images/desserts/ARB_Shakes_jamoca.png" alt="drink">
+              <p>
+                <strong>One!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                est laborum. 
+              </p>
+            </li>
+            <li>
+              <img src="http://arbys.com/assets/templates/images/desserts/ARB_Shakes_jamoca.png" alt="drink">
+              <p>
+                <strong>Two!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                est laborum. 
+              </p>
+            </li>
+            <li>
+              <img src="http://arbys.com/assets/templates/images/desserts/ARB_Shakes_jamoca.png" alt="drink">
+              <p>
+                <strong>Three!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                est laborum. 
+              </p>
+            </li>
+          </ul>
+          <div class="control-buttons">
+            <button type="button" class="previous" data-athena="Button:Previous">previous</button>
+            <button type="button" class="next" data-athena="Button:Next">next</button>
+          </div>
+        </div>
+      </div>
 
+      <div id="desserts" class="tab-panels athena-hidden" data-athena="Container">
+        <h3>Desserts</h3>
+        <div class="carousel" data-athena="Carousel" data-athena-config="{
+          Carousel: { 
+            autoplay: false
+          }
+        }">
+          <ul class="items">
+              <li class="athena-selected">
+                <img src="http://arbys.com/assets/templates/images/desserts/Turnover_cherry.png" alt="drink">
+                <p>
+                  <strong>One!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                  magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                  consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                  est laborum. 
+                </p>
+              </li>
+              <li>
+                <img src="http://arbys.com/assets/templates/images/desserts/Turnover_cherry.png" alt="drink">
+                <p>
+                  <strong>Two!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                  magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                  consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                  est laborum. 
+                </p>
+              </li>
+              <li>
+                <img src="http://arbys.com/assets/templates/images/desserts/Turnover_cherry.png" alt="drink">
+                <p>
+                  <strong>Three!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
+                  magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo 
+                  consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id 
+                  est laborum. 
+                </p>
+              </li>
+            </ul>
+          <div class="control-buttons">
+            <button type="button" class="previous" data-athena="Button:Previous">previous</button>
+            <button type="button" class="next" data-athena="Button:Next">next</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

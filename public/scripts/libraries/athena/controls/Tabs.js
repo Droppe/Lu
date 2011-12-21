@@ -163,7 +163,7 @@ Tabs = Class.create( Abstract, ( function () {
       }
 
       // Attach event listeners
-      Tabs.on( SELECTED_EVENT, function (event, item) {
+      Tabs.on( SELECTED_EVENT, '[data-athena*="List"]', function (event, item) {
         _.log("Tabs.on", $element, event, item);
         event.stopPropagation();
         item = $(item);
