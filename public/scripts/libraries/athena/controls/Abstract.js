@@ -81,7 +81,9 @@ Abstract = Class.create( ( function() {
       _.defaults( settings, defaults );
 
       $observe = $( settings.observe );
-      $notify = $( settings.notify ).add( $element.athena( 'getDescendants' ) );
+      //Reverse Notification
+      //$notify = $( settings.notify ).add( $element.athena( 'getDescendants' ) );
+      $notify = $( settings.notify );
 
       if( $observe.length ) {
         $observe.athena( 'observe', $element );

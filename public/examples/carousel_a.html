@@ -16,11 +16,18 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    .items > .athena-selected {
-      color: red;
-    }
     .athena-selected * {
       color: black;
+    }
+    .athena-selected,
+    .athena-selected .athena-selected {
+      color: red;
+    }
+    .carousel {
+      background-color: #efd;
+      margin: 20px auto;
+      padding: 20px;
+      width: 600px;
     }
   </style>
 
@@ -51,14 +58,58 @@
 
 <body>
 
-  <div id="carousel" data-athena="Carousel">
-    <ol class="items">
+  <div class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { autoplay: false } }">
+    <ol>
       <li class="athena-selected">A</li>
       <li class="">B</li>
       <li class="">C</li>
     </ol>
     <button data-athena="Button:Previous">Previous</button>
     <button data-athena="Button:Next">Next</button>
+  </div>
+
+  <div class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { autoplay: false } }">
+    <ol class="athena-carousel-items">
+      <li class="athena-selected">A</li>
+      <li class="">B</li>
+      <li class="">C</li>
+    </ol>
+    <ol class="athena-carousel-items">
+      <li>A</li>
+      <li class="">B</li>
+      <li class="">C</li>
+    </ol>
+    <ol class="athena-carousel-items">
+      <li>A</li>
+      <li class="">B</li>
+      <li class="">C</li>
+    </ol>
+    <button data-athena="Button:Previous">Previous</button>
+    <button data-athena="Button:Next">Next</button>
+  </div>
+
+  <div class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { autoplay: false } }">
+
+    <ol class="athena-carousel-items">
+      <li id="one" class="athena-selected">
+        <ol data-athena="List" data-athena-config="{ 'List': { observe: '#one [data-athena*=Button]' } }">
+          <li class="athena-selected">A</li>
+          <li class="">B</li>
+          <li class="">C</li>
+        </ol>
+        <button data-athena="Button:Previous">Previous</button>
+        <button data-athena="Button:Next">Next</button>
+      </li>
+      <li id="two">
+        <ol data-athena="List" data-athena-config="{ 'List': { observe: '#two [data-athena*=Button]' } }">
+          <li class="">A</li>
+          <li class="">B</li>
+          <li class="">C</li>
+        </ol>
+        <button data-athena="Button:Previous">Previous</button>
+        <button data-athena="Button:Next">Next</button>
+      </li>
+    </ol>
   </div>
 
 </body>

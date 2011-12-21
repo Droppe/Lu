@@ -23,7 +23,8 @@ List =  Class.create( Abstract, ( function () {
     OUT_OF_BOUNDS_EVENT = 'out-of-bounds',
     VERTICAL = 'vertical',
     HORIZONTAL = 'horizontal',
-    SELECTED_FLAG = 'athena-selected';
+    SELECTED_FLAG = 'athena-selected',
+    ITEMS_FLAG = 'athena-carousel-items';
 
   //RETURN METHODS OBJECT 
   return {
@@ -127,17 +128,28 @@ List =  Class.create( Abstract, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-
       //Scan for items from the provided selector, or default to the children of the container.
       if ( settings.items ) {
         if( typeof settings.items === 'string' ) {
-          $items = $element.children( settings.items ).children();
+          $items = $element.children( settings.items );
         } else {
-          $items = settings.items.children();
+          $items = settings.items;
         }
       } else {
-        $items = $element.children();
+        if( $element.is( ITEMS_FLAG ) ) {
+          $items = $element.children();
+        } else {
+          $items = $element.find(  '.' + ITEMS_FLAG ).children();
+        }
+        if( $items.length === 0 ) {
+          if( $element.is( 'ul, ol' ) ) {
+            $items = $element.addClass( '.' + ITEMS_FLAG ).children();
+          } else {
+            $items = $element.find( 'ul, ol' ).first().addClass( ITEMS_FLAG ).children();
+          }
+        }
       }
+
 
       /**
        * Append a new item to $element
@@ -179,7 +191,7 @@ List =  Class.create( Abstract, ( function () {
           // Item is an index number
           if( typeof item === 'number' ) {
             $item = $items.eq( item );
-          } 
+          }
           // Item is a string/CSS selector
           else if ( typeof item === 'string' )
             $item = $items.filter( item );
@@ -227,7 +239,7 @@ List =  Class.create( Abstract, ( function () {
       };
 
       /**
-       * Selects the next item in the list. 
+       * Selects the next item in the list.
        * @method next
        * @public
        * @return {Object} List
@@ -344,18 +356,18 @@ List =  Class.create( Abstract, ( function () {
         
         // Check for number (list index)
         // Check for string (CSS Selector)
-        if ( _.isNumber(item) || _.isString(item) ) {
+        if ( _.isNumber( item ) || _.isString( item ) ) {
           List.select( item );
         }
         // Check for JQuery object
-        else if ( _.isObject(item) ) {
+        else if ( _.isObject( item ) ) {
 
           // We need to ensure that [item] is a descendant of our List
-          item = $element.find(item);
+          item = $element.find( item );
           
           // Now check for empty JQuery object
           if ( item.length < 1) {
-            item = $(event.target).closest('li').index();
+            item = $( event.target ).closest( 'li' ).index();
           }
 
           List.select( item );
@@ -364,7 +376,6 @@ List =  Class.create( Abstract, ( function () {
         
       } );
       List.on( NEXT_EVENT, function( event ) {
-        _.log("List.on", $element, event);
         event.stopPropagation();
         List.next();
       } );
