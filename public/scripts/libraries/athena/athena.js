@@ -63,14 +63,14 @@ Athena = function( settings ) {
   }
   
   /**
-  * extract the simple config from a data-* attribute
+  * parse the simpleconfig from a given node
   * takes in a string, and returns a detailed object
   * @public
   * @static
   * @param {String} the string to extract a configuration from
   * @return {Object}
   */
-  Athena.extractSimpleConfig = ( function() {
+  Athena.parseSimpleConfig = ( function() {
     /*
     Tokenizer - modified to return Tokenizer Class
     Copyright (c) 2007-2008 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
@@ -98,7 +98,7 @@ Athena = function( settings ) {
                             ].join( "" ) ),
         OPTIONS_REGEX     = /\((.+)\)/,
         ESC_TRIM          = function( str ) { return str.replace( /^\s\s*/, '' ).replace( /\s\s*$/, '' ); }
-    return function extractSimpleConfig( text ) {
+    return function parseSimpleConfig( text ) {
       var data = {}
       var subs = [],
           pubs = [],
@@ -292,15 +292,13 @@ Athena = function( settings ) {
   };
 
   /**
-   * Returns an array of all Athena keys on $element
-   * When simpleconfig is used, it will also store the configs for the items
+   * Extract the simple config from an element and save it
    * @public
    * @static
-   * @method getKeys
+   * @method extractSimpleConfig
    * @param {Object} $element a jQuery collection
-   * @return {Array} An array of Athena keys 
    */
-  Athena.getKeys = function( $element ) {
+  Athena.extractSimpleConfig = function( $element ) {
     var attr = $element.attr( ATTR ),
      simpleConfig = null,
      parsedConfig = {},
@@ -309,10 +307,10 @@ Athena = function( settings ) {
     if( Athena.isSimpleConfig( attr ) ) {
       attr = attr.replace(/^#!\s*/, '');
       _.each( attr.split(";"), function( key, index ) {
-        simpleConfig = Athena.extractSimpleConfig( key ) || null;
+        simpleConfig = Athena.parseSimpleConfig( key ) || null;
 
         if( simpleConfig === null ) {
-          return '';
+          return;
         }
         
         parsedConfig[simpleConfig.name] = {
@@ -325,9 +323,21 @@ Athena = function( settings ) {
         
         $element.data( 'athena-simpleconfig', parsedConfig );
       } );
-      return keys;
+
+      $element.data( 'athena-simplekeys', keys );
     }
-    return ( attr || '' ).split( ' ' );
+  };
+
+  /**
+   * Returns an array of all Athena keys on $element
+   * @public
+   * @static
+   * @method getKeys
+   * @param {Object} $element a jQuery collection
+   * @return {Array} An array of Athena keys 
+   */
+  Athena.getKeys = function( $element ) {
+    return $element.data( 'athena-simplekeys' ) || ( $element.attr( ATTR ) || '' ).split(' ');
   };
 
   /**
@@ -422,6 +432,7 @@ Athena = function( settings ) {
         setData( $node, { 'Deferred': $.Deferred() } );
       }
       
+      Athena.extractSimpleConfig( $node );
       controls = Athena.getKeys( $node );
       numberOfControls += controls.length;
 
