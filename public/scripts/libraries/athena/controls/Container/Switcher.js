@@ -112,13 +112,13 @@ Switcher = Class.create( Container,  ( function () {
       Switcher.toggleState($buttons.first());
             
       // Listen for button events
-      $element.on( settings.on, settings.buttonTag, function ( event ) {
+      Switcher.on( settings.on, settings.buttonTag, function ( event ) {
         event.stopPropagation();
         Switcher.toggleState( $(event.target) );
       });
 
       // Responding to external events
-      $element.on( settings.on, function ( event, item ) {
+      Switcher.on( settings.on, function ( event, item ) {
         event.preventDefault();
         item = (item > 0 ) ? item - 1 : 0;
         Switcher.toggleState($buttons.eq(item));
