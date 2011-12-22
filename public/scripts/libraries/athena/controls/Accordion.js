@@ -86,18 +86,18 @@ Accordion =  Class.create( List, ( function () {
         if ( !item.is($last) ) {
           $panels.trigger(HIDE);
           $last = item.trigger(SHOW);
-          $buttons.trigger("selected", [item]);
         }
         else if ( item.hasClass(HIDDEN_CSS) ) {
           $panels.trigger(HIDE);
           $last = item.trigger(SHOW);
-          $buttons.trigger("selected", [item]);
         }
         else {
           $panels.trigger(HIDE);
+          // "null" out the item to force the buttons to all become enabled
+          item = $([]);
         }
 
-      
+      $buttons.trigger("selected", [item]);
 
       });
         

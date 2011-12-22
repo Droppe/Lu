@@ -621,6 +621,9 @@ Athena = function( settings ) {
     //       if( typeof parameter === 'function' ) {
     //         parameters[index] = function() {
     //           var parameters = Array.prototype.slice.call( arguments );
+
+    // TODO: if propagation is stopped, and not detecting if the target is itself
+
     //           if( !parameters[0].isPropagationStopped() ) {
     //            parameter.apply( $this, parameters );
     //           }
