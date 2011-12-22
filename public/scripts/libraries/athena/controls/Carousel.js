@@ -224,11 +224,12 @@ Carousel =  Class.create( List, ( function() {
           }
         } );
       } );
-      Carousel.on( SELECTED_EVENT, function( event, item ) {
-        if( item.is( Carousel.items() ) ) {
+      Carousel.on( SELECTED_EVENT, function( event, $item ) {
+        console.log( Carousel.items(), $item );
+        if( $item.is( Carousel.items() ) ) {
           event.stopPropagation();
-          console.log( 'YAY!!!', item );
-          Carousel.select( item );
+          console.log( 'YAY!!!', $item );
+          Carousel.select( $item );
         }
       } );
 

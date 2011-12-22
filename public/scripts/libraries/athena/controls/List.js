@@ -197,11 +197,14 @@ List =  Class.create( Abstract, ( function () {
         var $item,
           $links;
 
+console.log( item );
+
         if ( item !== undefined ) {
 
           // Item is an index number
           if( typeof item === 'number' ) {
             $item = $items.eq( item );
+            console.log( $item );
           }
           // Item is a string/CSS selector
           else if ( typeof item === 'string' )
@@ -211,52 +214,52 @@ List =  Class.create( Abstract, ( function () {
             $item = item;
           }
 
-            if( $item.is( $items ) ) {
+          if( $item.is( $items ) ) {
 
-              if( $item.hasClass( SELECTED_FLAG ) === false ) {
+            if( $item.hasClass( SELECTED_FLAG ) === false ) {
 
-                // Not selected
-                // aria-selected applies to the link _not_ the list item!!!
-                $items.filter( '.' + SELECTED_FLAG ).removeClass( SELECTED_FLAG );
-                // Set all links under $items to be aria-selected false
-                $items.find( 'a' ).attr( 'aria-selected', 'false' );
+              // Not selected
+              // aria-selected applies to the link _not_ the list item!!!
+              $items.filter( '.' + SELECTED_FLAG ).removeClass( SELECTED_FLAG );
+              // Set all links under $items to be aria-selected false
+              $items.find( 'a' ).attr( 'aria-selected', 'false' );
 
-                $links = $item.find( 'a' );
+              $links = $item.find( 'a' );
 
-                if ( $links.length > 0 ) {
-                  // Set aria-selected for the first link to "true"
-                  $links.eq( 0 ).attr( 'aria-selected', 'true' );
-                }
-
-                $item.addClass( SELECTED_FLAG );
-
-                if( !List.hasPrevious() ) {
-                  List.trigger( FLOORED_EVENT, [ $element ] );
-                }
-
-                if( !List.hasNext() ) {
-                  List.trigger( MAXED_EVENT, [ $element ] );
-                }
-
-                // Set focus to the item that you've selected
-                // We do this for a11y
-                if ( !autoPlay ) {
-                  // We set focus when we're not auto playing.
-                  // Setting focus when auto playing moves the page and that's a bad baby!
-                  $item.attr( 'tabindex', '-1' ).focus();
-                }
-
-                List.trigger( SELECTED_EVENT, [ $item, List.index() ] );
-
+              if ( $links.length > 0 ) {
+                // Set aria-selected for the first link to "true"
+                $links.eq( 0 ).attr( 'aria-selected', 'true' );
               }
+
+              $item.addClass( SELECTED_FLAG );
+
+              if( !List.hasPrevious() ) {
+                List.trigger( FLOORED_EVENT, [ $element ] );
+              }
+
+              if( !List.hasNext() ) {
+                List.trigger( MAXED_EVENT, [ $element ] );
+              }
+
+              // Set focus to the item that you've selected
+              // We do this for a11y
+              if ( !autoPlay ) {
+                // We set focus when we're not auto playing.
+                // Setting focus when auto playing moves the page and that's a bad baby!
+                $item.attr( 'tabindex', '-1' ).focus();
+              }
+
+              List.trigger( SELECTED_EVENT, [ $item, List.index() ] );
 
             }
 
-          } else {
-
-            List.trigger( OUT_OF_BOUNDS_EVENT );
-
           }
+
+        } else {
+
+          List.trigger( OUT_OF_BOUNDS_EVENT );
+
+        }
 
         return List;
       };
