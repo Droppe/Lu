@@ -97,7 +97,7 @@ Accordion =  Class.create( List, ( function () {
           item = $([]);
         }
 
-      $buttons.trigger("selected", [item]);
+        $buttons.trigger("selected", [item]);
 
       });
         
