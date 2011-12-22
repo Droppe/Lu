@@ -29,9 +29,24 @@ _.explodeURL = function ( url ) {
 
 };
 
-_.log = function () {
-  var args = arguments;
-  if ( window.ATHENA_CONFIG && window.ATHENA_CONFIG.debug && console && !!console.log ) {
-    console.log( "ATHENA: ", args );
+
+_.each( "assert count debug dir dirxml error group groupCollapsed groupEnd info log profile profileEnd time timeEnd trace warn".split(" "), function (type) {
+
+  if ( typeof _[type] === "undefined" ) {
+
+    _[type] = function () {
+      if ( window.ATHENA_CONFIG && window.ATHENA_CONFIG.debug && console && !!console[type] ) {
+        _[type] = function () {
+          return console[type]( "ATHENA", arguments );
+        };
+      }
+      else {
+        _[type] = function () {};
+      }
+      
+      _[type](arguments);
+    };
+
   }
-};
+  
+});
