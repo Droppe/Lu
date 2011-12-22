@@ -62,10 +62,6 @@ Athena = function( settings ) {
     delete window.module;
   }
   
-  Athena.isSimpleConfig = function( str ) {
-    return ( /^#!/ ).test( str );
-  };
-  
   /**
   * extract the simple config from a data-* attribute
   * takes in a string, and returns a detailed object
@@ -234,6 +230,18 @@ Athena = function( settings ) {
       }
     }
   } )();
+  
+  /**
+   * Returns true if the passed in string is set up to use the SimpleConfig via the #! directive
+   * @public
+   * @static
+   * @method isSimpleConfig
+   * @param {String} str The string to test for SimpleConfig directives
+   * @return {Boolean} True if the element matches the SimpleConfig format
+   */
+  Athena.isSimpleConfig = function( str ) {
+    return ( /^#!/ ).test( str );
+  };
 
   /**
    * Returns true if the passed in element is a control an optional key can be used to match a speciffic Control
