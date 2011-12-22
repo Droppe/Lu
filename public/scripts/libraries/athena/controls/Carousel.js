@@ -229,6 +229,11 @@ Carousel =  Class.create( List, ( function() {
           event.stopPropagation();
           console.log( 'YAY!!!', item );
           Carousel.select( item );
+
+          if (playing) {
+            // When autoplaying, we remove the focus on the selected element!
+            item.blur();   
+          }
         }
       } );
 

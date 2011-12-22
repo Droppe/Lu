@@ -15,8 +15,6 @@ List =  Class.create( Abstract, ( function () {
   var NEXT_EVENT = 'next',
     LAST_EVENT = 'last',
     FIRST_EVENT = 'first',
-    PAUSED_EVENT = 'paused',
-    PLAYING_EVENT = 'playing',
     PREVIOUS_EVENT = 'previous',
     FLOORED_EVENT = 'floored',
     MAXED_EVENT = 'maxed',
@@ -73,15 +71,7 @@ List =  Class.create( Abstract, ( function () {
          * @type Object
          * @private
          */
-        $items,
-        
-        /**
-         * A boolean flag denoting that the list is "autoplaying"; this occurs for Carousel
-         * @property autoPlay 
-         * @type Boolean 
-         * @private
-         */
-        autoPlay = false;
+        $items;
 
       /**
        * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
@@ -239,11 +229,7 @@ List =  Class.create( Abstract, ( function () {
 
                 // Set focus to the item that you've selected
                 // We do this for a11y
-                if ( !autoPlay ) {
-                  // We set focus when we're not auto playing.
-                  // Setting focus when auto playing moves the page and that bad baby!
-                  $item.attr( 'tabindex', '-1' ).focus();
-                }
+                $item.attr( 'tabindex', '-1' ).focus();
 
                 List.trigger( SELECTED_EVENT, [ $item, List.index() ] );
 
@@ -412,14 +398,6 @@ List =  Class.create( Abstract, ( function () {
       List.on( LAST_EVENT, function( event ) {
         event.stopPropagation();
         List.last();
-      } );
-      List.on( PLAYING_EVENT, function( event ) {
-        event.stopPropagation();
-        autoPlay = true;
-      } );
-      List.on( PAUSED_EVENT, function( event ) {
-        event.stopPropagation();
-        autoPlay = false;
       } );
       List.on( 'keyup', handleKeyup );
 
