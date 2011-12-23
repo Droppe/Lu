@@ -41,6 +41,7 @@ Athena = function( settings ) {
       prefixes: ['ui']
     },
     ATTR,
+    SIMPLE_CONFIG_REGEX = /[<=;\^>\(\)]/,
     UI_CONTROL_PATTERN = '[data-athena]',
     DEFERRED = 'Deferred',
     packages = {};
@@ -60,6 +61,187 @@ Athena = function( settings ) {
     };
     delete window.module;
   }
+  
+  /**
+  * parse the simpleconfig from a given node
+  * takes in a string, and returns a detailed object
+  * @public
+  * @static
+  * @param {String} the string to extract a configuration from
+  * @return {Object}
+  */
+  Athena.parseSimpleConfig = ( function() {
+    /*
+    Tokenizer - modified to return Tokenizer Class
+    Copyright (c) 2007-2008 Ariel Flesler - aflesler(at)gmail(dot)com | http://flesler.blogspot.com
+    Dual licensed under MIT and GPL.
+    */
+    var Tokenizer = (function(){var T=function(a,b){if(!(this instanceof T))return new T(a,onEnd,onFound);this.tokenizers=a.splice?a:[a];if(b)this.doBuild=b};T.prototype={parse:function(a){this.src=a;this.ended=0;this.tokens=[];do this.next();while(!this.ended);return this.tokens},build:function(a,b){if(a)this.tokens.push(!this.doBuild?a:this.doBuild(a,!!b,this.tkn))},next:function(){var b=this,c;b.findMin();c=b.src.slice(0,b.min);b.build(c,0);b.src=b.src.slice(b.min).replace(b.tkn,function(a){b.build(a,1);return''});if(!b.src)b.ended=1},findMin:function(){var a=this,i=0,b,c;a.min=-1;a.tkn='';while((b=a.tokenizers[i++])!==undefined){c=a.src[b.test?'search':'indexOf'](b);if(c!=-1&&(a.min==-1||c<a.min)){a.tkn=b;a.min=c}}if(a.min==-1)a.min=a.src.length}};return T})();
+  
+    // private variables. Regex items we only need to instantiate once
+    var BUBBLE_REGEX      = /=\^/,
+        TOKENS            = ["<=^>", "<^=>", "<=^", "^=>", "<=>", "<=", "=>"],
+        TOK_JOIN          = ")|(?:",
+        TOK_ESC           = ["^", "\\^"],
+        TOK_NOMATCH       = ["(?:", ")"],
+        DUAL_STMT_REGEX   = new RegExp( [
+                              "(",
+                                TOK_NOMATCH[0], TOKENS.join( TOK_JOIN ).replace( TOK_ESC[0], TOK_ESC[1] ), TOK_NOMATCH[1],
+                              ").+(",
+                                TOK_NOMATCH[0], TOKENS.join( TOK_JOIN ).replace( TOK_ESC[0], TOK_ESC[1] ), TOK_NOMATCH[1],
+                              ")"
+                            ].join( "" ) ),
+        TOKEN_REGEX       = new RegExp( [
+                              "(",
+                                TOK_NOMATCH[0], TOKENS.join( TOK_JOIN ).replace( TOK_ESC[0], TOK_ESC[1] ), TOK_NOMATCH[1],
+                              ")"
+                            ].join( "" ) ),
+        OPTIONS_REGEX     = /\((.+)\)/,
+        ESC_TRIM          = function( str ) { return str.replace( /^\s\s*/, '' ).replace( /\s\s*$/, '' ); }
+    return function parseSimpleConfig( text ) {
+      var data = {}
+      var subs = [],
+          pubs = [],
+          bubs = BUBBLE_REGEX.test( text ),
+          last = "",
+          pubNext = false,
+          subNext = false,
+          name = false,
+          rawName = false,
+          simpleOptionsMatch = null,
+          simpleOptions = {},
+          leftMode = DUAL_STMT_REGEX.test( text ),
+          tokenizer = new Tokenizer( [TOKEN_REGEX], handleTokenMatch );
+    
+      // extract all the pieces, populates variables above
+      tokenizer.parse( text );
+    
+      // handle simpleConfig ()
+      simpleOptionsMatch = rawName.match( OPTIONS_REGEX );
+    
+      // if there are no simpleOptions, then we are done. The name doesn't need
+      // updating, and we can ship the payload as-is
+      if( simpleOptionsMatch === null ) {
+        name = rawName;
+        return createPayload();
+      }
+
+      // name is minus that simpleOptionsMatch string
+      name = rawName.replace( simpleOptionsMatch[0], "" );
+    
+      // simple options require splitting into key-value pairs
+      for( var i = 0, opts = simpleOptionsMatch[1].split(','), len = opts.length; i < len; i++ ) {
+        item = opts[i].split( "=" );
+        key = ESC_TRIM( ""+item[0] );
+        val = ( typeof( item[1] ) === "undefined" ) ? true : ESC_TRIM( "" + item[1] ) || true;
+        simpleOptions[key] = val
+      }
+    
+      return createPayload();
+
+      /**
+       * Creates a payload of the various components
+       * returns them as an object literal
+       */
+      function createPayload() {
+        return {
+          name: name,
+          originalName: rawName,
+          publish: pubs,
+          subscribe: subs,
+          bubbles: bubs,
+          options: simpleOptions
+        };
+      }
+
+      /*
+      * Works with the tokenizer to handle matches
+      * @param token the matching token from tokenizer
+      * @param isDirector the token split string (if token is the string)
+      * @return null
+      */
+      function handleTokenMatch( token, isDirector ) {
+        // clean up last and token
+        last = ESC_TRIM( last );
+        token = ESC_TRIM( token );
+      
+        // we have to handle a pair of switch statements
+        // if isDirector is set, then we are on a token and need to determine
+        // if we are on the left or the right side of the control name.
+        // once inside, we can then use the switch statement to determine where
+        // the controlname should be pushed to.
+        if( isDirector ) {
+          // reset next calls
+          pubNext = subNext = false;
+          if ( leftMode ) {
+            // left mode: #target <=^> ui:Control
+            switch( token ) {
+              case "<=": // pub
+              case "<^=": // pubbub
+                pubs.push( last );
+                break;
+              case "=>": // sub
+              case "=^>": // subbub
+                subs.push( last );
+                break;
+              case "<=>": // pubsub
+              case "<=^>": // pubsubbub
+                pubs.push( last );
+                subs.push( last );
+                break;
+            }
+          }
+          else {
+            // right mode: ui:Control <=^> #target
+            switch( token ) {
+              case "<=": // sub
+              case "<^=": // subbub
+                subNext = true;
+                break;
+              case "=>": // pub
+              case "=^>": // pubbub
+                pubNext = true;
+                break;
+              case "<=>": // pubsub
+              case "<=^>": // pubsubbub
+                pubNext = true;
+                subNext = true;
+                break;
+            }
+          }
+          leftMode = false;
+          last = "";
+        }
+        else {
+          if( pubNext ) {
+            pubs.push( ESC_TRIM( token ) );
+          }
+          if( subNext ) {
+            subs.push( ESC_TRIM( token ) );
+          }
+          if( !leftMode && !rawName ) {
+            rawName = token;
+          }
+        
+          // reset for next sequence
+          pubNext = subNext = false;
+          last = token;
+        }
+      }
+    }
+  } )();
+  
+  /**
+   * Returns true if the passed in string is set up to use the SimpleConfig via the #! directive
+   * @public
+   * @static
+   * @method isSimpleConfig
+   * @param {String} str The string to test for SimpleConfig directives
+   * @return {Boolean} True if the element matches the SimpleConfig format
+   */
+  Athena.isSimpleConfig = function( str ) {
+    return ( /^#!/ ).test( str );
+  };
 
   /**
    * Returns true if the passed in element is a control an optional key can be used to match a speciffic Control
@@ -110,6 +292,43 @@ Athena = function( settings ) {
   };
 
   /**
+   * Extract the simple config from an element and save it
+   * @public
+   * @static
+   * @method extractSimpleConfig
+   * @param {Object} $element a jQuery collection
+   */
+  Athena.extractSimpleConfig = function( $element ) {
+    var attr = $element.attr( ATTR ),
+     simpleConfig = null,
+     parsedConfig = {},
+     keys = [];
+
+    if( Athena.isSimpleConfig( attr ) ) {
+      attr = attr.replace(/^#!\s*/, '');
+      _.each( attr.split(";"), function( key, index ) {
+        simpleConfig = Athena.parseSimpleConfig( key ) || null;
+
+        if( simpleConfig === null ) {
+          return;
+        }
+        
+        parsedConfig[simpleConfig.name] = {
+          notify:   simpleConfig.publish,
+          observe:  simpleConfig.subscribe,
+          bubbles:  simpleConfig.bubbles
+        };
+        jQuery.extend( parsedConfig[simpleConfig.name], simpleConfig.options );
+        keys.push( simpleConfig.name );
+        
+        $element.data( 'athena-simpleconfig', parsedConfig );
+      } );
+
+      $element.data( 'athena-simplekeys', keys );
+    }
+  };
+
+  /**
    * Returns an array of all Athena keys on $element
    * @public
    * @static
@@ -118,7 +337,7 @@ Athena = function( settings ) {
    * @return {Array} An array of Athena keys 
    */
   Athena.getKeys = function( $element ) {
-    return ( $element.attr( ATTR ) || '' ).split( ' ' );
+    return $element.data( 'athena-simplekeys' ) || ( $element.attr( ATTR ) || '' ).split(' ');
   };
 
   /**
@@ -145,18 +364,30 @@ Athena = function( settings ) {
     * @return {Void}
     */
     function execute( $node ) {
-      var config = $node.data( 'athena-config' ),
-       keys = Athena.getKeys( $node );
+      var simpleConfig = $node.data( 'athena-simpleconfig' ),
+       config = $node.data( 'athena-config' ) || null,
+       keys = Athena.getKeys( $node ),
+       parsedConfig = {};
 
-      config = config || '{}';
-
+      if( simpleConfig ) {
+        jQuery.extend( parsedConfig, simpleConfig );
+      }
+      if( config != null ) {
+        try {
+          config = eval('('+config+')');
+          jQuery.extend( parsedConfig, config );
+        }
+        catch( e ) {}
+      }
+      
       _.each( keys, function( key, index ) {
         var Control,
           pckg = settings.namespace + '/' + key.replace( /:/g, '/' ),
+          controlConfig = {},
           nodeData;
 
-        config = Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
-        Control = new packages[pckg]( $node, config );
+        controlConfig = parsedConfig[key] || {};
+        Control = new packages[pckg]( $node, controlConfig );
 
         nodeData = getData( $node, key );
 
@@ -200,7 +431,8 @@ Athena = function( settings ) {
       if( !Deferred ) {
         setData( $node, { 'Deferred': $.Deferred() } );
       }
-
+      
+      Athena.extractSimpleConfig( $node );
       controls = Athena.getKeys( $node );
       numberOfControls += controls.length;
 
