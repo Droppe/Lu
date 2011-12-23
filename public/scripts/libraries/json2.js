@@ -161,7 +161,7 @@
 
 var JSON;
 if (!JSON) {
-    JSON = {};
+  JSON = {};
 }
 
 (function () {
@@ -357,6 +357,7 @@ if (!JSON) {
 // If the JSON object does not yet have a stringify method, give it one.
 
     if (typeof JSON.stringify !== 'function') {
+
         JSON.stringify = function (value, replacer, space) {
 
 // The stringify method takes a value and an optional replacer, and an optional
@@ -485,3 +486,13 @@ if (!JSON) {
         };
     }
 }());
+
+
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( JSON );
+  } else if( module.exports ) {
+    module.exports = JSON; 
+  }
+}

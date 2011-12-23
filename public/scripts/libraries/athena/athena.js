@@ -359,6 +359,33 @@ Athena = function( settings ) {
   };
 
   /**
+   * Using json.stringify will break in older browsers, so inject
+   * in an external library when needed.  Otherwise use the native functionality.
+   * @method JSONify
+   * @private
+   * @param {Object} obj A JSON object to convert to a string.
+   * @return {Void}
+   */
+  var JSONify = function (obj) {};
+
+  (function () {
+    var LIBPATH = "/scripts/libraries/json2.js";
+    if ( window.JSON ) {
+      // Use the native JSON method
+      JSONify = window.JSON.stringify;
+    }
+    else {
+      // Otherwise Inject Crockford's JSON library and assign to our placeholder function
+      require.ensure([LIBPATH], function () {        
+        var JSON2lib = require(LIBPATH);
+        JSONify = (JSON2lib && JSON2lib.stringify) ? JSON2lib.stringify: JSONify;
+      });            
+    }
+
+  }());
+  
+  
+  /**
    * Decorates a node with Athena markup.
    * @method decorate
    * @public
@@ -368,13 +395,13 @@ Athena = function( settings ) {
    * @param {Object} settings to be used in creation of controls
    * @return {String} The conjoined keys
    */
-   //TODO: USING JSON.STRINGIFY WILL BREAK IN OLDER BROWSERS
   Athena.decorate = function( $element, keys, settings ) {
+        
     var nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [];
     keys = _.union( nodeKeys, keys );
     settings = settings;
     if( settings ) {
-      return $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSON.stringify( settings ) );
+      return $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSONify( settings ) );
     }
     return $element.attr( ATTR, keys.join( ' ' ) );
   };
