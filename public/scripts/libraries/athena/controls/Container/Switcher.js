@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Container = require( 'athena/Container' ),
-  Switcher;
-
 /**
  * Representation of a stateful button element
  * @class Switcher
  * @constructor
  * @extends Container
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Container = require( 'athena/Container' ),
+  Switcher;
+
 Switcher = Class.create( Container,  ( function () {
 
   var DISABLED = "disabled";

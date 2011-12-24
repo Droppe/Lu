@@ -1,14 +1,16 @@
-var Class = require( 'class' ),
-  Abstract = require( 'athena/Abstract' ),
-  List;
-
 /**
  * A representation of a stateful list
  * @class List
  * @constructor
+ * @extends Abstract
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Abstract = require( 'athena/Abstract' ),
+  List;
+
 List =  Class.create( Abstract, ( function () {
 
   //CONSTANTS

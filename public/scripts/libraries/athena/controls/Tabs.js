@@ -1,15 +1,16 @@
+/**
+ * The Tabs component is a subclass of Abstract and consists of a tablist, tabs and tabpanels.
+ * @class Tabs
+ * @constructor
+ * @extends Abstract
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element containing this component
+ * @param {Object} settings Configuration properties for this instance
+ */
 var Class = require( 'class' ),
   Abstract = require( 'athena/Abstract' ),
   Tabs;
 
-/**
-* The Tabs component is a subclass of Abstract and consists of a tablist, tabs and tabpanels.
-* @class Tabs
-* @constructor
-* @extends Abstract
-* @param {HTMLElement} element The HTML element containing this component
-* @param {Object} settings Configuration properties for this instance
-*/
 Tabs = Class.create( Abstract, ( function () {
 
   var SELECT_EVENT = 'select',
@@ -41,7 +42,7 @@ Tabs = Class.create( Abstract, ( function () {
       var Tabs = this,
 
         /**
-          * Default configuration values
+         * Default configuration values
          * @property defaults
          * @type Object
          * @private
@@ -86,6 +87,7 @@ Tabs = Class.create( Abstract, ( function () {
       /**
        * Initializes the Tab control with ARIA attributes.
        * Sets "role" to "tablist", "presentation" and "tab".
+       * @method initARIARoles
        * @private
        * @return {Void}
        */
@@ -150,7 +152,7 @@ Tabs = Class.create( Abstract, ( function () {
 
       /**
        * Syncs the appropriate panel with the selected tab
-       * @method selectTabHandler
+       * @method handleTabSelect
        * @private
        * @param {Integer} item Index representing the panel
        * @return {Void} Description

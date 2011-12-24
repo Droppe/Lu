@@ -1,6 +1,3 @@
-var Class = require( 'class' ),
-  Abstract;
-
 /**
  * The base component class all other UI components inherit from.
  * @class Abstract
@@ -9,6 +6,9 @@ var Class = require( 'class' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Abstract;
+
 Abstract = Class.create( ( function() {
 
   // GLOBAL STATICS
@@ -16,7 +16,7 @@ Abstract = Class.create( ( function() {
   // RETURN METHODS OBJECT
   return {
     /**
-     * Class constructor
+     * constructor
      * @method initialize
      * @public
      * @param {Object} $element JQuery object for DOM node wrapped by this component

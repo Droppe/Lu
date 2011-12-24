@@ -1,15 +1,17 @@
-var Class = require( 'class' ),
-  Abstract = require( 'athena/Abstract' ),
-  Checkbox;
-
 /**
  * Toggles the display of related content to a change event 
  * from a checkbox or other single element.
  * @class Checkbox
  * @constructor
  * @extends Abstract
- * @requires ptclass, Container
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element containing this component
+ * @param {Object} settings Configuration properties for this instance 
  */
+var Class = require( 'class' ),
+  Abstract = require( 'athena/Abstract' ),
+  Checkbox;
+
 Checkbox = Class.create( Abstract,  ( function () {
 
   // RETURN METHODS OBJECT

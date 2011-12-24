@@ -1,3 +1,7 @@
+/**
+ * Athena config
+ * @class config
+ */
 ( function() {
 
   if( typeof window.require === 'function' ) {

@@ -1,14 +1,16 @@
+/**
+ * Toggles the display of related content to a change event from a grouping of radio buttons.
+ * @class Container
+ * @constructor
+ * @extends Abstract
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element surrounded by the control
+ * @param {Object} settings Configuration properties for this instance  
+ */
 var Class = require( 'class' ),
   Abstract = require( 'athena/Abstract' ),
   Container;
 
-/**
- * Toggles the display of related content to a change event from a grouping of radio buttons.
- * @class RadioReveal
- * @constructor
- * @extends Abstract
- * @require ptclass, Abstract
- */
 Container = Class.create( Abstract,  ( function () {
 
   // RETURN METHODS OBJECT
@@ -61,7 +63,7 @@ Container = Class.create( Abstract,  ( function () {
       /**
        * JQuery DOM reference to the "content" of the Container
        * Defined by the "class" content
-       * @property $parent 
+       * @property $content 
        * @type Object 
        * @private
        */

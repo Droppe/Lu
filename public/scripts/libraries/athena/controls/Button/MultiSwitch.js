@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Switch = require( 'athena/Button/Switch' ),
-  MultiSwitch;
-
 /**
  * Representation of a stateful button element
  * @class MultiSwitch
  * @constructor
  * @extends Switch
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Switch = require( 'athena/Button/Switch' ),
+  MultiSwitch;
+
 MultiSwitch = Class.create( Switch,  ( function () {
 
    // RETURN METHODS OBJECT

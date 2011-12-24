@@ -1,17 +1,17 @@
-var Class = require( 'class' ),
-  Abstract = require( 'athena/Abstract' ),
-  Button;
-
-
 /**
  * Representation of a button element
  * @class Button
  * @constructor
  * @extends Abstract
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
  */ 
+var Class = require( 'class' ),
+  Abstract = require( 'athena/Abstract' ),
+  Button;
+
 Button = Class.create( Abstract, ( function() {
 
   // RETURN METHODS OBJECT
@@ -146,7 +146,7 @@ Button = Class.create( Abstract, ( function() {
 
       /**
        * Enables the Button by removing a disabled attribute (inputs and buttons only) and the class athena-disabled
-       * @method disable 
+       * @method enable 
        * @private
        * @return {Void}
        */

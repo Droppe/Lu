@@ -1,3 +1,12 @@
+/**
+ * Tooltip class
+ * @class BelowTip
+ * @constructor
+ * @extends Tip
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element containing this component
+ * @param {Object} settings Configuration properties for this instance
+ */
 var Class = require( 'class' ),
   Tip = require( 'athena/Tip' ),
   BelowTip;

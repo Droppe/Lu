@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  SelectButton = require( 'athena/Button/Select' ),
-  Reveal;
-
 /**
  * Toggles the display of related content to some select action on a checkbox, radio button, or select dropdown.
  * @class Reveal
  * @constructor
  * @extends SelectButton
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  SelectButton = require( 'athena/Button/Select' ),
+  Reveal;
+
 Reveal = Class.create( SelectButton,  ( function () {
 
   // RETURN METHODS OBJECT
@@ -103,7 +104,6 @@ Reveal = Class.create( SelectButton,  ( function () {
         
       revealGroupLength = revealGroup.length;
 
-_.log("REVEALGROUP for", $element, revealGroup);
 
       // PRIVILEGED METHODS
 
@@ -181,7 +181,11 @@ _.log("REVEALGROUP for", $element, revealGroup);
   };  
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = Reveal;
+//Export to Common JS Loader
+if( module ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( Reveal );
+  } else if( module.exports ) {
+   module.exports = Reveal; 
+  }
 }

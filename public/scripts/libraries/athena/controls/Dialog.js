@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-    Abstract = require( 'athena/Abstract' ),
-    Dialog;
-
 /**
  * Representation of a Dialog
  * @class Dialog
  * @constructor
  * @extends Abstract
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+    Abstract = require( 'athena/Abstract' ),
+    Dialog;
+
 Dialog = Class.create( Abstract,  ( function () {
 
   // RETURN METHODS OBJECT

@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  NextButton = require( 'athena/Button/Next' ),
-  NextRepeatButton;
-
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class NextButton
  * @constructor
  * @extends Button
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  NextButton = require( 'athena/Button/Next' ),
+  NextRepeatButton;
+
 NextRepeatButton = Class.create( NextButton, ( function () {
 
   var REPEAT_INTERVAL = 1000,

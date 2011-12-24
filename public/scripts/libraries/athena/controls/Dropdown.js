@@ -1,15 +1,15 @@
-var Class = require( 'class' ),
-  Abstract = require( 'athena/Abstract' ),
-  Dropdown;
-
 /**
  * The Dropdown component is a subclass of Abstract.
- * @class Tabs 
+ * @class Dropdown 
  * @constructor
  * @extends Abstract 
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Abstract = require( 'athena/Abstract' ),
+  Dropdown;
+
 Dropdown =  Class.create( Abstract,  ( function () {
 
   // Constants
@@ -120,6 +120,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
       /**
        * Initializes the Droplist control with ARIA attributes.
        * Sets "role" to "menu", "menuitem" and "has-popup."
+       * @method initARIARoles
        * @private
        * @return {Void}
        */
@@ -257,7 +258,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
        * Handler for the selected droplist item.  The handler triggers a "selected" event to the selectedItem.
        * @param {Event} event - Athena event
        * @param {Object} item - JQuery DOM element
-       * @method selectDropdownHandler 
+       * @method selectedDropdownHandler 
        * @private
        * @return {Void}
        */

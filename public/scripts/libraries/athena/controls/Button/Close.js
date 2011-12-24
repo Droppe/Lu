@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'athena/Button' ),
-  CloseButton;
-
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class CloseButton
  * @constructor
  * @extends Button
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Button = require( 'athena/Button' ),
+  CloseButton;
+
 CloseButton = Class.create( Button,  ( function () {
 
    // RETURN METHODS OBJECT

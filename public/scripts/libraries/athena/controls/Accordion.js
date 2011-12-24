@@ -1,13 +1,16 @@
-var Class = require( 'class' ),
-  List = require( 'athena/List' ),
-  Accordion;
-
 /**
  * A representation of an accordion UI element
  * @class Accordion
  * @constructor
  * @extends List
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element surrounded by the control
+ * @param {Object} settings Configuration properties for this instance 
  */
+var Class = require( 'class' ),
+  List = require( 'athena/List' ),
+  Accordion;
+
 Accordion =  Class.create( List, ( function () {
 
   //CONSTANTS

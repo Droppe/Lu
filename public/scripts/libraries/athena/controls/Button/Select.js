@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'athena/Button' ),
-  SelectButton;
-
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class SelectButton
  * @constructor
  * @extends Button
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Button = require( 'athena/Button' ),
+  SelectButton;
+
 SelectButton = Class.create( Button, ( function () {
 
   var SELECTED_EVENT = 'selected';

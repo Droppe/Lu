@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'athena/Button' ),
-  OpenButton;
-
 /**
  * Representation of a button element preconfigured with an 'open' event
  * @class OpenButton
  * @constructor
  * @extends Button
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Button = require( 'athena/Button' ),
+  OpenButton;
+
 OpenButton = Class.create( Button, ( function () {
 
    // RETURN METHODS OBJECT

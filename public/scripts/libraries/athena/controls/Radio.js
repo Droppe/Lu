@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  FormSelect = require( 'athena/Abstract' ),
-  RadioButton;
-  
-
 /**
  * Toggles the display of related content to a change event from a grouping of radio buttons.
  * @class RadioButton
  * @constructor
  * @extends FormSelect
- * @require ptclass, Button
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element containing this component
+ * @param {Object} settings Configuration properties for this instance 
  */
+var Class = require( 'class' ),
+  FormSelect = require( 'athena/Abstract' ),
+  RadioButton;
+
 RadioButton = Class.create( FormSelect,  ( function () {
 
   // RETURN METHODS OBJECT

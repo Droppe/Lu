@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'athena/Button' ),
-  OffButton;
-
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class OffButton
  * @constructor
  * @extends Button
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Button = require( 'athena/Button' ),
+  OffButton;
+
 OffButton = Class.create( Button, ( function () {
 
    // RETURN METHODS OBJECT

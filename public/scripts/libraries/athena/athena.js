@@ -1,36 +1,44 @@
-/*!
- * Athena UI Framwork v0.0.2
- * https://github.com/iheartweb/AthenaUIFramework
- * Copyright (c) 2011 Robert Martone
- * 
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- * 
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+/* 
 
+ Athena UI Framwork v0.0.2
+ https://github.com/iheartweb/AthenaUIFramework
+ Copyright (c) 2011 Robert Martone
+ 
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+ 
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+
+// (Don't do Gilligan's Island if you want to be a serious actress!)
+
+
+/**
+ * Athena UI Framework
+ * @module athena
+ * @class athena
+ * @constructor
+ * @requires inject, ptclass
+ * @param {Object} settings Configuration properties for this instance
+ */
 
 var ATHENA_CONFIG = window.ATHENA_CONFIG || {},
   Athena;
-
-/*
- * Don't do Gilligan's Island if you want to be a serious actress.
- */
-
 
 Athena = function( settings ) {
   var Athena = this,
@@ -62,7 +70,8 @@ Athena = function( settings ) {
   }
 
   /**
-   * Returns true if the passed in element is a control an optional key can be used to match a speciffic Control
+   * Returns true if the passed in element is a control an optional key can be 
+   * used to match a specific Control
    * @public
    * @static
    * @method isControl
@@ -137,14 +146,14 @@ Athena = function( settings ) {
 
    /**
     * Instantiates a control with selected element.
-    * @method execute
+    * @method Execute
     * @private
     * @param {Array} $node A jQuery collection with the selected elements.
     * @param {String} key The name of the Control.
     * @param {Function} Control The Control's constructor.
     * @return {Void}
     */
-    function execute( $node ) {
+    function Execute( $node ) {
       var config = $node.data( 'athena-config' ),
        keys = Athena.getKeys( $node );
 
@@ -226,7 +235,7 @@ Athena = function( settings ) {
         $controls.each( function( index, control ) {
           var defObj,
             $control = $(control);
-          execute( $control );
+          Execute( $control );
           numberOfControls -= 1;
 
           if( numberOfControls === 0 ) {
@@ -597,16 +606,16 @@ Athena = function( settings ) {
     return $element;
   };
 
-  /**
-   * Bind Athena to jQuery.
-   * @private
-   * @param {Object} jQuery
-   * @return {Void}
-   */
+// Bind Athena to jQuery
   ( function( $ ) {
     var trigger = $.fn.trigger;
         on = $.fn.on;
 
+    /**
+     * Athena JQuery plugin 
+     * @method athena
+     * @public
+     */    
     $.fn.athena = function() {
       var $this = $( this ),
         parameters = Array.prototype.slice.call( arguments ),

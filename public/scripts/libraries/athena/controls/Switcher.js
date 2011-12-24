@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Abstract = require( 'athena/Abstract' ),
-  Switcher;
-
 /**
  * Representation of a stateful button element
  * @class Switcher
  * @constructor
  * @extends Container
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Abstract = require( 'athena/Abstract' ),
+  Switcher;
+
 Switcher = Class.create( Abstract,  ( function () {
 
   var SWITCH_EVENT = 'switch',

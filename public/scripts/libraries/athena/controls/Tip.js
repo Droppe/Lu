@@ -1,12 +1,15 @@
+/**
+ * Tooltip class
+ * @class Tip
+ * @constructor
+ * @extends Abstract
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element containing this component
+ * @param {Object} settings Configuration properties for this instance
+ */
 var Class = require( 'class' ),
   Abstract = require( 'athena/Abstract' ),
   Tip;
-
-/**
- * The Tip Class
- * @class Tip
- * @extends Abstract
- */
 
 Tip =  Class.create( Abstract,  ( function () {
 

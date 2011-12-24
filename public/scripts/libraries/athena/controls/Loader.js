@@ -1,15 +1,18 @@
+/**
+ * Representation of a Loader
+ * @class Loader
+ * @constructor
+ * @extends Abstract
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element containing this component
+ * @param {Object} settings Configuration properties for this instance  
+ */ 
 var Class = require( 'class' ),
   Abstract = require( 'athena/Abstract' ),
   Loader;
 
 //TODO: Loader should take a $jquery object, a selector, a string, or a uri;
 
-/**
- * Representation of a Loader
- * @class Loader
- * @constructor
- * @extends Abstract
- */ 
 Loader = Class.create( Abstract, ( function () {
 
   // GLOBAL STATICS
@@ -90,7 +93,7 @@ Loader = Class.create( Abstract, ( function () {
               break;
             case 'append':
               $node.append( content );
-              console.log( $node )
+              console.log( $node );
               break;
             default:
               $node.html( content );

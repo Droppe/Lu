@@ -1,14 +1,16 @@
+/**
+ * A representation of Carousel
+ * @class Carousel
+ * @constructor
+ * @extends List
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element containing this component
+ * @param {Object} settings Configuration properties for this instance
+ */
 var Class = require( 'class' ),
   List = require( 'athena/List' ),
   Carousel;
 
-/**
- * A representation of a stateful list
- * @class List
- * @constructor
- * @param {HTMLElement} element The HTML element containing this component
- * @param {Object} settings Configuration properties for this instance
- */
 Carousel =  Class.create( List, ( function() {
 
   var MAXED_EVENT = 'maxed',
@@ -56,15 +58,17 @@ Carousel =  Class.create( List, ( function() {
         defaults = {
           /**
            * Number of times to cycle through carousel items when playing, set to -1 to repeat forever
-           * @property repeat
+           * @property default.repeat
            * @type Number
+           * @default -1
            * @private
            */
           repeat: -1,
           /**
            * Automatically calls play on instantiation if set to true
-           * @property repeat
+           * @property autoplay
            * @type Boolean
+           * @default true
            * @private
            * @final
            */

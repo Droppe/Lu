@@ -1,15 +1,16 @@
+/**
+ * Manages a web form select input and related options.
+ * @class FormSelect
+ * @constructor
+ * @extends Button
+ * @requires ptclass
+ * @param {HTMLElement} element The HTML element containing this component
+ * @param {Object} settings Configuration properties for this instance  
+ */
 var Class = require( 'class' ),
   Button = require( 'athena/Button' ),
   FormSelect;
   
-
-/**
- * Toggles the display of related content to a change event from a grouping of radio buttons.
- * @class RadioButton
- * @constructor
- * @extends Button
- * @require ptclass, Button
- */
 FormSelect = Class.create( Button,  ( function () {
 
   // RETURN METHODS OBJECT

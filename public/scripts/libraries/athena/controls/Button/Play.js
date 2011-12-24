@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'athena/Button' ),
-  PlayButton;
-
 /**
  * Representation of a button element preconfigured with a 'play' event
  * @class NextButton
  * @constructor
  * @extends Button
+ * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  */
+var Class = require( 'class' ),
+  Button = require( 'athena/Button' ),
+  PlayButton;
+
 PlayButton = Class.create( Button, ( function () {
   var PLAYING_EVENT = 'playing',
     PAUSED_EVENT = 'paused';
