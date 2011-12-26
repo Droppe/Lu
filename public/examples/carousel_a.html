@@ -19,14 +19,14 @@
     #one, #two, #three {
       
     }
-    #one.athena-selected, #two.athena-selected, #three.athena-selected {
+    #one.lu-selected, #two.lu-selected, #three.lu-selected {
       display: block;
     }
-    .athena-selected * {
+    .lu-selected * {
       color: black;
     }
-    .athena-selected,
-    .athena-selected .athena-selected {
+    .lu-selected,
+    .lu-selected .lu-selected {
       color: red;
     }
     .carousel {
@@ -48,92 +48,92 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 </head>
 
 <body>
 
-  <div class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { autoplay: false } }">
+  <div class="carousel" data-lu="Carousel" data-lu-config="{ 'Carousel': { autoplay: false } }">
     <ol>
-      <li class="athena-selected">A</li>
+      <li class="lu-selected">A</li>
       <li class="">B</li>
       <li class="">C</li>
     </ol>
-    <button data-athena="Button:Previous">Previous</button>
-    <button data-athena="Button:Next">Next</button>
+    <button data-lu="Button:Previous">Previous</button>
+    <button data-lu="Button:Next">Next</button>
   </div>
 
-  <div class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { autoplay: false } }">
-    <ol class="athena-carousel-items">
-      <li class="athena-selected">A</li>
+  <div class="carousel" data-lu="Carousel" data-lu-config="{ 'Carousel': { autoplay: false } }">
+    <ol class="lu-carousel-items">
+      <li class="lu-selected">A</li>
       <li class="">B</li>
       <li class="">C</li>
     </ol>
-    <ol class="athena-carousel-items">
+    <ol class="lu-carousel-items">
       <li>A</li>
       <li class="">B</li>
       <li class="">C</li>
     </ol>
-    <ol class="athena-carousel-items">
+    <ol class="lu-carousel-items">
       <li>A</li>
       <li class="">B</li>
       <li class="">C</li>
     </ol>
-    <button data-athena="Button:Previous">Previous</button>
-    <button data-athena="Button:Next">Next</button>
+    <button data-lu="Button:Previous">Previous</button>
+    <button data-lu="Button:Next">Next</button>
   </div>
 
-  <div class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': { autoplay: false } }">
+  <div class="carousel" data-lu="Carousel" data-lu-config="{ 'Carousel': { autoplay: false } }">
 
-    <ol class="athena-carousel-items">
-      <li id="one" class="athena-selected" data-athena="List" data-athena-config="{ 'List': { observe: '#one-button' } }">
+    <ol class="lu-carousel-items">
+      <li id="one" class="lu-selected" data-lu="List" data-lu-config="{ 'List': { observe: '#one-button' } }">
         <h2>One</h2>
         <ol>
-          <li class="athena-selected">A</li>
+          <li class="lu-selected">A</li>
           <li class="">B</li>
           <li class="">C</li>
         </ol>
-        <button data-athena="Button:Previous">Previous</button>
-        <button data-athena="Button:Next">Next</button>
+        <button data-lu="Button:Previous">Previous</button>
+        <button data-lu="Button:Next">Next</button>
       </li>
-      <li id="two" data-athena="List" data-athena-config="{ 'List': { observe: '#two-button' } }">
+      <li id="two" data-lu="List" data-lu-config="{ 'List': { observe: '#two-button' } }">
         <h2>Two</h2>
         <ol>
-          <li class="athena-selected">A</li>
+          <li class="lu-selected">A</li>
           <li>B</li>
           <li>C</li>
         </ol>
-        <button data-athena="Button:Previous">Previous</button>
-        <button data-athena="Button:Next">Next</button>
+        <button data-lu="Button:Previous">Previous</button>
+        <button data-lu="Button:Next">Next</button>
       </li>
-      <li id="three" data-athena="List" data-athena-config="{ 'List': { observe: '#three-button' } }">
+      <li id="three" data-lu="List" data-lu-config="{ 'List': { observe: '#three-button' } }">
         <h2>Three</h2>
         <ol>
-          <li class="athena-selected">A</li>
+          <li class="lu-selected">A</li>
           <li>B</li>
           <li>C</li>
         </ol>
-        <button data-athena="Button:Previous">Previous</button>
-        <button data-athena="Button:Next">Next</button>
+        <button data-lu="Button:Previous">Previous</button>
+        <button data-lu="Button:Next">Next</button>
       </li>
     </ol>
-    <button id="one-button" data-athena="Button:First">One</button>
-    <button id="two-button" data-athena="Button:First">Two</button>
-    <button id="three-button" data-athena="Button:First">Three &mdash; ah, ah, aahhhhh.</button>
-    <button data-athena="Button:Previous">Previous</button>
-    <button data-athena="Button:Next">Next</button>
+    <button id="one-button" data-lu="Button:First">One</button>
+    <button id="two-button" data-lu="Button:First">Two</button>
+    <button id="three-button" data-lu="Button:First">Three &mdash; ah, ah, aahhhhh.</button>
+    <button data-lu="Button:Previous">Previous</button>
+    <button data-lu="Button:Next">Next</button>
   </div>
 
 </body>

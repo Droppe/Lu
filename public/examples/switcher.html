@@ -105,28 +105,28 @@
       overflow: hidden;
     }
 
-    .athena-switch-on {
+    .lu-switch-on {
       background-color: #fef;
     }
 
-    .athena-switch-off {
+    .lu-switch-off {
       background-color: #ded;
     }
 
-    .athena-switch-a {
+    .lu-switch-a {
       background-color: #000;
     }
 
-    .athena-switch-b {
+    .lu-switch-b {
       background-color: #888;
     }
 
-    .athena-switch-c {
+    .lu-switch-c {
       background-color: #fff;
     }
 
     .inject,
-    .athena {
+    .lu {
       display: block;
       float: left;
       background: #f0f;
@@ -136,16 +136,16 @@
       margin: 10px;
     }
     
-    .athena-switch-athena .athena {
+    .lu-switch-lu .lu {
       opacity: 1;
     }
 
-    .athena-switch-inject .inject {
+    .lu-switch-inject .inject {
       opacity: 1;
     }
 
-    .athena-switch-all .inject,
-    .athena-switch-all .athena {
+    .lu-switch-all .inject,
+    .lu-switch-all .lu {
       opacity: 1;
     }
     
@@ -162,74 +162,74 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 </head>
 
 <body>
-  <div id="switcher" data-athena="Switcher" data-athena-config="{ 'Switcher': { 'states': { 'on': {}, 'off': {} } } }">
-    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'on' } }">ON</button>
-    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'off' } }">OFF</button>
+  <div id="switcher" data-lu="Switcher" data-lu-config="{ 'Switcher': { 'states': { 'on': {}, 'off': {} } } }">
+    <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'on' } }">ON</button>
+    <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'off' } }">OFF</button>
   </div>
   <br/>
-  <div id="switcher-b" data-athena="Switcher" data-athena-config="{ 'Switcher': { 'states': 'on off' } }">
-    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'on off' } }">ON/OFF</button>
+  <div id="switcher-b" data-lu="Switcher" data-lu-config="{ 'Switcher': { 'states': 'on off' } }">
+    <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'on off' } }">ON/OFF</button>
   </div>
   <br/>
-  <div id="switcher-c" data-athena="Switcher" data-athena-config="{ 'Switcher': { 'states': 'a b c' } }">
-    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a' } }">A</button>
-    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'b' } }">B</button>
-    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'c' } }">C</button>
-    <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'a b c' } }">A/B/C</button>
-    <button data-athena="Button:Switch">Switch</button>
+  <div id="switcher-c" data-lu="Switcher" data-lu-config="{ 'Switcher': { 'states': 'a b c' } }">
+    <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'a' } }">A</button>
+    <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'b' } }">B</button>
+    <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'c' } }">C</button>
+    <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'a b c' } }">A/B/C</button>
+    <button data-lu="Button:Switch">Switch</button>
   </div>
-  <div data-athena="Switcher" data-athena-config="{ 'Switcher': { 'states': 'inject athena all' } }">
+  <div data-lu="Switcher" data-lu-config="{ 'Switcher': { 'states': 'inject lu all' } }">
     <ul>
       <li>
-        <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'inject' } }">Inject</button>
+        <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'inject' } }">Inject</button>
       </li>
       <li>
-        <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'athena' } }">Athena</button>
+        <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'lu' } }">Lu</button>
       </li>
       <li>
-        <button data-athena="Button:Switch" data-athena-config="{ 'Button:Switch': { states: 'all' } }">All</button>
+        <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states: 'all' } }">All</button>
       </li>
     </ul>
     <ul>
       <li class="inject">
-        <a href="#" title="A" data-athena="Tip:Left">A</a>
+        <a href="#" title="A" data-lu="Tip:Left">A</a>
       </li>
-      <li class="athena">
-        <a href="#" title="B" data-athena="Tip:Left">B</a>
+      <li class="lu">
+        <a href="#" title="B" data-lu="Tip:Left">B</a>
       </li>
-      <li class="athena">
-        <a href="#" title="C" data-athena="Tip:Left">C</a>
-      </li>
-      <li class="inject">
-        <a href="#" title="D" data-athena="Tip:Left">D</a>
-      </li>
-      <li class="athena">
-        <a href="#" title="E" data-athena="Tip:Left">E</a>
-      </li>
-      <li class="athena">
-        <a href="#" class="miniprofile" title="Chris Sacheri, Retired" data-athena="Tip:Right" data-athena-config="{ 'Tip:Right': { uri:'miniprofile.html' } }">F</a>
+      <li class="lu">
+        <a href="#" title="C" data-lu="Tip:Left">C</a>
       </li>
       <li class="inject">
-        <a href="#" title="G" data-athena="Tip:Left">G</a>
+        <a href="#" title="D" data-lu="Tip:Left">D</a>
+      </li>
+      <li class="lu">
+        <a href="#" title="E" data-lu="Tip:Left">E</a>
+      </li>
+      <li class="lu">
+        <a href="#" class="miniprofile" title="Chris Sacheri, Retired" data-lu="Tip:Right" data-lu-config="{ 'Tip:Right': { uri:'miniprofile.html' } }">F</a>
       </li>
       <li class="inject">
-        <a href="#" title="H" data-athena="Tip:Left">H</a>
+        <a href="#" title="G" data-lu="Tip:Left">G</a>
+      </li>
+      <li class="inject">
+        <a href="#" title="H" data-lu="Tip:Left">H</a>
       </li>
     </ul>
   </div>

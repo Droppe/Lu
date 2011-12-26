@@ -19,11 +19,11 @@
      display: inline-block;
     }
     
-    .athena-hidden {
+    .lu-hidden {
       display: none;
     }
     
-    .athena-selected {
+    .lu-selected {
       background-color: cyan;
     }
 
@@ -42,17 +42,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
   <!-- JS -->
 
@@ -61,24 +61,24 @@
 <body>
   <h1>Tabs Example</h1>
 
-  <div id="tabs" data-athena="Tabs">
+  <div id="tabs" data-lu="Tabs">
 
     <!-- Tablist -->
-    <ul id="tablist" class="tab-list" data-athena="List">
+    <ul id="tablist" class="tab-list" data-lu="List">
       <!-- Tabs -->
-      <li class="athena-selected">
-        <a href="#tabpanel1" data-athena="Button:Select">Tab 1</a>
+      <li class="lu-selected">
+        <a href="#tabpanel1" data-lu="Button:Select">Tab 1</a>
       </li>
       <li class="">
-        <a href="#tabpanel2" data-athena="Button:Select">Tab 2</a>
+        <a href="#tabpanel2" data-lu="Button:Select">Tab 2</a>
       </li>
     </ul>
     
     <!-- Tab panels -->
-    <div id="tabpanel1" class="" data-athena="Container">
+    <div id="tabpanel1" class="" data-lu="Container">
       Tab 1 panel
     </div>
-    <div id="tabpanel2" class="athena-hidden" data-athena="Container">
+    <div id="tabpanel2" class="lu-hidden" data-lu="Container">
       Tab 2 panel
     </div>
     

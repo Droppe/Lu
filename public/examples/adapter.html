@@ -16,10 +16,10 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    #container .athena-selected * {
+    #container .lu-selected * {
       color: black;
     }
-    #container .athena-selected {
+    #container .lu-selected {
       color: red;
     }
   </style>
@@ -34,17 +34,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 </head>
@@ -52,8 +52,8 @@
 <body>
 
   <div id="container">
-    <ul id="list" data-athena="List">
-      <li class="athena-selected">
+    <ul id="list" data-lu="List">
+      <li class="lu-selected">
         A
       </li>
       <li class="">
@@ -63,12 +63,12 @@
         C
       </li>
     </ul>
-    <button data-athena="Button:Next" data-athena-config="{
+    <button data-lu="Button:Next" data-lu-config="{
       'Button:Next': {
         notify: '#list'
       }
     }">Next</button>
-    <button data-athena="Button:Previous" data-athena-config="{
+    <button data-lu="Button:Previous" data-lu-config="{
       'Button:Previous': {
         notify: '#list'
       }

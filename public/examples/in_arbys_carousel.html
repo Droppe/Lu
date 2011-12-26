@@ -26,10 +26,10 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
     
@@ -38,7 +38,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 
@@ -97,7 +97,7 @@
     .tab-list li:last-child {
       border-width: 1px 1px 1px 0;
     }
-    .tab-list li.athena-selected {
+    .tab-list li.lu-selected {
       border-color: #000;
       border-width: 2px 2px 0 2px;
     }
@@ -127,7 +127,7 @@
       margin-left: 1em;
     }
     
-    .items li.athena-selected {
+    .items li.lu-selected {
       display: block;
     }
 
@@ -137,7 +137,7 @@
       margin-top: -2em;
     }
 
-    .athena-hidden { display: none; }
+    .lu-hidden { display: none; }
   </style>
 
 
@@ -154,28 +154,28 @@
 
     <h2>Menu</h2>
     
-    <div class="tabs" data-athena="Tabs" data-athena-config="{
+    <div class="tabs" data-lu="Tabs" data-lu-config="{
       'Tabs': {
       }
     }">
       <h3>TOC</h3>
-      <ul class="tab-list" data-athena="List">
-        <li class="athena-selected"><a href="#sandwiches" role="button" data-athena="Button:Select">Sandwiches</a></li>
-        <li><a href="#sides" role="button" data-athena="Button:Select">Sides</a></li>
-        <li><a href="#drinks" role="button" data-athena="Button:Select">Drinks</a></li>
-        <li><a href="#desserts" role="button" data-athena="Button:Select">Desserts</a></li>
+      <ul class="tab-list" data-lu="List">
+        <li class="lu-selected"><a href="#sandwiches" role="button" data-lu="Button:Select">Sandwiches</a></li>
+        <li><a href="#sides" role="button" data-lu="Button:Select">Sides</a></li>
+        <li><a href="#drinks" role="button" data-lu="Button:Select">Drinks</a></li>
+        <li><a href="#desserts" role="button" data-lu="Button:Select">Desserts</a></li>
       </ul>
 
-      <div id="sandwiches" class="tab-panels" data-athena="Container">
+      <div id="sandwiches" class="tab-panels" data-lu="Container">
         <h3>Sandwiches</h3>
         
-        <div class="carousel" data-athena="Carousel" data-athena-config="{
+        <div class="carousel" data-lu="Carousel" data-lu-config="{
           Carousel: { 
             autoplay: false
           }
         }">
           <ul class="items">
-            <li class="athena-selected">
+            <li class="lu-selected">
               <img src="http://www.couponwow.com/wp-content/uploads/2011/06/arbys-roast-beef-sandwich.jpg" alt="sandwich">
               <p>
                 <strong>One!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
@@ -207,21 +207,21 @@
             </li>
           </ul>
           <div class="control-buttons">
-            <button type="button" class="previous" data-athena="Button:Previous">previous</button>
-            <button type="button" class="next" data-athena="Button:Next">next</button>
+            <button type="button" class="previous" data-lu="Button:Previous">previous</button>
+            <button type="button" class="next" data-lu="Button:Next">next</button>
           </div>
         </div>
       </div>
       
-      <div id="sides" class="tab-panels athena-hidden" data-athena="Container">
+      <div id="sides" class="tab-panels lu-hidden" data-lu="Container">
         <h3>Sides</h3>
-        <div class="carousel" data-athena="Carousel" data-athena-config="{
+        <div class="carousel" data-lu="Carousel" data-lu-config="{
           Carousel: { 
             autoplay: false
           }
         }">
           <ul class="items">
-            <li class="athena-selected">
+            <li class="lu-selected">
               <img src="http://arbys.com/assets/templates/images/sides/ARB11_MdFriesgreenlarge.png" alt="side dish">
               <p>
                 <strong>One!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
@@ -253,21 +253,21 @@
             </li>
           </ul>
           <div class="control-buttons">
-            <button type="button" class="previous" data-athena="Button:Previous">previous</button>
-            <button type="button" class="next" data-athena="Button:Next">next</button>
+            <button type="button" class="previous" data-lu="Button:Previous">previous</button>
+            <button type="button" class="next" data-lu="Button:Next">next</button>
           </div>
         </div>
       </div>
       
-      <div id="drinks" class="tab-panels athena-hidden" data-athena="Container">
+      <div id="drinks" class="tab-panels lu-hidden" data-lu="Container">
         <h3>Drinks</h3>
-        <div class="carousel" data-athena="Carousel" data-athena-config="{
+        <div class="carousel" data-lu="Carousel" data-lu-config="{
           Carousel: { 
             autoplay: false
           }
         }">
           <ul class="items">
-            <li class="athena-selected">
+            <li class="lu-selected">
               <img src="http://arbys.com/assets/templates/images/desserts/ARB_Shakes_jamoca.png" alt="drink">
               <p>
                 <strong>One!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
@@ -299,21 +299,21 @@
             </li>
           </ul>
           <div class="control-buttons">
-            <button type="button" class="previous" data-athena="Button:Previous">previous</button>
-            <button type="button" class="next" data-athena="Button:Next">next</button>
+            <button type="button" class="previous" data-lu="Button:Previous">previous</button>
+            <button type="button" class="next" data-lu="Button:Next">next</button>
           </div>
         </div>
       </div>
 
-      <div id="desserts" class="tab-panels athena-hidden" data-athena="Container">
+      <div id="desserts" class="tab-panels lu-hidden" data-lu="Container">
         <h3>Desserts</h3>
-        <div class="carousel" data-athena="Carousel" data-athena-config="{
+        <div class="carousel" data-lu="Carousel" data-lu-config="{
           Carousel: { 
             autoplay: false
           }
         }">
           <ul class="items">
-              <li class="athena-selected">
+              <li class="lu-selected">
                 <img src="http://arbys.com/assets/templates/images/desserts/Turnover_cherry.png" alt="drink">
                 <p>
                   <strong>One!</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore 
@@ -345,8 +345,8 @@
               </li>
             </ul>
           <div class="control-buttons">
-            <button type="button" class="previous" data-athena="Button:Previous">previous</button>
-            <button type="button" class="next" data-athena="Button:Next">next</button>
+            <button type="button" class="previous" data-lu="Button:Previous">previous</button>
+            <button type="button" class="next" data-lu="Button:Next">next</button>
           </div>
         </div>
       </div>

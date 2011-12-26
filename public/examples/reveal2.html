@@ -35,10 +35,10 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
     
@@ -47,7 +47,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 
@@ -60,9 +60,9 @@
       <fieldset>
         <legend>Checkbox Notifying Container</legend>
 
-        <label><input type="checkbox" name="myCheckBox1" value="on1" data-athena="Checkbox" aria-controls="revealContent1">1</label>
+        <label><input type="checkbox" name="myCheckBox1" value="on1" data-lu="Checkbox" aria-controls="revealContent1">1</label>
 
-        <span class="hidden cntr" id="revealContent1" data-athena="Container">
+        <span class="hidden cntr" id="revealContent1" data-lu="Container">
           Extra content for Checkbox 1. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
           dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
@@ -74,16 +74,16 @@
       <fieldset>
         <legend>Radio Notifying Container</legend>
 
-        <label><input type="radio" name="myRadio1" value="on2" data-athena="Radio" aria-controls="revealContent2">2</label>
-        <label><input type="radio" name="myRadio1" value="on3" data-athena="Radio" aria-controls="revealContent3">3</label>
+        <label><input type="radio" name="myRadio1" value="on2" data-lu="Radio" aria-controls="revealContent2">2</label>
+        <label><input type="radio" name="myRadio1" value="on3" data-lu="Radio" aria-controls="revealContent3">3</label>
 
-        <span class="hidden cntr" id="revealContent2" data-athena="Container">
+        <span class="hidden cntr" id="revealContent2" data-lu="Container">
           Extra content for Radio 2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
           dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
           sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         </span>
-        <span class="hidden cntr" id="revealContent3" data-athena="Container">
+        <span class="hidden cntr" id="revealContent3" data-lu="Container">
           Extra content for Radio 3. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
           dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
           consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur

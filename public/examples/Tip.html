@@ -111,17 +111,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 </head>
@@ -129,16 +129,16 @@
 <body>
 
   <div id="container">
-    <a href="#" title="right" data-athena="Tip:Right">Right</a>
+    <a href="#" title="right" data-lu="Tip:Right">Right</a>
     Lorem ipsum dolor sit amet, <a href="#" title="Left"
-    data-athena="Tip:Left">consectetur</a> adipisicing elit, sed do eiusmod
+    data-lu="Tip:Left">consectetur</a> adipisicing elit, sed do eiusmod
     tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
     quis nostrud <a href="#" title="Above: Lorem ipsum dolor sit amit contructure"
-    data-athena="Tip">Above</a> ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis <a href="#" class="miniprofile" title="Chris Sacheri, Retired" data-athena="Tip:Right" data-athena-config="{ 'Tip:Right': { uri:'miniprofile.html' } }">Miniprofile</a> dolor in reprehenderit in
+    data-lu="Tip">Above</a> ullamco laboris nisi ut aliquip ex ea commodo
+    consequat. Duis <a href="#" class="miniprofile" title="Chris Sacheri, Retired" data-lu="Tip:Right" data-lu-config="{ 'Tip:Right': { uri:'miniprofile.html' } }">Miniprofile</a> dolor in reprehenderit in
     voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
     occaecat cupidatat non proident, sunt in <a href="#" title="Below"
-    data-athena="Tip:Below">Below</a> qui officia deserunt mollit
+    data-lu="Tip:Below">Below</a> qui officia deserunt mollit
     anim id est laborum.
   </div>
 

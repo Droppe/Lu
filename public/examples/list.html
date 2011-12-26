@@ -16,7 +16,7 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    .list .athena-selected {
+    .list .lu-selected {
       color: red;
     }
   </style>
@@ -31,17 +31,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 </head>
@@ -51,15 +51,15 @@
   <div id="container">
 
     <h1>List with External Control</h1>
-    <ol class="list" id="list1" data-athena="List">
-      <li class="athena-selected">one</li>
+    <ol class="list" id="list1" data-lu="List">
+      <li class="lu-selected">one</li>
       <li>two</li>
       <li>three</li>
       <li>four</li>
       <li>five</li>
     </ol>
 
-    <button data-athena="Button" data-athena-config="{
+    <button data-lu="Button" data-lu-config="{
       'Button':{
         action: 'first',
         notify: '#list1'
@@ -67,7 +67,7 @@
       first
     </button>
 
-    <button data-athena="Button" data-athena-config="{
+    <button data-lu="Button" data-lu-config="{
       'Button':{
         action: 'previous',
         notify: '#list1'
@@ -75,14 +75,14 @@
       previous
     </button>
     
-    <button data-athena="Button:Next" data-athena-config="{
+    <button data-lu="Button:Next" data-lu-config="{
       'Button:Next':{
         notify: '#list1'
     }}">
       next
     </button>
 
-    <button data-athena="Button" data-athena-config="{
+    <button data-lu="Button" data-lu-config="{
       'Button':{
         action: 'last',
         notify: '#list1'
@@ -93,12 +93,12 @@
 
 
     <h1>List with Internal Control</h1>
-    <ol class="list" id="list2" data-athena="List">
-      <li class="athena-selected"><a href="#1" role="button" data-athena="Button:Select">one</a></li>
-      <li><a href="#2" role="button" data-athena="Button:Select">two</a></li>
-      <li><a href="#3" role="button" data-athena="Button:Select">three</a></li>
-      <li><button type="button" data-athena="Button:Select">four</button></li>
-      <li><button type="button" data-athena="Button:Select" data-athena-config="{
+    <ol class="list" id="list2" data-lu="List">
+      <li class="lu-selected"><a href="#1" role="button" data-lu="Button:Select">one</a></li>
+      <li><a href="#2" role="button" data-lu="Button:Select">two</a></li>
+      <li><a href="#3" role="button" data-lu="Button:Select">three</a></li>
+      <li><button type="button" data-lu="Button:Select">four</button></li>
+      <li><button type="button" data-lu="Button:Select" data-lu-config="{
         'Button:Select': { item: 0 }
       }">five</button></li>
     </ol>

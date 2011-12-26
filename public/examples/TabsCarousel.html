@@ -16,7 +16,7 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    .carousel .athena-selected {
+    .carousel .lu-selected {
       color: red;
     }
   </style>
@@ -31,17 +31,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 </head>
@@ -49,12 +49,12 @@
 <body>
 
   <div id="container">
-    <div data-athena="Tabs" class="product-showcase">
-      <ul class="tab-panels" data-athena="List">
+    <div data-lu="Tabs" class="product-showcase">
+      <ul class="tab-panels" data-lu="List">
         <!-- this is a menu section -->
-        <li id="classics" class="athena-selected carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': 'autoplay': false } }">
+        <li id="classics" class="lu-selected carousel" data-lu="Carousel" data-lu-config="{ 'Carousel': 'autoplay': false } }">
           <ul>
-            <li class="athena-selected">
+            <li class="lu-selected">
               <div class="sandwich">A</div>
               <div class="description">
                 <h2>Roast Beef</h2>
@@ -86,15 +86,15 @@
             </li>
           </ul>
           <div class="controls">
-            <button class="showcase-previous" data-athena="Button:Previous">Previous</button>
-            <button class="showcase-next" data-athena="Button:Next">Next</button>
+            <button class="showcase-previous" data-lu="Button:Previous">Previous</button>
+            <button class="showcase-next" data-lu="Button:Next">Next</button>
           </div>
         </li>
         <!-- end menu section -->
         <!-- this is a menu section -->
-        <li id="melts" class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': 'autoplay': false } }">
-          <ul class="athena-carousel-items">
-            <li class="athena-selected">
+        <li id="melts" class="carousel" data-lu="Carousel" data-lu-config="{ 'Carousel': 'autoplay': false } }">
+          <ul class="lu-carousel-items">
+            <li class="lu-selected">
               <div class="sandwich">D</div>
               <div class="description">
                 <h2>Classic Melt</h2>
@@ -126,15 +126,15 @@
             </li>
           </ul>
           <div class="controls">
-            <button class="showcase-previous" data-athena="Button:Previous">Previous</button>
-            <button class="showcase-next" data-athena="Button:Next">Next</button>
+            <button class="showcase-previous" data-lu="Button:Previous">Previous</button>
+            <button class="showcase-next" data-lu="Button:Next">Next</button>
           </div>
         </li>
         <!-- end menu section -->
         <!-- this is a menu section -->
-        <li id="marketfresh"  class="carousel" data-athena="Carousel" data-athena-config="{ 'Carousel': 'autoplay': false } }">
-          <ul class="athena-carousel-items">
-            <li class="athena-selected">
+        <li id="marketfresh"  class="carousel" data-lu="Carousel" data-lu-config="{ 'Carousel': 'autoplay': false } }">
+          <ul class="lu-carousel-items">
+            <li class="lu-selected">
               <div class="sandwich">G</div>
               <div class="description">
                 <h2>Roast Turkey Ranch and Bacon Wrap</h2>
@@ -166,16 +166,16 @@
             </li>
           </ul>
           <div class="controls">
-            <button class="showcase-previous" data-athena="Button:Previous">Previous</button>
-            <button class="showcase-next" data-athena="Button:Next">Next</button>
+            <button class="showcase-previous" data-lu="Button:Previous">Previous</button>
+            <button class="showcase-next" data-lu="Button:Next">Next</button>
           </div>
         </li>
         <!-- end menu section -->
       </ul>
-      <ul class="tab-list" data-athena="List">
-        <li class="athena-selected"><a href="#classics" data-athena="Button:Select">Classic Sandwiches</a></li>
-        <li><a href="#melts" data-athena="Button:Select">Melty Goodness</a></li>
-        <li><a href="#marketfresh" data-athena="Button:Select">Market Fresh Ideas</a></li>
+      <ul class="tab-list" data-lu="List">
+        <li class="lu-selected"><a href="#classics" data-lu="Button:Select">Classic Sandwiches</a></li>
+        <li><a href="#melts" data-lu="Button:Select">Melty Goodness</a></li>
+        <li><a href="#marketfresh" data-lu="Button:Select">Market Fresh Ideas</a></li>
       </ul>
     </div>
   </div>

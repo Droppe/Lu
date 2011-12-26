@@ -16,7 +16,7 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-  .athena-hidden { display: none; }
+  .lu-hidden { display: none; }
   </style>
 
   <!-- Bootstrap:Util -->
@@ -29,17 +29,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 </head>
@@ -48,21 +48,21 @@
   <div id="container">
         
 
-    <button data-athena="Button" data-athena-config="{
+    <button data-lu="Button" data-lu-config="{
       'Button':{
         action: 'select',
         notify: '.unrelated'
       }
     }">Show</button>
     
-    <button data-athena="Button" data-athena-config="{
+    <button data-lu="Button" data-lu-config="{
       'Button':{
         action: 'unselect',
         notify: '.unrelated'
       }
     }">Hide</button>
 
-    <div class="unrelated athena-hidden" data-athena="Container">
+    <div class="unrelated lu-hidden" data-lu="Container">
       This is some completely unrelated content, DOM-wise.
     </div>
 

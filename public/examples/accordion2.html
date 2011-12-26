@@ -16,7 +16,7 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-  .athena-hidden { display: none; }
+  .lu-hidden { display: none; }
   </style>
 
   <!-- Bootstrap:Util -->
@@ -29,17 +29,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
   
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena/athena'], function() {} );
+    require.ensure( ['/scripts/libraries/lu/lu'], function() {} );
   </script>
 
 <style>
@@ -53,7 +53,7 @@
     content: "[+] ";
     font-size: 0.5em;
   }
-  #content h2 a.athena-disabled:before {
+  #content h2 a.lu-disabled:before {
     content: "[-] ";
     font-size: 0.5em;
   }
@@ -66,14 +66,14 @@
 
     <h1>Accordion 2</h1>
     
-    <div id="content" data-athena="Accordion" data-athena-config="{
+    <div id="content" data-lu="Accordion" data-lu-config="{
       'Accordion': {
         items: 'div'
       }
     }">
       <div class="tradition">
-        <h2><a href="#trad" class="athena-disabled" data-athena="Button:Select">Steeped in Tradition</a></h2>
-        <div class="Xathena-hidden" id="trad" data-athena="Container">
+        <h2><a href="#trad" class="lu-disabled" data-lu="Button:Select">Steeped in Tradition</a></h2>
+        <div class="Xlu-hidden" id="trad" data-lu="Container">
           <p>Your first lunch at a company should be memorable. It's not good enough to visit the local eatery- for many years,
             LinkedIn would take new hires to Arby's, home of the Roast Beef Sandwich. Just one look at the dizzying array of
             sandwiches above should tell you why this is a favorite of Web Development shops who's name end in "kedIn". Like
@@ -85,9 +85,9 @@
         </div>
       </div>
       <div class="ourbys">
-        <h2><a href="#our" data-athena="Button:Select">Our Arby's</a></h2>
-        <div class="athena-hidden" id="our" data-athena="Container">
-          <p>Arby's Franchise 256 is located at <a href="#" data-athena="Button" data-config="{
+        <h2><a href="#our" data-lu="Button:Select">Our Arby's</a></h2>
+        <div class="lu-hidden" id="our" data-lu="Container">
+          <p>Arby's Franchise 256 is located at <a href="#" data-lu="Button" data-config="{
             'Button': {
               action: 'open',
               notify: '.ourbys .map'
@@ -104,7 +104,7 @@
           <p><strong>Warning</strong>: Beyond the Arby's, there's this other restaurant called Adamsons. While they have excellent
             French Dip sandwiches, <em>don't be fooled</em>! It smells like Arby's, it might even look a bit like Arby's, but
             it most assuredly is not. When you want Arby's, be sure to stop at the Arby's and don't go further.</p>
-          <div class="map" data-athena="Dialog" data-config="{
+          <div class="map" data-lu="Dialog" data-config="{
             'Dialog': {
               width: 660,
               modal: true,
@@ -116,8 +116,8 @@
         </div>
       </div>
       <div class="apply">
-        <h2><a href="#workwith" data-athena="Button:Select">Work With Us, Come to Arby's!</a></h2>
-        <div class="athena-hidden" id="workwith" data-athena="Container">
+        <h2><a href="#workwith" data-lu="Button:Select">Work With Us, Come to Arby's!</a></h2>
+        <div class="lu-hidden" id="workwith" data-lu="Container">
           <p>If going to Arby's for lunch (or anywhere really) sounds like your kind of welcoming, you should probably apply to
             be a web developer here at LinkedIn. We were just kidding about the Market Fresh sandwiches.</p>
           <p class="apply-now">

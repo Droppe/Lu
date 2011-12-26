@@ -19,7 +19,7 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    .athena-selected { font-weight: bold; background-color: red; }
+    .lu-selected { font-weight: bold; background-color: red; }
   </style>
 
   <!-- Bootstrap:Util -->
@@ -32,17 +32,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 
@@ -53,24 +53,24 @@
 <body>
   
   
-  <div id="carousel" data-athena="Carousel">
+  <div id="carousel" data-lu="Carousel">
    
     <ol id="car-list" class="items">
-      <li class="athena-selected">one</li>
+      <li class="lu-selected">one</li>
       <li>two</li>
       <li>three</li>
       <li>four</li>
       <li>five</li>
     </ol>
 
-    <button id="btn-prev" data-athena="Button:Previous">Previous</button>
-    <button id="btn-next" data-athena="Button:Next">Next</button>
+    <button id="btn-prev" data-lu="Button:Previous">Previous</button>
+    <button id="btn-next" data-lu="Button:Next">Next</button>
 
 
   </div>
 
 
-  <div id="carousel2" data-athena="Carousel">
+  <div id="carousel2" data-lu="Carousel">
     <ol id="car-list2" class="items">
       <li>one</li>
       <li class="selected">two</li>
@@ -78,22 +78,22 @@
       <li>four</li>
       <li>five</li>
     </ol>
-    <button id="btn-prev2" data-athena="Button" data-athena-config="{
+    <button id="btn-prev2" data-lu="Button" data-lu-config="{
       'Button': {
         action: 'previous'
       }
     }">Previous</button>
-    <button id="btn-next2" data-athena="Button" data-athena-config="{
+    <button id="btn-next2" data-lu="Button" data-lu-config="{
       'Button': {
         action: 'next'
       }
     }">Next</button>
-    <button id="btn-play2" data-athena="Button" data-athena-config="{
+    <button id="btn-play2" data-lu="Button" data-lu-config="{
       'Button': {
         action: 'play'
       }
     }">Play</button>
-    <button id="btn-stop2" data-athena="Button" data-athena-config="{
+    <button id="btn-stop2" data-lu="Button" data-lu-config="{
       'Button': {
         action: 'pause'
       }

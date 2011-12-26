@@ -35,10 +35,10 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
     
@@ -47,7 +47,7 @@
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 
@@ -56,12 +56,12 @@
 <body>
   <div id="container">
     
-    <button type="button" data-athena="Button:Previous" data-athena-config="{
+    <button type="button" data-lu="Button:Previous" data-lu-config="{
       'Button:Previous': {
         notify: '#repeater'
       }
     }">Previous</button>
-    <button id="repeater" type="button" data-athena="Button:NextRepeat">Next (Repeat)</button>
+    <button id="repeater" type="button" data-lu="Button:NextRepeat">Next (Repeat)</button>
 
 
   </div>

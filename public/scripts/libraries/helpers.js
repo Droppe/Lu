@@ -30,23 +30,27 @@ _.explodeURL = function ( url ) {
 };
 
 
-_.each( "assert count debug dir dirxml error group groupCollapsed groupEnd info log profile profileEnd time timeEnd trace warn".split(" "), function (type) {
+_.each( "assert count debug dir dirxml error group groupCollapsed groupEnd info log profile profileEnd time timeEnd trace warn".split(" "), function ( type ) {
 
   if ( typeof _[type] === "undefined" ) {
 
     _[type] = function () {
-      if ( window.ATHENA_CONFIG && window.ATHENA_CONFIG.debug && console && !!console[type] ) {
+      var parameters = Array.prototype.slice.call( arguments );
+      if ( window.LU_CONFIG && window.LU_CONFIG.debug && console && !!console[type] ) {
         _[type] = function () {
-          return console[type]( "ATHENA", arguments );
+          parmaeters = parameters.push( ' ! LU ! ' );
+          return console[type].apply( this, parameters );
         };
       }
       else {
         _[type] = function () {};
       }
-      
-      _[type](arguments);
+
+      //_[type].apply( this, arguments );
     };
 
   }
   
-});
+} );
+
+

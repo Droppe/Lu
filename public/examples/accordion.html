@@ -16,7 +16,7 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-  .athena-hidden { display: none; }
+  .lu-hidden { display: none; }
   </style>
 
   <!-- Bootstrap:Util -->
@@ -29,17 +29,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
   
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena/athena'], function() {} );
+    require.ensure( ['/scripts/libraries/lu/lu'], function() {} );
   </script>
 
 <style>
@@ -56,23 +56,23 @@
 
     <h1>Accordion</h1>
     
-    <dl class="acc" data-athena="Accordion">
+    <dl class="acc" data-lu="Accordion">
       <dt id="panel1">
-        <h2><a href="#content1" data-athena="Button:Select">First</a></h2>
+        <h2><a href="#content1" data-lu="Button:Select">First</a></h2>
       </dt>
-      <dd id="content1" class="athena-hidden" data-athena="Container">
+      <dd id="content1" class="lu-hidden" data-lu="Container">
         <img src="http://lh3.googleusercontent.com/public/QXFNKAd39hfpG8mlU6m1RikoJMqp6ETGAk-6xnu7i3EaEa8MJOYr1BCcWyrPQXdQrRf2KTJIQYqi-78WeP9PHItParU636aBkdiSDjcs1ef5R3xNUhmKTwBLwGXipc7Q3oHebdnvZRXISbpSK43xNR0h_O0OYnXF-DpjiJtnDRuFgnNm2iUahc8xhEQw2gllkmgbAcBGNo1FQ86wpVlIBHSL3Xv7mWOLLWqPuxC34EnasHApLbZJrtYVrdmQd4ux60HhYLOZSEes-RKOY1NT6c9wWMWkiN8-tzKc7Mo7j1NIXUkY5fyGPsgzT3bv7c6AnzY6">      
       </dd>
       <dt id="panel2">
-        <h2><a href="#content2" data-athena="Button:Select">Second</a></h2>
+        <h2><a href="#content2" data-lu="Button:Select">Second</a></h2>
       </dt>
-      <dd id="content2" class="athena-hidden" data-athena="Container">
+      <dd id="content2" class="lu-hidden" data-lu="Container">
         <img src="http://lh5.googleusercontent.com/public/aZ3ocGiTqJ35ddaPCk8zhCEB09uoO3cDSl2P1TzIe0ppTjnDxPm_VkeGkHnojp1OEWZqG9a-q-Nauo3zRsQaMCMzicYZRvJd184z50NRX9OxSWPKKRr1hhgZzhv1CKi--OVI1zwfUCoV">      
       </dd>
       <dt id="panel3">
-        <h2><a href="#content3" data-athena="Button:Select">Third</a></h2>
+        <h2><a href="#content3" data-lu="Button:Select">Third</a></h2>
       </dt>
-      <dd id="content3" class="athena-hidden" data-athena="Container">
+      <dd id="content3" class="lu-hidden" data-lu="Container">
         <img src="http://lh6.googleusercontent.com/public/KFrGVvI5xx5xsgK2Cyq0EqQ1x-I9PPxykwtdKz3b18mCZD7aCKZ4Pc58p2uAugxCX4_uLxjtgDejdbrChIwGmVMMc1yku0rD-b-3cQulh0K7rUpvnLhYBon7zYqxK8WftSn6gCzymKRG">      
       </dd>
     </dl>

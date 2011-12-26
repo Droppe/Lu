@@ -16,21 +16,21 @@
   <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css" media="screen">
-    .athena-switch { overflow: hidden; *zoom: 1; }
-    .athena-switch button {
+    .lu-switch { overflow: hidden; *zoom: 1; }
+    .lu-switch button {
       border: 1px solid #ccc;
       border-radius: 0;
       font-size: 25px;
       float: left;
       margin: 0 -1px 0 0;
     }
-    .athena-switch button:first-child {
+    .lu-switch button:first-child {
       border-radius: 10px 0 0 10px;     
     }
-    .athena-switch button:last-child {
+    .lu-switch button:last-child {
       border-radius: 0 10px 10px 0;
     }
-    .athena-switch button[disabled] {
+    .lu-switch button[disabled] {
       background-color: #000;
       color: #fff;
     }
@@ -46,17 +46,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['/scripts/libraries/athena/athena'], function() {} );
+    require.ensure( ['/scripts/libraries/lu/lu'], function() {} );
   </script>
 
 </head>
@@ -65,7 +65,7 @@
 
   <div id="container">
     
-    <div id="switcher1" class="athena-switch" data-athena="Container:Switcher" data-athena-config="{
+    <div id="switcher1" class="lu-switch" data-lu="Container:Switcher" data-lu-config="{
       'Container:Switcher': {
         states: [{yes: 'i want hamburger'}, {no: 'i want pizza'}]
       } 
@@ -76,21 +76,21 @@
 
 
 
-    <button value="yes" data-athena="Button:Select" data-athena-config="{
+    <button value="yes" data-lu="Button:Select" data-lu-config="{
       'Button:Select': {
         notify: '#switcher1',
         item: 1
       }
     }">Select a Burger</button>
 
-    <button value="no" data-athena="Button:Select" data-athena-config="{
+    <button value="no" data-lu="Button:Select" data-lu-config="{
       'Button:Select': {
         notify: '#switcher1',
         item: 2
       }
     }">Select Pizza</button>
 
-    <button data-athena="Button:Select" data-athena-config="{
+    <button data-lu="Button:Select" data-lu-config="{
       'Button:Select': {
         notify: '#switcher1',
         item: 3
@@ -100,7 +100,7 @@
     
     
     
-    <div id="switcher2" class="athena-switch" data-athena="Container:Switcher" data-athena-config="{
+    <div id="switcher2" class="lu-switch" data-lu="Container:Switcher" data-lu-config="{
       'Container:Switch': {
         states: ['trubeedoobydoo', 'falsywalsey', 'yessssss']
       } 
@@ -110,7 +110,7 @@
     </div>
 
 
-    <div id="switcher3" class="athena-switch" data-athena="Container:Switcher" data-athena-config="{
+    <div id="switcher3" class="lu-switch" data-lu="Container:Switcher" data-lu-config="{
       'Container:Switcher': {
         buttonTag: 'a',
         states: ['trubeedoobydoo2', 'falsywalsey2', 'yessssss2']

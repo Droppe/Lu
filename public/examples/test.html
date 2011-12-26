@@ -80,22 +80,22 @@
 
 </head>
 
-<h1>Athena + PT Class Test</h1>
+<h1>Lu + PT Class Test</h1>
 
 <body>
   
   <div id="container">
-    <ol data-athena="List">
+    <ol data-lu="List">
       <li class="selected">one</li>
       <li>two</li>
       <li>three</li>
     </ol>
-    <button data-athena="Button" data-athena-config="{
+    <button data-lu="Button" data-lu-config="{
       'Button': {
         action: 'previous'
       }
     }">previous</button>
-    <button data-athena="Button" data-athena-config="{
+    <button data-lu="Button" data-lu-config="{
       'Button': {
         action: 'next'
       }
@@ -105,8 +105,8 @@
 
 
     <script type="text/javascript" charset="utf-8">
-      li.require( ['libraries/athena'], function( Athena ) {
-        Athena = new Athena();
+      li.require( ['libraries/lu'], function( Lu ) {
+        Lu = new Lu();
       } );
       
     </script>

@@ -25,17 +25,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
     require.addRule(/jquery\.ui/, {
       path: function(module) {
         return ["/scripts/libraries/jquery-ui-1.8.16", module].join("/") + ".js"
@@ -51,20 +51,20 @@
 
 <body>
 
-  <button data-athena="Button" data-athena-config="{
+  <button data-lu="Button" data-lu-config="{
     'Button': {
       action: 'open',
       notify: '#dialog'
     }
   }">Open Dialog (notify)</button>
-  <button data-athena="Button" data-athena-config="{
+  <button data-lu="Button" data-lu-config="{
     'Button': {
       action: 'close',
       notify: '#dialog'
     }
   }">Close Dialog (notify)</button>
 
-  <div id="dialog" title="Dialog Title (drag me)" data-athena="Dialog" data-athena-config="{ 
+  <div id="dialog" title="Dialog Title (drag me)" data-lu="Dialog" data-lu-config="{ 
     'Dialog': {
       width: 600,
       draggable: true,
@@ -74,7 +74,7 @@
     }
   }">
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    <button id="btn-close-bubble" data-athena="Button" data-athena-config="{
+    <button id="btn-close-bubble" data-lu="Button" data-lu-config="{
       'Button': {
         action: 'close'
       }

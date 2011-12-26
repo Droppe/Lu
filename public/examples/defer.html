@@ -29,17 +29,17 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/athena/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    ATHENA_CONFIG = {
+    LU_CONFIG = {
       debug: true
     };
   </script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
-    require.ensure( ['athena'], function() {} );
+    require.ensure( ['lu'], function() {} );
   </script>
 
 <style>
@@ -56,19 +56,19 @@
       
       <fieldset>
         <legend>Radio Buttons -- not in List</legend>
-        <label><input type="radio" name="myRadioBtn2" value="on6" aria-controls="revealContent6" data-athena="Radio">6</label>
-        <span class="hidden" id="revealContent6" data-athena="Container">
+        <label><input type="radio" name="myRadioBtn2" value="on6" aria-controls="revealContent6" data-lu="Radio">6</label>
+        <span class="hidden" id="revealContent6" data-lu="Container">
           Extra content for 6.
         </span>
 
-        <label><input type="radio" name="myRadioBtn2" value="on7" aria-controls="revealContent7" data-athena="Radio">7</label>
-        <span class="hidden" id="revealContent7" data-athena="Container">
+        <label><input type="radio" name="myRadioBtn2" value="on7" aria-controls="revealContent7" data-lu="Radio">7</label>
+        <span class="hidden" id="revealContent7" data-lu="Container">
           Extra content for 7.
         </span>
 
-        <label><input type="radio" name="myRadioBtn2" value="on8" aria-controls="revealContent8" data-athena="Radio">8</label>
+        <label><input type="radio" name="myRadioBtn2" value="on8" aria-controls="revealContent8" data-lu="Radio">8</label>
 
-        <span class="hidden" id="revealContent8" data-athena="Container">
+        <span class="hidden" id="revealContent8" data-lu="Container">
           Extra content for 8.
         </span>
 
@@ -76,27 +76,27 @@
       
       <fieldset>
         <legend>Select Options</legend>
-        <select name="mySelect" data-athena="FormSelect">
+        <select name="mySelect" data-lu="FormSelect">
           <option> -- </option>
           <option value="9" aria-controls="revealContent9">nine</option>
           <option value="10" aria-controls="revealContent10">ten</option>
           <option value="11" aria-controls="revealContent11">eleven</option>                    
         </select>
 
-        <span class="hidden" id="revealContent9" data-athena="Container">
+        <span class="hidden" id="revealContent9" data-lu="Container">
           Extra content for 9.
         </span>
-        <span class="hidden" id="revealContent10" data-athena="Container">
+        <span class="hidden" id="revealContent10" data-lu="Container">
           Extra content for 10.
         </span>
-        <span class="hidden" id="revealContent11" data-athena="Container">
+        <span class="hidden" id="revealContent11" data-lu="Container">
           Extra content for 11.
         </span>
       </fieldset>
     </form>
     
     
-    <span class="hidden doClassesWork" id="revealContent12" data-athena="Container">
+    <span class="hidden doClassesWork" id="revealContent12" data-lu="Container">
       Do classes work for revealing containers?
     </span>
     
