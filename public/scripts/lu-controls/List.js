@@ -26,7 +26,7 @@ List =  Class.create( Abstract, ( function () {
     VERTICAL = 'vertical',
     HORIZONTAL = 'horizontal',
     SELECTED_FLAG = 'lu-selected',
-    ITEMS_FLAG = 'lu-carousel-items';
+    ITEMS_FLAG = 'lu-items';
 
   //RETURN METHODS OBJECT 
   return {
@@ -197,14 +197,11 @@ List =  Class.create( Abstract, ( function () {
         var $item,
           $links;
 
-console.log( item );
-
         if ( item !== undefined ) {
 
           // Item is an index number
           if( typeof item === 'number' ) {
             $item = $items.eq( item );
-            console.log( $item );
           }
           // Item is a string/CSS selector
           else if ( typeof item === 'string' )

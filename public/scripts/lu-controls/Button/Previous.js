@@ -53,9 +53,11 @@ PreviousButton = Class.create( Button, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      PreviousButton.on( FLOORED_EVENT, function( event, $subject ) {
-        _.log("PreviousButton.on", $element, event, $subject);
+      PreviousButton.on( SELECTED_EVENT, function( event ) {
+        PreviousButton.enable();
+      } );
 
+      PreviousButton.on( FLOORED_EVENT, function( event, $subject ) {
         var Control = $subject.lu( 'getControl' );
 
         if( !Control.hasPrevious() ) {
@@ -63,7 +65,6 @@ PreviousButton = Class.create( Button, ( function () {
         }
 
       } );
-
 
     }
   };

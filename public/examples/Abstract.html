@@ -12,18 +12,15 @@
 
   <title>Abstract</title>
 
-  <!-- Feature Detection -->
-  <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
-
   <style type="text/css" media="screen">
-    #container .pannel > ol > li.selected {
+    .lu-selected {
       color: red;
     }
   </style>
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
-  <script src="/scripts/libraries/helpers.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
 
   <!-- Bootstrap:CommonJS Loader -->
   <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
@@ -31,13 +28,7 @@
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
 
-  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
-
-  <script type="text/javascript" charset="utf-8">
-    LU_CONFIG = {
-      debug: true
-    };
-  </script>
+  <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
     localStorage.clear();
@@ -48,10 +39,23 @@
 
 <body>
 
-  <div id="container">
-    <div data-lu="Loader">
-      <a href="/carousel_a.html" data-lu="Button:Load">Click Me</a>
-    </div>
+  <div id="container" data-lu="Carousel" data-lu-config="{
+    'Carousel': {
+      autoplay: false,
+      observe: '#controls button'
+    }
+  }">
+    <ul>
+      <li class="lu-selected">A</li>
+      <li>B</li>
+      <li>C</li>
+      <li>D</li>
+    </ul>
+  </div>
+  <div id="controls">
+    <button data-lu="Button:Previous" type="button" role="button"> &laquo; Previous </button>
+    <button data-lu="Button:Next" type="button" role="button"> Next &raquo; </button>
+    <button data-lu="Button:Next" type="button" role="button"> Next &raquo; </button>
   </div>
 
 </body>

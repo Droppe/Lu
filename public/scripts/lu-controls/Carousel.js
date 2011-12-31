@@ -182,7 +182,6 @@ Carousel =  Class.create( List, ( function() {
        * @return {Object} List
        */  
       Carousel.previous = function() {
-        console.log( 'previous' );
         Carousel.select( Carousel.index() - 1 );
         return Carousel;
       };
@@ -225,10 +224,8 @@ Carousel =  Class.create( List, ( function() {
         } );
       } );
       Carousel.on( SELECTED_EVENT, function( event, $item ) {
-        console.log( Carousel.items(), $item );
         if( $item.is( Carousel.items() ) ) {
           event.stopPropagation();
-          console.log( 'YAY!!!', $item );
           Carousel.select( $item );
         }
       } );
