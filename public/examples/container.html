@@ -1,0 +1,74 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]> <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]> <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Container</title>
+
+  <!-- Feature Detection -->
+  <script src="/scripts/libraries/modernizr-2.0.6.js" type="text/javascript" charset="utf-8"></script>
+
+  <style type="text/css" media="screen">
+  .lu-hidden { display: none; }
+  </style>
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/helpers.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.js" type="text/javascript" charset="utf-8"></script>
+
+  <script src="/scripts/libraries/lu/config.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    LU_CONFIG = {
+      debug: true
+    };
+  </script>
+
+  <script type="text/javascript" charset="utf-8">
+    localStorage.clear();
+    require.ensure( ['lu'], function() {} );
+  </script>
+
+</head>
+
+<body>
+  <div id="container">
+        
+
+    <button data-lu="Button" data-lu-config="{
+      'Button':{
+        action: 'select',
+        notify: '.unrelated'
+      }
+    }">Show</button>
+    
+    <button data-lu="Button" data-lu-config="{
+      'Button':{
+        action: 'unselect',
+        notify: '.unrelated'
+      }
+    }">Hide</button>
+
+    <div class="unrelated lu-hidden" data-lu="Container">
+      This is some completely unrelated content, DOM-wise.
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+

@@ -29,8 +29,28 @@ _.explodeURL = function ( url ) {
 
 };
 
-_.log = function (msg) {
-  if ( li.environment.debug && console && !!console.log ) {
-    console.log( 'ATHENA: ' + msg );
+
+_.each( "assert count debug dir dirxml error group groupCollapsed groupEnd info log profile profileEnd time timeEnd trace warn".split(" "), function ( type ) {
+
+  if ( typeof _[type] === "undefined" ) {
+
+    _[type] = function () {
+      var parameters = Array.prototype.slice.call( arguments );
+      if ( window.LU_CONFIG && window.LU_CONFIG.debug && console && !!console[type] ) {
+        _[type] = function () {
+          parmaeters = parameters.push( ' ! LU ! ' );
+          return console[type].apply( this, parameters );
+        };
+      }
+      else {
+        _[type] = function () {};
+      }
+
+      //_[type].apply( this, arguments );
+    };
+
   }
-};
+  
+} );
+
+

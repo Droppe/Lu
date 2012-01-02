@@ -1,7 +1,7 @@
 {
-  "name":        "AthenaUITestServer",
+  "name":        "LuTestServer",
   "version":     "0.0.1",
-  "description": "Test Server for the AthenaUI Framework",
+  "description": "Test Server for the Lu UI Control Framework",
   "author":      "JavaScript at LinkedIn",
   "private":     true,
   "dependencies": {
