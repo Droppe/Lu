@@ -26,7 +26,7 @@
                      
 
 
-Lu comes packaged with a built-in node.js server useful for development.  Here's how to get started:
+Lu comes packaged with a node.js server useful for development.  Here's how to get started:
 
 Step 1: Install Git
   http://git-scm.com/
