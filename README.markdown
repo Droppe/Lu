@@ -45,9 +45,9 @@ Clone to local repository: git clone <path from fork>
 
 Step 5: Run server.js 
 only need to run npm install once
-$> cd Lu
-$> sudo npm install
-$> node server.js
+	`$> cd Lu`
+	`$> sudo npm install`
+	`$> node server.js`
 
 Step 6: Visit
 http://localhost:3000
