@@ -100,6 +100,7 @@ Button = Class.create( Abstract, ( function() {
       if( states && !settings.index ) {
         settings.index = 0;
       }
+
       index = settings.index;
 
       action = settings.action;
@@ -186,7 +187,9 @@ Button = Class.create( Abstract, ( function() {
             break;
           default:
         }
-        Button.trigger( action, parameters ); 
+        if( action !== undefined ) {
+          Button.trigger( action, parameters ); 
+        }
       } );
 
       // Setup accessibility - ally 

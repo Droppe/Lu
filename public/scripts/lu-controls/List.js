@@ -42,8 +42,8 @@ List =  Class.create( Abstract, ( function () {
 
       // PRIVATE INSTANCE PROPERTIES
       /**
-       * Instance of Button
-       * @property Button
+       * Instance of List
+       * @property List
        * @type Object
        * @private
        */  

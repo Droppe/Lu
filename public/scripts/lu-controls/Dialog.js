@@ -13,76 +13,70 @@ var Class = require( 'class' ),
 
 Dialog = Class.create( Abstract,  ( function () {
 
-  // RETURN METHODS OBJECT
+  //Observed events 
+  var OPEN_EVENT = 'open',
+      CLOSE_EVENT = 'close',
+      //Stateful published events
+      OPENED_EVENT = 'opened',
+      CLOSED_EVENT = 'closed';
+
   return {
-    
-    /**
-    * PTClass constructor 
-    * @method initialize
-    * @public
-    * @param {Object} $super Pointer to superclass constructor
-    * @param {Object} $element JQuery object for the element wrapped by the component
-    * @param {Object} settings Configuration settings
-    */    
+
     initialize: function ( $super, $element, settings ) {
 
-      /**
-      * Default configuration values
-      * @property defaults
-      * @type Object
-      * @private
-      * @final
-      */
-      var defaults = {
-        autoOpen: false,
-        resizable: false
-      },
-      /**
-      * jQuery UI Dependencies
-      * @property dependencies
-      * @type Array
-      * @private
-      */
-      dependencies;
+      var Dialog = this,
+        defaults = {},
+        open = false;
 
-      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
-      
-      // CREATE DEPENDENCIES ARRAY
-      dependencies = [
-        'jquery.ui.core',
-        'jquery.ui.widget',
-        'jquery.ui.mouse',
-        'jquery.ui.position'
-      ];      
-      if (settings.draggable) {
-        dependencies.push('jquery.ui.draggable');
-      }
-      if (settings.resizable) {
-        dependencies.push('jquery.ui.resizable');
-      }
-      dependencies.push('jquery.ui.dialog');
 
-      require.ensure(
-        dependencies,
-        function() {
-          $element.dialog(settings);
-          $element.on('open', function() {
-            $(this).dialog('open');
-          });
-          $element.on('close', function() {
-            $(this).dialog('close');
-          });
-        }
-      );
-      
+      /**
+       * Open the dialog
+       * @privelaged
+       * @method open
+       */
+        Dialog.open = function() {
+          if( open === false ) {
+            $element.addClass( 'lu-dialog-open' );
+            open = true;
+            Dialog.trigger( OPENED_EVENT, Dialog );
+          }
+        };
+
+        /**
+         * Close the dialog
+         * @privelaged
+         * @method close
+         */
+        Dialog.close = function() {
+          if( open === true ) {
+            $element.removeClass( 'lu-dialog-open' );
+            open = false;
+            Dialog.trigger( CLOSED_EVENT, Dialog );
+          }
+        };
+
+        //Listen to theese events from other controls
+        Dialog.on( CLOSE_EVENT, function( event ) {
+          console.log( 'close' );
+          event.stopPropagation();
+          Dialog.close();
+        } );
+
+        Dialog.on( OPEN_EVENT, function( event ) {
+          console.log( 'open' );
+          event.stopPropagation();
+          Dialog.open();
+        } );
+
     }
+
   };
-  
-}() ));
+
+}() ) );
 
 //Export to Common JS Loader
 if( module ) {

@@ -6,7 +6,7 @@
     PATH_TO_LU_CONTROLS = '/scripts/lu-controls/',
     PATH_TO_PTCLASS = '/scripts/libraries/ptclass.js',
     PATH_TO_JSON2 = '/scripts/libraries/json2.js',
-    DEBUG = 2;
+    DEBUG = 4;
 
   window.lu_debug = DEBUG;
 

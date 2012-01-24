@@ -93,7 +93,6 @@ Loader = Class.create( Abstract, ( function () {
               break;
             case 'append':
               $node.append( content );
-              console.log( $node );
               break;
             default:
               $node.html( content );
