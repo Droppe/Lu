@@ -184,9 +184,7 @@ Tip =  Class.create( Abstract,  ( function () {
         $tip.addClass( settings.placement + ' ' + settings.style );
       } else {
         if( $element.attr( 'class' ) ) {
-          console.log( $tip.attr('class'), settings.placement + ' ' + $element.attr( 'class' ) );
           $tip.addClass( settings.placement + ' ' + $element.attr( 'class' ) );
-          console.log( $tip.attr('class'), settings.placement + ' ' + $element.attr( 'class' ) );
         } else {
           $tip.addClass( settings.placement );
         }
@@ -284,13 +282,15 @@ Tip =  Class.create( Abstract,  ( function () {
        * @method hide
        */
       Tip.hide = function() {
+        var timeout;
         if( shown === true ) {
-          window.setTimeout( function() {
+          timeout = window.setTimeout( function() {
             if( !stuck || !settings.sticky ) {
               $tip.off( 'mouseenter.lu.tip' );
               $tip.off( 'mouseleave.lu.tip' );
               $tip.remove();
               shown = false;
+              window.clearTimeout( timeout );
               Tip.trigger( HIDDEN_EVENT, $tip );
             }
           }, settings.delay );
@@ -331,8 +331,9 @@ Tip =  Class.create( Abstract,  ( function () {
           }
 
           if( !isMouseInside() ) {
+            $document.off( 'mouseenter', mouseenterEvent );
+            $document.off( 'mousemove.lu.tip' );
             Tip.hide();
-            $document.off( 'mousemove.lu.tip', mouseenterEvent );
           }
 
         } );
@@ -348,9 +349,9 @@ Tip =  Class.create( Abstract,  ( function () {
           $element.off( 'blur.lu.tip' );
           Tip.hide();
         } );
-
+      
         Tip.show();
-
+      
       } );
 
       //Listen to theese events from other controls

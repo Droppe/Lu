@@ -166,7 +166,6 @@ Abstract = Class.create( ( function() {
       $observe = $( settings.observe );
       $notify = $( settings.notify );
 
-console.log( 'NOTIFY :: ', $notify );
       //Reverse Notification
       //$notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
 
