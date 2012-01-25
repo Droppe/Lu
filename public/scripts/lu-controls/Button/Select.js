@@ -80,7 +80,7 @@ SelectButton = Class.create( Button, ( function () {
 }() ) );
 
 //Export to Common JS Loader
-if( module ) {
+if( typeof module !== 'undefined' ) {
   if( typeof module.setExports === 'function' ){
     module.setExports( SelectButton );
   } else if( module.exports ) {

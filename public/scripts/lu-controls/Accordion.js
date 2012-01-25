@@ -112,7 +112,7 @@ Accordion =  Class.create( List, ( function () {
 
 
 //Export to Common JS Loader
-if( module ) {
+if( typeof module !== 'undefined' ) {
   if( typeof module.setExports === 'function' ){
     module.setExports( Accordion );
   } else if( module.exports ) {

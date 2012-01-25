@@ -48,7 +48,7 @@ CloseButton = Class.create( Button,  ( function () {
 }() ));
 
 //Export to Common JS Loader
-if( module ) {
+if( typeof module !== 'undefined' ) {
   if( typeof module.setExports === 'function' ){
     module.setExports( CloseButton );
   } else if( module.exports ) {

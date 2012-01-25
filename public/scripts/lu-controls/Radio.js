@@ -101,7 +101,11 @@ RadioButton = Class.create( FormSelect,  ( function () {
   };  
 }() ));
 
-//Export to CommonJS Loader
-if( module && module.exports ) {
-  module.exports = RadioButton;
+//Export to Common JS Loader
+if( typeof module !== 'undefined' ) {
+  if( typeof module.setExports === 'function' ){
+    module.setExports( RadioButton );
+  } else if( module.exports ) {
+    module.exports = RadioButton; 
+  }
 }
