@@ -1,0 +1,419 @@
+<!doctype html>
+
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Lu</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/styles/base.css">
+
+
+</head>
+
+<body>
+
+  <div id="container" class="container grid clearfix">
+
+    <header class="unit_2">
+      <div id="branding">
+        <h2 id="logo" class="ir">Lu</h2>
+      </div>
+    </header>
+
+    <div id="content" role="main" class="unit_8 post_2">
+      <div id="intro" class="section">
+        <h1>Lu allows HTML authors to describe interface behavior through markup.</h1>
+        <h2><a href="#getting_started">Get Started</a> or <a href="#controls">see what Lu can do</a>.</h2>
+
+        <p id="must-see">Read the <a href="#">documentation</a>. See the <a href="#">changelogs</a>.
+        File an <a href="#">issue</a>. Give us a <a href="#" title="Unit Tests">test</a>. Thank
+        the <a href="#">contributors</a>. Fork us on <a
+        href="http://github.com/iheartweb/Lu">Github</a>. Tell the <a href="#" tile="Roadmap">future</a>.</p>
+
+        <p>As you author HTML, Lu goes to work. Under the covers, Lu scans
+        markup, loads required scripts, and instantiates controls. Meaning
+        that functional interfaces can be rapidly built without having to
+        write a lick of javascript.</p>
+
+        <p>Lu comes with a growing library of <a href="#">controls</a> from simple
+        buttons to a highly flexible carousel. Controls communicate through an <a
+        href="#">event</a> system, intelligently adapt based on markup, and are
+        designed to work with each other. When mixed and matched, they create rich user
+        interfaces.</p>
+
+        <p>Built with performance in mind, Lu leverages, <a
+        href="#">Inject</a>, a commonJS loader. Inject loads controls and
+        persist them locally. Controls are loaded once and reused. As
+        controls are composable, Lu gets faster overtime, even as the
+        interface changes.</p>
+
+        <p>Lu also offers a well <a href="#">documented</a> API and helper functions.
+        Together with its event system, Javascript developers have complete
+        programatic control, and can build applications on top of Lu, customize
+        behavior, or build new controls with ease.</p>
+
+        <p>TODO: Lu only has a few small quirks on IOS. <strong>TEST LU ACROSS
+        PLATFORMS AND BROWSERS</strong>, write a "Browser tested, mobile approved and
+        outro paragraph." Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+
+      </div>
+      <div id="getting_started" class="section">
+        <h3>Getting Started</h3>
+        <p><strong><a href="#">Download</a></strong> the latest version (1.0.0) <a
+        href="#">here</a>. Lu works with <a href="#">jQuery</a> (1.7+), <a
+        href="#">underscore</a> and <a href="#">inject</a>. It also comes bundled with <a
+        href="#">a version of Prototype's Class</a>.</p>
+        <p><strong>Include these scripts</strong> on your page.</p>
+        <script src="https://gist.github.com/1708571.js?file=gsluscripts.html"></script>
+        <p><strong>Configure Lu</strong> in lu-config.js</p>
+        <script src="https://gist.github.com/1708711.js?file=gswluconfig.js"></script>
+        <p><strong>Load Lu</strong> on your page.</p>
+        <script src="https://gist.github.com/1708736.js?file=gsluloadlu.html"></script>
+        <p><strong>Write some Html.</strong></p>
+        <script src="https://gist.github.com/1708768.js?file=gswluhtml.html"></script>
+        <p>That was the hard part. So, <strong>celebrate!</strong></p>
+        <a href="#content" class="top small">Back to top</a>
+      </div>
+      <div id="controls" class="section">
+        <h3>Controls</h3>
+        <p>Controls are annotated by name in a <code>data-lu</code> attribute. And are
+        configured by examining markup for meaningful context and attributes or via an
+        object literal keyed by with the control's name in
+        <code>data-lu-config</code>.</p>
+        <p>Lu currently ships with the following controls.</p>
+        <ul id="control-list">
+          <li><a href="#controls_buttons">Buttons</a></li>
+          <li><a href="#controls_list">List</a></li>
+          <li><a href="#controls_container">Container</a></li>
+          <li><a href="#controls_tabs">Tabs</a></li>
+          <li><a href="#controls_switch">Switch</a></li>
+          <li><a href="#controls_accordian">Accordion</a></li>
+          <li><a href="#controls_carousel">Carousel</a></li>
+          <li><a href="#controls_dialog">Dialog</a></li>
+          <li><a href="#controls_mask">Mask</a></li>
+          <li><a href="#controls_dropdown">Dropdown</a></li>
+          <li><a href="#controls_tips">Tips</a></li>
+          <li><a href="#controls_facets">Facets(?)</a></li>
+        </ul>
+        <div class="sub-section">
+          <h4 id="controls_buttons">Buttons</h4>
+          <p class="control-info">Annotation: <code>Button[:*]</code>, <a href="">Documentation</a></p>
+          <p>The simplest of controls are buttons. They take one event (click by
+          default) and emit another, such as 'play', 'pause', 'next', and 'previous'. Lu
+          comes with a comprehensive set of preconfigured buttons as well with a base
+          <code>Button</code> control that can be configured to emit custom events.</p>
+          <button data-lu="Button:Open" type="button">Open</button>
+          <button data-lu="Button:Close" type="button">Close</button>
+          <button data-lu="Button:First" type="button">First</button>
+          <button data-lu="Button:Last" type="button">Last</button>
+          <button data-lu="Button:Previous" type="button">Previous</button>
+          <button data-lu="Button:Next" type="button">Next</button>
+          <button data-lu="Button:On" type="button">On</button>
+          <button data-lu="Button:Off" type="button">Off</button>
+          <button data-lu="Button:Play" type="button">Play</button>
+          <button data-lu="Button:Pause" type="button">Pause</button>
+          <button data-lu="Button:Select" type="button">Select</button>
+          <button data-lu="Button:Switch" type="button">Switch</button>
+          <button data-lu="Button" type="button" data-lu="{ Button: { action: 'custom_event' } }">Custom</button>
+          <script src="https://gist.github.com/1713974.js?file=button_example.html"></script>
+          <p>Although buttons are usually <code>&lt;a&gt;</code>,
+          <code>&lt;button&gt;</code> or <code>&lt;input&gt;</code> elements, anything
+          will do. This is true with all controls, however, as the markup
+          becomes less meaningful, more configuration is necessary.</p>
+          <p>For example, a <code>Button:Select</code> control looks for an
+          <code>aria-controls</code> attribute when on a <code>&lt;button&gt;</code> or
+          <code>&lt;input&gt;</code> element. When on an <code>&lt;a&gt;</code> it looks
+          for a hash in the <code>href</code> attribute. Additionally, they look at
+          their context; if they are part of lists they will send their position in the
+          list along with the 'select' event.</p>
+          <script src="https://gist.github.com/1862085.js?file=gswlubuttons.html"></script>
+          <p>Because Lu, is a interface behavior library achieving button groups and
+          tool bars are a matter of styling. The below is composed of a
+          <code>Button:Previous</code> a <code>Button:Next</code> and three
+          <code>Button:Select</code> controls.</p>
+          <div class="button-group">
+            <button data-lu="Button:Previous" type="button">&lsaquo;</button>
+            <button data-lu="Button:Select" type="button">1</button>
+            <button data-lu="Button:Select" type="button">2</button>
+            <button data-lu="Button:Select" type="button">3</button>
+            <button data-lu="Button:Next" type="button">&rsaquo;</button>
+          </div>
+          <p>To see the <code>Button</code> control in action, check out <a
+          href="#controls_list"><code>List</code></a>, <a
+          href="#controls_carousel"><code>Carousel</code></a>, <a
+          href="#controls_tabs"><code>Tabs</code></a>, <a
+          href="#controls_tabs"><code>Switch</code></a>, or <a
+          href="#controls_accordian"><code>Accordion</code></a>.</p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h3>Lists</h3>
+          <p>The <code>List</code> control manages an iterative set of items and is most
+          often used with <code>&lt;ol&gt;</code> and <code>&lt;ul&gt;</code>
+          elements.</p>
+          <p>List responds to events such as 'previous', 'next', 'first', 'last', and
+          'select', and works with the corresponding <code>Button</code> controls.</p>
+          <p><code>Button</code> controls together with lists form the foundation of
+          other more complex controls like <a href="#"><code>Accordion</code></a>, <a
+          href="#"><code>Tabs</code></a> and <a href="#"><code>Carousel</code></a> but
+          can also be leveraged to create a variety of other interfaces. For example
+          both pills and treeview can be achieved with a composition of a
+          <code>List</code> and <code>Button:Select</code>.</p>
+          <h5>Pills</h5>
+          <ul data-lu="List" id="tiger-toe">
+            <li id="eeny" class="lu-selected">
+              <a href="#eeny" data-lu="Button:Select">Eeny Action</a>
+            </li>
+            <li id="meeny">
+              <a href="#meeny" data-lu="Button:Select">Meeny Action</a>
+            </li>
+            <li id="miny">
+              <a href="#miny" data-lu="Button:Select">Miny Action</a>
+            </li>
+            <li id="moe">
+              <a href="#moe" data-lu="Button:Select">Moe Action</a>
+            </li>
+          </ul>
+          <script src="https://gist.github.com/1876568.js?file=gswlupills.html"></script>
+          <h5>Treeview</h5>
+          <ul data-lu="List" id="tree" class="clearfix">
+            <li id="one"  class="lu-selected">
+              <a href="#one" data-lu="Button:Select">One</a>
+              <ul data-lu="List" class="branch">
+                <li>
+                  <a href="#" data-lu="Button:Select">A</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Peanut Butter</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Jelly Time</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#" data-lu="Button:Select">B</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Laurel</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Hardy</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#" data-lu="Button:Select">C</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Castle</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Beckett</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li id="two">
+              <a href="#two" data-lu="Button:Select">Two</a>
+              <ul data-lu="List" class="branch">
+                <li>
+                  <a href="#" data-lu="Button:Select">Red</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Ebb</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Flow</a>
+                    </li>
+                  </ul>
+                </li>
+                <li id="b">
+                  <a href="#" data-lu="Button:Select">Green</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Kirk</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Picard</a>
+                    </li>
+                  </ul>
+                </li>
+                <li id="c">
+                  <a href="#" data-lu="Button:Select">Blue</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Adam</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Jamie</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li id="three">
+              <a href="#three" data-lu="Button:Select">Three</a>
+              <ul data-lu="List" class="branch">
+                <li>
+                  <a href="#" data-lu="Button:Select">Me</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Sonny</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Cher</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#" data-lu="Button:Select">Myself</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Squirrels</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Nuts</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#" data-lu="Button:Select">I</a>
+                  <ul data-lu="List" class="branch">
+                    <li>
+                      <a href="#" data-lu="Button:Select">Fruits</a>
+                    </li>
+                    <li>
+                      <a href="#" data-lu="Button:Select">Vegetables</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <script src="https://gist.github.com/1876560.js?file=gswlutreeview.html"></script>
+          <h5>Buttons and Events</h5>
+          <p>Buttons not only send events to <code>List</code>, <code>List</code>
+          controls, send stateful events back to buttons. This allows them to disable or
+          enable themselves as appropriate. For example, <code>Button:Previous</code>
+          disables itself when the first item is selected. Likewise,
+          <code>Button:First</code> disables itself also. Read more about this in <a
+          href="#">Events</a>.</p>
+          <div id="toolbar-list" data-lu="List">
+            <ul>
+              <li id="tl-one" class="lu-selected">1</li>
+              <li id="tl-two">2</li>
+              <li id="tl-three">3</li>
+              <li id="tl-four">4</li>
+            </ul>
+            <div class="button-group">
+              <button data-lu="Button:Previous" type="button">&lsaquo;</button>
+              <button aria-controls="tl-one" data-lu="Button:First" type="button">1</button>
+              <button aria-controls="tl-two" data-lu="Button:Select" type="button">2</button>
+              <button aria-controls="tl-three" data-lu="Button:Select" type="button">3</button>
+              <button aria-controls="tl-four" data-lu="Button:Last" type="button">4</button>
+              <button data-lu="Button:Next" type="button">&rsaquo;</button>
+            </div>
+          </div>
+          <script src="https://gist.github.com/1876539.js?file=gswlubuttonsevents.html"></script>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Container</h4>
+          <p class="control-info">Annotation: <code>Container</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Tabs</h4>
+          <p class="control-info">Annotation: <code>Tabs</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Switch</h4>
+          <p class="control-info">Annotation: <code>Switch</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Accordion</h4>
+          <p class="control-info">Annotation: <code>Accordion</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Carousel</h4>
+          <p class="control-info">Annotation: <code>Carousel</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Dialog</h4>
+          <p class="control-info">Annotation: <code>Dialog</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Mask</h4>
+          <p class="control-info">Annotation: <code>Mask</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Dropdown</h4>
+          <p class="control-info">Annotation: <code>Dropdown</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Tip</h4>
+          <p class="control-info">Annotation: <code>Tip[:*]</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <div class="sub-section">
+          <h4>Facets(?)</h4>
+          <p class="control-info">Annotation: <code>Facets</code>, <a href="">Documentation</a></p>
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+        <a href="#content" class="top small">Back to top</a>
+      </div>
+      <div class="section">
+        <h3>Events</h3>
+        <a href="#content" class="top small">Back to top</a>
+      </div>
+    </div>
+
+    <footer class="unit_12">
+      <div class="content">
+        Hooray for Footers!
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write( '<script src="http://scripts/libraries/jquery-1.7.1.min.js"><\/script>' )</script>
+
+  <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    localStorage.clear();
+    require.ensure( ['lu'], function() {} );
+  </script>
+
+</body>
+
+</html>

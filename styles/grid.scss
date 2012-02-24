@@ -1,0 +1,49 @@
+$layout_screen_columns: 12;
+$layout_screen_gutter: 12;
+$standard_width: 960;
+
+$unit: 'unit_';
+$pre: 'pre_';
+$post: 'post_';
+	
+@mixin unit( $span, $layout_width ) {
+	$width: $span * ( $layout_width / $layout_screen_columns ) - $layout_screen_gutter;
+	$margin: $layout_screen_gutter / 2;
+	width: percentage( $width / $layout_width );
+	margin-left: percentage( $margin / $layout_width );
+	margin-right: percentage( $margin / $layout_width );
+}
+
+@mixin pre( $span, $layout_width ) {
+	$width: $span * ( $layout_width / $layout_screen_columns ) - $layout_screen_gutter;
+	margin-left: percentage( $width / $layout_width + $layout_screen_gutter / $layout_width );
+}
+
+@mixin post( $span, $layout_width ) {
+	$width: $span * ( $layout_width / $layout_screen_columns ) - $layout_screen_gutter;
+	margin-right: percentage( $width / $layout_width + $layout_screen_gutter / $layout_width );
+}
+
+.container {
+	margin: 0 auto;
+	width: 100%;
+}
+
+@for $i from 1 through $layout_screen_columns {
+	.grid > .#{$unit}#{$i} {
+	  float: left;
+		@include unit( $i, $standard_width );
+	}
+}
+
+@for $i from 1 through $layout_screen_columns {
+	.grid > .#{$post}#{$i} {
+		@include post( $i, $standard_width );
+	}
+}
+
+@for $i from 1 through $layout_screen_columns {
+	.grid > .#{$pre}#{$i} {
+		@include pre( $i, $standard_width );
+	}
+}

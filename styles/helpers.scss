@@ -1,0 +1,57 @@
+/* Thanks to HTML5 Boilerplate for theese classes */
+
+//Image Replacement
+.ir {
+	display: block;
+	border: 0;
+	text-indent: -999em;
+	overflow: hidden;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	text-align: left;
+	direction: ltr;
+}
+.ir br {
+	display: none;
+}
+
+.hidden {
+	display: none !important;
+	visibility: hidden;
+}
+
+.visually_hidden {
+	border: 0;
+	clip: rect( 0 0 0 0 );
+	height: 1px; margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+
+.visually_hidden.focusable:active,
+.visually_hidden.focusable:focus { 
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+}
+
+.invisible {
+	visibility: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+	content: "";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
+.clearfix {
+	zoom: 1;
+}

@@ -1,3 +1,6 @@
 .~*
 .*
 node_modules/*
+styles/*.css
+!styles/base.css
+!.gitignore
