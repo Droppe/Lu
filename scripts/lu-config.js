@@ -2,10 +2,10 @@
 
 ( function() {
 
-  var PATH_TO_LU = '/scripts/lu.js',
-    PATH_TO_LU_CONTROLS = '/scripts/lu-controls/',
-    PATH_TO_PTCLASS = '/scripts/libraries/ptclass.js',
-    PATH_TO_JSON2 = '/scripts/libraries/json2.js',
+  var PATH_TO_LU = 'scripts/lu.js',
+    PATH_TO_LU_CONTROLS = 'scripts/lu-controls/',
+    PATH_TO_PTCLASS = 'scripts/libraries/ptclass.js',
+    PATH_TO_JSON2 = 'scripts/libraries/json2.js',
     //log (>=5), debug (>=4),info (>=3), warn (>=2), error (>=1)
     DEBUG = 0;
 
