@@ -1,6 +1,6 @@
 
 @mixin textured {
-  background-image: url( 'assets/texture.png' );
+  background-image: url( '../assets/texture.png' );
 }
 
 html {
@@ -90,7 +90,7 @@ code {
   margin: 36px auto;
   height: 48px;
   width: 48px;
-  background-image: url( "assets/logo.png" );
+  background-image: url( "../assets/logo.png" );
 }
 
 #must-see {
