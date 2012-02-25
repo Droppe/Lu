@@ -182,7 +182,6 @@ Abstract = Class.create( ( function() {
        */
       function unbind( event ) {
         eventStore = _.reject( eventStore, function( item, key ) {
-          console.log( key );
           return false;
           //return ( item.indexOf( event ) > -1 );
         } );

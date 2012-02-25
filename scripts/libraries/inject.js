@@ -393,8 +393,7 @@ var lscache = function() {
   }}
 }();
 var analyzeFile, anonDefineStack, applyRules, clearFileRegistry, commentRegex, commonJSFooter, commonJSHeader, context, createIframe, createModule, db, define, dispatchTreeDownload, downloadTree, executeFile, extractRequires, fileStorageToken, fileStore, functionNewlineRegex, functionRegex, functionSpaceRegex, getFormattedPointcuts, getFunctionArgs, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, initializeExports, jsSuffix, loadModules, namespace, pauseRequired, processCallbacks, require, 
-requireEnsureRegex, requireRegex, reset, responseSlicer, schemaVersion, sendToIframe, sendToXhr, treeNode, undef, userConfig, userModules, xDomainRpc, _db;
-var __hasProp = Object.prototype.hasOwnProperty;
+requireEnsureRegex, requireRegex, reset, responseSlicer, schemaVersion, sendToIframe, sendToXhr, treeNode, undef, userConfig, userModules, xDomainRpc, _db, __hasProp = Object.prototype.hasOwnProperty;
 userConfig = {};
 undef = undef;
 schemaVersion = 1;
@@ -722,11 +721,10 @@ treeNode = function() {
     return this.parent
   };
   treeNode.prototype.postOrder = function() {
-    var currentNode, direction, output, _results;
+    var currentNode, direction, output;
     output = [];
     currentNode = this;
     direction = null;
-    _results = [];
     while(currentNode) {
       if(currentNode.getChildren().length > 0 && direction !== "up") {
         direction = "down";
@@ -746,7 +744,6 @@ treeNode = function() {
       }
       return output
     }
-    return _results
   };
   return treeNode
 }();
@@ -1130,7 +1127,6 @@ executeFile = function(moduleId) {
   try {
     module = context.eval(runCmd)
   }catch(err) {
-    _.error( 'ERROR', err, path  );
     throw err;
   }
   return db.module.setExports(module.id, module.exports)

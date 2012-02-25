@@ -451,10 +451,6 @@ List =  Class.create( Abstract, ( function () {
       } );
       List.on( 'keyup', handleKeyup );
 
-      $element.on( 'luReady', function() {
-        console.log( 'HELLA COOL' );
-      } );
-
     }
 
   };

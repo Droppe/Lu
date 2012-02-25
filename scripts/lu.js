@@ -266,7 +266,6 @@
           execute( $control );
           numberOfControls -= 1;
 
-          console.log( 'NOC', numberOfControls );
           if( numberOfControls === 0 ) {
             $element.trigger( 'luReady', [ $element ] );
           }
