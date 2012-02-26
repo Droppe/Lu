@@ -6,6 +6,7 @@
  * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance 
+ * @version dev
  */
 var Class = require( 'class' ),
   List = require( 'lu/List' ),
