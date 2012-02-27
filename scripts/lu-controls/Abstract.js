@@ -8,6 +8,7 @@ var Class = require( 'class' ),
  * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
+ * @version dev
  */
 Abstract = Class.create( ( function() {
 
