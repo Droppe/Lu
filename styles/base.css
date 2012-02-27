@@ -570,7 +570,7 @@ table {
 
 html {
   background-color: #fafafa;
-  background-image: url("/assets/texture.png"); }
+  background-image: url("../assets/texture.png"); }
 
 body {
   font: 14px/21px "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -640,7 +640,7 @@ code {
   margin: 36px auto;
   height: 48px;
   width: 48px;
-  background-image: url("/assets/logo.png"); }
+  background-image: url("../assets/logo.png"); }
 
 #must-see {
   font-size: 1.25em; }
