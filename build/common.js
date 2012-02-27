@@ -1,5 +1,6 @@
 var  Spawn = require('child_process').exec;
 
+exports.compilation_levels = ['ADVANCED_OPTIMIZATIONS','SIMPLE_OPTIMIZATIONS','WHITESPACE_ONLY'];
 exports.versions = ['dev'];
 exports.filetoVersion = {};
 exports.versionsFound = false;
