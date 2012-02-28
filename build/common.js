@@ -6,13 +6,13 @@ exports.filetoVersion = {};
 exports.versionsFound = false;
     
 (function findVersions() {
-  Spawn( 'git grep "@lu-version" $( git rev-parse --show-toplevel )', function(err, stdout) {
+  Spawn( 'git grep "@version" $( git rev-parse --show-toplevel )', function(err, stdout) {
     var lines = stdout.trim().split(/\n/);
     lines.forEach(function(line) {
       
       var sections = line.split(/^([^:]+):/),
           file = sections && sections[1],
-          versionNum = sections[2] && sections[2].match(/@lu\-version ([0-9]*\.[0-9]+|[0-9]+)$/),
+          versionNum = sections[2] && sections[2].match(/@version ([0-9]*\.[0-9]+|[0-9]+)$/),
           version = versionNum ? versionNum[1] : 'dev';
           
       if (exports.versions.indexOf(version) === -1) exports.versions.push(version);
