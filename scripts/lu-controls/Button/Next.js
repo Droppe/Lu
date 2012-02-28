@@ -1,3 +1,4 @@
+
 var Class = require( 'class' ),
   Button = require( 'lu/Button' ),
   NextButton;
@@ -9,7 +10,9 @@ var Class = require( 'class' ),
  * @extends Button
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
+ * @version 0.1
  */
+
 NextButton = Class.create( Button, ( function () {
 
   var MAXED_EVENT = 'maxed',

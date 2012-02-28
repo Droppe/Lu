@@ -1,14 +1,17 @@
+
 var Class = require( 'class' ),
   List = require( 'lu/List' ),
   Carousel;
 
 /**
  * A representation of a stateful list
- * @class List
+ * @class Carousel
  * @constructor
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
+ * @version 0.1
  */
+
 Carousel =  Class.create( List, ( function() {
 
   var MAXED_EVENT = 'maxed',

@@ -1,3 +1,8 @@
+
+var Class = require( 'class' ),
+  Button = require( 'lu/Button' ),
+  PlayButton;
+
 /**
  * Representation of a button element preconfigured with a 'play' event
  * @class NextButton
@@ -6,10 +11,8 @@
  * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
+ * @version 0.1
  */
-var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
-  PlayButton;
 
 PlayButton = Class.create( Button, ( function () {
   var PLAYING_EVENT = 'playing',

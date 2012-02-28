@@ -1,3 +1,4 @@
+
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
   Button;
@@ -11,6 +12,7 @@ var Class = require( 'class' ),
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
+ * @version 0.1
  */ 
 Button = Class.create( Abstract, ( function() {
 

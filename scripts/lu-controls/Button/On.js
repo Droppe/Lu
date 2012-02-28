@@ -1,3 +1,8 @@
+
+var Class = require( 'class' ),
+  Button = require( 'lu/Button' ),
+  OffButton;
+
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class OnButton
@@ -6,10 +11,8 @@
  * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
+ * @version 0.1
  */
-var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
-  OffButton;
 
 OnButton = Class.create( Button, ( function () {
 
