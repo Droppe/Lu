@@ -6,13 +6,13 @@ exports.filetoVersion = {};
 exports.versionsFound = false;
     
 (function findVersions() {
-  Spawn('git grep "@version" $(git rev-parse --show-toplevel)', function(err, stdout) {
+  Spawn( 'git grep "@lu-version" $( git rev-parse --show-toplevel )', function(err, stdout) {
     var lines = stdout.trim().split(/\n/);
     lines.forEach(function(line) {
       
       var sections = line.split(/^([^:]+):/),
           file = sections && sections[1],
-          versionNum = sections[2] && sections[2].match(/@version ([0-9]*\.[0-9]+|[0-9]+)$/),
+          versionNum = sections[2] && sections[2].match(/@lu\-version ([0-9]*\.[0-9]+|[0-9]+)$/),
           version = versionNum ? versionNum[1] : 'dev';
           
       if (exports.versions.indexOf(version) === -1) exports.versions.push(version);
@@ -34,7 +34,7 @@ exports.questions = {
   },
   "path":  function() {
     return {
-      "question": "Where should we output Lu to (default: ./bin)?",
+      "question": "Where should we output Lu to (default: /bin)?",
       "answer": /.*/,
       "help": "Once we get a few more answers from you we'll run the code through a compiler and save it for you. We'll default to saving in the bin directory relative to where this script is running, but, we might want it else where."
     }
@@ -56,8 +56,8 @@ exports.questions = {
   "version" : function() {
     return {
       question: 'What version of Lu controls would you like to use? Vaild versions are: ' + exports.versions.join(', '),
-      answer: function(response) {
-        return exports.versions.indexOf(response.trim()) > -1;
+      answer: function( response ) {
+        return exports.versions.indexOf( response.trim() ) > -1;
       },
       help: 'We\'ll copy over a version of Lu that is no higher than the version you specify for this question.'
     }
