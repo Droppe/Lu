@@ -1,17 +1,21 @@
 var querystring = require('querystring'),
-    http = require('http');
+    http = require('http'),
+    compileErrorTest = /^error\([^\)]+?\):/i;
 
 function compile(source, level, callback) {
   var post_data, opts, req;
   
   post_data = querystring.stringify({
     'compilation_level': level || 'SIMPLE_OPTIMIZATIONS',
-    //'formatting': level === 'WHITESPACE_ONLY' ? 'pretty_print' : '',
     'output_format': 'text',
     'output_info': 'compiled_code',
     'warning_level': 'QUIET',
     'js_code': source
   });
+  
+  if (level === 'WHITESPACE_ONLY') {
+    post_data = 'formatting=pretty_print&' + post_data;
+  }
   
   opts = {
     host:'closure-compiler.appspot.com',
@@ -31,7 +35,13 @@ function compile(source, level, callback) {
       results += chunk.toString();
     });
     res.on('end', function () {
-      callback && callback(results);
+      var error = null;
+      if (compileErrorTest.test(results)) {
+        error = {
+          message: results
+        }
+      }
+      callback && callback(error, results);
     });
   });
   req.write(post_data + '\n');

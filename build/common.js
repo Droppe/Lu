@@ -1,26 +1,32 @@
-var  Spawn = require('child_process').exec;
+var Spawn = require('child_process').exec,
+    gitRoot = '../';
 
 exports.compilation_levels = ['ADVANCED_OPTIMIZATIONS','SIMPLE_OPTIMIZATIONS','WHITESPACE_ONLY'];
 exports.versions = ['dev'];
 exports.filetoVersion = {};
 exports.versionsFound = false;
+exports.root = gitRoot;
     
 (function findVersions() {
-  Spawn( 'git grep "@lu-version" $( git rev-parse --show-toplevel )', function(err, stdout) {
-    var lines = stdout.trim().split(/\n/);
-    lines.forEach(function(line) {
+  Spawn( 'git rev-parse --show-toplevel', function(err, root) {
+    exports.root = gitRoot = root.trim();
+    Spawn( 'git grep "@version" ' + gitRoot + '/scripts', function(err, stdout) {
+      var lines = stdout.trim().split(/\n/);
+      lines.forEach(function(line) {
       
-      var sections = line.split(/^([^:]+):/),
-          file = sections && sections[1],
-          versionNum = sections[2] && sections[2].match(/@lu\-version ([0-9]*\.[0-9]+|[0-9]+)$/),
-          version = versionNum ? versionNum[1] : 'dev';
+        var sections = line.split(/^([^:]+):/),
+            file = sections && sections[1],
+            versionNum = sections[2] && sections[2].match(/@version ([0-9]*\.[0-9]+|[0-9]+)$/),
+            version = versionNum ? versionNum[1] : 'dev';
           
-      if (exports.versions.indexOf(version) === -1) exports.versions.push(version);
+        if (exports.versions.indexOf(version) === -1) exports.versions.push(version);
       
-      exports.filetoVersion[file] = parseFloat(version); //parseFloat('dev') === NaN and is intended.
+        exports.filetoVersion[file] = parseFloat(version); //parseFloat('dev') === NaN and is intended.
 
-    });
-    exports.versionsFound = true;
+      });
+      
+      exports.versionsFound = true;
+    });  
   });
 }());
 
@@ -34,7 +40,7 @@ exports.questions = {
   },
   "path":  function() {
     return {
-      "question": "Where should we output Lu to (default: /bin)?",
+      "question": "Where should we output Lu to (default: " + gitRoot + "/bin)?",
       "answer": /.*/,
       "help": "Once we get a few more answers from you we'll run the code through a compiler and save it for you. We'll default to saving in the bin directory relative to where this script is running, but, we might want it else where."
     }

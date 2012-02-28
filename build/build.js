@@ -8,8 +8,6 @@ var Fs = require( 'fs' ),
     questions = common.questions,
     luControls = common.filetoVersion,
     build;
-
-
     
 build = {
   init: function() {
@@ -35,19 +33,30 @@ build = {
       'copy': false,
       'compile': false,
       'lu-config': false
-    }
-    return function(runner) {
+    },
+    failures = [];
+    return function(runner, failed) {
+      if (failed) {
+        failures.push(runner);
+      }
       runners[runner] = true;
       //TODO: this check is a bit rigid
       if( runners['copy'] && runners['compile'] && runners['lu-config'] ) {
-        build.runDone();
+        build.runDone(failures);
       }
     }
   }() ),
-  runDone: function() {
-    //TODO: process other cmdline options (like --zip)
-    console.log( 'Build is done.' );
-    process.exit( 0 );
+  runDone: function(failures) {
+    var failed = !!failures.length;
+    if (failed) {
+      console.error( 'Build finished, but, with failures.' );
+      console.error( 'Failed modules: ', failures);
+      process.exit( -1 );
+    }else {
+      //TODO: process other cmdline options (like --zip)
+      console.log( 'Build is done.' );
+      process.exit( 0 );
+    }
   },
   runTests: function() {
     //TODO: creates tests
@@ -56,8 +65,27 @@ build = {
     //TODO: creates docs
   },
   copy: function( from, to, callback ) {
-    //copies a read stream to write stream.
-    Util.pump( Fs.createReadStream( from ), Fs.createWriteStream( to ), callback );
+    
+    //verify directory structure exists
+    var dir = Path.dirname(Path.resolve(to)),
+        relativePath =  Path.relative('/', dir),
+        names = relativePath.split('/');
+    names.forEach(function(currDir, i) {
+      var dir = names.slice(0, i).concat(currDir),
+          path ='/' + dir.join('/');
+          
+      if (path && !Path.existsSync(path)) {
+        Fs.mkdirSync(path);
+      }
+    });
+    
+    if (Path.existsSync(from)) {
+      //copies a read stream to write stream.
+      Util.pump( Fs.createReadStream( from ), Fs.createWriteStream( to ), callback );
+    }else {
+      //assumes `from` is a string to be written to `to`
+      Fs.writeFile(to, from, callback);
+    }
   }
 };
 
@@ -95,11 +123,13 @@ function askBuildQuestions() {
 
 function parseBuildAnswers() {
   var code = [],
+      srcCode = '',
       copyCount = 0,
+      root = common.root,
       version = parseFloat( questions.version ),
-      outputPath = Path.normalize( questions.path || '../bin' ),
-      scriptsPath = Fs.realpathSync( '../scripts' ),
-      compilation_level = common.compilation_levels[questions.compilation_level];
+      outputPath = Path.normalize( questions.path || (root + '/bin') ),
+      scriptsPath = Fs.realpathSync( root + '/scripts' ),
+      compilation_level = common.compilation_levels[ questions.compilation_level - 1 ];
       
   if ( isNaN( version ) ) version = 'dev';
 
@@ -123,15 +153,22 @@ function parseBuildAnswers() {
   
   code.push( Fs.readFileSync( scriptsPath + '/lu.js' ).toString() );
   
+  srcCode = code.join('\n');
+  
   //compile lu.js
-  Compiler.compile( code, compilation_level, function( compiledSrc ) {
-    Fs.writeFileSync( outputPath + '/lu.js', compiledSrc, 'utf-8' );
-    build.isRunDone( 'compile' );
+  Compiler.compile( srcCode, compilation_level, function( error, compiledSrc ) {
+    if (error) {
+      //there was an error compiling. Default to writing uncompile source
+      compiledSrc = srcCode;
+    }
+    
+    Fs.writeFileSync( outputPath + '/lu.js', compiledSrc, 'utf-8' );//TODO: turn this in to a build.copy call
+    build.isRunDone( 'compile', !!error );
   } );
   
   //process and copy lu-config.js
-  build.copy( scriptsPath + '/lu-config.js', outputPath + '/lu-config.js', function() {
-    build.isRunDone( 'lu-config' );
+  build.copy( scriptsPath + '/lu-config.js', outputPath + '/lu-config.js', function(error) {
+    build.isRunDone( 'lu-config', !!error );
   } );
   
   //copy specified version of Lu controls to output path
@@ -141,13 +178,23 @@ function parseBuildAnswers() {
 
   for( var control in luControls ) {
     if( luControls.hasOwnProperty( control ) && ( ( version === 'dev' && isNaN( luControls[control] ) ) || luControls[control] <= version ) ){
-      var filename = Path.basename( control ),
+      var filename = Path.relative(root + '/scripts/lu-controls/', control),
           controlTo = outputPath + '/lu-controls/' + filename;
       
       //inc the amount of controls we're copying
       copyCount ++;
-      //copies a control (as a read stream) to the output path (as a write stream).)
-      build.copy( control, controlTo, isCopyDone );   
+      
+      //compile first, then copy
+      Compiler.compile( Fs.readFileSync( control ), compilation_level, function( controlTo, error, compiledControl) {
+        
+        //copies a control (as a read stream) to the output path (as a write stream).)
+        //if error, copy the uncompile source.
+        if (error) {
+          compiledControl = control;
+        }
+        build.copy( compiledControl, controlTo, isCopyDone ); 
+        
+      }.bind(null, controlTo));
     }
 
   }
