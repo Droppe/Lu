@@ -1,0 +1,104 @@
+<button id="plain-button-test" type="button" data-lu="Button">Test</button>
+<a id="link-button-test" href="#" data-lu="Button">Blue</a>
+
+<script>
+
+function run() {
+	(function () {
+
+	    function setup() {
+	      this.$button = $('#plain-button-test');
+	      this.button = this.$button.lu('getControl')
+	    }
+
+	    module('Plain Button :: Basic API', {
+	      setup: setup
+	    });
+
+	    test('Disable', function() {
+	      expect(2);
+
+	      this.button.disable();
+
+	      ok(!this.$button.hasClass('lu-disabled'), '"lu-disabled" class added to DOM element' );
+	      equal(this.$button.attr('disabled'), 'disabled', '"disabled" property added to DOM element');
+	    });
+
+	    test('Enable', function() {
+	      expect(2);
+
+	      this.button.enable();
+
+	      ok(this.$button.hasClass('lu-disabled'), '"lu-disabled" class removed from DOM element' );
+	      equal(this.$button.attr('disabled'), null, '"disabled" property removed from DOM element');
+	    });
+
+	    module('Plain Button :: Eventing', {
+	      setup: setup
+	    });
+
+	    test('Click', function() {
+	      expect(1);
+
+	      var clicked = false;
+	      this.button.on('click', function() {
+	        clicked = true;
+	      });
+
+	      this.$button.trigger('click');
+
+	      ok(clicked, '"click" handler routed' );
+	    });
+	})();
+
+	(function () {
+	    function setup() {
+	      this.$button = $('#link-button-test');
+	      this.button = this.$button.lu('getControl')
+	    }
+
+	    module('Link Button :: Construction', {
+	      setup: setup
+	    });
+
+	    test('ARIA', function() {
+	      expect(1);
+
+	      equal(this.$button.attr('role'), 'button', '"role=button" added to DOM element' );
+	    });
+
+	    module('Link Button :: Basic API', {
+	      setup: setup
+	    });
+
+	    test('Disable button', function() {
+	      expect(1);
+
+	      this.button.disable();
+	      ok(this.$button.hasClass('lu-disabled'), "this test is fine" );
+	    });
+
+	    test('Enable button', function() {
+	      expect(1);
+
+	      this.button.enable();
+	      ok(!this.$button.hasClass('lu-disabled'), "this test is fine" );
+	    });
+
+	    module('Link Button :: Eventing', {
+	      setup: setup
+	    })
+
+	    test('Space-bar event', function() {
+	      expect(1);
+
+	      var e = $.Event('keyup');
+	      e.keyCode = 32 
+	      this.$button.trigger(e);
+
+	      equal(document.activeElement.id, this.$button[0].id, 'key-up event off the space bar focuses the link');
+	    });
+	})();
+}
+
+</script>

@@ -5,15 +5,13 @@ var Fs = require( 'fs' ),
     Compiler = require( './compiler' ),
     args = require( 'optimist' ).argv,
     common = require( './common' ),
+    tester = require( '../test-server' ).tester,
     questions = common.questions,
     luControls = common.filetoVersion,
     build;
-
-
     
 build = {
   init: function() {
-
     if( args.build ) {
       build.startBuild();
     } else if( args.docs ) {
@@ -50,7 +48,11 @@ build = {
     process.exit( 0 );
   },
   runTests: function() {
-    //TODO: creates tests
+    console.log('Running tests...');  
+
+    var files = args._.length > 0 ? args._ : Fs.readdirSync( Path.normalize( __dirname + '/../test/unit-tests/' ) );
+
+    tester.init(files);
   },
   makeDocs: function() {
     //TODO: creates docs
