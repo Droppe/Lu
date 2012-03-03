@@ -59,11 +59,8 @@ build = {
     }
   },
   runTests: function() {
-    console.log('Running tests...');  
-
-    var files = args._.length > 0 ? args._ : Fs.readdirSync( Path.normalize( __dirname + '/../test/unit-tests/' ) );
-
-    tester.init(files);
+    console.log('Running tests');  
+    tester.init();
   },
   makeDocs: function() {
     //TODO: creates docs

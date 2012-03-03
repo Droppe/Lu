@@ -24,7 +24,7 @@ var nodeStatic = require( 'node-static' ),
 tester = {
 	init: function(files) {
 		tester.createServer();
-		tester.preparaUnitTests(files);
+		tester.prepareUnitTests(files);
 		tester.startSocketIOListener();
 		tester.openBrowser();
 	},
@@ -52,13 +52,12 @@ tester = {
 
 		} ).listen( port );
 	},
-	preparaUnitTests: function(files) {
+	prepareUnitTests: function(files) {
 		if ( files && files.length > 0 ) {
 			unitTests = files;
 			return;
 		}
-
-		unitTests = argv._.length > 0 ? argv._ : fs.readdirSync( UNIT_TESTS_DIR );
+		unitTests = argv._.length > 0 ? argv._ : fs.readdirSync( path.normalize( __dirname + '/' + UNIT_TESTS_DIR) );
 	},
 	startSocketIOListener: function() {
 		var filesLeft = 0,
@@ -73,7 +72,7 @@ tester = {
 
 		function onUnitTestExecuting( file ) {
 			console.log('\n');
-			console.log(color('cyan', 'Executing ' + file));
+			console.log('Executing ' + color('cyan', file));
 		}
 
 		function onUnitTestComplete( data ) {
@@ -84,15 +83,15 @@ tester = {
 
 			console.log( util.format('total: %s, passed: %s, failed: %s', data.total, data.passed, data.failed ) );
 			if ( data.failed > 0 ) {
-				console.log( color( 'red', ' Failures:' ) );
+				console.log( color( 'red', 'Failures:' ) );
 				data.failedTests.forEach(function(test, index) {
-					console.log(util.format( '  (%d) \033[90mmodule\033[0m: %s, \033[90mtest\033[0m: %s, \033[90mdetails\033[0m: %s', index+1, test.module, test.name, test.message ) );
+					console.log(util.format( '(%d) %s: %s, %s: %s, %s: %s', index+1, color('grey', 'module'), test.module, color('grey', 'test'), test.name, color('grey', 'details'), test.message ) );
 				});	
 			}
 
 		    if ( filesLeft === 0 ) {
-		    	console.log( '\n Testing complete.' );
-		    	console.log( util.format( '	total: %s, passed: %s, failed: %s \n', testResult.total, testResult.passed, testResult.failed ) );
+		    	console.log( '\nTest complete!' );
+		    	console.log( util.format( 'total: %s, passed: %s, failed: %s \n', testResult.total, testResult.passed, testResult.failed ) );
 
 		    	testResult.failed = 0;
 
