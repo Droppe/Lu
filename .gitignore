@@ -1,7 +1,7 @@
 .~*
 .*
 node_modules/*
-styles/*.css
+styles/css/*.css
 bin/
-!styles/base.css
+!styles/css/screen.css
 !.gitignore

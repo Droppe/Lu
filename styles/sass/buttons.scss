@@ -21,9 +21,7 @@ input[type="reset"],
 input[type="button"] {
   border: 1px solid #cacaca;
   padding: 6px 16px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
+  @include border-radius( 3px );
   color: #5e5e61;
   display: inline-block;
   text-decoration: none;
@@ -36,8 +34,8 @@ input[type="button"] {
   font-size: 11px;
   font-weight: bold;
   line-height: 16px;
-  background: -moz-linear-gradient(center top , #ececec 0%, #ddd 100%) repeat scroll 0 0 #ececec;
-  background: -webkit-linear-gradient(center top , #ececec 0%, #ddd 100%) repeat scroll 0 0 #ececec;
+  background: #ddd;
+  @include linear-gradient( #ddd, #ececec );
 }
 
 a.button:hover,
@@ -56,7 +54,7 @@ input[type="reset"]:active,
 input[type="button"]:active {
   color: #006da2;
   border: 1px solid #b1b1b1;
-  box-shadow: 0 0 10px rgba( 0, 0, 0, .5 ) inset;
+  @include box-shadow( 0 0 10px rgba( 0, 0, 0, .1 ) inset );
 }
 
 a.button.lu-disabled,
