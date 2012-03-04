@@ -4,9 +4,24 @@ var nodeStatic = require( 'node-static' ),
 	util = require( 'util' ),
 	url = require( 'url' ),
 	spawn = require( 'child_process' ).spawn,
-	argv = require( 'optimist' ).argv,
 	fs = require('fs'),
-	port = 80,
+
+	config = require('./test/config'),
+
+	argv = require( 'optimist' )
+		.alias('b', {
+			alias: 'browser',
+			default: 'all',
+			describe: 'browser(s) to run tests in'
+		})
+		.boolean('k', {
+			alias: 'keep',
+			default: false,
+			describe: 'keep browser(s) open'
+		})
+		.argv,
+
+	port = 8000,
 	fileServer = new nodeStatic.Server( path.normalize( __dirname ) ),
 
 	UNIT_TESTS_DIR = 'test/unit-tests/',
@@ -15,18 +30,37 @@ var nodeStatic = require( 'node-static' ),
 
 	app,
 	unitTests = [],
+	browserIndex = 0,
 
-	Browsers = {
-		Chrome: '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome',
-		Firefox: '/Applications/Firefox.app/Contents/MacOS/firefox'
+	options = {
+		keepBrowserOpen: false,
+		browser: null
 	};
 
 tester = {
-	init: function(files) {
+	init: function() {
+		
+		(function computeOptions() {
+			console.log('ARGS', argv);
+
+			if (argv.k) {
+				options.keepBrowserOpen = true;
+			}
+
+			if (!argv.b || argv.b === 'all') {
+				options.browser = [];
+				for (var key in config.browsers) {
+					options.browser.push(config.browsers[key]);
+				}
+			} else if (argv.b) {
+				options.browser = [config.browsers[argv.b]];
+			}
+		})();
+
 		tester.createServer();
-		tester.prepareUnitTests(files);
+		tester.prepareUnitTests();
 		tester.startSocketIOListener();
-		tester.openBrowser();
+		tester.startNextBrowserSession();
 	},
 	createServer: function() {
 		app = http.createServer( function( request, response ) {
@@ -52,36 +86,39 @@ tester = {
 
 		} ).listen( port );
 	},
-	prepareUnitTests: function(files) {
-		if ( files && files.length > 0 ) {
-			unitTests = files;
-			return;
-		}
+	prepareUnitTests: function() {
 		unitTests = argv._.length > 0 ? argv._ : fs.readdirSync( path.normalize( __dirname + '/' + UNIT_TESTS_DIR) );
 	},
 	startSocketIOListener: function() {
 		var filesLeft = 0,
+			unitTestResult;
 
-			testResult = {
+		function resetUnitTestsResult() {
+			unitTestResult = {
 				files: 0,
 				failed: 0,
 				passed: 0,
 				total: 0,
 				details: []
 			};
+		};
+
+		resetUnitTestsResult();
 
 		function onUnitTestExecuting( file ) {
-			console.log('\n');
-			console.log('Executing ' + color('cyan', file));
+			console.log('\nExecuting ' + color('cyan', file));
 		}
 
 		function onUnitTestComplete( data ) {
-		  	filesLeft--;
-		  	testResult.failed += data.failed;
-		  	testResult.passed += data.passed;
-		  	testResult.total += data.total;
+
+			// Increment the test result values
+		  	unitTestResult.failed += data.failed;
+		  	unitTestResult.passed += data.passed;
+		  	unitTestResult.total += data.total;
 
 			console.log( util.format('total: %s, passed: %s, failed: %s', data.total, data.passed, data.failed ) );
+
+			// Print the failures
 			if ( data.failed > 0 ) {
 				console.log( color( 'red', 'Failures:' ) );
 				data.failedTests.forEach(function(test, index) {
@@ -89,14 +126,18 @@ tester = {
 				});	
 			}
 
+			// Print the total result of all unit tests: total, passed, failed
+			filesLeft--;
 		    if ( filesLeft === 0 ) {
 		    	console.log( '\nTest complete!' );
-		    	console.log( util.format( 'total: %s, passed: %s, failed: %s \n', testResult.total, testResult.passed, testResult.failed ) );
+		    	console.log( util.format( 'total: %s, passed: %s, failed: %s \n', unitTestResult.total, unitTestResult.passed, unitTestResult.failed ) );
 
-		    	testResult.failed = 0;
+		    	resetUnitTestsResult();
 
-		    	browserSession.kill();
+		    	tester.startNextBrowserSession();
 		    }
+
+		    
 		}
 
 		function onSocketConnection( socket ) {
@@ -106,10 +147,28 @@ tester = {
 		}
 
 		io = require( 'socket.io' ).listen( app ),
+		io.set('log level', -1);
+		io.set('transports', ['websocket', 'flashsocket', 'xhr-polling']);
 		io.sockets.on( 'connection', onSocketConnection );
 	},
-	openBrowser: function() {
-		browserSession = spawn( Browsers.Firefox, ['http://localhost/test/index.html'] );
+	startNextBrowserSession: function() {
+		if (browserSession/* && !options.keepBrowserOpen */) {
+    		browserSession.kill();
+		}
+
+		// If we've completed running all the unit tests through all the specified
+		// browsers, we're done
+		if (browserIndex === options.browser.length) {
+			console.log('\nAll unit tests have run.')
+			return;
+		}
+
+		console.log('\n=================================')
+		console.log(options.browser[browserIndex]);
+
+		// Open the next browser session
+		browserSession = spawn('open', ['-a', options.browser[browserIndex], 'http://localhost:8000/test/index.html'] );
+		browserIndex++;
 	}
 }
 
@@ -130,4 +189,4 @@ var color = (function () {
 
 tester.init();
 
-exports.tester = tester;
+exports.start  = tester.init

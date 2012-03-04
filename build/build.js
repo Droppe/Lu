@@ -3,9 +3,9 @@ var Fs = require( 'fs' ),
     Util = require( 'util' ),
     Readline = require( 'readline' ),
     Compiler = require( './compiler' ),
-    args = require( 'optimist' ).usage('Usage: $0 -x [num] -y [num]').argv,
+    args = require( 'optimist' ).argv,
     common = require( './common' ),
-    tester = require( '../test-server' ).tester,
+    tester = require( '../test-server' ),
     questions = common.questions,
     luControls = common.filetoVersion,
     build;
@@ -60,7 +60,7 @@ build = {
   },
   runTests: function() {
     console.log('Running tests');  
-    tester.init();
+    tester.start();
   },
   makeDocs: function() {
     //TODO: creates docs
