@@ -5,13 +5,13 @@ var Fs = require( 'fs' ),
     Compiler = require( './compiler' ),
     args = require( 'optimist' ).usage('Usage: $0 -x [num] -y [num]').argv,
     common = require( './common' ),
+    tester = require( '../test-server' ).tester,
     questions = common.questions,
     luControls = common.filetoVersion,
     build;
     
 build = {
   init: function() {
-
     if( args.build ) {
       build.startBuild();
     } else if( args.docs ) {
@@ -59,7 +59,8 @@ build = {
     }
   },
   runTests: function() {
-    //TODO: creates tests
+    console.log('Running tests');  
+    tester.init();
   },
   makeDocs: function() {
     //TODO: creates docs
