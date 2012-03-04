@@ -142,7 +142,7 @@ Button = Class.create( Abstract, ( function() {
        */
       Button.disable = function() {
         if( $element.is( 'button, input' ) ) {
-          $element.prop( 'disabled', 'disabled' );
+          $element.prop( 'disabled', true );
         }
         $element.addClass( 'lu-disabled' );
       };
