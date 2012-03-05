@@ -11,7 +11,7 @@ $(function() {
 
 	var tester = {
 		/**
-		* Observe events from $observer
+		* Initialize the test harness
 		* @param {Array} $tests A collection of test files
 		*/
 		init: function(tests) {
