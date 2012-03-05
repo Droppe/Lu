@@ -211,76 +211,76 @@ List =  Class.create( Abstract, ( function () {
           $links,
           $previous;
 
-        if ( item !== undefined ) {
+        if ( item === undefined || item === null ) {
+          return List;
+        }
 
-          transitioning = false;
-          $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
-          List.trigger( TRANSITIONED_EVENT, [ $element ] );
+        transitioning = false;
+        $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
+        List.trigger( TRANSITIONED_EVENT, [ $element ] );
 
-          if( typeof item === 'number' ) { // Item is an index number
-            $item = $items.eq( item );
-          } else if ( typeof item === 'string' ) { // Item is a string/CSS selector
-            $item = $items.filter( item );
-          } else { // Item is a JQuery object
-            $item = item;
-          }
+        if( typeof item === 'number' ) { // Item is an index number
+          $item = $items.eq( item );
+        } else if ( typeof item === 'string' ) { // Item is a string/CSS selector
+          $item = $items.filter( item );
+        } else { // Item is a JQuery object
+          $item = item;
+        }
 
-          if( $item.is( $items ) ) {
+        if( $item.is( $items ) ) {
 
-            if( $item.hasClass( SELECTED_FLAG ) === false ) {
+          if( $item.hasClass( SELECTED_FLAG ) === false ) {
 
-              // Not selected
-              // aria-selected applies to the link _not_ the list item!!!
-              $previous = $items.filter( '.' + SELECTED_FLAG );
-              // Set all links under $items to be aria-selected false
-              $items.find( 'a' ).attr( 'aria-selected', 'false' );
+            // Not selected
+            // aria-selected applies to the link _not_ the list item!!!
+            $previous = $items.filter( '.' + SELECTED_FLAG );
+            // Set all links under $items to be aria-selected false
+            $items.find( 'a' ).attr( 'aria-selected', 'false' );
 
-              $links = $item.find( 'a' );
+            $links = $item.find( 'a' );
 
-              if ( $links.length > 0 ) {
-                // Set aria-selected for the first link to "true"
-                $links.eq( 0 ).attr( 'aria-selected', 'true' );
-              }
-
-
-              $item.addClass( SELECTED_FLAG );
-              $previous.removeClass( SELECTED_FLAG );
-
-              List.trigger( SELECTED_EVENT, [ $element, $item, List.index() ] );
-
-              if( $.support.transitionEnd ) {
-                $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
-                $previous.addClass( TRANSITION_OUT_FLAG );
-                $item.addClass( TRANSITION_IN_FLAG ).one( $.support.transitionEnd.event, function( event ) {
-                  $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
-                  transitioning = false;
-                  List.trigger( TRANSITIONED_EVENT, [ $element ] );
-                } );
-                List.trigger( TRANSITIONING_EVENT, [ $element ] );
-                transitioning = true;
-              } else {
-                transitioning = false;
-                $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
-                List.trigger( TRANSITIONED_EVENT, [ $element ] );
-              }
-
-              if( !List.hasPrevious() ) {
-                List.trigger( FLOORED_EVENT, [ $element ] );
-              }
-
-              if( !List.hasNext() ) {
-                List.trigger( MAXED_EVENT, [ $element ] );
-              }
-
-              // // Set focus to the item that you've selected
-              // // We do this for a11y
-              // if ( !autoPlay ) {
-              //   // We set focus when we're not auto playing.
-              //   // Setting focus when auto playing moves the page and that's a bad baby!
-              //   $item.attr( 'tabindex', '-1' ).focus();
-              // }
-
+            if ( $links.length > 0 ) {
+              // Set aria-selected for the first link to "true"
+              $links.eq( 0 ).attr( 'aria-selected', 'true' );
             }
+
+
+            $item.addClass( SELECTED_FLAG );
+            $previous.removeClass( SELECTED_FLAG );
+
+            List.trigger( SELECTED_EVENT, [ $element, $item, List.index() ] );
+
+            if( $.support.transitionEnd ) {
+              $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
+              $previous.addClass( TRANSITION_OUT_FLAG );
+              $item.addClass( TRANSITION_IN_FLAG ).one( $.support.transitionEnd.event, function( event ) {
+                $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
+                transitioning = false;
+                List.trigger( TRANSITIONED_EVENT, [ $element ] );
+              } );
+              List.trigger( TRANSITIONING_EVENT, [ $element ] );
+              transitioning = true;
+            } else {
+              transitioning = false;
+              $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
+              List.trigger( TRANSITIONED_EVENT, [ $element ] );
+            }
+
+            if( !List.hasPrevious() ) {
+              List.trigger( FLOORED_EVENT, [ $element ] );
+            }
+
+            if( !List.hasNext() ) {
+              List.trigger( MAXED_EVENT, [ $element ] );
+            }
+
+            // // Set focus to the item that you've selected
+            // // We do this for a11y
+            // if ( !autoPlay ) {
+            //   // We set focus when we're not auto playing.
+            //   // Setting focus when auto playing moves the page and that's a bad baby!
+            //   $item.attr( 'tabindex', '-1' ).focus();
+            // }
 
           }
 
@@ -289,6 +289,7 @@ List =  Class.create( Abstract, ( function () {
         }
 
         return List;
+        
       };
 
       /**
