@@ -79,6 +79,18 @@ Checkbox = Class.create( Abstract,  ( function () {
       function isChecked() {
         return !!( $element.prop("checked") );
       };
+
+      Checkbox.disable = function() {
+        $element
+         .prop( 'disabled', true )
+         .addClass( 'lu-disabled' );
+      };
+
+      Checkbox.enable = function() {
+        $element
+         .removeProp( 'disabled' )
+         .removeClass( 'lu-disabled' );
+      };
       
       // PRIVILEGED METHODS
       Checkbox.triggerAction = function () {
