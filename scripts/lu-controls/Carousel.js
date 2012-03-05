@@ -105,7 +105,14 @@ Carousel =  Class.create( List, ( function() {
          * @private
          * @final
          */
-         delay;
+         delay,
+        /**
+         * Timer which handles the playing of the carousel
+         * @property playTimer
+         * @type Object
+         * @private
+         */
+         playTimer;
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -128,7 +135,7 @@ Carousel =  Class.create( List, ( function() {
           repeat = settings.repeat;
           playing = true;
           ( function recurse() {
-            window.setTimeout( function() {
+            playTimer = window.setTimeout( function() {
               if( playing ) {
                 Carousel.next();
                 recurse();
@@ -149,6 +156,7 @@ Carousel =  Class.create( List, ( function() {
       Carousel.pause = function() {
         if( playing ) {
           playing = false;
+          window.clearTimeout(playTimer);
           Carousel.trigger( PAUSED_EVENT, [ $element ] );
         }
         return Carousel;
@@ -183,8 +191,11 @@ Carousel =  Class.create( List, ( function() {
       Carousel.next = function() {
         if( Carousel.size() === Carousel.index() + 1 ) {
           Carousel.select( 0 );
+          console.log(0);
         } else {
+          var i  = Carousel.index() + 1;
           Carousel.select( Carousel.index() + 1 ); 
+          console.log(i);
         }
         return Carousel;
       };
