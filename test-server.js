@@ -41,7 +41,6 @@ tester = {
 	init: function() {
 		
 		(function computeOptions() {
-			console.log('ARGS', argv);
 
 			if (argv.k) {
 				options.keepBrowserOpen = true;
