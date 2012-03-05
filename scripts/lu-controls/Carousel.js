@@ -191,11 +191,9 @@ Carousel =  Class.create( List, ( function() {
       Carousel.next = function() {
         if( Carousel.size() === Carousel.index() + 1 ) {
           Carousel.select( 0 );
-          console.log(0);
         } else {
           var i  = Carousel.index() + 1;
           Carousel.select( Carousel.index() + 1 ); 
-          console.log(i);
         }
         return Carousel;
       };
