@@ -1,0 +1,166 @@
+<div id="carousel-test" data-lu="Carousel">
+  <ol>
+    <li class="lu-selected">One</li>
+    <li>Two</li>
+    <li>Three</li>
+    <li>Four</li>
+    <li>Five</li>
+    <li>Six</li>
+    <li>Seven</li>
+  </ol>
+  <button data-lu="Button:Previous">Previous</button>
+  <button data-lu="Button:Next">Next</button>
+</div>
+
+<script>
+
+function run() {
+	function setup() {
+		this.$carousel = $('#carousel-test');
+		this.carousel = this.$carousel.lu('getControl');
+	}
+
+	module('Eventing', {
+		setup: setup
+	});
+
+	test('Pause', function() {
+		expect(3);
+
+		var playing = true;
+		function onPaused() {
+			playing = false;
+		}
+
+		this.carousel.on('paused', onPaused);
+		this.carousel.pause();
+
+		ok(!playing, 'Carousel is paused - "paused" event triggered');
+		ok(this.$carousel.hasClass('lu-paused'), '"lu-disabled" added to carousel DOM');
+
+		playing = true;
+		this.carousel.pause();
+		ok(playing, 'Secondary call to "pause" does not trigger "paused" event');
+	});
+
+	test('Play', function() {
+		expect(3);
+
+		var playing;
+		function onPlaying() {
+			playing = true;
+		}
+
+		this.carousel.on('playing', onPlaying);
+		this.carousel.play();
+
+		ok(playing, 'Carousel is playing - "playing" event triggered.');
+		ok(!this.$carousel.hasClass('lu-paused'), '"lu-disabled" class removed from carouself DOM');
+
+		playing = false;
+		this.carousel.play();
+		ok(!playing, 'Secondary call to "play" does not trigger "playing" event');
+	});
+
+	module('Basic API', {
+		setup: function() {
+			setup.apply(this);
+			this.$list = this.$carousel.find('ol');
+			this.$first = this.$list.find('li:first-child');
+			this.$second = this.$list.find('li:nth-child(2)');
+			this.$last = this.$list.find('li:last-child');
+		}
+	});
+
+	test('Select', function() {
+		expect(5);
+
+		this.carousel.pause();
+
+		this.carousel.select(0);
+
+		equal(this.carousel.index(), 0, "First item is selected");
+		ok(this.$first.hasClass('lu-selected'), '"lu-selected" class added to the first item');
+
+		this.carousel.select(1);
+
+		equal(this.carousel.index(), 1, "Second item is selected");
+		ok(!this.$first.hasClass('lu-selected'), '"lu-selected" class removed from the first item');
+		ok(this.$second.hasClass('lu-selected'), '"lu-selected" class added to the second item');
+	});
+
+	test('Next', function() {
+		expect(5);
+
+		// Select the first item
+		this.carousel.select(0);
+
+		// Select the second item
+		this.carousel.next();
+
+		equal(this.carousel.index(), 1, "Second item is selected");
+		ok(!this.$first.hasClass('lu-selected'), '"lu-selected" class removed from the first item');
+		ok(this.$second.hasClass('lu-selected'), '"lu-selected" class added to the second item');
+
+		// Select the last item
+		this.carousel.select(this.$last.index());
+
+		// Select the next item, which would be the first item
+		this.carousel.next();
+
+		equal(this.carousel.index(), 0, "First item is selected, after 'next' on last item");
+		ok(this.$first.hasClass('lu-selected'), '"lu-selected" class added to the first item');
+	});
+
+	test('Previous', function() {
+		expect(6);
+
+		// Select the second item
+		this.carousel.select(1);
+
+		// Select the first item
+		this.carousel.previous();
+
+		equal(this.carousel.index(), 0, "Second item is selected");
+		ok(this.$first.hasClass('lu-selected'), '"lu-selected" class added to the first item');
+		ok(!this.$second.hasClass('lu-selected'), '"lu-selected" class removed from the second item');
+
+		// Select the previous item, which is the last item
+		this.carousel.previous();
+
+		equal(this.carousel.index(), this.$last.index(), "Second item is selected");
+		ok(this.$last.hasClass('lu-selected'), '"lu-selected" class added to the last item');
+		ok(!this.$first.hasClass('lu-selected'), '"lu-selected" class removed from the first item');
+	});
+
+	// TODO: lots more
+
+	/*
+	// TODO: Test autoplaying functionality
+	test('DOM Manipulation on Playing/Paused', function() {
+		expect(1);
+
+		var $list = this.$carousel.find('ol'),
+			listLen = $list.find('li').length,
+			$item,
+			itemIndex,
+			// Get the current selected item
+			$selected = $list.find('li.lu-selected');
+			selectedIndex = selected.index();
+
+		this.carousel.play();
+		var interval = setInterval(function() {
+			$item = $list.find('li.lu-selected');
+			itemIndex = $item.index();
+
+			if (itemIndex)
+			if (itemIndex = selectedIndex+1)
+
+		}, 4000);
+
+		ok(true, 'yes');
+	});
+	*/
+}
+
+</script>
