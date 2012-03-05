@@ -1,0 +1,298 @@
+<div id="list-test" data-lu="List">
+  <ol>
+    <li class="lu-selected"><a>One</a></li>
+    <li><a>Two</a></li>
+    <li><a>Three</a></li>
+    <li><a>Four</a></li>
+  </ol>
+</div>
+
+<script>
+
+function run() {
+
+	function setup() {
+		this.$list = $('#list-test');
+		this.list = this.$list.lu('getControl');
+	}
+
+	module('Construction', {
+		setup: setup
+	});
+
+	test('Current', function() {
+		expect(1);
+
+		equal(this.list.current().text(), this.$list.find('li.lu-selected').text(), 'Current selected item points to the correct DOM item');
+	});
+
+	test('Size', function() {
+		expect(1);
+
+		equal(this.list.size(), this.$list.find('ol li').length, 'Size matches DOM length');
+	});
+
+	test('ARIA', function() {
+		var link = this.list.current().find('a');
+
+		equal(link.prop('aria-selected'), true, 'First item has link with "aria-selected=true"');
+	});
+
+	module('Basic API', {
+		setup: setup
+	});
+
+	test('Append/Remove', function() {
+		expect(2);
+
+		var item = $('<li class="new-item">New Item</li>');
+
+		// Add the item
+		this.list.append(item);
+
+		equal(this.$list.find('li.new-item').length, 1, 'Item appended to the list');
+
+		// Remove the item
+		this.list.remove(item);
+
+		equal(this.$list.find('li.new-item').length, 0, 'Item removed from the list');
+	});
+
+	test('Index', function() {
+		expect(2);
+
+		equal(this.list.index(), 0, 'Index returned is 0');
+
+		// Force the selection of the next item, without using the API
+		this.list
+			.current()
+				.removeClass('lu-selected')
+				.next()
+					.addClass('lu-selected');
+
+		equal(this.list.index(), 1, 'Index returned is 1');
+	});
+
+	module('Select', {
+		setup: setup
+	});
+
+	test('By index', function() {
+		expect(5);
+
+		// Select the 1st item
+		this.list.select(1);
+
+		equal(this.list.index(), 1, "Index returned is 1");
+		ok(this.list.current().hasClass('lu-selected'), 'Item at selected index has "lu-selected" class')
+
+		// Select the second item
+		this.list.select(2);
+
+		equal(this.list.index(), 2, "Index returned is 2");
+		ok(this.list.current().hasClass('lu-selected'), 'Item at selected index has "lu-selected" class')
+
+		// Select an item at an index which doesn't exist
+		var outOfBounds;
+		function onOutOfBounds() {
+			outOfBounds = true;
+		}
+		this.list.on('out-of-bounds', onOutOfBounds);
+		this.list.select(10);
+
+		ok(outOfBounds, '"out-of-bounds" even triggers when selecting an item which doesn\'t exist');
+
+	});
+
+	test('By selector string', function() {
+		expect(2);
+
+		this.list.select(':first-child');
+
+		equal(this.list.index(), 0, 'First item is selected');
+
+		this.list.select(':last-child');
+
+		equal(this.list.index(), this.list.size() - 1, 'Last item is selected');
+	});
+
+	test('By jQuery Object', function() {
+		expect(1);
+
+		var item = this.$list.find('ol li:nth-child(2)');
+
+		this.list.select(item);
+
+		equal(this.list.index(), item.index(), '');
+	});
+
+	module('Core API', {
+		setup: setup
+	});
+
+	test('Next', function() {
+		expect(4);
+
+		this.list.select(0);
+
+		// Select the second item
+		this.list.next();
+
+		equal(this.list.index(), 1, 'Second item is selected');
+		ok(this.list.hasNext(), '"hasNext" is true');
+
+		// Select the last item
+		this.list.select(this.list.size() - 1);
+
+		ok(!this.list.hasNext(), '"hasNext" is false');
+
+		// Select the next item, should throw an out-of-bounds
+		var outOfBounds;
+		function onOutOfBounds() {
+			outOfBounds	= true;
+		}
+		this.list.on('out-of-bounds.next', onOutOfBounds);
+
+		this.list.next();
+
+		ok(outOfBounds, '"next" on last item triggers an out-of-bounds event');
+	});
+
+	test('Previous', function() {
+		expect(4);
+
+		this.list.select(1);
+
+		ok(this.list.hasPrevious(), '"hasPrevious" is true');
+
+		this.list.previous();
+
+		equal(this.list.index(), 0, 'First item is selected');
+
+		// Select the previous item, should throw an out-of-bounds
+		var outOfBounds;
+		function onOutOfBounds() {
+			outOfBounds	= true;
+		}
+		this.list.on('out-of-bounds.previous', onOutOfBounds);
+
+		ok(!this.list.hasPrevious(), '"hasPrevious" is false');
+
+		this.list.previous();
+
+		ok(outOfBounds, '"previous" on last item triggers an out-of-bounds event');
+	});
+
+	test('First', function() {
+		expect(1);
+
+		this.list.select(2);
+
+		this.list.first();
+
+		equal(this.list.index(), 0, 'First item is selected');
+	});
+
+	test('Last', function() {
+		expect(1);
+
+		this.list.select(2);
+
+		this.list.last();
+
+		equal(this.list.index(), this.list.size() - 1, 'Last item is selected');
+	});
+
+	module('Eventing', {
+		setup: setup
+	});
+
+	test('Selected', function() {
+		expect(1);
+
+		var selected,
+			next,
+			previous;
+
+		this.list
+			.on('selected', function() {
+				selected = true;
+			});
+
+		this.list.select(0);
+
+		ok(selected, '"selected" event triggers');
+	});
+
+	test('Next/Previous', function() {
+		expect(2);
+
+		// Next
+		this.list.select(0);
+
+		this.list.trigger('next');
+
+		equal(this.list.index(), 1, "'next' triggers the selection of the next item");
+
+		// Previous
+		this.list.select(1);
+
+		this.list.trigger('previous');
+
+		equal(this.list.index(), 0, "'previous' triggers the selection of the previous item");
+	});
+
+	test('First/Last', function() {
+		expect(4);
+
+		var floored, maxed;
+		function onFloored() {
+			floored = true;
+		}
+		function onMaxed() {
+			maxed = true;
+		}
+
+		this.list
+			.on('floored', onFloored)
+			.on('maxed', onMaxed);
+
+		// First
+		this.list.select(1);
+
+		this.list.trigger('first');
+
+		equal(this.list.index(), 0, "'first' triggers the selection of the first item");
+		ok(floored, '"floored" event fires');
+
+		// Last
+		this.list.trigger('last');
+
+		equal(this.list.index(), this	.list.size() - 1, "'last' triggers the selection of the last item");
+		ok(maxed, '"maxed" event fires');
+
+	});
+
+	test('Key Up', function() {
+		expect(2);
+
+		this.list.select(0);
+		
+		var e = $.Event('keyup');
+
+		// Right arrow
+		e.keyCode = 39;
+		this.list.trigger(e);
+
+		equal(this.list.index(), 1, '"right" key selects next item');
+
+		// Left arrow
+		e.keyCode = 37;
+		this.list.trigger(e);
+
+		equal(this.list.index(), 0, '"left" key selects previous item');
+
+	});
+}
+
+</script>
