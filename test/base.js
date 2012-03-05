@@ -1,3 +1,7 @@
+/**
+ * Manage unit testing
+ * @version 0.1
+ */
 $(function() {
 
 	var socket = io.connect('http://localhost');
