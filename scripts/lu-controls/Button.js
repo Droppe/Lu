@@ -162,8 +162,6 @@ Button = Class.create( Abstract, ( function() {
       Button.on( settings.on, function( event ) {
         event.preventDefault();
 
-        _.info( 'click', action );
-
         var parameters = [];
 
         // For accessibility we focus on the link.

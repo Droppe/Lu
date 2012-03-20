@@ -2,7 +2,7 @@
  * Representation of a stateful button element
  * @class Switcher
  * @constructor
- * @extends Container
+ * @extends Abstract
  * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
@@ -56,19 +56,21 @@ Switcher = Class.create( Abstract,  ( function () {
         state = [],
         meta;
 
-
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
-      
+
       settings.states = settings.states || { on: 'on', off: 'off' };
 
+      //Normalize settings so that everything is a map
+      //First turn strings into arrays
       if( typeof settings.states === 'string' ) {
-        settings.states = settings.states.split( ' ' );
+        settings.states = settings.states.split( ',' );
       }
 
+      //Then arrays into objects
       if( _.isArray( settings.states ) ) {
         _.each( settings.states, function( item, index ) {
           states[item] = item;
@@ -102,20 +104,33 @@ Switcher = Class.create( Abstract,  ( function () {
       };
 
       Switcher.setState = function( keys ) {
-        keys = keys.split( ' ' ).sort();
-        _.log( keys );
+        var validStates = _.keys( states );
+
+        if( typeof keys === 'string' ) {
+          keys = keys.split( ' ' );
+        }
+
+        keys = keys.sort();
+
         if( state.join( ' ' ) !== keys.join( ' ' ) ) {
-          _.each( state, function( key, index ) {
-            $element.removeClass( 'lu-switch-' + key );
-          } );
-          state = [];
+          if( state.length > 0 ){
+            //Remove States
+            _.each( state, function( key, index ){
+              $element.removeClass( 'lu-switch-' + key );
+            } );
+            state = [];
+          }
+
           meta = {};
+
           _.each( keys, function( key, index ) {
-            state.push( key );
-            meta[key] = states[key];
-            $element.addClass( 'lu-switch-' + key );
+            if( _.indexOf( validStates, key ) > -1 ) {
+              state.push( key );
+              meta[key] = states[key];
+              $element.addClass( 'lu-switch-' + key );
+            }
           } );
-          Switcher.trigger( 'switched', [$element, state, meta] );
+          Switcher.trigger( SWITCHED_EVENT, [$element, state, meta] );
         }
       };
 
@@ -130,18 +145,18 @@ Switcher = Class.create( Abstract,  ( function () {
         }
 
         Switcher.setState( value );
-
+      
       } );
 
       if( !settings.start ) {
-        Switcher.setState( _.keys( states )[0] );
+        Switcher.setState( [_.keys( states )[0]] );
       } else {
         Switcher.setState( settings.start );
       }
 
     }
   };
-}() ));
+}() ) );
 
 
 //Export to Common JS Loader
