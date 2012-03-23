@@ -2,10 +2,10 @@ var Fs = require( 'fs' ),
     Path = require( 'path' ),
     Util = require( 'util' ),
     Readline = require( 'readline' ),
-    Compiler = require( './compiler' ),
+    Compiler = new (require( './compiler' ))( {type: 'jar'} ),
     args = require( 'optimist' ).argv,
     common = require( './common' ),
-    tester = require( '../test-server' ),
+    //tester = require( '../test-server' ),
     questions = common.questions,
     luControls = common.filetoVersion,
     build;
@@ -164,11 +164,14 @@ function parseBuildAnswers() {
     }
     
     Fs.writeFileSync( outputPath + '/lu.js', compiledSrc, 'utf-8' );//TODO: turn this in to a build.copy call
+    
+      console.log('lu', error);
     build.isRunDone( 'compile', !!error );
   } );
   
   //process and copy lu-config.js
   build.copy( scriptsPath + '/lu-config.js', outputPath + '/lu-config.js', function(error) {
+    console.log('lu-config', error);
     build.isRunDone( 'lu-config', !!error );
   } );
   
