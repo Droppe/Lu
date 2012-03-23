@@ -7,8 +7,6 @@ var Class = require( 'class' ),
  * @class Abstract
  * @constructor
  * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  * @version 0.1
  */
 Abstract = Class.create( ( function() {
@@ -77,7 +75,7 @@ Abstract = Class.create( ( function() {
 
         /**
          * The namespace used in all event bindings
-         * See http://docs.jquery.com/Namespaced_Events.
+         * See <a href="http://docs.jquery.com/Namespaced_Events">JQuery Namespaced Events</a>.
          * @property namespace
          * @private
          * @type {Object}
@@ -115,7 +113,7 @@ Abstract = Class.create( ( function() {
           if( typeof item === 'function' ) {
             parameters[index] = function() {
               item.apply( $element, arguments );
-            }
+            };
           }
         } );
         return parameters;
