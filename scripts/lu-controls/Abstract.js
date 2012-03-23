@@ -1,4 +1,3 @@
-
 var Class = require( 'class' ),
   Abstract;
 
@@ -102,6 +101,7 @@ Abstract = Class.create( ( function() {
        */
       function parameters() {
         var parameters = Array.prototype.slice.call( arguments );
+        
         if( namespace ) {
           parameters[0] = parameters[0].split( ' ' );
           _.each( parameters[0], function( item, index ) {
@@ -109,6 +109,7 @@ Abstract = Class.create( ( function() {
           } );
           parameters[0] = parameters[0].join( ' ' );
         }
+        
         _.each( parameters, function( item, index ) {
           if( typeof item === 'function' ) {
             parameters[index] = function() {
@@ -116,6 +117,7 @@ Abstract = Class.create( ( function() {
             };
           }
         } );
+        
         return parameters;
       }
 
@@ -157,6 +159,7 @@ Abstract = Class.create( ( function() {
        */
       function trigger( event, parameters ) {
         var store = eventStore[ event ];
+        
         $element.lu( 'notify', event, parameters );
         if( store && store.method === 'one' ) {
           unbind( event );
@@ -183,10 +186,10 @@ Abstract = Class.create( ( function() {
       function unbind( event ) {
         eventStore = _.reject( eventStore, function( item, key ) {
           return false;
-          //return ( item.indexOf( event ) > -1 );
         } );
       }
 
+      // Set up observers and notifiers
       $observe = $( settings.observe );
       $notify = $( settings.notify );
 
