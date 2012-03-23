@@ -1,3 +1,4 @@
+```
                                                   _____            _____          
                                                  /\    \          /\    \         
                                                 /::\____\        /::\____\        
@@ -20,5 +21,11 @@
                                                 \::/    /        \::/____/        
                                                  \/____/          ~~
 
-                                     See the website @ http://iheartweb.github.com/Lu/
-  
+                                     Get started @ http://iheartweb.github.com/Lu/
+```
+
+Lu is developed using nodejs. To start contributing - get node, install the npms in package.json, and then:
+
+```
+$sudo node server.js
+```
