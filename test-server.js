@@ -11,7 +11,7 @@ var nodeStatic = require( 'node-static' ),
 	argv = require( 'optimist' )
 		.alias('b', {
 			alias: 'browser',
-			default: 'all',
+			'default': 'all',
 			describe: 'browser(s) to run tests in'
 		})
 		.boolean('k', {
