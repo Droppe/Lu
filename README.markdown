@@ -24,7 +24,7 @@
                                      Get started @ http://iheartweb.github.com/Lu/
 ```
 
-Lu is developed using nodejs. To start contributing get node and then:
+Lu is developed using nodejs. To start contributing - get node, install the npms in package.json, and then:
 
 ```
 $sudo node server.js
