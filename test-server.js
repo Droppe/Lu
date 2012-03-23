@@ -37,6 +37,8 @@ var nodeStatic = require( 'node-static' ),
 		browser: null
 	};
 
+console.log(__dirname);
+
 tester = {
 	init: function() {
 		
@@ -166,7 +168,7 @@ tester = {
 		console.log(options.browser[browserIndex]);
 
 		// Open the next browser session
-		browserSession = spawn('open', ['-a', options.browser[browserIndex], 'http://localhost:8000/test/index.html'] );
+		browserSession = spawn('open', ['-a', options.browser[browserIndex], 'http://localhost:' + port + '/test/index.html'] );
 		browserIndex++;
 	}
 }

@@ -2,7 +2,7 @@ var nodeStatic = require( 'node-static' ),
 	path = require( 'path' ),
 	http = require( 'http' ),
 	util = require( 'util' ),
-	port = 8000,
+	port = 1337,
 	fileServer = new nodeStatic.Server( path.normalize( __dirname ) );
 
 http.createServer( function( request, response ) {
