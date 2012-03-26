@@ -335,9 +335,28 @@
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4>Tabs</h4>
+          <h4 id="controls_tabs">Tabs</h4>
           <p class="control-info">Annotation: <code>Tabs</code>, <a href="">Documentation</a></p>
+          
+          <div data-lu="Tabs">
+            <ol data-lu="List">
+              <li><a href="#tab1" data-lu="Button:Select">Tab 1</a></li>
+              <li><a href="#tab2" data-lu="Button:Select">Tab 2</a></li>
+              <li><a href="#tab3" data-lu="Button:Select">Tab 3</a></li>
+              <li><a href="#tab4" data-lu="Button:Select">Tab 4</a></li>
+            </ol>
+            <div>
+              <div id="tab1" data-lu="Container">Tab 1 content</div>
+              <div id="tab2" data-lu="Container">Tab 2 content</div>
+              <div id="tab3" data-lu="Container">Tab 3 content</div>
+              <div id="tab4" data-lu="Container">Tab 4 content</div>
+            </div>
+          </div>
+
+          <script src="https://gist.github.com/2202056.js?file=lutabs.html"></script>
+
           <p><a href="#controls" class="top small">Back to Controls</a></p>
+
         </div>
         <div class="sub-section">
           <h4>Switch</h4>
@@ -350,7 +369,20 @@
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4>Carousel</h4>
+          <h4 id="controls_carousel">Carousel</h4>
+
+          <div data-lu="Carousel">
+            <ol>
+              <li class="lu-selected">One</li>
+              <li>Two</li>
+              <li>Three</li>
+              <li>Four</li>
+            </ol>
+            <button data-lu="Button:Previous">Previous</button>
+            <button data-lu="Button:Next">Next</button>
+          </div>
+
+
           <p class="control-info">Annotation: <code>Carousel</code>, <a href="">Documentation</a></p>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
