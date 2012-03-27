@@ -26,7 +26,7 @@
 
 Lu is developed using [nodejs](http://nodejs.org/) and [compass](http://compass-style.org/help/). To start contributing:
 
-1. [Fork Lu](/Iheartweb/Lu/fork)
+1. Fork Lu
 2. Install Compass
 3. Install Node
 4. Install the npms in package.json
