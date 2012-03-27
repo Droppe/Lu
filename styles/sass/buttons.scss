@@ -35,7 +35,7 @@ input[type="button"] {
   font-weight: bold;
   line-height: 16px;
   background: #ddd;
-  @include linear-gradient( #ddd, #ececec );
+  @include background-image( linear-gradient( #ececec, #ddd ) );
 }
 
 a.button:hover,

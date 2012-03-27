@@ -529,11 +529,10 @@ input[type="reset"],
 input[type="button"] {
   border: 1px solid #cacaca;
   padding: 6px 16px;
-  -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
-  -o-border-radius: 3px;
+  -moz-border-radius: 3px;
   -ms-border-radius: 3px;
-  -khtml-border-radius: 3px;
+  -o-border-radius: 3px;
   border-radius: 3px;
   color: #5e5e61;
   display: inline-block;
@@ -574,9 +573,8 @@ input[type="reset"]:active,
 input[type="button"]:active {
   color: #006da2;
   border: 1px solid #b1b1b1;
-  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
-  -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
 }
 
