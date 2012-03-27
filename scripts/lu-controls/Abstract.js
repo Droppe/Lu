@@ -1,4 +1,3 @@
-
 var Class = require( 'class' ),
   Abstract;
 
@@ -7,8 +6,6 @@ var Class = require( 'class' ),
  * @class Abstract
  * @constructor
  * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  * @version 0.1
  */
 Abstract = Class.create( ( function() {
@@ -77,7 +74,7 @@ Abstract = Class.create( ( function() {
 
         /**
          * The namespace used in all event bindings
-         * See http://docs.jquery.com/Namespaced_Events.
+         * See <a href="http://docs.jquery.com/Namespaced_Events">JQuery Namespaced Events</a>.
          * @property namespace
          * @private
          * @type {Object}
@@ -104,6 +101,7 @@ Abstract = Class.create( ( function() {
        */
       function parameters() {
         var parameters = Array.prototype.slice.call( arguments );
+        
         if( namespace ) {
           parameters[0] = parameters[0].split( ' ' );
           _.each( parameters[0], function( item, index ) {
@@ -111,13 +109,15 @@ Abstract = Class.create( ( function() {
           } );
           parameters[0] = parameters[0].join( ' ' );
         }
+        
         _.each( parameters, function( item, index ) {
           if( typeof item === 'function' ) {
             parameters[index] = function() {
               item.apply( $element, arguments );
-            }
+            };
           }
         } );
+        
         return parameters;
       }
 
@@ -159,6 +159,7 @@ Abstract = Class.create( ( function() {
        */
       function trigger( event, parameters ) {
         var store = eventStore[ event ];
+        
         $element.lu( 'notify', event, parameters );
         if( store && store.method === 'one' ) {
           unbind( event );
@@ -185,10 +186,10 @@ Abstract = Class.create( ( function() {
       function unbind( event ) {
         eventStore = _.reject( eventStore, function( item, key ) {
           return false;
-          //return ( item.indexOf( event ) > -1 );
         } );
       }
 
+      // Set up observers and notifiers
       $observe = $( settings.observe );
       $notify = $( settings.notify );
 

@@ -1,4 +1,3 @@
-
 var Class = require( 'class' ),
   Button = require( 'lu/Button' ),
   LoadButton;
@@ -9,8 +8,6 @@ var Class = require( 'class' ),
  * @constructor
  * @extends Button
  * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  * @version dev
  */
 

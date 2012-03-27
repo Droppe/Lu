@@ -1,20 +1,23 @@
-
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
   Button;
-
 
 /**
  * Representation of a button element
  * @class Button
  * @constructor
  * @extends Abstract
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  * @requires ptclass, Abstract
  * @version 0.1
  */ 
 Button = Class.create( Abstract, ( function() {
+
+  // CONSTANTS
+  var CLICK = 'click',
+    DISABLED = 'disabled',
+    LU_DISABLED = 'lu-disabled',
+    ARIA_ROLE = 'role',
+    BUTTON_INPUT = 'button, input';
 
   // RETURN METHODS OBJECT
   return {
@@ -27,7 +30,6 @@ Button = Class.create( Abstract, ( function() {
      * @param {Object} settings Configuration settings
      */    
     initialize: function( $super, $element, settings ) {
-      // PRIVATE
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -46,13 +48,13 @@ Button = Class.create( Abstract, ( function() {
          * @final
          */
         defaults = {
-          on: 'click'
+          on: CLICK
         },
 
         /**
          * Item used as a parameter for selected events
          * @property item
-         * @type  String | Number
+         * @type String | Number
          * @private
          */
         item,
@@ -82,7 +84,7 @@ Button = Class.create( Abstract, ( function() {
         action,
 
          /**
-          * Flag to denote whether the button component is a <button> or <a>
+          * Flag to denote whether the button component is a button or anchor element
           * @property isAnchor 
           * @type Boolean 
           * @private
@@ -118,7 +120,7 @@ Button = Class.create( Abstract, ( function() {
        * @return {Void}
        */
       function setupAlly() {
-        var ARIA_ROLE = "role";
+        
         if ( isAnchor ) {
           // If "role" exists, do nothing... 
           if ( !$element.attr( ARIA_ROLE ) ) {
@@ -141,10 +143,10 @@ Button = Class.create( Abstract, ( function() {
        * @return {Void}
        */
       Button.disable = function() {
-        if( $element.is( 'button, input' ) ) {
-          $element.prop( 'disabled', true );
+        if( $element.is( BUTTON_INPUT ) ) {
+          $element.prop( DISABLED, true );
         }
-        $element.addClass( 'lu-disabled' );
+        $element.addClass( LU_DISABLED );
       };
 
       /**
@@ -154,17 +156,17 @@ Button = Class.create( Abstract, ( function() {
        * @return {Void}
        */
       Button.enable = function() {
-        if( $element.is( 'button, input' ) ) {
-          $element.removeProp( 'disabled' );
+        if( $element.is( BUTTON_INPUT ) ) {
+          $element.removeProp( DISABLED );
         }
-        $element.removeClass( 'lu-disabled' );
+        $element.removeClass( LU_DISABLED );
       };
 
       // EVENT BINDINGS
       Button.on( settings.on, function( event ) {
         event.preventDefault();
 
-        _.info( 'click', action );
+        _.info( CLICK, action );
 
         var parameters = [];
 
