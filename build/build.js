@@ -2,7 +2,7 @@ var Fs = require( 'fs' ),
     Path = require( 'path' ),
     Util = require( 'util' ),
     Readline = require( 'readline' ),
-    Compiler = require( './compiler' ),
+    Compiler = new (require( './compiler' ))( {type: 'jar'} ),
     args = require( 'optimist' ).argv,
     common = require( './common' ),
     tester = require( '../test-server' ),
@@ -164,6 +164,7 @@ function parseBuildAnswers() {
     }
     
     Fs.writeFileSync( outputPath + '/lu.js', compiledSrc, 'utf-8' );//TODO: turn this in to a build.copy call
+    
     build.isRunDone( 'compile', !!error );
   } );
   

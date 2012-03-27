@@ -1,4 +1,6 @@
 var Spawn = require('child_process').exec,
+    Stream = require('stream').Stream,
+    util = require('util');
     gitRoot = '../';
 
 exports.compilation_levels = ['ADVANCED_OPTIMIZATIONS','SIMPLE_OPTIMIZATIONS','WHITESPACE_ONLY'];
@@ -69,3 +71,28 @@ exports.questions = {
     }
   }
 }
+
+
+
+function StringStream(string) {
+  this.getData = function() {
+    return string;
+  }
+  this.writable = false;
+  this.readable = true;
+}
+util.inherits(StringStream, Stream);
+
+StringStream.prototype.pipe = function(dest, options) {
+  Stream.prototype.pipe.call(this, dest, options)
+  this.emit('data', this.getData());
+  this.end();
+  return dest;
+};
+StringStream.prototype.end = function() {
+  this.emit('end');
+};
+StringStream.prototype.destroy = function() {
+  this.emit('close');
+};
+exports.StringStream = StringStream;
