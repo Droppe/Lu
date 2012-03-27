@@ -30,8 +30,9 @@ Lu is developed using [nodejs](http://nodejs.org/) and [compass](http://compass-
 2. Install Compass
 3. Install Node
 4. Install the npms in package.json
-5. Start your server with the below:
+5. From the root Lu directory:
 
 ```
+$compass watch
 $node server.js
 ```
