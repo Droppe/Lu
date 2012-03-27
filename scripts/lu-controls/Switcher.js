@@ -1,15 +1,14 @@
-/**
- * Representation of a stateful button element
- * @class Switcher
- * @constructor
- * @extends Abstract
- * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
- */
+
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
   Switcher;
+
+/**
+ * @class Switcher
+ * @constructor
+ * @extends Abstract
+ * @version 0.1
+ */
 
 Switcher = Class.create( Abstract,  ( function () {
 
