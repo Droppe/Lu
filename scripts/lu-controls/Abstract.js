@@ -122,12 +122,38 @@ Abstract = Class.create( ( function() {
       }
 
       /**
+       * Adds an event, or a string of joined events to the eventStore
+       * @method addEventToStorage
+       * @private
+       * @param {String} event The event(s) to add
+       */
+      function addEventToStorage( event ) {
+        _.each( event.trim().split( /\s+/g ), function( item ) {
+          eventStore[item] = { method: 'on' };
+        } );
+      }
+
+      /**
+       * Removes an event, or a string of joined events from the eventStore
+       * @method removeEventFromStorage
+       * @private
+       * @param {String} event The event(s) to remove
+       */
+      function removeEventFromStorage( event ) {
+        _.each( event.trim().split( /\s+/g ), function( item ) {
+          if ( eventStore[event] ) {
+            delete eventStore[event];
+          }
+        } );
+      }
+
+      /**
        * Creates an event listener for a type
        * @method on
        * @private
        */
       function on() {
-        eventStore[arguments[0]] = { method: 'on' };
+        addEventToStorage(arguments[0]);
         return $element.on.apply( $element, parameters.apply( this, arguments ) );
       }
 
@@ -137,7 +163,7 @@ Abstract = Class.create( ( function() {
        * @private
        */
       function one() {
-        eventStore[arguments[0]] = { method: 'one' };
+        addEventToStorage(arguments[0]);
         return $element.one.apply( $element, parameters.apply( this, arguments ) );
       }
 
@@ -148,7 +174,7 @@ Abstract = Class.create( ( function() {
        */
       function off() {
         var event = arguments[0];
-        unbind( event );
+        removeEventFromStorage( event );
         return $element.off.apply( $element, parameters.apply( this, arguments ) );
       }
 
@@ -162,7 +188,7 @@ Abstract = Class.create( ( function() {
         
         $element.lu( 'notify', event, parameters );
         if( store && store.method === 'one' ) {
-          unbind( event );
+          removeEventFromStorage( event );
         }
         return $element.trigger.call( $element, event, parameters );
       }
@@ -175,18 +201,6 @@ Abstract = Class.create( ( function() {
        */
       function observe( $observer ) {
         $observer.lu( 'observe', $element );
-      }
-
-      /**
-       * Removes an event from storage
-       * @method unbind
-       * @private
-       * @param {String} event The event to remove.
-       */
-      function unbind( event ) {
-        eventStore = _.reject( eventStore, function( item, key ) {
-          return false;
-        } );
       }
 
       // Set up observers and notifiers
