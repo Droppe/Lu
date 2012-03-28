@@ -24,8 +24,17 @@
                                      Get started @ http://iheartweb.github.com/Lu/
 ```
 
-Lu is developed using nodejs. To start contributing - get node, install the npms in package.json, and then:
+Lu is developed using [nodejs](http://nodejs.org/) and [compass](http://compass-style.org/help/). To start contributing:
 
+1. Fork Lu
+2. Install Compass
+3. Install Node
+4. Install the npms in package.json
+5. In a terminal window from the Lu directory:
 ```
-$sudo node server.js
+$compass watch
+```
+6. In a new terminal window from the Lu directory:
+```
+$node server.js
 ```
