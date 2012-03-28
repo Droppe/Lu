@@ -288,7 +288,7 @@
      * Notifies observers of events
      * @public
      * @static
-     * @method notifys
+     * @method notify
      * @param {Object} $element a jQuery collection
      * @param {string} event the event type
      * @param {Array} $element extra arguments associated with the event
@@ -312,7 +312,7 @@
             Deferred.done( function () {
               _.each( lu.getControls( $item ), function( item, index ) {
                 //Filter out Controls that don't listen for the event
-                if( _.indexOf( item.events(), event ) > -1 ) {
+                if( _.indexOf( item.events().join(" ").split(" "), event ) > -1 ) {
                   item.trigger( event, parameters );
                 }
               } );
@@ -586,14 +586,14 @@
         error: function() {
           if( window.lu_debug >= 1 ) {
             var parameters = slice.call( arguments );
-            parameters.unshift( prefix, $element )
+            parameters.unshift( prefix, $element );
             return _.error( parameters );
           }
         },
         warn: function() {
           if( window.lu_debug >= 2 ) {
             var parameters = slice.call( arguments );
-            parameters.unshift( prefix, $element )
+            parameters.unshift( prefix, $element );
             return _.warn( parameters );
           }
         },
@@ -659,14 +659,14 @@
 
       return support && {
         event: ( function() {
-          var transitionEnd = "TransitionEnd"
+          var transitionEnd = "TransitionEnd";
 
           if ( $.browser.webkit ) {
-            transitionEnd = "webkitTransitionEnd"
+            transitionEnd = "webkitTransitionEnd";
           } else if ( $.browser.mozilla ) {
-            transitionEnd = "transitionend"
+            transitionEnd = "transitionend";
           } else if ( $.browser.opera ) {
-            transitionEnd = "oTransitionEnd"
+            transitionEnd = "oTransitionEnd";
           }
 
           return transitionEnd;
@@ -691,7 +691,7 @@
         window.lu.console( $body ).info( 'ready' );
       } );
 
-      window.lu.decorate( $body, ['Abstract'] )
+      window.lu.decorate( $body, ['Abstract'] );
       window.lu.execute( $body );
       window.lu.console( $body ).info( 'executing' );
 
