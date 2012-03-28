@@ -126,10 +126,11 @@ Abstract = Class.create( ( function() {
        * @method addEventToStorage
        * @private
        * @param {String} event The event(s) to add
+       * @param {String} method The method (ex: 'on', 'one')
        */
-      function addEventToStorage( event ) {
+      function addEventToStorage( event, method ) {
         _.each( event.trim().split( /\s+/g ), function( item ) {
-          eventStore[item] = { method: 'on' };
+          eventStore[item] = { method: method };
         } );
       }
 
@@ -153,7 +154,7 @@ Abstract = Class.create( ( function() {
        * @private
        */
       function on() {
-        addEventToStorage(arguments[0]);
+        addEventToStorage( arguments[0], 'on' );
         return $element.on.apply( $element, parameters.apply( this, arguments ) );
       }
 
@@ -163,7 +164,7 @@ Abstract = Class.create( ( function() {
        * @private
        */
       function one() {
-        addEventToStorage(arguments[0]);
+        addEventToStorage( arguments[0], 'one' );
         return $element.one.apply( $element, parameters.apply( this, arguments ) );
       }
 
