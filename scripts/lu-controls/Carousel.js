@@ -25,6 +25,8 @@ Carousel =  Class.create( List, ( function() {
     SELECT_EVENT = 'select',
     SELECTED_EVENT = 'selected',
     PREVIOUS_EVENT = 'previous',
+    SHOWN_EVENT = 'shown',
+    HIDDEN_EVENT = 'hidden',
     NEXT_EVENT = 'next',
     OUT_OF_BOUNDS_EVENT = 'out-of-bounds',
     PLAYING_FLAG = 'lu-playing',
@@ -213,10 +215,19 @@ Carousel =  Class.create( List, ( function() {
         event.stopPropagation();
         Carousel.play();
       } );
-      Carousel.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT].join( ' ' ), function( event, item ) {
+
+      Carousel.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT, HIDDEN_EVENT].join( ' ' ), function( event, item ) {
         event.stopPropagation();
         Carousel.pause();
       } );
+
+      Carousel.on( SHOWN_EVENT, function( event ) {
+        event.stopPropagation();
+        if ( settings.autoplay ) {
+          Carousel.play();
+        }
+      });
+
       Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT, function( event ) {
         var controls;
 
@@ -232,6 +243,7 @@ Carousel =  Class.create( List, ( function() {
         } );
 
       } );
+
       Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT, function( event ) {
         var controls;
 
@@ -246,9 +258,11 @@ Carousel =  Class.create( List, ( function() {
           }
         } );
       } );
+
       Carousel.on( PLAYING_EVENT, function( event ) {
         $element.addClass( PLAYING_FLAG ).removeClass( PAUSED_FLAG );
       } );
+
       Carousel.on( PAUSED_EVENT, function( event ) {
         $element.addClass( PAUSED_FLAG ).removeClass( PLAYING_FLAG );
       } );

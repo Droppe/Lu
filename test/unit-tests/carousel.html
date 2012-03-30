@@ -12,9 +12,22 @@
   <button data-lu="Button:Next">Next</button>
 </div>
 
+<div id="carousel-container" data-lu="Container">
+	<div id="carousel-test-2" data-lu="Carousel">
+	  <ol>
+	    <li class="lu-selected">One</li>
+	    <li>Two</li>
+	    <li>Three</li>
+	  </ol>
+	  <button data-lu="Button:Previous">Previous</button>
+	  <button data-lu="Button:Next">Next</button>
+	</div>
+</div>
+
 <script>
 
 function run() {
+
 	function setup() {
 		this.$carousel = $('#carousel-test');
 		this.carousel = this.$carousel.lu('getControl');
@@ -131,6 +144,36 @@ function run() {
 		equal(this.carousel.index(), this.$last.index(), "Second item is selected");
 		ok(this.$last.hasClass('lu-selected'), '"lu-selected" class added to the last item');
 		ok(!this.$first.hasClass('lu-selected'), '"lu-selected" class removed from the first item');
+	});
+	
+	module('Auto-playing carousel inside a lu-container', {
+		setup: function() {
+			this.$carouselContainer = $('#carousel-container');
+			this.$carousel = $('#carousel-test-2');
+			this.$list = this.$carousel.find('ol');
+
+			this.carouselContainer = this.$carouselContainer.lu('getControl');
+			this.carousel = this.$carousel.lu('getControl');
+		}
+	});
+
+	test('Hiding the container', function() {
+		expect(2);
+
+		this.carouselContainer.hide();
+
+		ok(!this.$carousel.hasClass('lu-playing'), '"lu-playing" class does not exist in carousel');
+		ok(this.$carousel.hasClass('lu-paused'), '"lu-paused" class exists in carousel');
+	});
+
+	test('Showing the container', function() {
+		expect(2);
+
+		this.carouselContainer.hide();
+		this.carouselContainer.show();
+
+		ok(!this.$carousel.hasClass('lu-paused'), '"lu-paused" class does not exist in carousel');
+		ok(this.$carousel.hasClass('lu-playing'), '"lu-playing" class exists in carousel');
 	});
 
 	// TODO: lots more

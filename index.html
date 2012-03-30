@@ -96,7 +96,7 @@
           <li><a href="#controls_list">List</a></li>
           <li><a href="#controls_container">Container</a></li>
           <li><a href="#controls_tabs">Tabs</a></li>
-          <li><a href="#controls_switch">Switch</a></li>
+          <li><a href="#controls_switcher">Switcher</a></li>
           <li><a href="#controls_accordian">Accordion</a></li>
           <li><a href="#controls_carousel">Carousel</a></li>
           <li><a href="#controls_dialog">Dialog</a></li>
@@ -152,12 +152,12 @@
           href="#controls_list"><code>List</code></a>, <a
           href="#controls_carousel"><code>Carousel</code></a>, <a
           href="#controls_tabs"><code>Tabs</code></a>, <a
-          href="#controls_tabs"><code>Switch</code></a>, or <a
+          href="#controls_switcher"><code>Switcher</code></a>, or <a
           href="#controls_accordian"><code>Accordion</code></a>.</p>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h3>Lists</h3>
+          <h4 id="controls_list">Lists</h4>
           <p>The <code>List</code> control manages an iterative set of items and is most
           often used with <code>&lt;ol&gt;</code> and <code>&lt;ul&gt;</code>
           elements.</p>
@@ -359,10 +359,149 @@
 
         </div>
         <div class="sub-section">
-          <h4>Switch</h4>
-          <p class="control-info">Annotation: <code>Switch</code>, <a href="">Documentation</a></p>
-          <p><a href="#controls" class="top small">Back to Controls</a></p>
+          <h4 id="controls_switcher">Switcher</h4>
+          <p class="control-infyyo">Annotation: <code>Switcher</code>, <a href="">Documentation</a></p>
+          <p>The <code>Switcher</code> control responds to the 'switch' event and works
+          in conjunction with the <code>Button:Switch</code> control. This control
+          provides a way to decorate an element with a class or classes representing a
+          state or multiple states. For every active state the css class
+          <code>lu-switch-[name of state]</code> is applied.</p>
+          <h5>States &amp; The Cascade</h5>
+          <p>This example shows how the CSS cascade can be used to toggle items on and off.</p>
+          <div id="switcher-cycle" data-lu="Switcher" data-lu-config="{
+            'Switcher': {
+              states: ['a', 'b', 'c']
+            }
+          }">
+            <ul>
+              <li class="a">A</li>
+              <li class="b">B</li>
+              <li class="c">C</li>
+              <li class="a">A</li>
+              <li class="b">B</li>
+              <li class="c">C</li>
+              <li class="a">A</li>
+              <li class="b">B</li>
+              <li class="c">C</li>
+              <li class="a">A</li>
+              <li class="b">B</li>
+              <li class="c">C</li>
+              <li class="a">A</li>
+              <li class="b">B</li>
+              <li class="c">C</li>
+              <li class="a">A</li>
+              <li class="b">B</li>
+              <li class="c">C</li>
+            </ul>
+            <br/>
+            <button data-lu="Button:Switch" data-lu-config="{
+              'Button:Switch': {
+                states: 'a'
+              }
+            }" type="button">A</button>
+            <button data-lu="Button:Switch" data-lu-config="{
+              'Button:Switch': {
+                states: 'b'
+              }
+            }" type="button">B</button>
+            <button data-lu="Button:Switch" data-lu-config="{
+              'Button:Switch': {
+                states: 'c'
+              }
+            }" type="button">C</button>
+            <button data-lu="Button:Switch" data-lu-config="{
+              'Button:Switch': {
+                states: 'd'
+              }
+            }" type="button">D</button>
+            <button data-lu="Button:Switch" data-lu-config="{
+              'Button:Switch': {
+                states: 'a b'
+              }
+            }" type="button">AB</button>
+            <button data-lu="Button:Switch" data-lu-config="{
+              'Button:Switch': {
+                states: ['a', 'b', 'c']
+              }
+            }" type="button">A/B/C</button>
+          </div>
         </div>
+        <script src="https://gist.github.com/2239893.js?file=luswitcher.html"></script>
+        <h5>Switch Buttons</h5>
+        <p>In the above example there are several variations of
+        <code>Button:Switch</code>. The first three examples are very similar. They
+        simply denote in there configuration which state the <code>Switcher</code>
+        should be set to.</p>
+        <script src="https://gist.github.com/2242091.js?file=ButtonSwitch.html"></script>
+        <p>Whereas the 'D' button has no effect. 'D' is not a valid state declared in
+        the <code>Switcher</code> controls's settings.</p>
+        <script src="https://gist.github.com/2242311.js?file=ButtonSwitchNada.html"></script>
+        <p>The last two buttons in the example are more complex. This says go to state
+        'a' on the first click, 'b' on the second, 'c' on the third, and then back to
+        'a'.</p>
+        <script src="https://gist.github.com/2242731.js?file=SwitchButton3.html"></script>
+        <p>This button turns on state 'a' and 'b'.</p>
+        <script src="https://gist.github.com/2242807.js?file=dualswitch.html"></script>
+        <p>Complex patterns can be created.</p>
+        <script src="https://gist.github.com/2242897.js?file=shouldbesimple.html"></script>
+        <p>But usually simple ones suffice.</p>
+        <h5>On/Off Toggle</h5>
+        <p>The <code>Button:On</code> and <code>Button:Off</code> extend
+        <code>Switch:Button</code>. They are equivalent to switch buttons configured
+        with the states 'on' and 'off'.</p>
+        <div id="switcher-roo-expand-o-matic" class="lu-switch-off" data-lu="Switcher" data-lu-config="{
+          'Switcher': {
+            states: ['on', 'off'],
+            start: 'off'
+          }
+        }">
+          <p>"Quite impossible, as you see, to start without an introduction," laughed
+          Ivan. "Well, then, I mean to place the event described in the poem in the
+          sixteenth century, an age--as you must have been told at school--when it was
+          the great fashion among poets to make the denizens and powers of higher worlds
+          descend on earth and mix freely with mortals... In France all the notaries'
+          clerks, and the monks in the cloisters as well, used to give grand
+          performances, dramatic plays in which long scenes were enacted by the Madonna,
+          the angels, the saints, Christ, and even by God Himself. In those days,
+          everything was very artless and primitive. An instance of it may be found in
+          Victor Hugo's drama, Notre Dame de Paris, where, at the Municipal Hall, a play
+          called Le Bon Jugement de la Tres-sainte et Gracièuse Vierge Marie, is enacted
+          in honour of Louis XI, in which the Virgin appears personally to pronounce her
+          'good judgment.'</p>
+          <button class="expand" data-lu="Button:Switch" data-lu-config="{
+            'Button:Switch': {
+              states: 'on'
+            }
+          }">Show More</button>
+          <button class="collapse" data-lu="Button:Switch" data-lu-config="{
+            'Button:Switch': {
+              states: 'off'
+            }
+          }">Show Less</button>
+        </div>
+        <h5>User Flows</h5>
+        <div id="switcher-flows" data-lu="Switcher" data-lu-config="{ Switcher: { states:['intro', 'walking', 'running', 'end'] } }" class="lu-switch-intro">
+          <ol>
+            <li class="intro">
+              <p>See spot ____.</p>
+              <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states:'walking' } }">Walk</button>
+              <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states:'running' } }">Run</button>
+            </li>
+            <li class="running">
+              <p>Spot is running.</p>
+              <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states:'end' } }">What's Next?</button>
+            </li>
+            <li class="walking">
+              <p>Spot is walking.</p>
+              <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states:'running' } }">What's Next?</button>
+            </li>
+            <li class="end">
+              <p>The End.</p>
+              <button data-lu="Button:Switch" data-lu-config="{ 'Button:Switch': { states:'intro' } }">Try Again.</button>
+            </li>
+          </ol>
+        </div>
+        <p><a href="#controls" class="top small">Back to Controls</a></p>
         <div class="sub-section">
           <h4>Accordion</h4>
           <p class="control-info">Annotation: <code>Accordion</code>, <a href="">Documentation</a></p>
@@ -370,7 +509,6 @@
         </div>
         <div class="sub-section">
           <h4 id="controls_carousel">Carousel</h4>
-
           <div data-lu="Carousel">
             <ol>
               <li class="lu-selected">One</li>
@@ -381,8 +519,6 @@
             <button data-lu="Button:Previous">Previous</button>
             <button data-lu="Button:Next">Next</button>
           </div>
-
-
           <p class="control-info">Annotation: <code>Carousel</code>, <a href="">Documentation</a></p>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
