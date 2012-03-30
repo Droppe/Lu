@@ -44,16 +44,32 @@ Switcher = Class.create( Abstract,  ( function () {
          * @private
          * @final
          */
-        defaults = {},
+        defaults = {
+          /**
+           * An array of states to set during initialization
+           * @property start
+           * @type Array
+           */
+          start: null
+        },
         /**
-         * An array of objects representing available states f
-         * or the switch instance, passed on through the published event.
+         * A registry of states avaliable for the switcher to switch to.
+         * @property states
+         * @type Object
+         */
+        states = {},
+        /**
+         * An array of the current active states.
          * @property states
          * @type Array
          */
-        states = {},
         state = [],
-        meta;
+        /**
+         * Meta data attached to the passed in from the switch event an out via the switched event.
+         * @property meta
+         * @type Object
+         */
+        meta = {};
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -78,6 +94,11 @@ Switcher = Class.create( Abstract,  ( function () {
         states = settings.states;
       }
 
+      /**
+        * Registers a state in the states registry
+        * @method addState
+        * @public
+        */
       Switcher.addState = function( key, meta ) {
         if( states[key] ) {
           states[key] = _.extend( states[key], meta );
@@ -86,22 +107,45 @@ Switcher = Class.create( Abstract,  ( function () {
         }
       };
 
+      /**
+        * Removes a state in the states registry
+        * @method removeState
+        * @public
+        */
       Switcher.removeState = function( key, meta ) {
         if( states[key] ) {
           delete states[key];
         }
       };
 
+      /**
+        * Get an array of the current states
+        * @method getState
+        * @public
+        * @return state An array containing the current states
+        */
       Switcher.getState = function() {
         return state;
       };
 
+      /**
+        * Gets the meta data associated with the current states
+        * @method getMeta
+        * @public
+        * @return meta associated meta data
+        */
       Switcher.getMeta = function( key ) {
         if( states[key] ) {
           return states[key];
         }
       };
 
+      /**
+        * Sets the current state or states
+        * @method setState
+        * @public
+        * @param {Array} an array containing the keys of the state(s) to set
+        */
       Switcher.setState = function( keys ) {
         var validStates = _.keys( states );
 
@@ -147,10 +191,11 @@ Switcher = Class.create( Abstract,  ( function () {
       
       } );
 
-      if( !settings.start ) {
-        Switcher.setState( [_.keys( states )[0]] );
-      } else {
+      //allows for a inital state to be set in settings
+      if( settings.start ){
         Switcher.setState( settings.start );
+      } else {
+        Switcher.setState( [_.keys( states )[0]] );
       }
 
     }
