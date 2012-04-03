@@ -4,8 +4,6 @@
  * @constructor
  * @extends Abstract
  * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance  
  */
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
@@ -13,7 +11,11 @@ var Class = require( 'class' ),
 
 Container = Class.create( Abstract,  ( function () {
 
-  // RETURN METHODS OBJECT
+  // === GLOBAL STATICS ===
+  var CONTENT_CHANGED_EVENT = 'changed';
+  
+
+  // === RETURN METHODS OBJECT ===
   return {
     /**
      * PTClass constructor 
@@ -28,8 +30,8 @@ Container = Class.create( Abstract,  ( function () {
       // PRIVATE INSTANCE PROPERTIES
 
       /**
-       * Instance of Reveal
-       * @property Reveal
+       * Instance of Container
+       * @property Container
        * @type Object
        * @private
        */
@@ -49,7 +51,30 @@ Container = Class.create( Abstract,  ( function () {
         onHide: "hide unselect",
         onShow: "show select",
         actionHide: "hidden",
-        actionShow: "shown"
+        actionShow: "shown",
+        /**
+         * DOM node to source for fresh content.  Can be a CSS selector or 
+         * a JQuery object.
+         * @property sourceNode
+         * @type {String|Object}
+         * @default ''
+         */
+        sourceNode: '',
+        /**
+         * Text to inject as fresh content.
+         * @property sourceText
+         * @type {String}
+         * @default ''
+         */
+        sourceText: '',
+        /**
+         * Method to be used when populating target nodes content. 
+         * Expects: replace || append || prepend
+         * @property method 
+         * @type {String}
+         * @default append
+         */
+        method: 'append'
       },
 
       /**
@@ -85,29 +110,15 @@ Container = Class.create( Abstract,  ( function () {
        */
       selectedClass,
 
-      /**
-       * Reference to an instance of the Loader control
-       * @property loader 
-       * @type Object 
-       * @private
-       */
-      loader,
-
-      /**
-       * Denotes whether the Container has dynamically loaded the data/content
-       * @property loaded 
-       * @type Boolean 
-       * @private
-       */
-      loaded = false,
      
-      // Private methods
-      // Event handlers
+      // === PRIVATE METHODS ===
+
       /**
        * The "show"/"select" event handler
        * @method onShowHandler 
        * @param {Object} event - JQuery event
-       * @param {String|Object} item - The ID or JQuery object for the selected container.
+       * @param {String|Object} item - The ID or JQuery object for the 
+       * selected container.
        * @private
        * @return {Void} 
        */
@@ -116,10 +127,6 @@ Container = Class.create( Abstract,  ( function () {
         event.stopPropagation();        
         
         var ok = true;
-
-        if (loader && !loaded) {
-          loader.trigger( 'load', [ settings.uri ] );
-        }
                      
         // item can be an integer or an object
         if (item) {
@@ -162,48 +169,6 @@ Container = Class.create( Abstract,  ( function () {
       },
 
       /**
-       * Binds all events for the Container 
-       * @method bindEvents 
-       * @private
-       * @return {Void} 
-       */
-      bindEvents = function() {
-        _.log("Container.bindEvents()");
-
-        // Show
-        Container.on( settings.onShow, onShowHandler);
-
-        // Hide
-        Container.on( settings.onHide, onHideHandler);
-      },
-
-      /**
-       * If the settings.uri exists, initialize the URI for the data loader.
-       * @method initializeURI 
-       * @private
-       * @return {Void} 
-       */
-      initializeURI = function() {
-        _.log("Container.initializeURI()");
-
-        if( settings.uri ) {
-          $content = $element.find( '.content' );
-
-          if ($content) {
-            require.ensure( ['lu/Loader'], function() {
-              // Loader is the class!!! 
-              var Loader = require( 'lu/Loader' );
-              loader = new Loader( $content, {} );
-              loader.on( 'loaded', function( event ) {
-                // Set flag so we don't make another request!
-                loaded = true;
-              } );
-            } );
-          }
-        }
-      },
-
-      /**
        * Gets the closest $parent of the Container if the $parent is a Lu object ( has the attribute "data-lu" )
        * and is not the <body> 
        * @method getLuParent
@@ -221,47 +186,13 @@ Container = Class.create( Abstract,  ( function () {
         }
 
         return $parent;
-      },
 
-      /**
-       * Passes a given event to the given node
-       * @method passEventToChild
-       * @param {Object} event - Event reference
-       * @param {Integer/Object} child - JDOM reference to a node element 
-       * @private
-       * @return {Void}
-       */
-      passEventToChild = function( event, child ) {
-          _.log( "Container.passEventToChild", $element, event, child );
-
-          event.stopPropagation();
-
-          var $localChild,
-              items = $parent.children(),
-              elementIndex = items.index( $element );
-
-
-          // Check to see if item is a Object or integer
-          if ( typeof child === "number" ) {
-            if ( items.length > 0 ) {
-              $localChild = $( items[child] );
-            }
-          } else {
-            $localChild = $( child ); 
-          }
-
-          // We test so we don't go nuts triggering each child!
-          // Only when the $element is the same as the child do
-          // we fire the event
-          if ( $localChild && elementIndex === child ) {
-            // The event made into a JQuery Event
-            $element.trigger( jQuery.Event( event ) );
-          }
       };
                   
-      // PRIVILEGED METHODS
+      // === PRIVILEDGED METHODS ===
+
       /**
-       * Hides the related content.
+       * Hides the Container.
        * @method hide
        * @public
        * @return {Void}
@@ -274,7 +205,7 @@ Container = Class.create( Abstract,  ( function () {
       };
 
       /**
-       * Shows the related content.
+       * Shows the Container.
        * @method show
        * @public
        * @return {Void}
@@ -290,7 +221,7 @@ Container = Class.create( Abstract,  ( function () {
        * Returns the computed height of the Container; result has no units
        * @method getHeight 
        * @public
-       * @return {Integer} Computed height of the Container
+       * @return {Integer} Computed height of the Container (result drops units)
        */
       Container.getHeight = function() {
         _.log("Container.getHeight()");
@@ -301,12 +232,62 @@ Container = Class.create( Abstract,  ( function () {
        * Returns the computed width of the Container; result has no units
        * @method getWidth
        * @public
-       * @return {Integer} Computed width of the Container
+       * @return {Integer} Computed width of the Container (result drops units)
        */
       Container.getWidth = function() {
         _.log("Container.getWidth()");
         return $element.width();
       };
+
+      /**
+       * Injects string content into the Container using the 
+       * configured setting (prepend/append/replace)
+       * @method inject
+       * @public
+       * @param {String} content 
+       * @return {Object} The Container instance, for chaining
+       */      
+      Container.inject = function ( content ) {
+        var type;
+        
+        if (!content) {
+          return;
+        }
+        
+        switch( settings.method ) {
+          case 'prepend':
+            type = 'prepend';
+            break;
+          case 'append':
+            type = 'append';
+            break;
+          default:
+            type = 'html';
+            break;
+        }
+        $element[ type ]( content );
+        Container.trigger( CONTENT_CHANGED_EVENT );
+      };
+
+      /**
+       * Loads the specified content into the Container
+       * @method setContent
+       * @public
+       * @param {Object|String} content JQuery object to source the content from, 
+       * or text string to use as new content.
+       * @return {Object} The Container instance
+       */
+      Container.setContent = function ( content ) {
+        if (typeof content === "object") {
+          Container.inject( content.html() );
+        }
+        else if (typeof content === "string") {
+          Container.inject(content);
+        }
+        return Container;
+      };
+      
+      
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -320,11 +301,13 @@ Container = Class.create( Abstract,  ( function () {
       hiddenClass = settings.hiddenClassName;
       selectedClass = settings.selectedClassName;
 
-      // Initialize URI 
-      initializeURI();
       
       // EVENT BINDINGS
-      bindEvents();
+      // Show
+      Container.on( settings.onShow, onShowHandler);
+
+      // Hide
+      Container.on( settings.onHide, onHideHandler);
 
     }
   };  

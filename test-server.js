@@ -37,7 +37,7 @@ var nodeStatic = require( 'node-static' ),
 		browser: null
 	};
 
-console.log(__dirname);
+  console.log(__dirname);
 
 tester = {
 	init: function() {

@@ -1,25 +1,24 @@
 /**
- * Representation of a Loader
+ * Loader is a Container that knows how to get fresh content via AJAX.
  * @class Loader
  * @constructor
- * @extends Abstract
+ * @extends Container
  * @requires ptclass
- * @param {HTMLElement} element The HTML element containing this component
- * @param {Object} settings Configuration properties for this instance  
  */ 
 var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
+  Container = require( 'lu/Container' ),
   Loader;
 
-//TODO: Loader should take a $jquery object, a selector, a string, or a uri;
+//TODO: Loader should take a $jquery object, a selector, a string, or a source;
 
-Loader = Class.create( Abstract, ( function () {
+Loader = Class.create( Container, ( function () {
 
   // GLOBAL STATICS
 
-  var LOADED_EVENT = 'LOADED',
-    LOADING_EVENT = 'LOADING',
-    LOADING_FLAG = 'lu-loading';
+  var LOADED_EVENT = 'loaded',
+    LOADING_EVENT = 'loading',
+    ERROR_EVENT = 'error',
+    LOADING_CSS = 'lu-loading';
 
   // RETURN METHODS OBJECT
   return {
@@ -28,7 +27,8 @@ Loader = Class.create( Abstract, ( function () {
      * @method initialize
      * @public
      * @param {Object} $super Pointer to superclass constructor
-     * @param {Object} $element JQuery object for the element wrapped by the component
+     * @param {Object} $element JQuery object for the element wrapped 
+     * by the component
      * @param {Object} settings Configuration settings
      */    
     initialize: function ( $super, $element, settings ){
@@ -49,96 +49,76 @@ Loader = Class.create( Abstract, ( function () {
          */
         defaults = {
           /**
-           * Method to be used when populating target nodes content. Expects: replace || append || prepend
-           * @property method 
+           * URL to call for fresh content.
+           * @property sourceURL
            * @type {String}
+           * @default ''
            */
-          method: 'append'
-        },
-        /**
-         * The node that the content is put into
-         * @property content
-         * @type Object
-         * @private
-         */
-        $node;
+          url: ''
+        };
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      $node = ( settings.node ) ? $( settings.node ) : $element;
-
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
+
+      // === PRIVILEDGED METHODS ===
+      
       /**
        * Loads the content into the specified node
        * @method load
        * @public
-       * @param {String} url an Indicator for the content to load. This can be a hash (#id), a remote url or a url with a hash.
+       * @param {String} url XHR source for the content to load.  If none
+       * provided, look for an href on the target anchor tag.
        * @return {Object} The Loader instance
        */
-      Loader.load = function ( uri ) {
-        var explodedURL = _.explodeURL( uri ),
-          content,
-          $content;
+      Loader.load = function ( url ) {
+        var expURL,
+          fragment,
+          content;
 
-        Loader.trigger( LOADING_EVENT );
-        $element.addClass( LOADING_FLAG );
 
-        function inject( content ) {
-          switch( settings.method ) {
-            case 'prepend':
-              $node.prepend( content );
-              break;
-            case 'append':
-              $node.append( content );
-              break;
-            default:
-              $node.html( content );
-              break;
-          }
-          $element.removeClass( LOADING_FLAG );
-          Loader.trigger( LOADED_EVENT );
-        }
+        if (url) {
 
-        if ( explodedURL.path === '' ) {
-          $content = $( uri );
-          if( $content.length > 0 ) {
-            content = $content.html();
-          } else {
-           content = $( '#' + explodedURL.fragment ).html(); 
-          }
-          inject( content );
-        } else {
+          Loader.trigger( LOADING_EVENT );
+          $element.addClass( LOADING_CSS );
+
+          expURL = _.explodeURL(url);
+          fragment = expURL.fragment;
+
           $.ajax( {
-            url: uri,
+            url: url,
             success: function ( data, textStatus, jXHR ) {
-              if( explodedURL.fragment ) {
-                content = $( data ).find( '#' + explodedURL.fragment );
-                inject( content );
+              if( fragment ) {
+                content = $( data ).find( '#' + fragment);
               } else {
                 content = data;
-                inject( content );
               }
+              Loader.inject( content );
+            },
+            failure: function () {
+              Loader.trigger(ERROR_EVENT);
+              // Handle this gracefully?
+              $element.removeClass( LOADING_CSS );
             }
           } );
         }
+            
         return Loader;
       };
 
-      //Event Bindings
-      Loader.on( 'load', function( event, uri ) {
-        if( uri === undefined ) {
-          if( settings.uri ) {
-            uri = settings.uri;
-          } else {
-            uri = $( event.target ).attr( 'href' ); 
-          }
+      // === EVENT BINDINGS ===
+      
+      Loader.on( 'load', function( event, url ) {
+          
+        if( !url ) {
+          url = settings.url || $( event.target ).attr( 'href' ); 
         }
         event.stopPropagation();
         event.preventDefault();
-        Loader.load( uri );
+        Loader.load( url );
       } );
 
     }
