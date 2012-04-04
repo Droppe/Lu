@@ -108,19 +108,29 @@ Loader = Class.create( Container, ( function () {
             
         return Loader;
       };
+      
+      /**
+        * Content setter for Loader
+        * @method setContent
+        * @public
+        * @param {String} url The content to load into the Loader
+        * @return {Object} The Loader instance, for chaining
+        */
+       Loader.setContent = function ( url ) {
 
+         if( !url ) {
+           url = settings.url || $( event.target ).attr( 'href' ); 
+         }
+
+         Loader.load( url );
+         return Loader;
+
+       };      
+       
       // === EVENT BINDINGS ===
       
-      Loader.on( 'load', function( event, url ) {
-          
-        if( !url ) {
-          url = settings.url || $( event.target ).attr( 'href' ); 
-        }
-        event.stopPropagation();
-        event.preventDefault();
-        Loader.load( url );
-      } );
-
+      // N/A
+      
     }
   };
 

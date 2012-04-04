@@ -4,8 +4,6 @@
  * @constructor
  * @extends SelectButton
  * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  */
 var Class = require( 'class' ),
   SelectButton = require( 'lu/Button/Select' ),

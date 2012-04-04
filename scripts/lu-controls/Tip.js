@@ -2,23 +2,26 @@
  * Tooltip class
  * @class Tip
  * @constructor
- * @extends Abstract
+ * @extends Loader
  * @requires ptclass
- * @param {HTMLElement} element The HTML element containing this component
- * @param {Object} settings Configuration properties for this instance
  */
 var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
+  Loader = require( 'lu/Loader' ),
   Tip;
 
-Tip =  Class.create( Abstract,  ( function () {
+Tip =  Class.create( Loader,  ( function () {
 
   //Observed events 
   var HIDE_EVENT = 'hide',
       SHOW_EVENT = 'show',
       //Stateful published events
       HIDDEN_EVENT = 'hidden',
-      SHOWN_EVENT = 'shown';
+      SHOWN_EVENT = 'shown',
+  
+  // OTHER CONSTANTS
+      TITLE = 'title',
+      CLASS = 'class';
+
 
   return {
 
@@ -98,7 +101,8 @@ Tip =  Class.create( Abstract,  ( function () {
             sticky: true,
 
             /**
-             * The buffer in pixels around the element to be used in determing if the user has stoped interacting with the tip
+             * The buffer in pixels around the element to be used in determing if the user has stopped 
+             * interacting with the tip
              * @property threshold
              * @type Number
              * @private
@@ -107,7 +111,7 @@ Tip =  Class.create( Abstract,  ( function () {
         },
 
         /**
-         * An indicator of weather or not the tip is curently shown.
+         * An indicator of whether or not the tip is currently shown.
          * @property shown
          * @type Boolean
          * @private
@@ -164,9 +168,9 @@ Tip =  Class.create( Abstract,  ( function () {
 
       //Use the title as content id content no provide in settings
       if( settings.content === undefined ) {
-        content = $element.attr( 'title' );
+        content = $element.attr( TITLE );
         if( content !== undefined ) {
-          $element.removeAttr( 'title' );
+          $element.removeAttr( TITLE );
           settings.content = content; 
         }
       }
@@ -183,8 +187,8 @@ Tip =  Class.create( Abstract,  ( function () {
       if( settings.style ) {
         $tip.addClass( settings.placement + ' ' + settings.style );
       } else {
-        if( $element.attr( 'class' ) ) {
-          $tip.addClass( settings.placement + ' ' + $element.attr( 'class' ) );
+        if( $element.attr( CLASS ) ) {
+          $tip.addClass( settings.placement + ' ' + $element.attr( CLASS ) );
         } else {
           $tip.addClass( settings.placement );
         }
@@ -245,7 +249,7 @@ Tip =  Class.create( Abstract,  ( function () {
          Loader.on( 'loaded', function( event ) {
            $tip.css( getPosition( false ) );
          } );
-         $element.one( 'shown', function( event ) {
+         $element.one( SHOWN_EVENT, function( event ) {
            Loader.trigger( 'load', [ settings.uri ] );
          } );
 

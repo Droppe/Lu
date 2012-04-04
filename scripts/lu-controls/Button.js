@@ -141,7 +141,7 @@ Button = Class.create( Abstract, ( function() {
       /**
        * Disables the Button by adding a disabled attribute (inputs and buttons only) and the class lu-disabled
        * @method disable 
-       * @private
+       * @public
        * @return {Void}
        */
       Button.disable = function() {
@@ -154,7 +154,7 @@ Button = Class.create( Abstract, ( function() {
       /**
        * Enables the Button by removing a disabled attribute (inputs and buttons only) and the class lu-disabled
        * @method disable 
-       * @private
+       * @public
        * @return {Void}
        */
       Button.enable = function() {
