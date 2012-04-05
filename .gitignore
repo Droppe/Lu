@@ -6,4 +6,5 @@ styles/css/*.css
 bin/
 !build/bin/
 !styles/css/screen.css
-!.gitignore
+examples/
+*.OLD

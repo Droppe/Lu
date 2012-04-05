@@ -45,11 +45,11 @@ Container = Class.create( Abstract,  ( function () {
        */
       defaults = {
         // CSS
-        hiddenClassName: "lu-hidden",
-        selectedClassName: "lu-selected",
+        hiddenClassName: "hidden",
+        selectedClassName: "selected",
         // EVENTS
-        onHide: "hide unselect",
-        onShow: "show select",
+        onHide: "close hide unselect",
+        onShow: "open show select",
         onLoad: CONTENT_LOAD_EVENT,
         actionHide: "hidden",
         actionShow: "shown",

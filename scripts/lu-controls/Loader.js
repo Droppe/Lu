@@ -9,11 +9,9 @@ var Class = require( 'class' ),
   Container = require( 'lu/Container' ),
   Loader;
 
-//TODO: Loader should take a $jquery object, a selector, a string, or a source;
-
 Loader = Class.create( Container, ( function () {
 
-  // GLOBAL STATICS
+  // === GLOBAL CONSTANTS ===
 
   var LOADED_EVENT = 'loaded',
     LOADING_EVENT = 'loading',
@@ -54,8 +52,17 @@ Loader = Class.create( Container, ( function () {
            * @type {String}
            * @default ''
            */
-          url: ''
-        };
+          sourceURL: ''
+        },
+        /**
+         * Object containing details about the URL of 
+         * the parent page
+         * @property pageURL
+         * @type Object
+         * @private
+         */
+        pageURL;
+
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -85,25 +92,35 @@ Loader = Class.create( Container, ( function () {
           Loader.trigger( LOADING_EVENT );
           $element.addClass( LOADING_CSS );
 
+          pageURL = pageURL || _.explodeURL(window.location.href);
           expURL = _.explodeURL(url);
           fragment = expURL.fragment;
 
-          $.ajax( {
-            url: url,
-            success: function ( data, textStatus, jXHR ) {
-              if( fragment ) {
-                content = $( data ).find( '#' + fragment);
-              } else {
-                content = data;
+          if (pageURL.authority == expURL.authority) {
+            $.ajax( {
+              url: url,
+              success: function ( data, textStatus, jXHR ) {
+                
+                alert('success');
+                alert(textStatus);
+
+                if( fragment ) {
+                  content = $( data ).find( '#' + fragment);
+                } else {
+                  content = data;
+                }
+                Loader.inject( content );
+              },
+              failure: function () {
+                
+                alert('fail');
+
+                Loader.trigger(ERROR_EVENT);
+                // Handle this gracefully?
+                $element.removeClass( LOADING_CSS );
               }
-              Loader.inject( content );
-            },
-            failure: function () {
-              Loader.trigger(ERROR_EVENT);
-              // Handle this gracefully?
-              $element.removeClass( LOADING_CSS );
-            }
-          } );
+            } );            
+          }
         }
             
         return Loader;
@@ -119,7 +136,7 @@ Loader = Class.create( Container, ( function () {
        Loader.setContent = function ( url ) {
 
          if( !url ) {
-           url = settings.url || $( event.target ).attr( 'href' ); 
+           url = settings.sourceURL || $( event.target ).attr( 'href' ); 
          }
 
          Loader.load( url );
@@ -128,8 +145,7 @@ Loader = Class.create( Container, ( function () {
        };      
        
       // === EVENT BINDINGS ===
-      
-      // N/A
+      // n/a
       
     }
   };

@@ -50,7 +50,8 @@ Switcher = Class.create( Abstract,  ( function () {
            * @property start
            * @type Array
            */
-          start: null
+          start: null, 
+          states: "on, off"
         },
         /**
          * A registry of states avaliable for the switcher to switch to.
@@ -77,7 +78,7 @@ Switcher = Class.create( Abstract,  ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      settings.states = settings.states || { on: 'on', off: 'off' };
+      //settings.states = settings.states || { on: 'on', off: 'off' };
 
       //Normalize settings so that everything is a map
       //First turn strings into arrays
