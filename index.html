@@ -17,6 +17,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="styles/css/screen.css" media="screen">
 
+  <style>
+    .tip {
+      position: absolute;
+    }
+  </style>
 
 </head>
 
@@ -95,6 +100,7 @@
           <li><a href="#controls_buttons">Buttons</a></li>
           <li><a href="#controls_list">List</a></li>
           <li><a href="#controls_container">Container</a></li>
+          <li><a href="#controls_loader">Loader</a></li>
           <li><a href="#controls_tabs">Tabs</a></li>
           <li><a href="#controls_switcher">Switcher</a></li>
           <li><a href="#controls_accordian">Accordion</a></li>
@@ -102,7 +108,7 @@
           <li><a href="#controls_dialog">Dialog</a></li>
           <li><a href="#controls_mask">Mask</a></li>
           <li><a href="#controls_dropdown">Dropdown</a></li>
-          <li><a href="#controls_tips">Tips</a></li>
+          <li><a href="#controls_tip">Tip</a></li>
           <li><a href="#controls_facets">Facets(?)</a></li>
         </ul>
         <div class="sub-section">
@@ -373,32 +379,29 @@
 
           <p>Loader responds to and emits the same events as Container.  It will also emit an <em>error</em> event if an XHR fails.</p>
 
-          <div id="container_example" data-lu="Loader" data-lu-config="{Loader: {
+          <div id="loader_example" data-lu="Loader" data-lu-config="{Loader: {
             sourceURL: 'http://linkedin.com'
           }}">
             (an empty container)
           </div>
           <button data-lu="Button:Open" data-lu-config="{'Button:Open': {
-            notify: '#container_example'
+            notify: '#loader_example'
           }}">
             Show
           </button>
           <button data-lu="Button:Close" data-lu-config="{'Button:Close': {
-            notify: '#container_example'
+            notify: '#loader_example'
           }}">
             Hide
           </button>
           <button data-lu="Button:Load" data-lu-config="{'Button:Load': {
-            notify: '#container_example'
+            notify: '#loader_example'
           }}">
             Inject
           </button>
 
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
-
-
-
 
         <div class="sub-section">
           <h4 id="controls_tabs">Tabs</h4>
@@ -604,8 +607,14 @@
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4>Tip</h4>
-          <p class="control-info">Annotation: <code>Tip[:*]</code>, <a href="">Documentation</a></p>
+          <h4 id="controls_tip">Tip</h4>
+          <p class="control-info">Annotation: <code>Tip</code>, <a href="">Documentation</a></p>
+          <div id="tip_example" data-lu="Tip" data-lu-config="{
+            Tip: {
+              content: 'FOO FIE FOE FUM'
+          }}">
+            Tip
+          </div>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">

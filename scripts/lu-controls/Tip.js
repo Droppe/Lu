@@ -22,7 +22,6 @@ Tip =  Class.create( Loader,  ( function () {
       TITLE = 'title',
       CLASS = 'class';
 
-
   return {
 
     /**
@@ -159,14 +158,14 @@ Tip =  Class.create( Loader,  ( function () {
         content,
 
         /**
-         * An indicator of wether or not the tip should remain open
+         * An indicator of whether or not the tip should remain open
          * @property stuck
          * @type Object
          * @private
          */
         stuck;
 
-      //Use the title as content id content no provide in settings
+      //Use the title as content id if content not provide in settings
       if( settings.content === undefined ) {
         content = $element.attr( TITLE );
         if( content !== undefined ) {
@@ -203,34 +202,38 @@ Tip =  Class.create( Loader,  ( function () {
        * @returns position {Object} And object containing a top and left
        */
       function getPosition( cache ) {
+        var elOffset = $element.offset(),
+          elHeight = $element.height(),
+          elWidth = $element.width();
+
         if( position === undefined || cache === false ) {
 
           switch ( settings.placement ) {
             case 'below':
               position = {
-                top: $element.offset().top + $element.height() + settings.offsetTop,
-                left: $element.offset().left + $element.width() / 2 - $tip.width() / 2 - settings.offsetLeft
+                top: elOffset.top + elHeight + settings.offsetTop,
+                left: elOffset.left + elWidth / 2 - $tip.width() / 2 - settings.offsetLeft
               };
               break;
             case 'above': 
               position = {
-                top: $element.offset().top - $tip.height() - settings.offsetTop,
-                left: $element.offset().left + $element.width() / 2 - $tip.width() / 2 - settings.offsetLeft
+                top: elOffset.top - $tip.height() - settings.offsetTop,
+                left: elOffset.left + elWidth / 2 - $tip.width() / 2 - settings.offsetLeft
               };
               break;
             case 'left':
               position = {
-                top: $element.offset().top + $element.height() / 2 - $tip.height() / 2,
-                left: $element.offset().left - $tip.width() - settings.offsetLeft
+                top: elOffset.top + elHeight / 2 - $tip.height() / 2,
+                left: elOffset.left - $tip.width() - settings.offsetLeft
               };
               break;
             case 'right':
               position = {
-                top: $element.offset().top + $element.height() / 2 - $tip.height() / 2,
-                left: $element.offset().left + $element.width() + settings.offsetLeft
+                top: elOffset.top + elHeight / 2 - $tip.height() / 2,
+                left: elOffset.left + elWidth + settings.offsetLeft
               };
               break;
-          };
+          }
 
         }
         return position;
@@ -322,16 +325,17 @@ Tip =  Class.create( Loader,  ( function () {
            * @method isMouseInside
            */
           function isMouseInside() {
+            var result = true;
             if( pageX < left - settings.threshold - settings.offsetLeft ) {
-              return false;
+              result = false;
             } else if( pageY < top - settings.threshold - settings.offsetTop ) {
-              return false;
+              result = false;
             } else if ( pageX > left + width + settings.threshold + settings.offsetLeft ) {
-              return false;
+              result = false;
             } else if ( pageY > top + height + settings.threshold + settings.offsetTop ) {
-              return false;
+              result = false;
             }
-            return true;
+            return result;
           }
 
           if( !isMouseInside() ) {
@@ -346,6 +350,7 @@ Tip =  Class.create( Loader,  ( function () {
 
       //Event Listeners
       Tip.on( 'mouseenter', mouseenterEvent);
+      
       Tip.on( 'focus', function( event ) {
         event.stopPropagation();
         $element.on( 'blur.lu.tip', function( event ) {
@@ -358,7 +363,7 @@ Tip =  Class.create( Loader,  ( function () {
       
       } );
 
-      //Listen to theese events from other controls
+      //Listen to these events from other controls
       Tip.on( HIDE_EVENT, function( event ) {
         event.stopPropagation();
         Tip.hide();
