@@ -40,8 +40,11 @@
   <script src="scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
+    //Set your debug level here
     window.lu_debug = 5;
+    //Bust your cache
     require.clearCache();
+    //MAGIC!!!
     require.ensure( ['lu'], function() {} );
   </script>
 
