@@ -19,37 +19,37 @@ SwitchButton = Class.create( Button, ( function () {
   // RETURN METHODS OBJECT
   return {
    /**
-* PTClass constructor
-* @method initialize
-* @public
-* @param {Object} $super Pointer to superclass constructor
-* @param {Object} $element JQuery object for the element wrapped by the component
-* @param {Object} settings Configuration settings
-*/
+    * PTClass constructor
+    * @method initialize
+    * @public
+    * @param {Object} $super Pointer to superclass constructor
+    * @param {Object} $element JQuery object for the element wrapped by the component
+    * @param {Object} settings Configuration settings
+    */
 
     initialize: function ( $super, $element, settings ) {
       
       // PRIVATE INSTANCE PROPERTIES
       /**
-* Instance of Button
-* @property Button
-* @type Object
-* @private
-*/
-      var SwitchButton = this,
+       * Instance of Button
+       * @property Button
+       * @type Object
+       * @private
+       */
+       var SwitchButton = this,
         /**
-* Default configuration values
-* @property defaults
-* @type Object
-* @private
-* @final
-*/
+         * Default configuration values
+         * @property defaults
+         * @type Object
+         * @private
+         * @final
+         */
         defaults = {
           action: 'switch'
         },
         states;
       
-      if( typeof settings.states === 'string' ) {
+      if( typeof settings.states === 'string' ){
         settings.states = settings.states.split( ',' );
       }
       
@@ -61,13 +61,13 @@ SwitchButton = Class.create( Button, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      SwitchButton.on( SWITCHED_EVENT, function( event, $subject, state, meta ) {
+      SwitchButton.on( SWITCHED_EVENT, function( event, $subject, state, meta ){
         var switches = [];
         _.each( state, function( item, index ) {
           item = item.split( ' ' );
           _.each( item, function( item, index ){
             $element.removeClass( 'lu-switch-' + item );
-            if( _.indexOf( states, item ) !== -1 ) {
+            if( _.indexOf( states, item ) !== -1 ){
               switches.push( item );
             }
           } );
