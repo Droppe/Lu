@@ -84,7 +84,9 @@ Loader = Class.create( Container, ( function () {
       Loader.load = function ( url ) {
         var expURL,
           fragment,
-          content;
+          content,
+          height,
+          width;
 
 
         if (url) {
@@ -96,44 +98,49 @@ Loader = Class.create( Container, ( function () {
           expURL = _.explodeURL(url);
           fragment = expURL.fragment;
 
-          if (pageURL.authority == expURL.authority) {
+          if (pageURL.authority === expURL.authority) {
             $.ajax( {
               url: url,
               success: function ( data, textStatus, jXHR ) {
                 
-                alert('success');
-                alert(textStatus);
-
                 if( fragment ) {
                   content = $( data ).find( '#' + fragment);
                 } else {
                   content = data;
                 }
                 Loader.inject( content );
+                $element.removeClass( LOADING_CSS );                
               },
               failure: function () {
                 
-                alert('fail');
-
                 Loader.trigger(ERROR_EVENT);
                 // Handle this gracefully?
                 $element.removeClass( LOADING_CSS );
               }
             } );            
           }
+          else {
+            settings.method = "replace";
+            height = "100%";
+            width = "100%";
+            Loader.inject('<iframe src="' + url + '" height="' + height + '" width="' +  width + '"></iframe>');
+            $element.removeClass( LOADING_CSS );
+          }
         }
             
         return Loader;
       };
       
+
       /**
         * Content setter for Loader
         * @method setContent
         * @public
+         * @param {Object} event JQuery event object
         * @param {String} url The content to load into the Loader
         * @return {Object} The Loader instance, for chaining
         */
-       Loader.setContent = function ( url ) {
+       Loader.setContent = function (event, url ) {
 
          if( !url ) {
            url = settings.sourceURL || $( event.target ).attr( 'href' ); 

@@ -133,7 +133,7 @@ Container = Class.create( Abstract,  ( function () {
 
         return $parent;
 
-      };
+      }
                   
       // === PRIVILEDGED METHODS ===
  
@@ -224,7 +224,7 @@ Container = Class.create( Abstract,  ( function () {
        * or text string to use as new content.
        * @return {Object} The Container instance
        */
-      Container.setContent = function ( content ) {
+      Container.setContent = function ( event, content ) {
         var data;
 
         if (!content) {
@@ -305,7 +305,7 @@ Container = Class.create( Abstract,  ( function () {
       Container.on( settings.onLoad, function ( event, content ) {
         event.preventDefault();
         event.stopPropagation();
-        Container.setContent(content);
+        Container.setContent(event, content);
       });
 
     }

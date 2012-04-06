@@ -337,10 +337,9 @@
 
           <p> Container can be pre-filled with markup, or it accepts new content from another DOM node, or from a text string, depending on how you configure it.</p>
 
-          <p>Container responds to <em>show</em>, <em>hide</em>, <em>select</em>, and <em>unselect</em> events by showing or hiding itself.  It will emit a corresponding <em>hidden</em> or <em>shown</em> event to signal its new state.  Container also responds to a <em>load</em> event by filling itself with fresh content, per its configuration.  Afterwards, it will emit a <em>loaded</em> event.</p>
+          <p>Container responds to <em>show</em>, <em>hide</em>, <em>select</em>, and <em>unselect</em> events by showing or hiding itself (via adding a 'hidden' class).  It will emit a corresponding <em>hidden</em> or <em>shown</em> event to signal its new state.  Container also responds to a <em>load</em> event by filling itself with fresh content, per its configuration.  Afterwards, it will emit a <em>loaded</em> event.</p>
 
           <p>Container also has the ability to calculate its own height and width for animations and other special effects (TBD).</p>
-
 
           <div id="container_example" data-lu="Container" data-lu-config="{Container: {
             sourceText: '<h5>FOO FIE FOE FUM</h5>',
@@ -366,6 +365,41 @@
 
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
+
+        <div class="sub-section">
+          <h4 id="controls_loader">Loader</h4>
+          <p class="control-info">Annotation: <code>Loader</code>, <a href="">Documentation</a></p>
+          <p>Loader is a Container that can grab external content via a URL.  If on the same domain, an XHR request is made; if the domain is different, it's loaded into an iframe.</p>  
+
+          <p>Loader responds to and emits the same events as Container.  It will also emit an <em>error</em> event if an XHR fails.</p>
+
+          <div id="container_example" data-lu="Loader" data-lu-config="{Loader: {
+            sourceURL: 'http://linkedin.com'
+          }}">
+            (an empty container)
+          </div>
+          <button data-lu="Button:Open" data-lu-config="{'Button:Open': {
+            notify: '#container_example'
+          }}">
+            Show
+          </button>
+          <button data-lu="Button:Close" data-lu-config="{'Button:Close': {
+            notify: '#container_example'
+          }}">
+            Hide
+          </button>
+          <button data-lu="Button:Load" data-lu-config="{'Button:Load': {
+            notify: '#container_example'
+          }}">
+            Inject
+          </button>
+
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+
+
+
+
         <div class="sub-section">
           <h4 id="controls_tabs">Tabs</h4>
           <p class="control-info">Annotation: <code>Tabs</code>, <a href="">Documentation</a></p>
