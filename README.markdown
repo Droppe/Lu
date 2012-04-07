@@ -32,9 +32,9 @@ Lu is developed using [nodejs](http://nodejs.org/) and [compass](http://compass-
 4. Install the npms in package.json
 5. In a terminal window from the Lu directory:
 ```
-$compass watch
+compass watch
 ```
 6. In a new terminal window from the Lu directory:
 ```
-$node server.js
+node server.js
 ```
