@@ -3,12 +3,12 @@
  * @class Tip
  * @constructor
  * @extends Abstract
- * @requires ptclass
- * @param {HTMLElement} element The HTML element containing this component
- * @param {Object} settings Configuration properties for this instance
+ * @requires ptclass, Loader
+ * @version 1.0.0
  */
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
+  //Loader = require( 'lu/Loader' ),
   Tip;
 
 Tip =  Class.create( Abstract,  ( function () {
@@ -18,7 +18,11 @@ Tip =  Class.create( Abstract,  ( function () {
       SHOW_EVENT = 'show',
       //Stateful published events
       HIDDEN_EVENT = 'hidden',
-      SHOWN_EVENT = 'shown';
+      SHOWN_EVENT = 'shown',
+  
+  // OTHER CONSTANTS
+      TITLE = 'title',
+      CLASS = 'class';
 
   return {
 
@@ -49,65 +53,66 @@ Tip =  Class.create( Abstract,  ( function () {
          */
         defaults = {
 
-            /**
-             * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
-             * @property delay
-             * @type Number
-             * @private
-             */
-            delay: 300,
+          /**
+           * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
+           * @property delay
+           * @type Number
+           * @private
+           */
+          delay: 300,
 
-            /**
-             * The placement of the tip. above || below || right || left
-             * @property placement
-             * @type String
-             * @private
-             */
-            placement: 'above',
+          /**
+           * The placement of the tip. above || below || right || left
+           * @property placement
+           * @type String
+           * @private
+           */
+          placement: 'above',
 
-            /**
-             * The number of pixels from the top of the element the tip will be positioned at.
-             * @property offsetTop
-             * @type Number
-             * @private
-             */
-            offsetTop: 0,
+          /**
+           * The number of pixels from the top of the element the tip will be positioned at.
+           * @property offsetTop
+           * @type Number
+           * @private
+           */
+          offsetTop: 0,
 
-            /**
-             * The number of pixels from the left of the element the tip will be positioned at.
-             * @property offsetTop
-             * @type Number
-             * @private
-             */
-            offsetLeft: 0,
+          /**
+           * The number of pixels from the left of the element the tip will be positioned at.
+           * @property offsetTop
+           * @type Number
+           * @private
+           */
+          offsetLeft: 0,
 
-            /**
-             * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
-             * @property template
-             * @type String
-             * @private
-             */
-            template: '<div class="tip"><div class="arrow"></div><div class="content"><%= content %></div></div>',
+          /**
+           * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
+           * @property template
+           * @type String
+           * @private
+           */
+          template: '<div class="tip"><div class="arrow"></div><div class="content"><%= content %></div></div>',
 
-            /**
-             * If set to true the tip will remain open until the mouse has left the tip.
-             * @property sticky
-             * @type Boolean
-             * @private
-             */
-            sticky: true,
+          /**
+           * If set to true the tip will remain open until the mouse has left the tip.
+           * @property sticky
+           * @type Boolean
+           * @private
+           */
+          sticky: true,
 
-            /**
-             * The buffer in pixels around the element to be used in determing if the user has stoped interacting with the tip
-             * @property threshold
-             * @type Number
-             * @private
-             */
-            threshold: 10
+          /**
+           * The buffer in pixels around the element to be used in determing if the user has stopped 
+           * interacting with the tip
+           * @property threshold
+           * @type Number
+           * @private
+           */
+          threshold: 10
         },
 
         /**
-         * An indicator of weather or not the tip is curently shown.
+         * An indicator of whether or not the tip is currently shown.
          * @property shown
          * @type Boolean
          * @private
@@ -155,18 +160,18 @@ Tip =  Class.create( Abstract,  ( function () {
         content,
 
         /**
-         * An indicator of wether or not the tip should remain open
+         * An indicator of whether or not the tip should remain open
          * @property stuck
          * @type Object
          * @private
          */
         stuck;
 
-      //Use the title as content id content no provide in settings
+      //Use the title as content id if content not provide in settings
       if( settings.content === undefined ) {
-        content = $element.attr( 'title' );
+        content = $element.attr( TITLE );
         if( content !== undefined ) {
-          $element.removeAttr( 'title' );
+          $element.removeAttr( TITLE );
           settings.content = content; 
         }
       }
@@ -183,8 +188,8 @@ Tip =  Class.create( Abstract,  ( function () {
       if( settings.style ) {
         $tip.addClass( settings.placement + ' ' + settings.style );
       } else {
-        if( $element.attr( 'class' ) ) {
-          $tip.addClass( settings.placement + ' ' + $element.attr( 'class' ) );
+        if( $element.attr( CLASS ) ) {
+          $tip.addClass( settings.placement + ' ' + $element.attr( CLASS ) );
         } else {
           $tip.addClass( settings.placement );
         }
@@ -199,34 +204,38 @@ Tip =  Class.create( Abstract,  ( function () {
        * @returns position {Object} And object containing a top and left
        */
       function getPosition( cache ) {
+        var elOffset = $element.offset(),
+          elHeight = $element.height(),
+          elWidth = $element.width();
+
         if( position === undefined || cache === false ) {
 
           switch ( settings.placement ) {
             case 'below':
               position = {
-                top: $element.offset().top + $element.height() + settings.offsetTop,
-                left: $element.offset().left + $element.width() / 2 - $tip.width() / 2 - settings.offsetLeft
+                top: elOffset.top + elHeight + settings.offsetTop,
+                left: elOffset.left + elWidth / 2 - $tip.width() / 2 - settings.offsetLeft
               };
               break;
             case 'above': 
               position = {
-                top: $element.offset().top - $tip.height() - settings.offsetTop,
-                left: $element.offset().left + $element.width() / 2 - $tip.width() / 2 - settings.offsetLeft
+                top: elOffset.top - $tip.height() - settings.offsetTop,
+                left: elOffset.left + elWidth / 2 - $tip.width() / 2 - settings.offsetLeft
               };
               break;
             case 'left':
               position = {
-                top: $element.offset().top + $element.height() / 2 - $tip.height() / 2,
-                left: $element.offset().left - $tip.width() - settings.offsetLeft
+                top: elOffset.top + elHeight / 2 - $tip.height() / 2,
+                left: elOffset.left - $tip.width() - settings.offsetLeft
               };
               break;
             case 'right':
               position = {
-                top: $element.offset().top + $element.height() / 2 - $tip.height() / 2,
-                left: $element.offset().left + $element.width() + settings.offsetLeft
+                top: elOffset.top + elHeight / 2 - $tip.height() / 2,
+                left: elOffset.left + elWidth + settings.offsetLeft
               };
               break;
-          };
+          }
 
         }
         return position;
@@ -245,7 +254,7 @@ Tip =  Class.create( Abstract,  ( function () {
          Loader.on( 'loaded', function( event ) {
            $tip.css( getPosition( false ) );
          } );
-         $element.one( 'shown', function( event ) {
+         $element.one( SHOWN_EVENT, function( event ) {
            Loader.trigger( 'load', [ settings.uri ] );
          } );
 
@@ -318,16 +327,17 @@ Tip =  Class.create( Abstract,  ( function () {
            * @method isMouseInside
            */
           function isMouseInside() {
+            var result = true;
             if( pageX < left - settings.threshold - settings.offsetLeft ) {
-              return false;
+              result = false;
             } else if( pageY < top - settings.threshold - settings.offsetTop ) {
-              return false;
+              result = false;
             } else if ( pageX > left + width + settings.threshold + settings.offsetLeft ) {
-              return false;
+              result = false;
             } else if ( pageY > top + height + settings.threshold + settings.offsetTop ) {
-              return false;
+              result = false;
             }
-            return true;
+            return result;
           }
 
           if( !isMouseInside() ) {
@@ -342,6 +352,7 @@ Tip =  Class.create( Abstract,  ( function () {
 
       //Event Listeners
       Tip.on( 'mouseenter', mouseenterEvent);
+      
       Tip.on( 'focus', function( event ) {
         event.stopPropagation();
         $element.on( 'blur.lu.tip', function( event ) {
@@ -354,7 +365,7 @@ Tip =  Class.create( Abstract,  ( function () {
       
       } );
 
-      //Listen to theese events from other controls
+      //Listen to these events from other controls
       Tip.on( HIDE_EVENT, function( event ) {
         event.stopPropagation();
         Tip.hide();

@@ -35,11 +35,11 @@
    * @requires inject
    * @param {Object} settings Configuration properties for this instance
    */
-  function lu() {
+  function Lu() {
     var lu = this,
       packages = {},
       ATTR,
-      UI_CONTROL_PATTERN;
+      UI_CONTROL_PATTERN,
       NAMESPACE = 'lu';
 
     ATTR = 'data-' + NAMESPACE;
@@ -65,7 +65,7 @@
           ret = data[key];
         } else {
           ret = data;
-        };
+        }
       } else if( key ) {
         ret = undefined;
       } else {
@@ -74,7 +74,7 @@
       }
 
       return ret;
-    };
+    }
 
     /**
      * Sets the JQuery data object for an Lu control 
@@ -89,7 +89,7 @@
       // Mixin the new data with the current data.
       $element.data( 'lu-controls', $.extend( true, getData( $element ), data ) );
       return $element;
-    };
+    }
 
 
     //Public Methods
@@ -188,17 +188,17 @@
             pckg = NAMESPACE + '/' + key.replace( /:/g, '/' ),
             nodeData;
 
-          config = Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
+          config = new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
           Control = new packages[pckg]( $node, config );
 
           nodeData = getData( $node, key );
 
           if( nodeData ) {
-            nodeData['instance'] = Control;
+            nodeData.instance = Control;
           } else {
             nodeData = {};
             nodeData[key] = {};
-            nodeData[key]['instance'] = Control;
+            nodeData[key].instance = Control;
             setData( $node, nodeData );
           }
 
@@ -288,7 +288,7 @@
      * Notifies observers of events
      * @public
      * @static
-     * @method notifys
+     * @method notify
      * @param {Object} $element a jQuery collection
      * @param {string} event the event type
      * @param {Array} $element extra arguments associated with the event
@@ -367,7 +367,7 @@
         return $element;
       }
 
-      $observers = data['$observers'];
+      $observers = data.$observers;
 
       if( $observers ){
         $observers = $( _.reject( $observers, function( item, index ) {
@@ -406,13 +406,18 @@
      * @return {String} The conjoined keys
      */
     lu.decorate = function( $element, keys, settings ) {
-      var nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [];
+      var result,
+        nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [];
+      
       keys = _.union( nodeKeys, keys );
-      settings = settings;
+      
       if( settings ) {
-        return $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSONify( settings ) );
+        result = $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSONify( settings ) );
       }
-      return $element.attr( ATTR, keys.join( ' ' ) );
+      else {
+        result = $element.attr( ATTR, keys.join( ' ' ) );
+      }
+      return result;
     };
 
     /**
@@ -447,11 +452,11 @@
       }
 
       if( key ) {
-        instance = data[key]['instance'];
+        instance = data[key].instance;
       } else {
         _.each( data, function( item, index ) {
           if( !instance ) {
-            instance = item['instance'];
+            instance = item.instance;
           }
         } );
       }
@@ -586,14 +591,14 @@
         error: function() {
           if( window.lu_debug >= 1 ) {
             var parameters = slice.call( arguments );
-            parameters.unshift( prefix, $element )
+            parameters.unshift( prefix, $element );
             return _.error( parameters );
           }
         },
         warn: function() {
           if( window.lu_debug >= 2 ) {
             var parameters = slice.call( arguments );
-            parameters.unshift( prefix, $element )
+            parameters.unshift( prefix, $element );
             return _.warn( parameters );
           }
         },
@@ -620,11 +625,10 @@
         }
       };
     };
-
-  };
+  }
 
   //Attach a new lu to the window
-  window.lu = new lu();
+  window.lu = new Lu();
 
   //Bind lu to jquery as a plugin
   ( function( $ ) {
@@ -659,14 +663,14 @@
 
       return support && {
         event: ( function() {
-          var transitionEnd = "TransitionEnd"
+          var transitionEnd = "TransitionEnd";
 
           if ( $.browser.webkit ) {
-            transitionEnd = "webkitTransitionEnd"
+            transitionEnd = "webkitTransitionEnd";
           } else if ( $.browser.mozilla ) {
-            transitionEnd = "transitionend"
+            transitionEnd = "transitionend";
           } else if ( $.browser.opera ) {
-            transitionEnd = "oTransitionEnd"
+            transitionEnd = "oTransitionEnd";
           }
 
           return transitionEnd;
@@ -691,7 +695,7 @@
         window.lu.console( $body ).info( 'ready' );
       } );
 
-      window.lu.decorate( $body, ['Abstract'] )
+      window.lu.decorate( $body, ['Abstract'] );
       window.lu.execute( $body );
       window.lu.console( $body ).info( 'executing' );
 

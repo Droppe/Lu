@@ -7,4 +7,4 @@ bin/
 sandbox.html
 !build/bin/
 !styles/css/screen.css
-!.gitignore
+examples/

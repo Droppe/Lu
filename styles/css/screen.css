@@ -466,8 +466,10 @@ table {
   display: none;
 }
 
+
 /* line 18, ../sass/helpers.scss */
-.hidden {
+.hidden,
+.lu-hidden {
   display: none !important;
   visibility: hidden;
 }
@@ -529,10 +531,11 @@ input[type="reset"],
 input[type="button"] {
   border: 1px solid #cacaca;
   padding: 6px 16px;
-  -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
+  -webkit-border-radius: 3px;
   -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -khtml-border-radius: 3px;
   border-radius: 3px;
   color: #5e5e61;
   display: inline-block;
@@ -573,8 +576,9 @@ input[type="reset"]:active,
 input[type="button"]:active {
   color: #006da2;
   border: 1px solid #b1b1b1;
-  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
   -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
+  -o-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) inset;
 }
 
@@ -601,11 +605,7 @@ input[type="button"].full-width {
 }
 
 /* line 86, ../sass/buttons.scss */
-.button-group a.button,
-.button-group button,
-.button-group input[type="submit"],
-.button-group input[type="reset"],
-.button-group input[type="button"] {
+.button-group a.button, .button-group button, .button-group input[type="submit"], .button-group input[type="reset"], .button-group input[type="button"] {
   padding: 6px 16px;
   position: relative;
   margin-left: -5px;
@@ -614,11 +614,7 @@ input[type="button"].full-width {
   line-height: 16px;
 }
 /* line 99, ../sass/buttons.scss */
-.button-group a.button:first-child,
-.button-group button:first-child,
-.button-group input[type="submit"]:first-child,
-.button-group input[type="reset"]:first-child,
-.button-group input[type="button"]:first-child {
+.button-group a.button:first-child, .button-group button:first-child, .button-group input[type="submit"]:first-child, .button-group input[type="reset"]:first-child, .button-group input[type="button"]:first-child {
   margin-left: 0px;
   -moz-border-top-left-radius: 3px;
   -webkit-border-top-left-radius: 3px;
@@ -628,11 +624,7 @@ input[type="button"].full-width {
   border-bottom-left-radius: 3px;
 }
 /* line 113, ../sass/buttons.scss */
-.button-group a.button:last-child,
-.button-group button:last-child,
-.button-group input[type="submit"]:last-child,
-.button-group input[type="reset"]:last-child,
-.button-group input[type="button"]:last-child {
+.button-group a.button:last-child, .button-group button:last-child, .button-group input[type="submit"]:last-child, .button-group input[type="reset"]:last-child, .button-group input[type="button"]:last-child {
   -moz-border-top-right-radius: 3px;
   -webkit-border-top-right-radius: 3px;
   border-top-right-radius: 3px;
@@ -641,27 +633,15 @@ input[type="button"].full-width {
   border-bottom-right-radius: 3px;
 }
 /* line 126, ../sass/buttons.scss */
-.button-group a.button:hover,
-.button-group button:hover,
-.button-group input[type="submit"]:hover,
-.button-group input[type="reset"]:hover,
-.button-group input[type="button"]:hover {
+.button-group a.button:hover, .button-group button:hover, .button-group input[type="submit"]:hover, .button-group input[type="reset"]:hover, .button-group input[type="button"]:hover {
   z-index: 1;
 }
 /* line 134, ../sass/buttons.scss */
-.button-group a.button:active,
-.button-group button:active,
-.button-group input[type="submit"]:active,
-.button-group input[type="reset"]:active,
-.button-group input[type="button"]:active {
+.button-group a.button:active, .button-group button:active, .button-group input[type="submit"]:active, .button-group input[type="reset"]:active, .button-group input[type="button"]:active {
   z-index: 1;
 }
 /* line 142, ../sass/buttons.scss */
-.button-group a.button.lu-disabled,
-.button-group button.lu-disabled,
-.button-group input[type="submit"].lu-disabled,
-.button-group input[type="reset"].lu-disabled,
-.button-group input[type="button"].lu-disabled {
+.button-group a.button.lu-disabled, .button-group button.lu-disabled, .button-group input[type="submit"].lu-disabled, .button-group input[type="reset"].lu-disabled, .button-group input[type="button"].lu-disabled {
   z-index: 0;
 }
 
@@ -1058,46 +1038,51 @@ code {
   font-weight: bold;
 }
 
-/* line 115, ../sass/screen.scss */
+/* line 1, ../sass/controls/tip.scss */
+.tip {
+  position: absolute;
+}
+
+/* line 116, ../sass/screen.scss */
 #main {
   padding: 36px 0;
 }
 
-/* line 119, ../sass/screen.scss */
+/* line 120, ../sass/screen.scss */
 #content {
   margin-bottom: 64px;
 }
 
-/* line 123, ../sass/screen.scss */
+/* line 124, ../sass/screen.scss */
 #must-see {
   font-size: 1.25em;
 }
 
-/* line 127, ../sass/screen.scss */
+/* line 128, ../sass/screen.scss */
 .section {
   margin-top: 48px;
   border-top: 3px solid #ececec;
 }
 
-/* line 132, ../sass/screen.scss */
+/* line 133, ../sass/screen.scss */
 .sub-section {
   margin-top: 48px;
   border-top: 1px solid #ececec;
 }
 
-/* line 138, ../sass/screen.scss */
+/* line 139, ../sass/screen.scss */
 .section .top,
 .control-info {
   font-size: .7857em;
 }
 
-/* line 142, ../sass/screen.scss */
+/* line 143, ../sass/screen.scss */
 #intro {
   border-top: 0;
   margin-top: 0;
 }
 
-/* line 147, ../sass/screen.scss */
+/* line 148, ../sass/screen.scss */
 #container {
   position: relative;
   background-color: white;
@@ -1109,7 +1094,7 @@ code {
   margin: 0;
 }
 
-/* line 158, ../sass/screen.scss */
+/* line 159, ../sass/screen.scss */
 #branding {
   float: left;
   margin-left: 0.625%;
@@ -1117,7 +1102,7 @@ code {
   width: 15.417%;
 }
 
-/* line 165, ../sass/screen.scss */
+/* line 166, ../sass/screen.scss */
 #logo {
   margin: 32px auto;
   height: 54px;
@@ -1125,7 +1110,7 @@ code {
   background-image: url("../../assets/logo.png");
 }
 
-/* line 172, ../sass/screen.scss */
+/* line 173, ../sass/screen.scss */
 #content {
   float: left;
   margin-left: 0.625%;
@@ -1133,7 +1118,7 @@ code {
   width: 65.417%;
 }
 
-/* line 179, ../sass/screen.scss */
+/* line 180, ../sass/screen.scss */
 #footer {
   float: left;
   width: 98.75%;
@@ -1141,7 +1126,7 @@ code {
   margin-right: 0.625%;
   margin-bottom: 0.625%;
 }
-/* line 185, ../sass/screen.scss */
+/* line 186, ../sass/screen.scss */
 #footer .content {
   height: 336px;
   background-color: #ececec;

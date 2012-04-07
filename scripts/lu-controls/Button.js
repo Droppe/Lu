@@ -13,7 +13,7 @@ var Class = require( 'class' ),
 Button = Class.create( Abstract, ( function() {
 
   // CONSTANTS
-  var CLICK = 'click',
+  var CLICK_EVENT = 'click',
     DISABLED = 'disabled',
     LU_DISABLED = 'lu-disabled',
     ARIA_ROLE = 'role',
@@ -48,7 +48,7 @@ Button = Class.create( Abstract, ( function() {
          * @final
          */
         defaults = {
-          on: CLICK
+          on: CLICK_EVENT
         },
 
         /**
@@ -110,7 +110,7 @@ Button = Class.create( Abstract, ( function() {
       action = settings.action;
 
 
-      // PRIVATE METHODS
+      // === PRIVATE METHODS ===
 
       /**
        * Setups accessibility for the button.  If the button is a "link" then it will have an ARIA role of button and 
@@ -136,10 +136,12 @@ Button = Class.create( Abstract, ( function() {
         }  
       }
 
+      // === PRIVILEDGED METHODS ===
+
       /**
        * Disables the Button by adding a disabled attribute (inputs and buttons only) and the class lu-disabled
        * @method disable 
-       * @private
+       * @public
        * @return {Void}
        */
       Button.disable = function() {
@@ -152,7 +154,7 @@ Button = Class.create( Abstract, ( function() {
       /**
        * Enables the Button by removing a disabled attribute (inputs and buttons only) and the class lu-disabled
        * @method disable 
-       * @private
+       * @public
        * @return {Void}
        */
       Button.enable = function() {
@@ -162,7 +164,8 @@ Button = Class.create( Abstract, ( function() {
         $element.removeClass( LU_DISABLED );
       };
 
-      // EVENT BINDINGS
+      // === EVENT BINDINGS ===
+      
       Button.on( settings.on, function( event ) {
         event.preventDefault();
 
