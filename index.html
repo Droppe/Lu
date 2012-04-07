@@ -17,7 +17,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="styles/css/screen.css" media="screen">
 
-
 </head>
 
 <body>
@@ -95,6 +94,7 @@
           <li><a href="#controls_buttons">Buttons</a></li>
           <li><a href="#controls_list">List</a></li>
           <li><a href="#controls_container">Container</a></li>
+          <li><a href="#controls_loader">Loader</a></li>
           <li><a href="#controls_tabs">Tabs</a></li>
           <li><a href="#controls_switcher">Switcher</a></li>
           <li><a href="#controls_accordian">Accordion</a></li>
@@ -102,7 +102,7 @@
           <li><a href="#controls_dialog">Dialog</a></li>
           <li><a href="#controls_mask">Mask</a></li>
           <li><a href="#controls_dropdown">Dropdown</a></li>
-          <li><a href="#controls_tips">Tips</a></li>
+          <li><a href="#controls_tip">Tip</a></li>
           <li><a href="#controls_facets">Facets(?)</a></li>
         </ul>
         <div class="sub-section">
@@ -157,7 +157,8 @@
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4 id="controls_list">Lists</h4>
+          <h4 id="controls_list">List</h4>
+          <p class="control-info">Annotation: <code>List</code>, <a href="">Documentation</a></p>
           <p>The <code>List</code> control manages an iterative set of items and is most
           often used with <code>&lt;ol&gt;</code> and <code>&lt;ul&gt;</code>
           elements.</p>
@@ -330,10 +331,72 @@
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4>Container</h4>
+          <h4 id="controls_container">Container</h4>
           <p class="control-info">Annotation: <code>Container</code>, <a href="">Documentation</a></p>
+          <p>Container is an element that holds content or other elements.  The most common element to use with Container is <code>div</code>, but almost any other tag will work, too.</p>  
+
+          <p> Container can be pre-filled with markup, or it accepts new content from another DOM node, or from a text string, depending on how you configure it.</p>
+
+          <p>Container responds to <em>show</em>, <em>hide</em>, <em>select</em>, and <em>unselect</em> events by showing or hiding itself (via adding a 'hidden' class).  It will emit a corresponding <em>hidden</em> or <em>shown</em> event to signal its new state.  Container also responds to a <em>load</em> event by filling itself with fresh content, per its configuration.  Afterwards, it will emit a <em>loaded</em> event.</p>
+
+          <p>Container also has the ability to calculate its own height and width for animations and other special effects (TBD).</p>
+
+          <div id="container_example" data-lu="Container" data-lu-config="{Container: {
+            sourceText: '<h5>FOO FIE FOE FUM</h5>',
+            method: 'append'
+          }}">
+            (an empty container)
+          </div>
+          <button data-lu="Button:Open" data-lu-config="{'Button:Open': {
+            notify: '#container_example'
+          }}">
+            Show
+          </button>
+          <button data-lu="Button:Close" data-lu-config="{'Button:Close': {
+            notify: '#container_example'
+          }}">
+            Hide
+          </button>
+          <button data-lu="Button:Load" data-lu-config="{'Button:Load': {
+            notify: '#container_example'
+          }}">
+            Inject
+          </button>
+
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
+
+        <div class="sub-section">
+          <h4 id="controls_loader">Loader</h4>
+          <p class="control-info">Annotation: <code>Loader</code>, <a href="">Documentation</a></p>
+          <p>Loader is a Container that can grab external content via a URL.  If on the same domain, an XHR request is made; if the domain is different, it's loaded into an iframe.</p>  
+
+          <p>Loader responds to and emits the same events as Container.  It will also emit an <em>error</em> event if an XHR fails.</p>
+
+          <div id="loader_example" data-lu="Loader" data-lu-config="{Loader: {
+            sourceURL: 'http://linkedin.com'
+          }}">
+            (an empty container)
+          </div>
+          <button data-lu="Button:Open" data-lu-config="{'Button:Open': {
+            notify: '#loader_example'
+          }}">
+            Show
+          </button>
+          <button data-lu="Button:Close" data-lu-config="{'Button:Close': {
+            notify: '#loader_example'
+          }}">
+            Hide
+          </button>
+          <button data-lu="Button:Load" data-lu-config="{'Button:Load': {
+            notify: '#loader_example'
+          }}">
+            Inject
+          </button>
+
+          <p><a href="#controls" class="top small">Back to Controls</a></p>
+        </div>
+
         <div class="sub-section">
           <h4 id="controls_tabs">Tabs</h4>
           <p class="control-info">Annotation: <code>Tabs</code>, <a href="">Documentation</a></p>
@@ -538,8 +601,14 @@
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4>Tip</h4>
-          <p class="control-info">Annotation: <code>Tip[:*]</code>, <a href="">Documentation</a></p>
+          <h4 id="controls_tip">Tip</h4>
+          <p class="control-info">Annotation: <code>Tip</code>, <a href="">Documentation</a></p>
+          <div id="tip_example" data-lu="Tip" data-lu-config="{
+            Tip: {
+              content: 'FOO FIE FOE FUM'
+          }}">
+            Tip
+          </div>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
@@ -571,8 +640,7 @@
   <script type="text/javascript" src="scripts/libraries/inject.js"></script>
 
   <!-- Bootstrap:UI -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write( '<script src="http://scripts/libraries/jquery-1.7.1.min.js"><\/script>' )</script>
+  <script src="scripts/libraries/jquery-1.7.1.min.js"></script>
 
   <script src="scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
 
