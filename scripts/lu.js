@@ -35,11 +35,11 @@
    * @requires inject
    * @param {Object} settings Configuration properties for this instance
    */
-  function lu() {
+  function Lu() {
     var lu = this,
       packages = {},
       ATTR,
-      UI_CONTROL_PATTERN;
+      UI_CONTROL_PATTERN,
       NAMESPACE = 'lu';
 
     ATTR = 'data-' + NAMESPACE;
@@ -65,7 +65,7 @@
           ret = data[key];
         } else {
           ret = data;
-        };
+        }
       } else if( key ) {
         ret = undefined;
       } else {
@@ -74,7 +74,7 @@
       }
 
       return ret;
-    };
+    }
 
     /**
      * Sets the JQuery data object for an Lu control 
@@ -89,7 +89,7 @@
       // Mixin the new data with the current data.
       $element.data( 'lu-controls', $.extend( true, getData( $element ), data ) );
       return $element;
-    };
+    }
 
 
     //Public Methods
@@ -188,17 +188,17 @@
             pckg = NAMESPACE + '/' + key.replace( /:/g, '/' ),
             nodeData;
 
-          config = Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
+          config = new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
           Control = new packages[pckg]( $node, config );
 
           nodeData = getData( $node, key );
 
           if( nodeData ) {
-            nodeData['instance'] = Control;
+            nodeData.instance = Control;
           } else {
             nodeData = {};
             nodeData[key] = {};
-            nodeData[key]['instance'] = Control;
+            nodeData[key].instance = Control;
             setData( $node, nodeData );
           }
 
@@ -312,7 +312,7 @@
             Deferred.done( function () {
               _.each( lu.getControls( $item ), function( item, index ) {
                 //Filter out Controls that don't listen for the event
-                if( _.indexOf( item.events().join(" ").split(" "), event ) > -1 ) {
+                if( _.indexOf( item.events(), event ) > -1 ) {
                   item.trigger( event, parameters );
                 }
               } );
@@ -367,7 +367,7 @@
         return $element;
       }
 
-      $observers = data['$observers'];
+      $observers = data.$observers;
 
       if( $observers ){
         $observers = $( _.reject( $observers, function( item, index ) {
@@ -406,13 +406,18 @@
      * @return {String} The conjoined keys
      */
     lu.decorate = function( $element, keys, settings ) {
-      var nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [];
+      var result,
+        nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [];
+      
       keys = _.union( nodeKeys, keys );
-      settings = settings;
+      
       if( settings ) {
-        return $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSONify( settings ) );
+        result = $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSONify( settings ) );
       }
-      return $element.attr( ATTR, keys.join( ' ' ) );
+      else {
+        result = $element.attr( ATTR, keys.join( ' ' ) );
+      }
+      return result;
     };
 
     /**
@@ -447,11 +452,11 @@
       }
 
       if( key ) {
-        instance = data[key]['instance'];
+        instance = data[key].instance;
       } else {
         _.each( data, function( item, index ) {
           if( !instance ) {
-            instance = item['instance'];
+            instance = item.instance;
           }
         } );
       }
@@ -620,11 +625,10 @@
         }
       };
     };
-
-  };
+  }
 
   //Attach a new lu to the window
-  window.lu = new lu();
+  window.lu = new Lu();
 
   //Bind lu to jquery as a plugin
   ( function( $ ) {

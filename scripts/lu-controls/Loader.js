@@ -4,6 +4,7 @@
  * @constructor
  * @extends Container
  * @requires ptclass
+ * @version 1.0.0
  */ 
 var Class = require( 'class' ),
   Container = require( 'lu/Container' ),
@@ -136,11 +137,11 @@ Loader = Class.create( Container, ( function () {
         * Content setter for Loader
         * @method setContent
         * @public
-         * @param {Object} event JQuery event object
+        * @param {Object} event JQuery event object
         * @param {String} url The content to load into the Loader
         * @return {Object} The Loader instance, for chaining
         */
-       Loader.setContent = function (event, url ) {
+       Loader.setContent = function ( event, url ) {
 
          if( !url ) {
            url = settings.sourceURL || $( event.target ).attr( 'href' ); 

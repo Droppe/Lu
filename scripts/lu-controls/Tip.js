@@ -2,14 +2,16 @@
  * Tooltip class
  * @class Tip
  * @constructor
- * @extends Loader
- * @requires ptclass
+ * @extends Abstract
+ * @requires ptclass, Loader
+ * @version 1.0.0
  */
 var Class = require( 'class' ),
-  Loader = require( 'lu/Loader' ),
+  Abstract = require( 'lu/Abstract' ),
+  //Loader = require( 'lu/Loader' ),
   Tip;
 
-Tip =  Class.create( Loader,  ( function () {
+Tip =  Class.create( Abstract,  ( function () {
 
   //Observed events 
   var HIDE_EVENT = 'hide',
@@ -51,62 +53,62 @@ Tip =  Class.create( Loader,  ( function () {
          */
         defaults = {
 
-            /**
-             * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
-             * @property delay
-             * @type Number
-             * @private
-             */
-            delay: 300,
+          /**
+           * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
+           * @property delay
+           * @type Number
+           * @private
+           */
+          delay: 300,
 
-            /**
-             * The placement of the tip. above || below || right || left
-             * @property placement
-             * @type String
-             * @private
-             */
-            placement: 'above',
+          /**
+           * The placement of the tip. above || below || right || left
+           * @property placement
+           * @type String
+           * @private
+           */
+          placement: 'above',
 
-            /**
-             * The number of pixels from the top of the element the tip will be positioned at.
-             * @property offsetTop
-             * @type Number
-             * @private
-             */
-            offsetTop: 0,
+          /**
+           * The number of pixels from the top of the element the tip will be positioned at.
+           * @property offsetTop
+           * @type Number
+           * @private
+           */
+          offsetTop: 0,
 
-            /**
-             * The number of pixels from the left of the element the tip will be positioned at.
-             * @property offsetTop
-             * @type Number
-             * @private
-             */
-            offsetLeft: 0,
+          /**
+           * The number of pixels from the left of the element the tip will be positioned at.
+           * @property offsetTop
+           * @type Number
+           * @private
+           */
+          offsetLeft: 0,
 
-            /**
-             * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
-             * @property template
-             * @type String
-             * @private
-             */
-            template: '<div class="tip"><div class="arrow"></div><div class="content"><%= content %></div></div>',
+          /**
+           * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
+           * @property template
+           * @type String
+           * @private
+           */
+          template: '<div class="tip"><div class="arrow"></div><div class="content"><%= content %></div></div>',
 
-            /**
-             * If set to true the tip will remain open until the mouse has left the tip.
-             * @property sticky
-             * @type Boolean
-             * @private
-             */
-            sticky: true,
+          /**
+           * If set to true the tip will remain open until the mouse has left the tip.
+           * @property sticky
+           * @type Boolean
+           * @private
+           */
+          sticky: true,
 
-            /**
-             * The buffer in pixels around the element to be used in determing if the user has stopped 
-             * interacting with the tip
-             * @property threshold
-             * @type Number
-             * @private
-             */
-            threshold: 10
+          /**
+           * The buffer in pixels around the element to be used in determing if the user has stopped 
+           * interacting with the tip
+           * @property threshold
+           * @type Number
+           * @private
+           */
+          threshold: 10
         },
 
         /**

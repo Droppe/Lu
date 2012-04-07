@@ -7,4 +7,3 @@ bin/
 !build/bin/
 !styles/css/screen.css
 examples/
-*.OLD

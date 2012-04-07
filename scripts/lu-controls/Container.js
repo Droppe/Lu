@@ -4,6 +4,7 @@
  * @constructor
  * @extends Abstract
  * @requires ptclass
+ * @version 1.0.0
  */
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
@@ -13,7 +14,10 @@ Container = Class.create( Abstract,  ( function () {
 
   // === GLOBAL STATICS ===
   var CONTENT_LOAD_EVENT = 'load',
-    CONTENT_LOADED_EVENT = 'loaded';
+    CONTENT_LOADED_EVENT = 'loaded',
+    CONTNR_HIDE_EVENT = 'close hide unselect',
+    CONTNR_SHOW_EVENT = 'open show select';
+
 
   // === RETURN METHODS OBJECT ===
   return {
@@ -45,11 +49,11 @@ Container = Class.create( Abstract,  ( function () {
        */
       defaults = {
         // CSS
-        hiddenClassName: "hidden",
-        selectedClassName: "selected",
+        hiddenClassName: "lu-hidden",
+        selectedClassName: "lu-selected",
         // EVENTS
-        onHide: "close hide unselect",
-        onShow: "open show select",
+        onHide: CONTNR_HIDE_EVENT,
+        onShow: CONTNR_SHOW_EVENT,
         onLoad: CONTENT_LOAD_EVENT,
         actionHide: "hidden",
         actionShow: "shown",
@@ -122,8 +126,6 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Object} $parent - JDOM reference to the parent of the Container
        */
       function getLuParent() {
-        _.log("Container.getLuParent()");
-
         var $parent,
             $parents = $element.parents("[data-lu]").not("body");
 
