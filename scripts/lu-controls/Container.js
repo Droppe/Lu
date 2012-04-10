@@ -120,26 +120,8 @@ Container = Class.create( Abstract,  ( function (){
      
       // === PRIVATE METHODS ===
 
-      /**
-       * Gets the closest $parent of the Container if the $parent is a Lu object ( has the attribute "data-lu" )
-       * and is not the <body> 
-       * @method getLuParent
-       * @private
-       * @return {Object} $parent - JDOM reference to the parent of the Container
-       */
-      //can we use lu.getParent here?
-      function getLuParent(){
-        var $parent,
-            $parents = $element.parents("[data-lu]").not("body");
+      // none for now!
 
-        if ( $parents.length > 0 ){
-          $parent = $parents.eq( 0 ); 
-        }
-
-        return $parent;
-
-      }
-                  
       // === PRIVILEDGED METHODS ===
  
       /**
@@ -258,7 +240,6 @@ Container = Class.create( Abstract,  ( function (){
       $super( $element, settings );
 
       // Get a reference to the parent
-      //$parent = getLuParent();
       $parent = lu.getParent($element);
 
       hiddenClass = settings.hiddenClassName;
