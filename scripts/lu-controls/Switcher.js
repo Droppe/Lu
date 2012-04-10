@@ -7,7 +7,7 @@ var Class = require( 'class' ),
  * @class Switcher
  * @constructor
  * @extends Abstract
- * @version 0.1
+ * @version 0.1.2
  */
 
 Switcher = Class.create( Abstract,  ( function () {

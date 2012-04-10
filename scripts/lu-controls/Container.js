@@ -4,13 +4,13 @@
  * @constructor
  * @extends Abstract
  * @requires ptclass
- * @version 1.0.0
+ * @version 0.1.2
  */
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
   Container;
 
-Container = Class.create( Abstract,  ( function () {
+Container = Class.create( Abstract,  ( function (){
 
   // === GLOBAL STATICS ===
   var CONTENT_LOAD_EVENT = 'load',
@@ -31,8 +31,7 @@ Container = Class.create( Abstract,  ( function () {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
-
+    initialize: function( $super, $element, settings ){
       // PRIVATE INSTANCE PROPERTIES
 
       /**
@@ -53,12 +52,13 @@ Container = Class.create( Abstract,  ( function () {
         // CSS
         hiddenClassName: CLASS_HIDDEN,
         selectedClassName: CLASS_SELECTED,
+
         // EVENTS
         onHide: CONTNR_HIDE_EVENT,
         onShow: CONTNR_SHOW_EVENT,
         onLoad: CONTENT_LOAD_EVENT,
-        actionHide: "hidden",
-        actionShow: "shown",
+        actionHide: 'hidden',
+        actionShow: 'shown',
         /**
          * DOM node to source for fresh content.  Can be a CSS selector or 
          * a JQuery object.
@@ -127,12 +127,13 @@ Container = Class.create( Abstract,  ( function () {
        * @private
        * @return {Object} $parent - JDOM reference to the parent of the Container
        */
-      function getLuParent() {
+      //can we use lu.getParent here?
+      function getLuParent(){
         var $parent,
             $parents = $element.parents("[data-lu]").not("body");
 
-        if ($parents.length > 0) {
-          $parent = $parents.eq(0); 
+        if ( $parents.length > 0 ){
+          $parent = $parents.eq( 0 ); 
         }
 
         return $parent;
@@ -147,8 +148,8 @@ Container = Class.create( Abstract,  ( function () {
        * @public
        * @return {Object} The container instance, for chaining
        */
-      Container.hide = function () {
-        _.log("Container.hide", $element);
+      Container.hide = function(){
+        //_.log("Container.hide", $element);
         $element.addClass(hiddenClass);
         $element.removeClass(selectedClass);
         Container.trigger(settings.actionHide);
@@ -162,7 +163,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Object} The container instance, for chaining
        */
       Container.show = function () {
-        _.log("Container.show", $element);
+        //_.log("Container.show", $element);
         $element.addClass(selectedClass);
         $element.removeClass(hiddenClass);
         Container.trigger(settings.actionShow);
@@ -176,7 +177,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Integer} Computed height of the Container (result drops units)
        */
       Container.getHeight = function() {
-        _.log("Container.getHeight()");
+        //_.log("Container.getHeight()");
         return $element.height();
       };
 
@@ -187,7 +188,7 @@ Container = Class.create( Abstract,  ( function () {
        * @return {Integer} Computed width of the Container (result drops units)
        */
       Container.getWidth = function() {
-        _.log("Container.getWidth()");
+        //_.log("Container.getWidth()");
         return $element.width();
       };
 
@@ -202,8 +203,8 @@ Container = Class.create( Abstract,  ( function () {
       Container.inject = function ( content ) {
         var type;
         
-        if (content) {        
-          switch( settings.method ) {
+        if( content ){        
+          switch( settings.method ){
             case 'prepend':
               type = 'prepend';
               break;
@@ -214,7 +215,7 @@ Container = Class.create( Abstract,  ( function () {
               type = 'html';
               break;
           }
-          $element[ type ]( content );
+          $element[type]( content );
           Container.trigger( CONTENT_LOADED_EVENT );
         }
         return Container;
@@ -228,23 +229,21 @@ Container = Class.create( Abstract,  ( function () {
        * or text string to use as new content.
        * @return {Object} The Container instance
        */
-      Container.setContent = function ( event, content ) {
+      Container.setContent = function( event, content ){
         var data;
 
-        if (!content) {
-          content = settings.sourceText || $(settings.sourceNode);
-          
+        if( !content ){
+          content = settings.sourceText || $( settings.sourceNode );
         }
         
-        if (typeof content === "object") {
+        if( typeof content === 'object' ) {
           data = content.html();
-        }
-        else if (typeof content === "string") {
+        } else if( typeof content === 'string' ){
           data = content;
         }
         
-        if (data) {
-          Container.inject(data);
+        if( data ){
+          Container.inject( data );
         }
 
         return Container;
@@ -276,47 +275,45 @@ Container = Class.create( Abstract,  ( function () {
         var ok = true;
                      
         // item can be an integer or an object
-        if (item) {
+        if( item ){
           // Show the item if the selected container equals this instance
-          if (typeof item === "string" && item === $element.attr("id")) {
+          if( typeof item === 'string' && item === $element.attr( 'id' ) ){
             ok = true;
-          } 
-          else if ( $element.is($(item)) ) {
+          } else if( $element.is( $( item ) ) ){
             ok = true;
-          }
-          else {
+          } else {
             ok = false;
           }
         }
 
         // show() unless item is specified.  Otherwise, if the selected container 
         // matches this instance, show(), else hide().
-        if (ok) {
+        if( ok ){
           Container.show();
-        } else {
+        } else{
           Container.hide();
         }
 
-      });
+      } );
 
       // Hide
-      Container.on( settings.onHide, function( event ) {
+      Container.on( settings.onHide, function( event ){
         event.preventDefault();
         event.stopPropagation();
         Container.hide();
-      });
+      } );
 
       // Load
-      Container.on( settings.onLoad, function ( event, content ) {
+      Container.on( settings.onLoad, function ( event, content ){
         event.preventDefault();
         event.stopPropagation();
         Container.setContent(event, content);
-      });
+      } );
 
     }
-  };  
-}() ));
+  };
 
+}() ) );
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ) {
   if( typeof module.setExports === 'function' ){

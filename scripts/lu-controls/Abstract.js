@@ -96,10 +96,10 @@ Abstract = Class.create( ( function() {
 
       /**
        * Augments arguments
-       * @method parameters
+       * @method params
        * @private
        */
-      function parameters() {
+      function params() {
         var parameters = Array.prototype.slice.call( arguments );
         
         if( namespace ) {
@@ -155,7 +155,7 @@ Abstract = Class.create( ( function() {
        */
       function on() {
         addEventToStorage( arguments[0], 'on' );
-        return $element.on.apply( $element, parameters.apply( this, arguments ) );
+        return $element.on.apply( $element, params.apply( this, arguments ) );
       }
 
       /**
@@ -165,7 +165,7 @@ Abstract = Class.create( ( function() {
        */
       function one() {
         addEventToStorage( arguments[0], 'one' );
-        return $element.one.apply( $element, parameters.apply( this, arguments ) );
+        return $element.one.apply( $element, params.apply( this, arguments ) );
       }
 
       /**
@@ -176,7 +176,7 @@ Abstract = Class.create( ( function() {
       function off() {
         var event = arguments[0];
         removeEventFromStorage( event );
-        return $element.off.apply( $element, parameters.apply( this, arguments ) );
+        return $element.off.apply( $element, params.apply( this, arguments ) );
       }
 
       /**

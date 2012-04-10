@@ -408,11 +408,11 @@
     lu.decorate = function( $element, keys, settings ) {
       var result,
         nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [];
-      
+
       keys = _.union( nodeKeys, keys );
-      
+
       if( settings ) {
-        result = $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSONify( settings ) );
+        result = $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSON.stringify( settings ) );
       }
       else {
         result = $element.attr( ATTR, keys.join( ' ' ) );

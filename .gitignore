@@ -4,6 +4,7 @@
 node_modules/*
 styles/css/*.css
 bin/
+sandbox.html
 !build/bin/
 !styles/css/screen.css
 examples/
