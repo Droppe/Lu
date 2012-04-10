@@ -4,7 +4,7 @@
  * @constructor
  * @extends Abstract
  * @requires ptclass
- * @version 0.1.2
+ * @version 0.1
  */
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
