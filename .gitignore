@@ -5,6 +5,7 @@ node_modules/*
 styles/css/*.css
 bin/
 sandbox.html
+build/compass_cache
 !build/bin/
 !styles/css/screen.css
 examples/
