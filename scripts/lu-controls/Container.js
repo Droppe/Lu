@@ -16,7 +16,9 @@ Container = Class.create( Abstract,  ( function () {
   var CONTENT_LOAD_EVENT = 'load',
     CONTENT_LOADED_EVENT = 'loaded',
     CONTNR_HIDE_EVENT = 'close hide unselect',
-    CONTNR_SHOW_EVENT = 'open show select';
+    CONTNR_SHOW_EVENT = 'open show select',
+    CLASS_HIDDEN = 'lu-hidden',
+    CLASS_SELECTED = 'lu-selected';
 
 
   // === RETURN METHODS OBJECT ===
@@ -49,8 +51,8 @@ Container = Class.create( Abstract,  ( function () {
        */
       defaults = {
         // CSS
-        hiddenClassName: "lu-hidden",
-        selectedClassName: "lu-selected",
+        hiddenClassName: CLASS_HIDDEN,
+        selectedClassName: CLASS_SELECTED,
         // EVENTS
         onHide: CONTNR_HIDE_EVENT,
         onShow: CONTNR_SHOW_EVENT,
@@ -257,7 +259,8 @@ Container = Class.create( Abstract,  ( function () {
       $super( $element, settings );
 
       // Get a reference to the parent
-      $parent = getLuParent();
+      //$parent = getLuParent();
+      $parent = lu.getParent($element);
 
       hiddenClass = settings.hiddenClassName;
       selectedClass = settings.selectedClassName;
