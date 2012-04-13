@@ -5,7 +5,7 @@ var Fs = require( 'fs' ),
     Compiler = new (require( './compiler' ))( {type: 'jar'} ),
     args = require( 'optimist' ).argv,
     common = require( './common' ),
-    //tester = require( '../test-server' ),
+    tester = require( '../test-server' ),
     questions = common.questions,
     luControls = common.filetoVersion,
     build;
