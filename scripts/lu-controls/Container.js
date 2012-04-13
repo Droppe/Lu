@@ -178,7 +178,7 @@ Container = Class.create( Abstract,  ( function (){
        * Injects string content into the Container using the 
        * configured setting (prepend/append/replace)
        * @method inject
-       * @public
+       * @private
        * @param {String} content 
        * @return {Object} The Container instance, for chaining
        */      
@@ -207,6 +207,7 @@ Container = Class.create( Abstract,  ( function (){
        * Loads the specified content into the Container
        * @method setContent
        * @public
+       * @param {Object} event JQuery event object
        * @param {Object|String} content JQuery object to source the content from, 
        * or text string to use as new content.
        * @return {Object} The Container instance
