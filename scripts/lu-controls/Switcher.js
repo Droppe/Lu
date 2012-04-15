@@ -7,10 +7,10 @@ var Class = require( 'class' ),
  * @class Switcher
  * @constructor
  * @extends Abstract
- * @version 0.1
+ * @version depricated
  */
 
-Switcher = Class.create( Abstract,  ( function () {
+Switcher = Class.create( Abstract, ( function (){
 
   var SWITCH_EVENT = 'switch',
     SWITCHED_EVENT = 'switched';
