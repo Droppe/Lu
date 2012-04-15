@@ -125,7 +125,14 @@ Container = Class.create( Abstract, ( function(){
          * @type Array
          * @private
          */
-        states = [];
+        states = [],
+        /**
+         * A placeholder for the classes on element
+         * @property classAttr
+         * @type String
+         * @private
+         */
+        classAttr = $element.attr( 'class' ) || '';
 
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -158,7 +165,9 @@ Container = Class.create( Abstract, ( function(){
         var removed = [],
           classes = [];
 
-        _.each( $element.attr( 'class' ).split( ' ' ), function( clss, index ){
+        classAttr = $element.attr( 'class' ) || '';
+
+        _.each( classAttr.split( ' ' ), function( clss, index ){
           if( clss.indexOf( STATE_FLAG_PREFIX ) > -1 ){
             removed.push( clss );
           }
@@ -316,7 +325,6 @@ Container = Class.create( Abstract, ( function(){
       };
 
       /**
-<<<<<<< HEAD
        * Returns the state(s) of the Container
        * @method getState
        * @public
@@ -469,7 +477,7 @@ Container = Class.create( Abstract, ( function(){
       }
 
       //Sets default states specified in the class attribute
-      _.each( $element.attr( 'class' ).split( ' ' ), function( clss, index ){
+      _.each( classAttr.split( ' ' ), function( clss, index ){
         if( clss.indexOf( STATE_FLAG_PREFIX ) > -1 ){
           Container.addState( clss.replace( STATE_FLAG_PREFIX, '' ) );
         }
