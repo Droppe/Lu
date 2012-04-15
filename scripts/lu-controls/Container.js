@@ -316,6 +316,7 @@ Container = Class.create( Abstract, ( function(){
       };
 
       /**
+<<<<<<< HEAD
        * Returns the state(s) of the Container
        * @method getState
        * @public

@@ -38,3 +38,4 @@ compass watch
 ```
 node server.js
 ```
+7. Point a browser to ````http://localhost:1337````
