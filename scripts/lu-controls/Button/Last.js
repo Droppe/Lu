@@ -9,7 +9,7 @@ var Class = require( 'class' ),
  * @extends Button
  * @version 0.1
  */
-LastButton = Class.create( Button,  ( function() {
+LastButton = Class.create( Button,  ( function(){
 
   var MAXED_EVENT = 'maxed',
     SELECTED_EVENT = 'selected';
@@ -24,7 +24,7 @@ LastButton = Class.create( Button,  ( function() {
     * @param {Object} $element JQuery object for the element wrapped by the component
     * @param {Object} settings Configuration settings
     */    
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -50,12 +50,12 @@ LastButton = Class.create( Button,  ( function() {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      LastButton.on( SELECTED_EVENT, function( event, $subject, $item, index  ) {
+      LastButton.on( SELECTED_EVENT, function( event, $subject, $item, index  ){
         event.stopPropagation();
         LastButton.enable();
       } );
 
-      LastButton.on( MAXED_EVENT, function( event ) {
+      LastButton.on( MAXED_EVENT, function( event ){
         event.stopPropagation();
         LastButton.disable();
       } );
@@ -66,10 +66,10 @@ LastButton = Class.create( Button,  ( function() {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( LastButton );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = LastButton; 
   }
 }

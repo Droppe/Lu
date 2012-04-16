@@ -1,6 +1,5 @@
-
 /**
- * 
+ * Contains content and maintains state
  * @class Container
  * @constructor
  * @extends Abstract

@@ -11,7 +11,7 @@ var Class = require( 'class' ),
     Abstract = require( 'lu/Abstract' ),
     Dialog;
 
-Dialog = Class.create( Abstract,  ( function () {
+Dialog = Class.create( Abstract,  ( function (){
 
   //Observed events 
   var OPEN_EVENT = 'open',
@@ -22,7 +22,7 @@ Dialog = Class.create( Abstract,  ( function () {
 
   return {
 
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
 
       var Dialog = this,
         defaults = {},
@@ -38,8 +38,8 @@ Dialog = Class.create( Abstract,  ( function () {
        * @privelaged
        * @method open
        */
-        Dialog.open = function() {
-          if( open === false ) {
+        Dialog.open = function(){
+          if( open === false ){
             $element.addClass( 'lu-dialog-open' );
             open = true;
             Dialog.trigger( OPENED_EVENT, Dialog );
@@ -51,8 +51,8 @@ Dialog = Class.create( Abstract,  ( function () {
          * @privelaged
          * @method close
          */
-        Dialog.close = function() {
-          if( open === true ) {
+        Dialog.close = function(){
+          if( open === true ){
             $element.removeClass( 'lu-dialog-open' );
             open = false;
             Dialog.trigger( CLOSED_EVENT, Dialog );
@@ -60,14 +60,12 @@ Dialog = Class.create( Abstract,  ( function () {
         };
 
         //Listen to theese events from other controls
-        Dialog.on( CLOSE_EVENT, function( event ) {
-          console.log( 'close' );
+        Dialog.on( CLOSE_EVENT, function( event ){
           event.stopPropagation();
           Dialog.close();
         } );
 
-        Dialog.on( OPEN_EVENT, function( event ) {
-          console.log( 'open' );
+        Dialog.on( OPEN_EVENT, function( event ){
           event.stopPropagation();
           Dialog.open();
         } );
@@ -79,10 +77,10 @@ Dialog = Class.create( Abstract,  ( function () {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
-  if( typeof module.setExports === 'function' ) {
+if( typeof module !== 'undefined' ){
+  if( typeof module.setExports === 'function' ){
     module.setExports( Dialog );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = Dialog; 
   }
 }

@@ -13,7 +13,7 @@ var Class = require( 'class' ),
   Button = require( 'lu/Button' ),
   PreviousButton;
 
-PreviousButton = Class.create( Button, ( function () {
+PreviousButton = Class.create( Button, ( function (){
 
   var FLOORED_EVENT = 'floored',
       SELECTED_EVENT = 'selected',
@@ -32,7 +32,7 @@ PreviousButton = Class.create( Button, ( function () {
     * @param {Object} $element JQuery object for the element wrapped by the component
     * @param {Object} settings Configuration settings
     */    
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
      /**
       * Instance of PreviousButton
       * @property Button
@@ -60,40 +60,40 @@ PreviousButton = Class.create( Button, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      PreviousButton.on( SELECTED_EVENT, function( event ) {
+      PreviousButton.on( SELECTED_EVENT, function( event ){
         event.stopPropagation();
         PreviousButton.enable();
       } );
 
-      PreviousButton.on( FLOORED_EVENT, function( event, $subject ) {
+      PreviousButton.on( FLOORED_EVENT, function( event, $subject ){
         event.stopPropagation();
         var Control = $subject.lu( 'getControl' );
 
-        if( !Control.hasPrevious() ) {
+        if( !Control.hasPrevious() ){
           PreviousButton.disable();
         }
 
       } );
 
-      PreviousButton.on( TRANSITIONED_EVENT, function( event, $subject ) {
+      PreviousButton.on( TRANSITIONED_EVENT, function( event, $subject ){
         event.stopPropagation();
         PreviousButton.enable();
       } );
 
-      PreviousButton.on( TRANSITIONING_EVENT, function( event, $subject ) {
+      PreviousButton.on( TRANSITIONING_EVENT, function( event, $subject ){
         event.stopPropagation();
-        if( playing ) {
+        if( playing ){
           PreviousButton.disable();
         }
       } );
 
-      PreviousButton.on( 'paused', function( event, $subject ) {
+      PreviousButton.on( 'paused', function( event, $subject ){
         event.stopPropagation();
         playing = false;
         PreviousButton.enable();
       } );
 
-      PreviousButton.on( 'playing', function( event, $subject ) {
+      PreviousButton.on( 'playing', function( event, $subject ){
         event.stopPropagation();
         playing = true;
         PreviousButton.disable();
@@ -105,10 +105,10 @@ PreviousButton = Class.create( Button, ( function () {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( PreviousButton );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = PreviousButton; 
   }
 }

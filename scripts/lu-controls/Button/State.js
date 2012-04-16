@@ -21,7 +21,7 @@ StateButton = Class.create( Button, ( function (){
       * @param {Object} $element JQuery object for the element wrapped by the component
       * @param {Object} settings Configuration settings
       */
-     initialize: function ( $super, $element, settings ) {
+     initialize: function ( $super, $element, settings ){
 
        // PRIVATE INSTANCE PROPERTIES
 
@@ -36,7 +36,8 @@ StateButton = Class.create( Button, ( function (){
          action: 'state',
          states: ['off', 'on'],
          index: 0
-       };
+       },
+       states;
 
       //Normalize states to array
       if( settings.states ){
@@ -60,10 +61,10 @@ StateButton = Class.create( Button, ( function (){
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( StateButton );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = StateButton; 
   }
 }

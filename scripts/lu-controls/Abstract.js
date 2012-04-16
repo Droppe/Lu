@@ -8,7 +8,7 @@ var Class = require( 'class' ),
  * @requires ptclass
  * @version 0.1
  */
-Abstract = Class.create( ( function() {
+Abstract = Class.create( ( function(){
 
   // GLOBAL STATICS
 
@@ -21,7 +21,7 @@ Abstract = Class.create( ( function() {
      * @param {Object} $element JQuery object for DOM node wrapped by this component
      * @param {Object} settings Custom settings for this component
      */    
-    initialize: function( $element, settings ) {
+    initialize: function( $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
 
@@ -99,20 +99,20 @@ Abstract = Class.create( ( function() {
        * @method params
        * @private
        */
-      function params() {
+      function params(){
         var parameters = Array.prototype.slice.call( arguments );
         
-        if( namespace ) {
+        if( namespace ){
           parameters[0] = parameters[0].split( ' ' );
-          _.each( parameters[0], function( item, index ) {
+          _.each( parameters[0], function( item, index ){
             parameters[0][index] = item + '.' + namespace;
           } );
           parameters[0] = parameters[0].join( ' ' );
         }
         
-        _.each( parameters, function( item, index ) {
-          if( typeof item === 'function' ) {
-            parameters[index] = function() {
+        _.each( parameters, function( item, index ){
+          if( typeof item === 'function' ){
+            parameters[index] = function(){
               item.apply( $element, arguments );
             };
           }
@@ -128,8 +128,8 @@ Abstract = Class.create( ( function() {
        * @param {String} event The event(s) to add
        * @param {String} method The method (ex: 'on', 'one')
        */
-      function addEventToStorage( event, method ) {
-        _.each( event.trim().split( /\s+/g ), function( item ) {
+      function addEventToStorage( event, method ){
+        _.each( event.trim().split( /\s+/g ), function( item ){
           eventStore[item] = { method: method };
         } );
       }
@@ -140,9 +140,9 @@ Abstract = Class.create( ( function() {
        * @private
        * @param {String} event The event(s) to remove
        */
-      function removeEventFromStorage( event ) {
-        _.each( event.trim().split( /\s+/g ), function( item ) {
-          if ( eventStore[event] ) {
+      function removeEventFromStorage( event ){
+        _.each( event.trim().split( /\s+/g ), function( item ){
+          if ( eventStore[event] ){
             delete eventStore[event];
           }
         } );
@@ -153,7 +153,7 @@ Abstract = Class.create( ( function() {
        * @method on
        * @private
        */
-      function on() {
+      function on(){
         addEventToStorage( arguments[0], 'on' );
         return $element.on.apply( $element, params.apply( this, arguments ) );
       }
@@ -163,7 +163,7 @@ Abstract = Class.create( ( function() {
        * @method one
        * @private
        */
-      function one() {
+      function one(){
         addEventToStorage( arguments[0], 'one' );
         return $element.one.apply( $element, params.apply( this, arguments ) );
       }
@@ -173,7 +173,7 @@ Abstract = Class.create( ( function() {
        * @method off
        * @private
        */
-      function off() {
+      function off(){
         var event = arguments[0];
         removeEventFromStorage( event );
         return $element.off.apply( $element, params.apply( this, arguments ) );
@@ -184,11 +184,11 @@ Abstract = Class.create( ( function() {
        * @method trigger
        * @private
        */
-      function trigger( event, parameters ) {
+      function trigger( event, parameters ){
         var store = eventStore[ event ];
         
         $element.lu( 'notify', event, parameters );
-        if( store && store.method === 'one' ) {
+        if( store && store.method === 'one' ){
           removeEventFromStorage( event );
         }
         return $element.trigger.call( $element, event, parameters );
@@ -200,7 +200,7 @@ Abstract = Class.create( ( function() {
        * @private
        * @param {Array} $observer A jQuery collection to be observed
        */
-      function observe( $observer ) {
+      function observe( $observer ){
         $observer.lu( 'observe', $element );
       }
 
@@ -213,33 +213,33 @@ Abstract = Class.create( ( function() {
 
       namespace = settings.namespace;
 
-      if( $observe.length ) {
+      if( $observe.length ){
         observe( $observe );
       }
 
-      if( $notify.length ) {
+      if( $notify.length ){
         $element.lu( 'observe', $notify );
       }
 
-      if( !namespace ) {
-        namespace = $element.lu( 'getParent', function( index, item ) {
+      if( !namespace ){
+        namespace = $element.lu( 'getParent', function( index, item ){
           var control = $( item ).lu( 'getControl' ),
             namespace;
 
-          if( !control ) {
+          if( !control ){
             return false;
           }
 
           namespace = control.getNamespace();
 
-          if( namespace ) {
+          if( namespace ){
             return true;
           }
 
           return false;
 
         } );
-        if( namespace.length > 0 ) {
+        if( namespace.length > 0 ){
           namespace = namespace.lu( 'getControl' ).getNamespace();
         }
       }
@@ -251,7 +251,7 @@ Abstract = Class.create( ( function() {
        * @method on
        * @public
        */
-      Abstract.on = function() {
+      Abstract.on = function(){
         $element.lu( 'console' ).log( 'on called with arguments :: ', arguments );
         return on.apply( $element, arguments );
       };
@@ -261,7 +261,7 @@ Abstract = Class.create( ( function() {
        * @method on
        * @public
        */
-      Abstract.one = function() {
+      Abstract.one = function(){
         $element.lu( 'console' ).log( 'one called with arguments :: ', arguments );
         return one.apply( $element, arguments );
       };
@@ -271,7 +271,7 @@ Abstract = Class.create( ( function() {
         * @method on
         * @public
         */
-      Abstract.off = function() {
+      Abstract.off = function(){
         $element.lu( 'console' ).log( 'off called with arguments :: ', arguments );
         return off.apply( $element, arguments );
       };
@@ -281,7 +281,7 @@ Abstract = Class.create( ( function() {
         * @method on
         * @public
         */
-      Abstract.trigger = function() {
+      Abstract.trigger = function(){
         $element.lu( 'console' ).log( 'trigger called with arguments :: ', arguments );
         return trigger.apply( $element, arguments );
       };
@@ -291,7 +291,7 @@ Abstract = Class.create( ( function() {
        * @method on
        * @public
        */
-      Abstract.observe = function( $observer ) {
+      Abstract.observe = function( $observer ){
         $element.lu( 'console' ).log( 'observe called with arguments :: ', arguments );
         return observe( $observer );
       };
@@ -302,7 +302,7 @@ Abstract = Class.create( ( function() {
        * @public
        * @param {Array} $subscriber A jQuery collection to unsubscribe
        */
-      Abstract.unobserve = function( $observer ) {
+      Abstract.unobserve = function( $observer ){
         $element.lu( 'console' ).log( 'unobserve called with arguments :: ', arguments );
         return $element.lu( 'unobserve', $observer );
       };
@@ -313,7 +313,7 @@ Abstract = Class.create( ( function() {
        * @public
        * @return namespace
        */
-      Abstract.getNamespace = function() {
+      Abstract.getNamespace = function(){
         return namespace;
       };
 
@@ -324,7 +324,7 @@ Abstract = Class.create( ( function() {
        * @param {String} value the new namespace
        * @return namespace
        */
-      Abstract.setNamespace = function( value ) {
+      Abstract.setNamespace = function( value ){
         namespace = value;
         return namespace;
       };
@@ -334,7 +334,7 @@ Abstract = Class.create( ( function() {
        * @public
        * @return events list
        */
-       Abstract.events = function() {
+       Abstract.events = function(){
          return _.keys( eventStore );
        };
 
@@ -344,10 +344,10 @@ Abstract = Class.create( ( function() {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Abstract );
-  } else if( module.exports ) {
+  } else if( module.exports ){
     module.exports = Abstract; 
   }
 }
