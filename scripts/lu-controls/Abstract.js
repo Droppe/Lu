@@ -20,7 +20,7 @@ Abstract = Class.create( ( function(){
      * @public
      * @param {Object} $element JQuery object for DOM node wrapped by this component
      * @param {Object} settings Custom settings for this component
-     */    
+     */
     initialize: function( $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
@@ -77,7 +77,7 @@ Abstract = Class.create( ( function(){
          * See <a href="http://docs.jquery.com/Namespaced_Events">JQuery Namespaced Events</a>.
          * @property namespace
          * @private
-         * @type {Object}
+         * @type {String}
          */
         namespace,
         /**
@@ -101,7 +101,7 @@ Abstract = Class.create( ( function(){
        */
       function params(){
         var parameters = Array.prototype.slice.call( arguments );
-        
+
         if( namespace ){
           parameters[0] = parameters[0].split( ' ' );
           _.each( parameters[0], function( item, index ){
@@ -109,7 +109,7 @@ Abstract = Class.create( ( function(){
           } );
           parameters[0] = parameters[0].join( ' ' );
         }
-        
+
         _.each( parameters, function( item, index ){
           if( typeof item === 'function' ){
             parameters[index] = function(){
@@ -117,7 +117,7 @@ Abstract = Class.create( ( function(){
             };
           }
         } );
-        
+
         return parameters;
       }
 
@@ -180,13 +180,13 @@ Abstract = Class.create( ( function(){
       }
 
       /**
-       * Fires a custom event 
+       * Fires a custom event
        * @method trigger
        * @private
        */
       function trigger( event, parameters ){
         var store = eventStore[ event ];
-        
+
         $element.lu( 'notify', event, parameters );
         if( store && store.method === 'one' ){
           removeEventFromStorage( event );
@@ -222,7 +222,7 @@ Abstract = Class.create( ( function(){
       }
 
       if( !namespace ){
-        namespace = $element.lu( 'getParent', function( index, item ){
+        $element.lu( 'getParent', function( index, item ){
           var control = $( item ).lu( 'getControl' ),
             namespace;
 
@@ -239,7 +239,7 @@ Abstract = Class.create( ( function(){
           return false;
 
         } );
-        if( namespace.length > 0 ){
+        if( namespace && namespace.length > 0 ){
           namespace = namespace.lu( 'getControl' ).getNamespace();
         }
       }
@@ -348,6 +348,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Abstract );
   } else if( module.exports ){
-    module.exports = Abstract; 
+    module.exports = Abstract;
   }
 }
