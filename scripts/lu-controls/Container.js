@@ -393,15 +393,15 @@ Container = Class.create( Abstract, ( function(){
        * @return {Object} Container
        */
       Container.removeState = function( value ){
-        var difference;
+        var intersection;
         if( typeof value === 'string' ){
           value = value.split( ',' );
         }
 
-        difference = _.difference( states, value );
+        intersection = _.intersection( states, value );
 
-        if( difference.length > 0 ){
-          states = difference;
+        if( intersection.length > 0 ){
+          states = _.without( states, value );
           applyStates();
           Container.trigger( STATED_EVENT, $element, states );
         }

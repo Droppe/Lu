@@ -1,120 +1,172 @@
-<div id="example" data-lu="Container" data-lu-config="{Container: {
-  sourceText: 'FOO FIE FOE FUM',
-  method: 'replace'
-}}">
-  (empty container)
-</div>
-  
+<div id="container-test" data-lu="Container"></div>
 
 <script>
 
-function run() {
+function run(){
+  var $container = $( '#container-test' ),
+    Container;
 
-	(function containerTests() {
-		var ctr, 
-			$ctr;
+  Container = lu.getControl( $container );
 
-		function setup() {
-	      this.$container = $('#example');
-	      this.container = this.$container.lu('getControl');
+  module( 'API Tests', {} );
 
-	      ctr = this.container;
-	      $ctr = this.$container;
-	    }
+  test( 'getHeight', function(){
+    var height;
 
-	    module('Container :: Basic API', {
-	      setup: setup
-	    });
+    expect( 1 );
 
-	    test('Hide', function() {
-	      expect(1);
+    height = Container.getHeight();
+    ok( ( typeof height === 'number' ), 'The height returned is a number' );
+  } );
 
-	      ctr.hide();
+  test( 'setHeight', function(){
+    var height;
 
-	      ok($ctr.hasClass('lu-hidden'), '"lu-hidden" class added to DOM element' );
-	    });
+    expect( 1 );
 
-	    test('Show', function() {
-	      expect(1);
+    height = Container.setHeight( 80 ).getHeight();
+    ok( ( height === 80 ), 'The height was set successfully.' );
+  } );
 
-	      ctr.show();
+  test( 'getWidth', function(){
+    var width;
 
-	      ok(!$ctr.hasClass('lu-hidden'), '"lu-hidden" class removed from DOM element' );
-	    });
+    expect( 1 );
 
-	    test('SetContent', function() {
-	      expect(1);
+    width = Container.getWidth();
+    ok( ( typeof width === 'number' ), 'The width returned is a number' );
+  } );
 
-	      ctr.setContent(null, "testing 1 2 3");
+  test( 'setWidth', function(){
+    var width;
 
-	      equal($ctr.html(), "testing 1 2 3", 'setContent ran successfully' );
-	    });
+    expect( 1 );
 
+    width = Container.setWidth( 80 ).getWidth();
+    ok( ( width === 80 ), 'The width was set successfully.' );
+  } );
 
-	    test('GetHeight', function() {
-	      expect(1);
+  test( 'getState', function(){
+    var state;
 
-	      var height = ctr.getHeight();
+    expect( 2 );
 
-	      ok( (height > 0), 'getHeight ran successfully' );
-	    });
+    state = Container.getState();
+    ok( ( typeof state.push === 'function' && typeof state.length === 'number' ), 'getState returns an array.' );
+    ok( ( state.length === 0 ), 'getState returns an empty array when no states are set.' );
+  } );
 
-	    test('GetWidth', function() {
-	      expect(1);
+  test( 'setState', function(){
+    var state;
 
-	      var width = ctr.getWidth();
+    expect( 4 );
 
-	      ok( (width > 0), 'getWidth ran successfully' );
-	    });
+    Container.setState( 'FOO' );
+    state = Container.getState();
+    ok( ( state.length === 1 && _.indexOf( state, 'FOO' ) > -1 && $container.hasClass( 'lu-state-FOO' ) ), 'state was successfully set with setState( \'FOO\' )' );
 
+    Container.setState( ['BAR'] );
+    state = Container.getState();
+    ok( ( state.length === 1 && _.indexOf( state, 'BAR' ) > -1 && $container.hasClass( 'lu-state-BAR' ) ), 'state was successfully set with setState( [\'BAR\'] )' );
 
+    Container.setState( 'FOO,BAR' );
+    state = Container.getState();
+    ok( ( state.length === 2 && _.indexOf( state, 'FOO' ) > -1 && _.indexOf( state, 'BAR' ) > -1 && $container.hasClass( 'lu-state-FOO' ) && $container.hasClass( 'lu-state-BAR' ) ), 'state is successfully set with setState( \'FOO,BAR\' )' );
 
+    Container.setState( ['BAZ', 'BAR'] );
+    state = Container.getState();
+    ok( ( state.length === 2 && _.indexOf( state, 'BAZ' ) > -1 && _.indexOf( state, 'BAR' ) > -1 && $container.hasClass( 'lu-state-BAZ' ) && $container.hasClass( 'lu-state-BAR' ) ), 'state is successfully set with setState( [\'BAZ\',\'BAR\'] )' );
+  } );
 
-	    module('Container :: Eventing', {
-	      setup: setup
-	    });
+  test( 'addState', function(){
+    var state;
 
-	    test('Show', function() {
-	      expect(1);
+    expect( 2 );
 
-	      var success = false;
-	      ctr.on('show', function() {
-	        success = !$ctr.hasClass('lu-hidden');
-	      });
+    Container.setState( 'FOO' ).addState( 'BOING' );
+    state = Container.getState();
+    ok( ( state.length === 2 && _.indexOf( state, 'FOO' ) > -1 && _.indexOf( state, 'BOING' ) > -1 && $container.hasClass( 'lu-state-BOING' ) ), 'state "BOING" was successfully added.' );
+    
+    Container.addState( 'WOWZERZ' );
+    state = Container.getState();
+    ok( ( state.length === 3 && _.indexOf( state, 'FOO' ) > -1 && _.indexOf( state, 'BOING' ) > -1 && _.indexOf( state, 'WOWZERZ' ) > -1 && $container.hasClass( 'lu-state-WOWZERZ' ) ), 'state "WOWZERZ" was successfully added.' );
+  } );
 
-	      $ctr.trigger('show');
+  test( 'removeState', function(){
+    var state;
 
-	      ok(success, '"show" handler routed' );
-	    });
+    expect( 4 );
 
-	    test('Hide', function() {
-	      expect(1);
+    Container.setState( 'FOO,BOING,WOWZERZ' ).removeState( 'WOWZERZ' );
+    state = Container.getState();
+    ok( ( state.length === 2 && _.indexOf( state, 'WOWZERZ' ) === -1 && !$container.hasClass( 'lu-state-WOWZERZ' ) ), 'state "WOWZERZ" was successfully removed.' );
 
-	      var success = false;
-	      ctr.on('hide', function() {
-	        success = $ctr.hasClass('lu-hidden');
-	      });
+    Container.removeState( 'BOING' );
+    state = Container.getState();
+    ok( ( state.length === 1 && _.indexOf( state, 'BOING' ) === -1 && !$container.hasClass( 'lu-state-BOING' ) ), 'state "BOING" was successfully removed.' );
 
-	      $ctr.trigger('hide');
+    Container.setState( 'FOO,BOING,WOWZERZ' ).removeState( 'FOO,BOING,WOWZERZ' );
+    state = Container.getState();
+    ok( ( state.length === 0 && _.indexOf( state, 'BOING' ) === -1 && !$container.hasClass( 'lu-state-BOING' ) && _.indexOf( state, 'FOO' ) === -1 && !$container.hasClass( 'lu-state-FOO' ) && _.indexOf( state, 'WOWZERZ' ) === -1 && !$container.hasClass( 'lu-state-WOWZERZ' ) ), 'states "FOO,BOING,WOWZERZ" were successfully removed.' );
 
-	      ok(success, '"hide" handler routed' );
-	    });
+    Container.setState( ['FOO','BOING','WOWZERZ'] ).removeState( ['FOO','BOING','WOWZERZ'] );
+    state = Container.getState();
+    ok( ( state.length === 0 && _.indexOf( state, 'BOING' ) === -1 && !$container.hasClass( 'lu-state-BOING' ) && _.indexOf( state, 'FOO' ) === -1 && !$container.hasClass( 'lu-state-FOO' ) && _.indexOf( state, 'WOWZERZ' ) === -1 && !$container.hasClass( 'lu-state-WOWZERZ' ) ), 'states "[\'FOO\',\'BOING\',\'WOWZERZ\']" were successfully removed.' );
+  } );
 
-	    test('Load', function() {
-	      expect(1);
+  test( 'getContent', function(){
+    var content;
 
-	      var success = false;
-	      ctr.on('load', function() {
-	        success = ($ctr.html() == 'FOO FIE FOE FUM');
-	      });
+    expect( 1 );
 
-	      $ctr.trigger('load');
+    content = Container.getContent();
+    ok( ( content === $container.html() ), 'The content was returned successfully.' );
+  } );
 
-	      ok(success, '"load" handler routed' );
-	    });
-	    
-	})();
+  test( 'setContent', function(){
+    var content;
 
+    expect( 1 );
+
+    content = Container.setContent( 'OH YEAHH! ' ).getContent();
+    ok( ( content === 'OH YEAHH! ' ), 'The content was set successfully.' );
+  } );
+
+  test( 'appendContent', function(){
+    var content;
+
+    expect( 1 );
+
+    content = Container.appendContent( 'OH YEAHHH! ' ).getContent();
+    ok( ( content === 'OH YEAHH! OH YEAHHH! ' ), 'The content was appended successfully.' );
+  } );
+
+  test( 'prependContent', function(){
+    var content;
+
+    expect( 1 );
+
+    content = Container.prependContent( 'OH YEAH! ' ).getContent();
+    ok( ( content === 'OH YEAH! OH YEAHH! OH YEAHHH! ' ), 'The content was prepended successfully.' );
+  } );
+
+  module( 'Event Tests', {} );
+
+  test( 'update', function() {
+     var success = false;
+
+     expect( 1 );
+
+     Container.on( 'updated', function( event ){
+       success = ( Container.getContent() === 'Fi ' );
+       //LOOK INTO PROBLEM UNBINDING EVENTS
+       //Container.off( 'updated' );
+     } );
+
+     Container.trigger( 'update', 'Fi ' );
+
+     ok( success, 'content was updated successfully' );
+  } );
 
 }
 
