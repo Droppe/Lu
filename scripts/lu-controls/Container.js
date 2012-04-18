@@ -212,6 +212,7 @@ Container = Class.create( Abstract, ( function(){
           return Container.trigger( UPDATE_EVENT, content, method );
         }
 
+        Container.removeState( LOADED_STATE );
         Container.addState( LOADING_STATE );
         $.ajax( {
           url: url,
@@ -306,7 +307,7 @@ Container = Class.create( Abstract, ( function(){
        * @return {Integer} Computed height of the Container (result drops units)
        */
       Container.getWidth = function(){
-        var width = cache.width = cache.width ||$element.width();
+        var width = cache.width = cache.width || $element.width();
         return width;
       };
 
