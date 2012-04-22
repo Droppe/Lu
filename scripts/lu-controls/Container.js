@@ -192,17 +192,20 @@ Container = Class.create( Abstract, ( function(){
         var explodedURL = _.explodeURL( url ),
           content;
 
+        event.stopPropagation();
+
         if( arguments.length === 1 ){
           url = $( event.target ).attr( 'href' );
-        } else if( arguments.length === 2 && !_.isURL( url ) && !explodedURL.fragment ){
+        } else if( arguments.length === 2 && !_.isURL( url ) && !explodedURL.fragment && !explodedURL.path && !explodedURL.extension ){
           method = url;
           url = $( event.target ).attr( 'href' );
           explodedURL = undefined;
         }
 
+
         explodedURL = explodedURL || _.explodeURL( url );
 
-        if( !explodedURL.authority && explodedURL.fragment ){
+        if( !explodedURL.authority && !explodedURL.path && !explodedURL.extension && explodedURL.fragment ){
           content = $( '#' + explodedURL.fragment ).html();
           return Container.trigger( UPDATE_EVENT, content, method );
         }
@@ -214,28 +217,33 @@ Container = Class.create( Abstract, ( function(){
 
         Container.removeState( LOADED_STATE );
         Container.addState( LOADING_STATE );
+
         $.ajax( {
           url: url,
           success: function( data, textStatus, jXHR ){
             var content;
 
             if( settings.selector ){
-              content = $( data ).find( settings.selector ).html;
+              content = $( data ).find( settings.selector ).html();
+            } else if( explodedURL.fragment ){
+              content = $( data ).find( '#' + explodedURL.fragment ).html() || data;
             } else {
               content = data;
             }
 
-            return Container.trigger( UPDATE_EVENT, content, method );
-
             Container.removeState( LOADING_STATE );
+            Container.trigger( UPDATE_EVENT, content, method );
             Container.addState( LOADED_STATE );
+
           },
           failure: function(){
             Container.removeState( LOADING_STATE );
             Container.addState( ERRED_STATE );
           }
         } );
+
         return Container;
+
       }
 
       /**
@@ -248,6 +256,7 @@ Container = Class.create( Abstract, ( function(){
        * @return {Function} Container.setState
        */
       function state( event, states ){
+        event.stopPropagation();
         return Container.setState( states );
       }
 
@@ -263,6 +272,7 @@ Container = Class.create( Abstract, ( function(){
        * @return {Function} Container.setState
        */
       function update( event, content, method ){
+        event.stopPropagation();
         switch( method ){
           case 'append':
             Container.appendContent( content );
@@ -358,7 +368,7 @@ Container = Class.create( Abstract, ( function(){
         states = value;
 
         applyStates();
-        Container.trigger( STATED_EVENT, $element, states );
+        Container.trigger( STATED_EVENT, [$element, states] );
 
         return Container;
       };
@@ -379,7 +389,7 @@ Container = Class.create( Abstract, ( function(){
         if( _.difference( value, states ).length > 0 ){
           states = _.union( states, value );
           applyStates();
-          Container.trigger( STATED_EVENT, $element, states );
+          Container.trigger( STATED_EVENT, [$element, states] );
         }
         return Container;
       };
@@ -404,7 +414,7 @@ Container = Class.create( Abstract, ( function(){
         if( intersection.length > 0 ){
           states = _.without( states, value );
           applyStates();
-          Container.trigger( STATED_EVENT, $element, states );
+          Container.trigger( STATED_EVENT, [$element, states] );
         }
 
         return Container;

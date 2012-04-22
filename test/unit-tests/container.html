@@ -1,4 +1,5 @@
 <div id="container-test" data-lu="Container"></div>
+<div id="lumen" style="display:none"><code>2b || !2b</code></div>
 
 <script>
 
@@ -42,8 +43,8 @@ function run(){
 
     expect( 1 );
 
-    width = Container.setWidth( 80 ).getWidth();
-    ok( ( width === 80 ), 'The width was set successfully.' );
+    width = Container.setWidth( 250 ).getWidth();
+    ok( ( width === 250 ), 'The width was set successfully.' );
   } );
 
   test( 'getState', function(){
@@ -157,10 +158,8 @@ function run(){
 
      expect( 1 );
 
-     Container.on( 'updated', function( event ){
+     Container.one( 'updated', function( event ){
        success = ( Container.getContent() === 'Fi ' );
-       //LOOK INTO PROBLEM UNBINDING EVENTS
-       //Container.off( 'updated' );
      } );
 
      Container.trigger( 'update', 'Fi ' );
@@ -168,6 +167,125 @@ function run(){
      ok( success, 'content was updated successfully' );
   } );
 
+  test( 'update:prepend', function() {
+     var success = false;
+
+     expect( 1 );
+
+     Container.on( 'updated', function( event ){
+       success = ( Container.getContent() === 'Fe Fi ' );
+       if( success ){
+         Container.off( 'stated' );
+       }
+     } );
+
+     Container.trigger( 'update', ['Fe ', 'prepend'] );
+
+     ok( success, 'content was updated successfully' );
+  } );
+
+  test( 'update:append', function(){
+     var success = false;
+
+     expect( 1 );
+
+     Container.on( 'updated', function( event ){
+       success = ( Container.getContent() === 'Fe Fi Fo Fum' );
+       if( success ){
+         Container.off( 'stated' );
+       }
+     } );
+
+     Container.trigger( 'update', ['Fo Fum', 'append'] );
+
+     ok( success, 'content was updated successfully' );
+  } );
+
+  ( function(){
+      var success = false;
+
+      window.setTimeout( function(){
+        Container.on( 'stated', function( event, $element, states ){
+          success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '<div>BOOYAHSHAKA!!!<div id="foo">1337 - W00T!</div></div>' );
+          if( success ){
+            Container.off( 'stated' );
+          }
+        } );
+        Container.trigger( 'load', ['unit-tests/container-load-test-a.html'] );
+        window.setTimeout( function(){
+          test( 'load:Path', function(){
+            ok( success, 'remote content loaded' );
+          } );
+        }, 2000 );
+
+      }, 1000 );
+  }() );
+
+  ( function(){
+      var success = false,
+        explodeURL = _.explodeURL( window.location.href ),
+        url;
+
+      url = explodeURL.scheme + '://' + explodeURL.authority + '/test/unit-tests/container-load-test-b.html'
+
+      window.setTimeout( function(){
+        Container.on( 'stated', function( event, $element, states ){
+          success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '<div>Sharky<div id="foo">has a temper.</div></div>' );
+          if( success ){
+            Container.off( 'stated' );
+          }
+        } );
+        Container.trigger( 'load', [url] );
+        window.setTimeout( function(){
+          test( 'load:URL', function(){
+            ok( success, 'remote content loaded' );
+          } );
+        }, 2000 );
+
+      }, 3000 );
+  }() );
+
+  ( function(){
+      var success = false;
+
+      window.setTimeout( function(){
+        Container.on( 'stated', function( event, $element, states ){
+          success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '1337 - W00T!' );
+          if( success ){
+            Container.off( 'stated' );
+          }
+        } );
+        Container.trigger( 'load', ['unit-tests/container-load-test-a.html#foo'] );
+        window.setTimeout( function(){
+          test( 'load:URL:Node', function(){
+            ok( success, 'remote content loaded' );
+          } );
+        }, 2000 );
+
+      }, 5000 );
+
+  }() );
+
+  ( function(){
+      var success = false;
+
+      window.setTimeout( function(){
+        Container.on( 'updated', function( event, $element, states ){
+          success = ( Container.getContent() === '<code>2b || !2b</code>' );
+          if( success ){
+            Container.off( 'stated' );
+          }
+        } );
+        Container.trigger( 'load', ['#lumen'] );
+        window.setTimeout( function(){
+          test( 'load:Node', function(){
+            ok( success, 'remote content loaded' );
+          } );
+        }, 2000 );
+
+      }, 7000 );
+
+  }() );
 }
 
 </script>
