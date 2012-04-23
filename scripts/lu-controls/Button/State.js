@@ -1,20 +1,15 @@
-
 var Class = require( 'class' ),
   Button = require( 'lu/Button' ),
-  OpenButton;
+  StateButton;
 
 /**
- * Representation of a button element preconfigured with an 'open' event
- * @class OpenButton
+ * Representation of a button element preconfigured with a 'state' event
+ * @class StateButton
  * @constructor
  * @extends Button
- * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
- * @version 0.1
+ * @version 0.1.3
  */
-
-OpenButton = Class.create( Button, ( function (){
+StateButton = Class.create( Button, ( function (){
 
    // RETURN METHODS OBJECT
    return {
@@ -25,7 +20,7 @@ OpenButton = Class.create( Button, ( function (){
       * @param {Object} $super Pointer to superclass constructor
       * @param {Object} $element JQuery object for the element wrapped by the component
       * @param {Object} settings Configuration settings
-      */    
+      */
      initialize: function ( $super, $element, settings ){
 
        // PRIVATE INSTANCE PROPERTIES
@@ -38,12 +33,26 @@ OpenButton = Class.create( Button, ( function (){
         * @final
         */
        var defaults = {
-         action: 'open'
-       };
-       
+         action: 'state',
+         states: ['off', 'on'],
+         index: 0
+       },
+       states;
+
+      //Normalize states to array
+      if( settings.states ){
+        if( typeof settings.states === 'string' ){
+          //states can be a comma deliminated string
+          states = states.split( ',' );
+        } else if( _.isArray( settings.states ) ){
+          //yea! it's somthing we can work with!
+          states = settings.states;
+        }
+      }
+
        // MIX THE DEFAULTS INTO THE SETTINGS VALUES
        _.defaults( settings, defaults );
-   
+
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
      }
@@ -54,8 +63,8 @@ OpenButton = Class.create( Button, ( function (){
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( OpenButton );
+    module.setExports( StateButton );
   } else if( module.exports ){
-   module.exports = OpenButton; 
+   module.exports = StateButton; 
   }
 }

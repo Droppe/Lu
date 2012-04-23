@@ -14,7 +14,7 @@ var Class = require( 'class' ),
  * @version 0.1
  */
 
-PlayButton = Class.create( Button, ( function () {
+PlayButton = Class.create( Button, ( function (){
   var PLAYING_EVENT = 'playing',
     PAUSED_EVENT = 'paused';
 
@@ -28,7 +28,7 @@ PlayButton = Class.create( Button, ( function () {
     * @param {Object} $element JQuery object for the element wrapped by the component
     * @param {Object} settings Configuration settings
     */
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -55,12 +55,12 @@ PlayButton = Class.create( Button, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      PlayButton.on( PLAYING_EVENT, function( event ) {
+      PlayButton.on( PLAYING_EVENT, function( event ){
         event.stopImmediatePropagation();
         PlayButton.disable();
       } );
 
-      PlayButton.on( PAUSED_EVENT, function( event ) {
+      PlayButton.on( PAUSED_EVENT, function( event ){
         event.stopImmediatePropagation();
         PlayButton.enable();
       } );
@@ -72,10 +72,10 @@ PlayButton = Class.create( Button, ( function () {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( PlayButton );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = PlayButton; 
   }
 }

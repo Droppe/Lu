@@ -12,7 +12,7 @@ var Class = require( 'class' ),
  * @version 0.1
  */
 
-Carousel =  Class.create( List, ( function() {
+Carousel =  Class.create( List, ( function(){
 
   var MAXED_EVENT = 'maxed',
     FLOORED_EVENT = 'floored',
@@ -156,7 +156,7 @@ Carousel =  Class.create( List, ( function() {
        * @return {Object} The Carousel instance
        */
       Carousel.pause = function(){
-        if( playing ) {
+        if( playing ){
           playing = false;
           window.clearTimeout(playTimer);
           Carousel.trigger( PAUSED_EVENT, [$element] );
@@ -191,7 +191,7 @@ Carousel =  Class.create( List, ( function() {
        * @return {Object} List
        */
       Carousel.next = function(){
-        if( Carousel.size() === Carousel.index() + 1 ) {
+        if( Carousel.size() === Carousel.index() + 1 ){
           Carousel.select( 0 );
         } else {
           var i  = Carousel.index() + 1;
@@ -223,7 +223,7 @@ Carousel =  Class.create( List, ( function() {
 
       Carousel.on( SHOWN_EVENT, function( event ){
         event.stopPropagation();
-        if ( settings.autoplay ) {
+        if ( settings.autoplay ){
           Carousel.play();
         }
       });
@@ -236,8 +236,8 @@ Carousel =  Class.create( List, ( function() {
         Carousel.next();
 
         controls = Carousel.current().lu( 'getControls' );
-        _.each( controls, function( item, index ) {
-          if ( typeof item.first === 'function' ) {
+        _.each( controls, function( item, index ){
+          if ( typeof item.first === 'function' ){
             item.first();
           }
         } );
@@ -283,7 +283,7 @@ Carousel =  Class.create( List, ( function() {
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Carousel );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = Carousel; 
   }
 }

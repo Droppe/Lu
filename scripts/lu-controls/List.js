@@ -11,7 +11,7 @@ var Class = require( 'class' ),
  * @version 0.1
  */
  
-List =  Class.create( Abstract, ( function () {
+List =  Class.create( Abstract, ( function (){
 
   //CONSTANTS
   var NEXT_EVENT = 'next',
@@ -46,7 +46,7 @@ List =  Class.create( Abstract, ( function () {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -108,13 +108,13 @@ List =  Class.create( Abstract, ( function () {
        * @param {Object} item An object or a number
        * @return {Void}
        */  
-      function handleKeyup( event ) {
+      function handleKeyup( event ){
         var keyCode = event.keyCode,
             item = $( event.target );
 
         // A "vertical" list orentation means that the up and down arrow keys work
-        if ( settings.orientation === VERTICAL ) {  
-          switch ( keyCode ) {
+        if ( settings.orientation === VERTICAL ){  
+          switch ( keyCode ){
             case 38: // Up arrow
               List.previous();
               break;
@@ -125,23 +125,25 @@ List =  Class.create( Abstract, ( function () {
           }
         } else {
           // By default, list orientation is "horizontal" and left and right arrows work 
-          switch ( keyCode ) {
+          switch ( keyCode ){
             case 37: // Left arrow
               List.previous();
               break;
             case 39: // Right arrow
               List.next();
+              break;
             default:
               break;
           }
         }
 
-        switch ( keyCode ) {
+        switch ( keyCode ){
           case 36: // Home key
             List.first();
             break;
           case 35: // Last key
             List.last();
+            break;
           default:
             break;
         }
@@ -149,9 +151,9 @@ List =  Class.create( Abstract, ( function () {
       }
 
       //Scan for items from the provided selector, or default to the children of the container.
-      if ( settings.items ) {
+      if ( settings.items ){
 
-        if( typeof settings.items === 'string' ) {
+        if( typeof settings.items === 'string' ){
           $items = $element.children( settings.items );
         } else {
           $items = settings.items;
@@ -159,14 +161,14 @@ List =  Class.create( Abstract, ( function () {
 
       } else {
 
-        if( $element.is( ITEMS_FLAG ) ) {
+        if( $element.is( ITEMS_FLAG ) ){
           $items = $element.children();
         } else {
           $items = $element.find(  '.' + ITEMS_FLAG ).children();
         }
 
-        if( $items.length === 0 ) {
-          if( $element.is( 'ul, ol' ) ) {
+        if( $items.length === 0 ){
+          if( $element.is( 'ul, ol' ) ){
             $items = $element.addClass( ITEMS_FLAG ).children();
           } else {
             $items = $element.find( 'ul, ol' ).first().addClass( ITEMS_FLAG ).children();
@@ -182,7 +184,7 @@ List =  Class.create( Abstract, ( function () {
        * @param {Array} A jQuery Collection of $items to append
        * @return {Object} List
        */  
-      List.append = function( $item ) {
+      List.append = function( $item ){
         $items.parent().append( $item );
         return List;
       };
@@ -194,7 +196,7 @@ List =  Class.create( Abstract, ( function () {
        * @param {Array} A jQuery Collection of $items to remove
        * @return {Object} List
        */  
-      List.remove = function( $item ) {
+      List.remove = function( $item ){
         $( $item, $items ).remove();
         return List;
       };
@@ -206,12 +208,12 @@ List =  Class.create( Abstract, ( function () {
        * @param {Integer|String|Object} item The index of the item to select, a css selector, or a JQuery collection containting the item.
        * @return {Object} List
        */ 
-      List.select = function( item ) {
+      List.select = function( item ){
         var $item,
           $links,
           $previous;
 
-        if ( item === undefined || item === null ) {
+        if ( item === undefined || item === null ){
           return List;
         }
 
@@ -219,17 +221,17 @@ List =  Class.create( Abstract, ( function () {
         $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
         List.trigger( TRANSITIONED_EVENT, [ $element ] );
 
-        if( typeof item === 'number' ) { // Item is an index number
+        if( typeof item === 'number' ){ // Item is an index number
           $item = $items.eq( item );
-        } else if ( typeof item === 'string' ) { // Item is a string/CSS selector
+        } else if ( typeof item === 'string' ){ // Item is a string/CSS selector
           $item = $items.filter( item );
         } else { // Item is a JQuery object
           $item = item;
         }
 
-        if( $item.is( $items ) ) {
+        if( $item.is( $items ) ){
 
-          if( $item.hasClass( SELECTED_FLAG ) === false ) {
+          if( $item.hasClass( SELECTED_FLAG ) === false ){
 
             // Not selected
             // aria-selected applies to the link _not_ the list item!!!
@@ -239,7 +241,7 @@ List =  Class.create( Abstract, ( function () {
 
             $links = $item.find( 'a' );
 
-            if ( $links.length > 0 ) {
+            if ( $links.length > 0 ){
               // Set aria-selected for the first link to "true"
               $links.eq( 0 ).attr( 'aria-selected', 'true' );
             }
@@ -250,10 +252,10 @@ List =  Class.create( Abstract, ( function () {
 
             List.trigger( SELECTED_EVENT, [ $element, $item, List.index() ] );
 
-            if( $.support.transitionEnd ) {
+            if( $.support.transitionEnd ){
               $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
               $previous.addClass( TRANSITION_OUT_FLAG );
-              $item.addClass( TRANSITION_IN_FLAG ).one( $.support.transitionEnd.event, function( event ) {
+              $item.addClass( TRANSITION_IN_FLAG ).one( $.support.transitionEnd.event, function( event ){
                 $items.removeClass( TRANSITION_OUT_FLAG + ' ' + TRANSITION_IN_FLAG );
                 transitioning = false;
                 List.trigger( TRANSITIONED_EVENT, [ $element ] );
@@ -266,17 +268,17 @@ List =  Class.create( Abstract, ( function () {
               List.trigger( TRANSITIONED_EVENT, [ $element ] );
             }
 
-            if( !List.hasPrevious() ) {
+            if( !List.hasPrevious() ){
               List.trigger( FLOORED_EVENT, [ $element ] );
             }
 
-            if( !List.hasNext() ) {
+            if( !List.hasNext() ){
               List.trigger( MAXED_EVENT, [ $element ] );
             }
 
             // // Set focus to the item that you've selected
             // // We do this for a11y
-            // if ( !autoPlay ) {
+            // if ( !autoPlay ){
             //   // We set focus when we're not auto playing.
             //   // Setting focus when auto playing moves the page and that's a bad baby!
             //   $item.attr( 'tabindex', '-1' ).focus();
@@ -298,8 +300,8 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Object} List
        */
-      List.next = function() {
-        if( List.hasNext() ) {
+      List.next = function(){
+        if( List.hasNext() ){
           List.select( List.index() + 1 );
         } else {
           List.trigger( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT );
@@ -313,8 +315,8 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Object} List
        */  
-      List.previous = function() {
-        if( List.hasPrevious() ) {
+      List.previous = function(){
+        if( List.hasPrevious() ){
           List.select( List.index() - 1 );
         } else {
           List.trigger( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT );
@@ -328,7 +330,7 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Object} List
        */
-      List.last = function() {
+      List.last = function(){
         List.select( $items.eq( List.size() - 1 ) );
         return List;
       };
@@ -339,7 +341,7 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Object} List
        */  
-      List.first = function() {
+      List.first = function(){
         List.select( 0 );
         return List;
       };
@@ -350,7 +352,7 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Boolean} true if not at the last item in the list
        */
-      List.hasNext = function() {
+      List.hasNext = function(){
         return ( List.index() < List.size() - 1 );
       };
 
@@ -360,7 +362,7 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Boolean} true if not at the first item in the list
        */
-      List.hasPrevious = function() {
+      List.hasPrevious = function(){
         return ( List.index() > 0 );
       };
 
@@ -370,7 +372,7 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Number} The index of the selected item
        */
-      List.index = function() {
+      List.index = function(){
         return $items.index( $items.filter( '.' + SELECTED_FLAG ) );
       };
 
@@ -380,7 +382,7 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Object} JQuery object-reference to the selected item
        */  
-      List.current = function() {
+      List.current = function(){
         return $items.eq( List.index() );
       };
 
@@ -390,7 +392,7 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Array} The array of list items
        */  
-      List.items = function() {
+      List.items = function(){
         return $items;
       };
 
@@ -400,26 +402,26 @@ List =  Class.create( Abstract, ( function () {
        * @public
        * @return {Number} The number of items in the list
        */
-      List.size = function() {
+      List.size = function(){
         return $items.length;
       };
 
       // EVENT BINDINGS
-      List.on( SELECT_EVENT, function( event, item ) {
+      List.on( SELECT_EVENT, function( event, item ){
         event.stopPropagation();
         // Check for number (list index)
         // Check for string (CSS Selector)
-        if ( _.isNumber( item ) || _.isString( item ) ) {
+        if ( _.isNumber( item ) || _.isString( item ) ){
           List.select( item );
         }
         // Check for JQuery object
-        else if ( _.isObject( item ) ) {
+        else if ( _.isObject( item ) ){
 
           // We need to ensure that [item] is a descendant of our List
           item = $element.find( item );
           
           // Now check for empty JQuery object
-          if ( item.length < 1) {
+          if ( item.length < 1){
             item = $( event.target ).closest( 'li' ).index();
           }
 
@@ -428,27 +430,27 @@ List =  Class.create( Abstract, ( function () {
         }
         
       } );
-      List.on( NEXT_EVENT, function( event ) {
+      List.on( NEXT_EVENT, function( event ){
         event.stopPropagation();
-        if( direction !== 'forward' ) {
+        if( direction !== 'forward' ){
           $element.addClass( DIRECTION_FLAG_FORWARD ).removeClass( DIRECTION_FLAG_REVERSE );
           direction = 'forward';
         }
         List.next();
       } );
-      List.on( PREVIOUS_EVENT, function( event ) {
+      List.on( PREVIOUS_EVENT, function( event ){
         event.stopPropagation();
-        if( direction !== 'reverse' ) {
+        if( direction !== 'reverse' ){
           $element.addClass( DIRECTION_FLAG_REVERSE ).removeClass( DIRECTION_FLAG_FORWARD );
           direction = 'reverse';
         }
         List.previous();
       } );
-      List.on( FIRST_EVENT, function( event ) {
+      List.on( FIRST_EVENT, function( event ){
         event.stopPropagation();
         List.first();
       } );
-      List.on( LAST_EVENT, function( event ) {
+      List.on( LAST_EVENT, function( event ){
         event.stopPropagation();
         List.last();
       } );
@@ -462,10 +464,10 @@ List =  Class.create( Abstract, ( function () {
 
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( List );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = List; 
   }
 }

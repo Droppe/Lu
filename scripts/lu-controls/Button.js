@@ -10,7 +10,7 @@ var Class = require( 'class' ),
  * @requires ptclass, Abstract
  * @version 0.1
  */ 
-Button = Class.create( Abstract, ( function() {
+Button = Class.create( Abstract, ( function(){
 
   // CONSTANTS
   var CLICK_EVENT = 'click',
@@ -29,7 +29,7 @@ Button = Class.create( Abstract, ( function() {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function( $super, $element, settings ) {
+    initialize: function( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -39,7 +39,6 @@ Button = Class.create( Abstract, ( function() {
        * @private
        */
       var Button = this,
-
         /**
          * Default configuration values for all instances
          * @property defaults
@@ -50,7 +49,6 @@ Button = Class.create( Abstract, ( function() {
         defaults = {
           on: CLICK_EVENT
         },
-
         /**
          * Item used as a parameter for selected events
          * @property item
@@ -58,7 +56,6 @@ Button = Class.create( Abstract, ( function() {
          * @private
          */
         item,
-
         /**
          * 
          * @property index
@@ -66,7 +63,6 @@ Button = Class.create( Abstract, ( function() {
          * @private
          */
         index,
-
         /**
          * 
          * @property states
@@ -74,21 +70,19 @@ Button = Class.create( Abstract, ( function() {
          * @private
          */
         states,
-
-         /**
-          * Custom event name
-          * @property action
-          * @type Object
-          * @private
-          */
+        /**
+         * Custom event name
+         * @property action
+         * @type Object
+         * @private
+         */
         action,
-
-         /**
-          * Flag to denote whether the button component is a button or anchor element
-          * @property isAnchor 
-          * @type Boolean 
-          * @private
-          */
+        /**
+         * Flag to denote whether the button component is a button or anchor element
+         * @property isAnchor 
+         * @type Boolean 
+         * @private
+         */
         isAnchor = $element.is( 'a' );
 
 
@@ -101,7 +95,7 @@ Button = Class.create( Abstract, ( function() {
       item = settings.item;
       states = settings.states;
 
-      if( states && !settings.index ) {
+      if( states && !settings.index ){
         settings.index = 0;
       }
 
@@ -119,17 +113,17 @@ Button = Class.create( Abstract, ( function() {
        * @private
        * @return {Void}
        */
-      function setupAlly() {
+      function setupAlly(){
         
-        if ( isAnchor ) {
+        if ( isAnchor ){
           // If "role" exists, do nothing... 
-          if ( !$element.attr( ARIA_ROLE ) ) {
+          if ( !$element.attr( ARIA_ROLE ) ){
             $element.attr( ARIA_ROLE, 'button' );
           }
 
-          $element.on( 'keyup', function( event ) { 
+          $element.on( 'keyup', function( event ){ 
             // Pressed space bar
-            if ( event.keyCode === 32 ) {   
+            if ( event.keyCode === 32 ){   
               Button.trigger( settings.on );
             } 
           } );
@@ -144,8 +138,8 @@ Button = Class.create( Abstract, ( function() {
        * @public
        * @return {Void}
        */
-      Button.disable = function() {
-        if( $element.is( BUTTON_INPUT ) ) {
+      Button.disable = function(){
+        if( $element.is( BUTTON_INPUT ) ){
           $element.prop( DISABLED, true );
         }
         $element.addClass( LU_DISABLED );
@@ -157,8 +151,8 @@ Button = Class.create( Abstract, ( function() {
        * @public
        * @return {Void}
        */
-      Button.enable = function() {
-        if( $element.is( BUTTON_INPUT ) ) {
+      Button.enable = function(){
+        if( $element.is( BUTTON_INPUT ) ){
           $element.removeProp( DISABLED );
         }
         $element.removeClass( LU_DISABLED );
@@ -166,35 +160,40 @@ Button = Class.create( Abstract, ( function() {
 
       // === EVENT BINDINGS ===
       
-      Button.on( settings.on, function( event ) {
+      Button.on( settings.on, function( event ){
         event.preventDefault();
 
         var parameters = [];
 
         // For accessibility we focus on the link.
-        if ( isAnchor ) {
-          $element.focus();  
+        if ( isAnchor ){
+          $element.focus();
         }
 
-        switch( action ) {
+        switch( action ){
           case 'select':
-            if( item || item === 0 ) {
+            if( item || item === 0 ){
               parameters.push( item );
             }
             break;
-          case 'switch':
-            if( states && index !== undefined ) {
-              if ( index < states.length - 1 ) {
+          case 'state':
+            if( states ){
+              if( index === undefined ){
+                index = 0;
+              }
+              parameters.push( states[index] );
+
+              if( index < states.length - 1 ){
                 index += 1;
               } else {
                 index = 0;
               }
-              parameters.push( states[index] );
             }
             break;
           default:
+            break;
         }
-        if( action !== undefined ) {
+        if( action !== undefined ){
           Button.trigger( action, parameters ); 
         }
       } );
@@ -209,10 +208,10 @@ Button = Class.create( Abstract, ( function() {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Button );
-  } else if( module.exports ) {
+  } else if( module.exports ){
     module.exports = Button; 
   }
 }

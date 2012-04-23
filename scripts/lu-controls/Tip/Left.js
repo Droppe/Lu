@@ -11,10 +11,10 @@ var Class = require( 'class' ),
   Tip = require( 'lu/Tip' ),
   LeftTip;
 
-LeftTip = Class.create( Tip, ( function () {
+LeftTip = Class.create( Tip, ( function (){
 
    return {
-     initialize: function ( $super, $element, settings ) {
+     initialize: function ( $super, $element, settings ){
 
        var defaults = {
          placement: 'left'
@@ -26,13 +26,13 @@ LeftTip = Class.create( Tip, ( function () {
      }
   };
 
-}() ));
+}() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( LeftTip );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = LeftTip; 
   }
 }

@@ -9,7 +9,7 @@ var Class = require( 'class' ),
  * @extends Button
  * @version 0.1
  */
-FirstButton = Class.create( Button,  ( function () {
+FirstButton = Class.create( Button,  ( function (){
 
   var FLOORED_EVENT = 'floored',
     SELECTED_EVENT = 'selected';
@@ -24,7 +24,7 @@ FirstButton = Class.create( Button,  ( function () {
     * @param {Object} $element JQuery object for the element wrapped by the component
     * @param {Object} settings Configuration settings
     */    
-   initialize: function ( $super, $element, settings ) {
+   initialize: function ( $super, $element, settings ){
 
      // PRIVATE INSTANCE PROPERTIES
 
@@ -52,12 +52,12 @@ FirstButton = Class.create( Button,  ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      FirstButton.on( SELECTED_EVENT, function( event, $subject, $item, index  ) {
+      FirstButton.on( SELECTED_EVENT, function( event, $subject, $item, index  ){
         event.stopPropagation();
         FirstButton.enable();
       } );
 
-      FirstButton.on( FLOORED_EVENT, function( event ) {
+      FirstButton.on( FLOORED_EVENT, function( event ){
        event.stopPropagation();
        FirstButton.disable();
       } );
@@ -65,13 +65,13 @@ FirstButton = Class.create( Button,  ( function () {
    }
   };
   
-}() ));
+}() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( FirstButton );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = FirstButton; 
   }
 }

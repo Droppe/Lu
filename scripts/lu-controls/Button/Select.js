@@ -14,7 +14,7 @@ var Class = require( 'class' ),
  * @version 0.1
  */
 
-SelectButton = Class.create( Button, ( function () {
+SelectButton = Class.create( Button, ( function (){
 
   var SELECTED_EVENT = 'selected';
   // RETURN METHODS OBJECT
@@ -27,7 +27,7 @@ SelectButton = Class.create( Button, ( function () {
     * @param {Object} $element JQuery object for the element wrapped by the component
     * @param {Object} settings Configuration settings
     */    
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -49,14 +49,14 @@ SelectButton = Class.create( Button, ( function () {
         },
         controls;
 
-      if( !settings.item && settings.item !== 0 ) {
-        if( $element.is( 'button' ) || $element.is( 'input' ) ) {
+      if( !settings.item && settings.item !== 0 ){
+        if( $element.is( 'button' ) || $element.is( 'input' ) ){
           controls = $element.attr( 'aria-controls' );
-        } else if ( $element.is( 'a' ) ) {
+        } else if ( $element.is( 'a' ) ){
           controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
         }
 
-        if( controls && controls !== '' ) {
+        if( controls && controls !== '' ){
           settings.item = $( '#' + controls );
         } else {
           settings.item = $( '> li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' ) );
@@ -70,9 +70,9 @@ SelectButton = Class.create( Button, ( function () {
       // CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
-      SelectButton.on( SELECTED_EVENT, function( event, $subject, $item, index ) {
+      SelectButton.on( SELECTED_EVENT, function( event, $subject, $item, index ){
         event.stopPropagation();
-        if( $item.is( settings.item ) || index === settings.item ) {
+        if( $item.is( settings.item ) || index === settings.item ){
           SelectButton.disable();
         } else {
           SelectButton.enable();
@@ -86,10 +86,10 @@ SelectButton = Class.create( Button, ( function () {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( SelectButton );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = SelectButton; 
   }
 }

@@ -16,13 +16,26 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="styles/css/screen.css" media="screen">
-
+  <style type="text/css">
+    #luContainer.lu-state-collapsed{
+      height: 40px;
+      background-color: #DDD;
+    }
+    #luContainer.lu-state-expanded {
+      height: auto;
+    }
+  </style>
 </head>
 
 <body>
 
   <div id="container" class="container grid clearfix">
-    <!-- Your Code Here -->
+    <div id="luContainer" class="lu-state-collapsed" data-lu="Container">
+      Hello Thar!
+    </div>
+    <div id="content">
+      THEK!
+    </div>
   </div>
 
   <!-- Bootstrap:Util -->
