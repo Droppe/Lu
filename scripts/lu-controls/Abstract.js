@@ -337,7 +337,6 @@ Abstract = Class.create( ( function(){
        Abstract.events = function(){
          return _.keys( eventStore );
        };
-
     }
   };
 
