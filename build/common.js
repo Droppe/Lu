@@ -1,6 +1,7 @@
 var Spawn = require('child_process').exec,
     Stream = require('stream').Stream,
-    util = require('util');
+    util = require('util'),
+    semver = require("semver"),
     gitRoot = '../';
 
 exports.compilation_levels = ['ADVANCED_OPTIMIZATIONS','SIMPLE_OPTIMIZATIONS','WHITESPACE_ONLY'];
@@ -18,8 +19,10 @@ exports.root = gitRoot;
       
         var sections = line.split(/^([^:]+):/),
             file = sections && sections[1],
-            versionNum = sections[2] && sections[2].match(/@version ([0-9]*\.[0-9]+|[0-9]+)$/),
-            version = versionNum ? versionNum[1] : 'dev';
+            versionNum = sections[2] && sections[2].match(/@version (.*)$/),
+            version = versionNum ? semver.clean(versionNum[1]) : 'dev';
+            
+            console.log('semver', version);
           
         if (exports.versions.indexOf(version) === -1) exports.versions.push(version);
       
