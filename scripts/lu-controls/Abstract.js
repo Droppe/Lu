@@ -6,7 +6,7 @@ var Class = require( 'class' ),
  * @class Abstract
  * @constructor
  * @requires ptclass
- * @version 0.1
+ * @version 0.1.0
  */
 Abstract = Class.create( ( function(){
 

@@ -5,6 +5,7 @@
  * @extends Abstract 
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
+ * @version 0.0.0
  */
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),

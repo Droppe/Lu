@@ -5,6 +5,7 @@ var Fs = require( 'fs' ),
     Compiler = new (require( './compiler' ))( {type: 'jar'} ),
     args = require( 'optimist' ).argv,
     common = require( './common' ),
+    semver = require("semver"),
     tester = require( '../test-server' ),
     questions = common.questions,
     luControls = common.filetoVersion,
@@ -127,12 +128,10 @@ function parseBuildAnswers() {
       srcCode = '',
       copyCount = 0,
       root = common.root,
-      version = parseFloat( questions.version ),
+      version = semver.clean( questions.version ) || '0.0.0',
       outputPath = Path.normalize( questions.path || (root + '/bin') ),
       scriptsPath = Fs.realpathSync( root + '/scripts' ),
       compilation_level = common.compilation_levels[ questions.compilation_level - 1 ];
-      
-  if ( isNaN( version ) ) version = 'dev';
 
   //verify output path exists
   if ( !Path.existsSync( outputPath ) ){
@@ -179,7 +178,7 @@ function parseBuildAnswers() {
   }
 
   for( var control in luControls ) {
-    if( luControls.hasOwnProperty( control ) && ( ( version === 'dev' && isNaN( luControls[control] ) ) || luControls[control] <= version ) ){
+    if( luControls.hasOwnProperty( control ) && semver.gte(luControls[control], version)){
       var filename = Path.relative(root + '/scripts/lu-controls/', control),
           controlTo = outputPath + '/lu-controls/' + filename;
       

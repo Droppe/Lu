@@ -188,6 +188,5 @@ var color = (function () {
 	}
 })();
 
-tester.init();
 
 exports.start  = tester.init
