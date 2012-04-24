@@ -5,7 +5,8 @@
  * @extends Button
  * @requires ptclass
  * @param {HTMLElement} element The HTML element containing this component
- * @param {Object} settings Configuration properties for this instance  
+ * @param {Object} settings Configuration properties for this instance
+ * @version 0.0.0
  */
 var Class = require( 'class' ),
   Button = require( 'lu/Button' ),

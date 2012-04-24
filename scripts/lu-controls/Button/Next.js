@@ -7,7 +7,7 @@ var Class = require( 'class' ),
  * @class NextButton
  * @constructor
  * @extends Button
- * @version 0.1
+ * @version 0.1.0
  */
 
 NextButton = Class.create( Button, ( function (){
