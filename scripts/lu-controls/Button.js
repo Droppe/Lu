@@ -8,7 +8,7 @@ var Class = require( 'class' ),
  * @constructor
  * @extends Abstract
  * @requires ptclass, Abstract
- * @version 0.1
+ * @version 0.1.0
  */ 
 Button = Class.create( Abstract, ( function(){
 

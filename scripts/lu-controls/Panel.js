@@ -8,6 +8,7 @@ var Class = require( 'class' ),
  * @constructor
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
+ * @version 0.0.0
  */
 Panel = Class.create( Abstract, ( function () {
 

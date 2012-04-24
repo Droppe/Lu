@@ -11,7 +11,7 @@ var Class = require( 'class' ),
  * @requires ptclass
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
- * @version 0.1
+ * @version 0.1.0
  */
 
 PauseButton = Class.create( Button, ( function (){
