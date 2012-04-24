@@ -12,7 +12,7 @@ var Class = require( 'class' ),
   List = require( 'lu/List' ),
   Accordion;
 
-Accordion =  Class.create( List, ( function () {
+Accordion =  Class.create( List, ( function (){
 
   //CONSTANTS
   var HIDDEN_CSS = "lu-hidden",
@@ -29,7 +29,7 @@ Accordion =  Class.create( List, ( function () {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -83,15 +83,15 @@ Accordion =  Class.create( List, ( function () {
       
       $last = $panels.not("." + HIDDEN_CSS).eq(0);
         
-      Accordion.on("select", function (event, item) {
+      Accordion.on("select", function (event, item){
         _.log("Accordion.on", $element, event, item);
         event.stopPropagation();
         
-        if ( !item.is($last) ) {
+        if ( !item.is($last) ){
           $panels.trigger(HIDE);
           $last = item.trigger(SHOW);
         }
-        else if ( item.hasClass(HIDDEN_CSS) ) {
+        else if ( item.hasClass(HIDDEN_CSS) ){
           $panels.trigger(HIDE);
           $last = item.trigger(SHOW);
         }
@@ -109,14 +109,14 @@ Accordion =  Class.create( List, ( function () {
 
   };
 
-}() ));
+}() ) );
 
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Accordion );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = Accordion; 
   }
 }

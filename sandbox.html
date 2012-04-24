@@ -1,0 +1,66 @@
+<!doctype html>
+
+<!--[if lt IE 7]><html class="no-js ie6" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Lu</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="styles/css/screen.css" media="screen">
+  <style type="text/css">
+    #luContainer.lu-state-collapsed{
+      height: 40px;
+      background-color: #DDD;
+    }
+    #luContainer.lu-state-expanded {
+      height: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="container" class="container grid clearfix">
+    <div id="luContainer" class="lu-state-collapsed" data-lu="Container">
+      Hello Thar!
+    </div>
+    <div id="content">
+      THEK!
+    </div>
+  </div>
+
+  <!-- Bootstrap:Util -->
+  <script src="scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="scripts/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script src="scripts/libraries/ie-localstorage-json-shim.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" src="scripts/libraries/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script>window.jQuery || document.write( '<script src="http://scripts/libraries/jquery-1.7.1.min.js"><\/script>' )</script>
+
+  <script src="scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    //Set your debug level here
+    window.lu_debug = 5;
+    //Bust your cache
+    require.clearCache();
+    //MAGIC!!!
+    require.ensure( ['lu'], function() {} );
+  </script>
+
+</body>
+
+</html>

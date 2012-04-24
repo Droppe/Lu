@@ -14,7 +14,7 @@ var Class = require( 'class' ),
  * @version 0.1
  */
 
-PauseButton = Class.create( Button, ( function () {
+PauseButton = Class.create( Button, ( function (){
 
   var PLAYING_EVENT = 'playing',
     PAUSED_EVENT = 'paused',
@@ -31,7 +31,7 @@ PauseButton = Class.create( Button, ( function () {
       * @param {Object} $element JQuery object for the element wrapped by the component
       * @param {Object} settings Configuration settings
       */    
-     initialize: function ( $super, $element, settings ) {
+     initialize: function ( $super, $element, settings ){
 
        // PRIVATE INSTANCE PROPERTIES
        /**
@@ -59,25 +59,25 @@ PauseButton = Class.create( Button, ( function () {
        // CALL THE PARENT'S CONSTRUCTOR
        $super( $element, settings );
 
-       PauseButton.on( PLAYING_EVENT, function( event ) {
+       PauseButton.on( PLAYING_EVENT, function( event ){
          event.stopPropagation();
          PauseButton.enable();
          paused = false;
        } );
 
-       PauseButton.on( PAUSED_EVENT, function( event ) {
+       PauseButton.on( PAUSED_EVENT, function( event ){
          event.stopPropagation();
          PauseButton.disable();
          paused = true;
          
        } );
-       PauseButton.on( TRANSITIONED_EVENT, function( event, $subject ) {
+       PauseButton.on( TRANSITIONED_EVENT, function( event, $subject ){
          event.stopPropagation();
-         if( !paused ) {
+         if( !paused ){
            PauseButton.enable();
          }
        } );
-       PauseButton.on( TRANSITIONING_EVENT, function( event, $subject ) {
+       PauseButton.on( TRANSITIONING_EVENT, function( event, $subject ){
          event.stopPropagation();
          PauseButton.disable();
        } );
@@ -88,10 +88,10 @@ PauseButton = Class.create( Button, ( function () {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( PauseButton );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = PauseButton; 
   }
 }

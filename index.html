@@ -17,7 +17,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="styles/css/screen.css" media="screen">
 
-
 </head>
 
 <body>
@@ -96,14 +95,12 @@
           <li><a href="#controls_list">List</a></li>
           <li><a href="#controls_container">Container</a></li>
           <li><a href="#controls_tabs">Tabs</a></li>
-          <li><a href="#controls_switch">Switch</a></li>
           <li><a href="#controls_accordian">Accordion</a></li>
           <li><a href="#controls_carousel">Carousel</a></li>
           <li><a href="#controls_dialog">Dialog</a></li>
           <li><a href="#controls_mask">Mask</a></li>
           <li><a href="#controls_dropdown">Dropdown</a></li>
-          <li><a href="#controls_tips">Tips</a></li>
-          <li><a href="#controls_facets">Facets(?)</a></li>
+          <li><a href="#controls_tip">Tip</a></li>
         </ul>
         <div class="sub-section">
           <h4 id="controls_buttons">Buttons</h4>
@@ -123,7 +120,6 @@
           <button data-lu="Button:Play" type="button">Play</button>
           <button data-lu="Button:Pause" type="button">Pause</button>
           <button data-lu="Button:Select" type="button">Select</button>
-          <button data-lu="Button:Switch" type="button">Switch</button>
           <button data-lu="Button" type="button" data-lu="{ Button: { action: 'custom_event' } }">Custom</button>
           <script src="https://gist.github.com/1713974.js?file=button_example.html"></script>
           <p>Although buttons are usually <code>&lt;a&gt;</code>,
@@ -151,13 +147,13 @@
           <p>To see the <code>Button</code> control in action, check out <a
           href="#controls_list"><code>List</code></a>, <a
           href="#controls_carousel"><code>Carousel</code></a>, <a
-          href="#controls_tabs"><code>Tabs</code></a>, <a
-          href="#controls_tabs"><code>Switch</code></a>, or <a
+          href="#controls_tabs"><code>Tabs</code></a>, or <a
           href="#controls_accordian"><code>Accordion</code></a>.</p>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h3>Lists</h3>
+          <h4 id="controls_list">List</h4>
+          <p class="control-info">Annotation: <code>List</code>, <a href="">Documentation</a></p>
           <p>The <code>List</code> control manages an iterative set of items and is most
           often used with <code>&lt;ol&gt;</code> and <code>&lt;ul&gt;</code>
           elements.</p>
@@ -330,27 +326,82 @@
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4>Container</h4>
+          <h4 id="controls_container">Container</h4>
           <p class="control-info">Annotation: <code>Container</code>, <a href="">Documentation</a></p>
+          <p>Container is an element that holds content or other elements.  The most common element to use with Container is <code>div</code>, but almost any other tag will work, too.</p>  
+
+          <p> Container can be pre-filled with markup, or it accepts new content from another DOM node, or from a text string, depending on how you configure it.</p>
+
+          <p>Container responds to <em>show</em>, <em>hide</em>, <em>select</em>, and <em>unselect</em> events by showing or hiding itself (via adding a 'hidden' class).  It will emit a corresponding <em>hidden</em> or <em>shown</em> event to signal its new state.  Container also responds to a <em>load</em> event by filling itself with fresh content, per its configuration.  Afterwards, it will emit a <em>loaded</em> event.</p>
+
+          <p>Container also has the ability to calculate its own height and width for animations and other special effects (TBD).</p>
+
+          <div id="container_example" data-lu="Container" data-lu-config="{Container: {
+            sourceText: '<h5>FOO FIE FOE FUM</h5>',
+            method: 'append'
+          }}">
+            (an empty container)
+          </div>
+          <button data-lu="Button:Open" data-lu-config="{'Button:Open': {
+            notify: '#container_example'
+          }}">
+            Show
+          </button>
+          <button data-lu="Button:Close" data-lu-config="{'Button:Close': {
+            notify: '#container_example'
+          }}">
+            Hide
+          </button>
+          <button data-lu="Button:Load" data-lu-config="{'Button:Load': {
+            notify: '#container_example'
+          }}">
+            Inject
+          </button>
+
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
+
         <div class="sub-section">
-          <h4>Tabs</h4>
+          <h4 id="controls_tabs">Tabs</h4>
           <p class="control-info">Annotation: <code>Tabs</code>, <a href="">Documentation</a></p>
+          
+          <div data-lu="Tabs">
+            <ol data-lu="List">
+              <li><a href="#tab1" data-lu="Button:Select">Tab 1</a></li>
+              <li><a href="#tab2" data-lu="Button:Select">Tab 2</a></li>
+              <li><a href="#tab3" data-lu="Button:Select">Tab 3</a></li>
+              <li><a href="#tab4" data-lu="Button:Select">Tab 4</a></li>
+            </ol>
+            <div>
+              <div id="tab1" data-lu="Container">Tab 1 content</div>
+              <div id="tab2" data-lu="Container">Tab 2 content</div>
+              <div id="tab3" data-lu="Container">Tab 3 content</div>
+              <div id="tab4" data-lu="Container">Tab 4 content</div>
+            </div>
+          </div>
+
+          <script src="https://gist.github.com/2202056.js?file=lutabs.html"></script>
+
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
-        <div class="sub-section">
-          <h4>Switch</h4>
-          <p class="control-info">Annotation: <code>Switch</code>, <a href="">Documentation</a></p>
-          <p><a href="#controls" class="top small">Back to Controls</a></p>
-        </div>
+        <p><a href="#controls" class="top small">Back to Controls</a></p>
         <div class="sub-section">
           <h4>Accordion</h4>
           <p class="control-info">Annotation: <code>Accordion</code>, <a href="">Documentation</a></p>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4>Carousel</h4>
+          <h4 id="controls_carousel">Carousel</h4>
+          <div data-lu="Carousel">
+            <ol>
+              <li class="lu-selected">One</li>
+              <li>Two</li>
+              <li>Three</li>
+              <li>Four</li>
+            </ol>
+            <button data-lu="Button:Previous">Previous</button>
+            <button data-lu="Button:Next">Next</button>
+          </div>
           <p class="control-info">Annotation: <code>Carousel</code>, <a href="">Documentation</a></p>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
@@ -370,8 +421,14 @@
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
-          <h4>Tip</h4>
-          <p class="control-info">Annotation: <code>Tip[:*]</code>, <a href="">Documentation</a></p>
+          <h4 id="controls_tip">Tip</h4>
+          <p class="control-info">Annotation: <code>Tip</code>, <a href="">Documentation</a></p>
+          <div id="tip_example" data-lu="Tip" data-lu-config="{
+            Tip: {
+              content: 'FOO FIE FOE FUM'
+          }}">
+            Tip
+          </div>
           <p><a href="#controls" class="top small">Back to Controls</a></p>
         </div>
         <div class="sub-section">
@@ -403,8 +460,7 @@
   <script type="text/javascript" src="scripts/libraries/inject.js"></script>
 
   <!-- Bootstrap:UI -->
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write( '<script src="http://scripts/libraries/jquery-1.7.1.min.js"><\/script>' )</script>
+  <script src="scripts/libraries/jquery-1.7.1.min.js"></script>
 
   <script src="scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
 

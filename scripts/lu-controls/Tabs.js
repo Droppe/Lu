@@ -165,8 +165,7 @@ Tabs = Class.create( Abstract, ( function () {
       // Attach event listeners
       Tabs.on( SELECTED_EVENT, '[data-lu*="List"]', function ( event, $subject, $item ) {
         event.stopPropagation();
-        item = $( item );
-        handleTabSelect( $tabPanels.eq( item.index() ) );
+        handleTabSelect( $tabPanels.eq( $item.index() ) );
       } );
 
     }

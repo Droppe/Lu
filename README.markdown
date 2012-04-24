@@ -1,3 +1,4 @@
+```
                                                   _____            _____          
                                                  /\    \          /\    \         
                                                 /::\____\        /::\____\        
@@ -20,5 +21,21 @@
                                                 \::/    /        \::/____/        
                                                  \/____/          ~~
 
-                                     See the website @ http://iheartweb.github.com/Lu/
-  
+                                     Get started @ http://iheartweb.github.com/Lu/
+```
+
+Lu is developed using [nodejs](http://nodejs.org/) and [compass](http://compass-style.org/help/). To start contributing:
+
+1. Fork Lu
+2. Install Compass
+3. Install Node
+4. Install the npms in package.json
+5. In a terminal window from the Lu directory:
+```
+compass watch
+```
+6. In a new terminal window from the Lu directory:
+```
+node server.js
+```
+7. Point a browser to ````http://localhost:1337````

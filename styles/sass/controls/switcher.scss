@@ -1,0 +1,90 @@
+#switcher-cycle {
+  ul{
+    display: block;
+    margin: 0;
+    padding: 0;
+    clear: both;
+    height: 84px;
+    overflow: hidden;
+    li {
+      display: block;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      height: 40px;
+      width: 40px;
+      background-color: #eee;
+      text-align: center;
+      line-height: 40px;
+      float: left; 
+    }
+  }
+  &.lu-switch-a {
+    li.a {
+      background-color: #cde;
+    }
+  }
+  &.lu-switch-b {
+    li.b {
+      background-color: #ecd;
+    }
+  }
+  &.lu-switch-c {
+    li.c {
+      background-color: #dec;
+    }
+  }
+}
+
+#switcher-roo-expand-o-matic {
+  background: #cde;
+  padding: 10px;
+  p {
+    height: 64px;
+    overflow: hidden;
+  }
+  &.lu-switch-on {
+    .expand {
+      display: none;
+    }
+    p {
+      height: 100%;
+    }
+  }
+  &.lu-switch-off{
+    .collapse {
+      display: none;
+    }
+  }
+}
+
+#switcher-flows {
+  font-size: 16px;
+  ol {
+    list-style: none;
+    padding: 10px;
+    background: #cde;
+  }
+  li {
+    display: none;
+  }
+  &.lu-switch-intro {
+    .intro {
+      display: block;
+    }
+  }
+  &.lu-switch-running {
+    .running {
+      display: block;
+    }
+  }
+  &.lu-switch-walking {
+    .walking {
+      display: block;
+    }
+  }
+  &.lu-switch-end {
+    .end {
+      display: block;
+    }
+  }
+}

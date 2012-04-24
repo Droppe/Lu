@@ -12,7 +12,7 @@ var Class = require( 'class' ),
  * @version 0.1
  */
 
-Carousel =  Class.create( List, ( function() {
+Carousel =  Class.create( List, ( function(){
 
   var MAXED_EVENT = 'maxed',
     FLOORED_EVENT = 'floored',
@@ -25,6 +25,8 @@ Carousel =  Class.create( List, ( function() {
     SELECT_EVENT = 'select',
     SELECTED_EVENT = 'selected',
     PREVIOUS_EVENT = 'previous',
+    SHOWN_EVENT = 'shown',
+    HIDDEN_EVENT = 'hidden',
     NEXT_EVENT = 'next',
     OUT_OF_BOUNDS_EVENT = 'out-of-bounds',
     PLAYING_FLAG = 'lu-playing',
@@ -40,7 +42,7 @@ Carousel =  Class.create( List, ( function() {
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
 
@@ -130,19 +132,19 @@ Carousel =  Class.create( List, ( function() {
        * @public
        * @return {Object} The Carousel instance
        */
-      Carousel.play = function() {
-        if( playing === false ) {
+      Carousel.play = function(){
+        if( playing === false ){
           repeat = settings.repeat;
           playing = true;
-          ( function recurse() {
-            playTimer = window.setTimeout( function() {
-              if( playing ) {
+          ( function recurse(){
+            playTimer = window.setTimeout( function(){
+              if( playing ){
                 Carousel.next();
                 recurse();
               }
             }, settings.delay );
           }() );
-          Carousel.trigger( PLAYING_EVENT, [ $element ] );
+          Carousel.trigger( PLAYING_EVENT, [$element] );
         }
         return Carousel;
       };
@@ -153,11 +155,11 @@ Carousel =  Class.create( List, ( function() {
        * @public
        * @return {Object} The Carousel instance
        */
-      Carousel.pause = function() {
-        if( playing ) {
+      Carousel.pause = function(){
+        if( playing ){
           playing = false;
           window.clearTimeout(playTimer);
-          Carousel.trigger( PAUSED_EVENT, [ $element ] );
+          Carousel.trigger( PAUSED_EVENT, [$element] );
         }
         return Carousel;
       };
@@ -168,7 +170,7 @@ Carousel =  Class.create( List, ( function() {
        * @public
        * @return {Boolean} true if not at the last item in the list
        */
-      Carousel.hasNext = function() {
+      Carousel.hasNext = function(){
         return true;
       };
 
@@ -178,7 +180,7 @@ Carousel =  Class.create( List, ( function() {
        * @public
        * @return {Boolean} true
        */
-      Carousel.hasPrevious = function() {
+      Carousel.hasPrevious = function(){
         return true;
       };
       
@@ -188,8 +190,8 @@ Carousel =  Class.create( List, ( function() {
        * @public
        * @return {Object} List
        */
-      Carousel.next = function() {
-        if( Carousel.size() === Carousel.index() + 1 ) {
+      Carousel.next = function(){
+        if( Carousel.size() === Carousel.index() + 1 ){
           Carousel.select( 0 );
         } else {
           var i  = Carousel.index() + 1;
@@ -204,20 +206,29 @@ Carousel =  Class.create( List, ( function() {
        * @public
        * @return {Object} List
        */  
-      Carousel.previous = function() {
+      Carousel.previous = function(){
         Carousel.select( Carousel.index() - 1 );
         return Carousel;
       };
 
-      Carousel.on( PLAY_EVENT, function( event ) {
+      Carousel.on( PLAY_EVENT, function( event ){
         event.stopPropagation();
         Carousel.play();
       } );
-      Carousel.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT].join( ' ' ), function( event, item ) {
+
+      Carousel.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT, HIDDEN_EVENT].join( ' ' ), function( event, item ){
         event.stopPropagation();
         Carousel.pause();
       } );
-      Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT, function( event ) {
+
+      Carousel.on( SHOWN_EVENT, function( event ){
+        event.stopPropagation();
+        if ( settings.autoplay ){
+          Carousel.play();
+        }
+      });
+
+      Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT, function( event ){
         var controls;
 
         event.stopPropagation();
@@ -225,14 +236,15 @@ Carousel =  Class.create( List, ( function() {
         Carousel.next();
 
         controls = Carousel.current().lu( 'getControls' );
-        _.each( controls, function( item, index ) {
-          if ( typeof item.first === 'function' ) {
+        _.each( controls, function( item, index ){
+          if ( typeof item.first === 'function' ){
             item.first();
           }
         } );
 
       } );
-      Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT, function( event ) {
+
+      Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT, function( event ){
         var controls;
 
         event.stopPropagation();
@@ -240,24 +252,26 @@ Carousel =  Class.create( List, ( function() {
         Carousel.previous();
 
         controls = Carousel.current().lu( 'getControls' );
-        _.each( controls, function( item, index ) {
-          if ( typeof item.last === 'function' ) {
+        _.each( controls, function( item, index ){
+          if ( typeof item.last === 'function' ){
             item.last();
           }
         } );
       } );
-      Carousel.on( PLAYING_EVENT, function( event ) {
+
+      Carousel.on( PLAYING_EVENT, function( event ){
         $element.addClass( PLAYING_FLAG ).removeClass( PAUSED_FLAG );
       } );
-      Carousel.on( PAUSED_EVENT, function( event ) {
+
+      Carousel.on( PAUSED_EVENT, function( event ){
         $element.addClass( PAUSED_FLAG ).removeClass( PLAYING_FLAG );
       } );
 
       // Play if autoplay was true in settings
-      if( settings.autoplay ) {
+      if( settings.autoplay ){
         Carousel.play();
       } else {
-        Carousel.trigger( PAUSED_EVENT, [ $element ] );
+        Carousel.trigger( PAUSED_EVENT, [$element] );
       }
 
     }
@@ -266,10 +280,10 @@ Carousel =  Class.create( List, ( function() {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
+if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Carousel );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = Carousel; 
   }
 }

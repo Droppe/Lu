@@ -11,7 +11,7 @@ var Class = require( 'class' ),
     Abstract = require( 'lu/Abstract' ),
     Mask;
 
-Mask = Class.create( Abstract,  ( function () {
+Mask = Class.create( Abstract,  ( function (){
 
   //Observed events 
   var SHOW_EVENT = 'show',
@@ -22,7 +22,7 @@ Mask = Class.create( Abstract,  ( function () {
 
   return {
 
-    initialize: function ( $super, $element, settings ) {
+    initialize: function ( $super, $element, settings ){
 
       var Mask = this,
         defaults = {
@@ -42,8 +42,8 @@ Mask = Class.create( Abstract,  ( function () {
        * @privelaged
        * @method open
        */
-        Mask.show = function() {
-          if( shown !== true ) {
+        Mask.show = function(){
+          if( shown !== true ){
             $container.prepend( $element );
             $element.removeClass( 'lu-mask-hidden' ).addClass( 'lu-mask-shown' );
             shown = true;
@@ -56,8 +56,8 @@ Mask = Class.create( Abstract,  ( function () {
          * @privelaged
          * @method close
          */
-        Mask.hide = function() {
-          if( shown !== false ) {
+        Mask.hide = function(){
+          if( shown !== false ){
             $( 'body' ).append(  $element );
             $element.removeClass( 'lu-mask-shown' ).addClass( 'lu-mask-hidden' );
             shown = false;
@@ -66,12 +66,12 @@ Mask = Class.create( Abstract,  ( function () {
         };
 
         //Listen to theese events from other controls
-        Mask.on( settings.hide, function( event ) {
+        Mask.on( settings.hide, function( event ){
           event.stopPropagation();
           Mask.hide();
         } );
 
-        Mask.on( settings.show, function( event ) {
+        Mask.on( settings.show, function( event ){
           event.stopPropagation();
           Mask.show();
         } );
@@ -84,10 +84,10 @@ Mask = Class.create( Abstract,  ( function () {
 }() ) );
 
 //Export to Common JS Loader
-if( typeof module !== 'undefined' ) {
-  if( typeof module.setExports === 'function' ) {
+if( typeof module !== 'undefined' ){
+  if( typeof module.setExports === 'function' ){
     module.setExports( Mask );
-  } else if( module.exports ) {
+  } else if( module.exports ){
    module.exports = Mask; 
   }
 }
