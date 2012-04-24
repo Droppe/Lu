@@ -8,7 +8,7 @@ var Class = require( 'class' ),
  * @constructor
  * @extends Button
  * @requires ptclass
- * @version dev
+ * @version 0.0.0
  */
 
 LoadButton = Class.create( Button, ( function (){
