@@ -17,12 +17,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="styles/css/screen.css" media="screen">
   <style type="text/css">
-    #luContainer.lu-state-collapsed{
-      height: 40px;
-      background-color: #DDD;
-    }
-    #luContainer.lu-state-expanded {
-      height: auto;
+    #luContainer{
+      padding: 20px;
+      width: 600px;
+      margin: 0 auto;
+      background-color: #efefef;
+      border: 1px solid #ddd;
     }
   </style>
 </head>
@@ -30,11 +30,23 @@
 <body>
 
   <div id="container" class="container grid clearfix">
-    <div id="luContainer" class="lu-state-collapsed" data-lu="Container">
-      Hello Thar!
-    </div>
-    <div id="content">
-      THEK!
+    <div id="luContainer" data-lu="Container" data-lu-config="{
+      'Container': {
+        autoHeight: true,
+        target: '.content'
+      }
+    }">
+      <div class="content">
+        <p class="less">Lorem ipsum dolor sit amet, consectetur adipisicing elit&hellip;</p>
+        <p class="more">Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </p>
+      <button data-lu="Button:Expand" type="button">More</button>
+      <button data-lu="Button:Less" type="button">Less</button>
     </div>
   </div>
 
@@ -48,7 +60,7 @@
 
   <!-- Bootstrap:UI -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script>window.jQuery || document.write( '<script src="http://scripts/libraries/jquery-1.7.1.min.js"><\/script>' )</script>
+  <script>window.jQuery || document.write( '<script src="/scripts/libraries/jquery-1.7.1.min.js"><\/script>' )</script>
 
   <script src="scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
 

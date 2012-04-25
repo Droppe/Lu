@@ -1,0 +1,33 @@
+<div id="dropdown-test" data-lu="Dropdown">
+  <a href="#" class="lu-selected-item" data-lu="Button:Select">Option 1</a>
+  <!-- Styled dropdown -->
+  <ul class="lu-dropdown-list" data-lu="List">
+    <!-- Options -->
+    <li class="lu-selected">
+      <a href="#" data-lu="Button:Select">Option 1</a>
+    </li>
+    <li>
+      <a href="#" data-lu="Button:Select">Option 2</a>
+    </li>
+    <li>
+      <a href="#" data-lu="Button:Select">Option 3</a>
+    </li>
+    <li>
+      <a href="#" data-lu="Button:Select">Option 4</a>
+    </li>
+  </ul>
+</div>
+
+<script>
+
+function run(){
+  var $dropdown = $( '#dropdown-test' ),
+    Dropdown;
+
+  Dropdown = lu.getControl( $dropdown );
+
+  module( 'Event Tests', {} );
+
+}
+
+</script>

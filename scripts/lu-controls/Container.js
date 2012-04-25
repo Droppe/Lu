@@ -102,7 +102,14 @@ Container = Class.create( Abstract, ( function(){
            * @type {Boolean}
            * @default false
            */
-          autoWidth: false
+          autoWidth: false,
+          /**
+           * A selector that specifies a target within the Container to inject content.
+           * @property target
+           * @type {String}
+           * @default null
+           */
+          target: null
         },
         /**
          * The content of the container
@@ -111,6 +118,13 @@ Container = Class.create( Abstract, ( function(){
          * @private
          */
         content,
+        /**
+         * A jquery object to inject content into
+         * @property target
+         * @type {Object}
+         * @private
+         */
+        $target,
         /**
          * A cache to store the height and width of the $element
          * @property cache
@@ -147,20 +161,27 @@ Container = Class.create( Abstract, ( function(){
         }
       }
 
+      //Set the target
+      if( settings.target ){
+        $target = $element.find( settings.target );
+      } else {
+        $target = $element;
+      }
+
       //CALL THE PARENT'S CONSTRUCTOR
       $super( $element, settings );
 
       /**
        * Add Classes representing the current states to $element and remove
        * invalid states
-       * @method applyStates
+       * @method applyState
        * @private
        * @event
        * @param {Object} event The jQuery Event object
        * @param {Array} states an array of states to set
        * @return {Function} Container.setState
        */
-      function applyStates(){
+      function applyState(){
         var removed = [],
           classes = [];
 
@@ -243,7 +264,6 @@ Container = Class.create( Abstract, ( function(){
         } );
 
         return Container;
-
       }
 
       /**
@@ -367,7 +387,7 @@ Container = Class.create( Abstract, ( function(){
 
         states = value;
 
-        applyStates();
+        applyState();
         Container.trigger( STATED_EVENT, [$element, states] );
 
         return Container;
@@ -388,7 +408,7 @@ Container = Class.create( Abstract, ( function(){
         }
         if( _.difference( value, states ).length > 0 ){
           states = _.union( states, value );
-          applyStates();
+          applyState();
           Container.trigger( STATED_EVENT, [$element, states] );
         }
         return Container;
@@ -413,11 +433,22 @@ Container = Class.create( Abstract, ( function(){
 
         if( intersection.length > 0 ){
           states = _.without( states, value );
-          applyStates();
+          applyState();
           Container.trigger( STATED_EVENT, [$element, states] );
         }
 
         return Container;
+      };
+
+      /**
+       * Checks to see if the state has been applied
+       * @method hasState
+       * @param {String} The state to check
+       * @public
+       * @return {Boolean} True if the state has been applied.
+       */
+      Container.hasState = function( value ){
+        return ( _.indexOf( states, value ) > -1 );
       };
 
       /**
@@ -439,7 +470,7 @@ Container = Class.create( Abstract, ( function(){
        */
       Container.setContent = function( value ){
         content = value;
-        $element.html( content );
+        $target.html( content );
 
         if( settings.autoHeight ){
           delete cache.height;

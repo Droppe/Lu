@@ -141,6 +141,7 @@ Tip =  Class.create( Abstract,  ( function (){
          * @type Object
          * @private
          */
+         //This should use Container
         $content,
 
         /**
@@ -241,6 +242,7 @@ Tip =  Class.create( Abstract,  ( function (){
         return position;
       }
 
+      //This should now use Container
       //require the Loader and set up listeners if a uri was specifed
       if( settings.uri ){
         $content = $tip.find( '.content' );
@@ -355,8 +357,10 @@ Tip =  Class.create( Abstract,  ( function (){
       
       Tip.on( 'focus', function( event ){
         event.stopPropagation();
+        //Should this be Tip.on?
         $element.on( 'blur.lu.tip', function( event ){
           event.stopPropagation();
+          //Should this be Tip.off?
           $element.off( 'blur.lu.tip' );
           Tip.hide();
         } );
