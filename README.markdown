@@ -27,8 +27,8 @@
 Lu is developed using [nodejs](http://nodejs.org/) and [compass](http://compass-style.org/). To start contributing:
 
 1. Fork Lu
-2. Install <a href="http://compass-style.org/" target="_blank">compass</a>
-3. Install <a href="http://nodejs.org/" target="_blank">http://nodejs.org/</a>
+2. Install <a href="http://compass-style.org/" target="_blank">Compass</a>
+3. Install <a href="http://nodejs.org/" target="_blank">Node</a>
 4. In a terminal from the Lu directory:```$npm install```
 5. Then:```$compass watch```
 6. In a new terminal from the Lu directory:```$node server.js```
