@@ -57,9 +57,16 @@
         $(window.AQ)
           .on('beforeTestRun', function() {
 
+            var timer;
+
             $AQ_CONTAINER.one('luExecuted', function() {
+              clearTimeout(timer);
                window.AQ.run();
             });
+
+            timer = setTimeout(function() {
+              window.AQ.run();
+            }, 1500);
 
             window.lu.execute($AQ_CONTAINER);
           });
