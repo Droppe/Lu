@@ -284,28 +284,4 @@ function run(){
 
 }
 
-asyncTest('some async test', function() {
-
-  var deferredA = $.Deferred(),
-      deferredB = $.Deferred();
-
-  // Async operation A
-  setTimeout(function() {
-      ok(true, 'always true');
-      deferredA.resolve();
-  }, 200);
-
-  // Async operation B
-  setTimeout(function() {
-      ok(true, 'always true');
-      deferredB.resolve();
-  }, 200);
-
-  // When both deferreds have been resolved, tell Qunit to start.
-  $.when(deferredA, deferredB).done(function() {
-    start();
-  });
-
-});
-
 </script>
