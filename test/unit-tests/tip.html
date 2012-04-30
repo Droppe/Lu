@@ -19,19 +19,12 @@
       ok( ($("div.tip").size() === 1), "Tip found in DOM." );
     } );
 
-    test('hide', function() {
-
-      var deferredA = $.Deferred();
-
+    asyncTest('hide -- async', 1, function() {
+      Tip.hide();
       setTimeout(function() {
         ok( ($("div.tip").size() === 0), "No tip found in DOM." );
-        deferredA.resolve();
-      }, 200);
-
-      $.when(deferredA).done(function() {
         start();
-      });
-
+      }, 200);
     });    
 
     module( 'Event Tests', {} );
@@ -56,22 +49,15 @@
       ok( ($("div.tip").size() === 1), "Tip found in DOM." );
     } );
 
-    test( 'hide', function(){
-      //expect( 1 );
+
+
+    asyncTest('hide -- async', 1, function() {
       Tip.trigger('hide');
-
-      var deferredA = $.Deferred();
-
       setTimeout(function() {
         ok( ($("div.tip").size() === 0), "No tip found in DOM." );
-        deferredA.resolve();
-      }, 200);
-
-      $.when(deferredA).done(function() {
         start();
-      });
-
-    } );
+      }, 200);
+    });    
 
   }
 
