@@ -1,37 +1,78 @@
-<a id="tip-test" href="" data-lu="Tip" title="I am a tip!">Heya</a>
+<a id="tip-test" href="http://www.google.com" data-lu="Tip" data-lu-config="{Tip: {
+  delay: '0',
+  placement: 'right'
+}}" title="Search using Google">Search</a>
 
 <script>
 
-function run(){
-  var $tip = $( '#tip-test' ),
-    Tip;
+  function run(){
+    var $tip = $( '#tip-test' ),
+      Tip;
 
-  Tip = lu.getControl( $tip );
+    Tip = lu.getControl( $tip );
 
-  module( 'API Tests', {} );
+    module( 'API Tests', {} );
 
-  test( 'show', function(){
-    expect( 1 );
-    ok( false );
-  } );
+    test( 'show', function() {
+      expect( 1 );
+      Tip.show();
+      ok( $("div.tip").size() === 1 );
+    } );
 
-  test( 'hide', function(){
-    expect( 1 );
-    ok( false );
-  } );
+    test('hide', function() {
 
-  module( 'Event Tests', {} );
+      var deferredA = $.Deferred();
 
-  test( 'mouseenter', function(){
-    expect( 1 );
-    ok( false );
-  } );
+      setTimeout(function() {
+        ok( $("div.tip").size() === 0 );
+        deferredA.resolve();
+      }, 200);
 
-  test( 'focus', function(){
-    expect( 1 );
-    ok( false );
-  } );
+      $.when(deferredA).done(function() {
+        start();
+      });
 
-}
+    });    
+
+    module( 'Event Tests', {} );
+
+// mouseenter, focus, hide, show
+
+    test( 'mouseenter', function(){
+      expect( 1 );
+      Tip.trigger('mouseenter');
+      ok( $("div.tip").size() === 1 );
+    } );
+
+    test( 'focus', function(){
+      expect( 1 );
+      Tip.trigger('focus');
+      ok( $("div.tip").size() === 1 );
+    } );
+
+    test( 'show', function(){
+      expect( 1 );
+      Tip.trigger('show');
+      ok( $("div.tip").size() === 1 );
+    } );
+
+    test( 'hide', function(){
+      //expect( 1 );
+      Tip.trigger('hide');
+
+      var deferredA = $.Deferred();
+
+      setTimeout(function() {
+        ok( $("div.tip").size() === 0 );
+        deferredA.resolve();
+      }, 200);
+
+      $.when(deferredA).done(function() {
+        start();
+      });
+
+    } );
+
+  }
 
 </script>
