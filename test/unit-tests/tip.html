@@ -16,7 +16,7 @@
     test( 'show', function() {
       expect( 1 );
       Tip.show();
-      ok( $("div.tip").size() === 1 );
+      ok( ($("div.tip").size() === 1), "Tip found in DOM." );
     } );
 
     test('hide', function() {
@@ -24,7 +24,7 @@
       var deferredA = $.Deferred();
 
       setTimeout(function() {
-        ok( $("div.tip").size() === 0 );
+        ok( ($("div.tip").size() === 0), "No tip found in DOM." );
         deferredA.resolve();
       }, 200);
 
@@ -41,19 +41,19 @@
     test( 'mouseenter', function(){
       expect( 1 );
       Tip.trigger('mouseenter');
-      ok( $("div.tip").size() === 1 );
+      ok( ($("div.tip").size() === 1), "Tip found in DOM." );
     } );
 
     test( 'focus', function(){
       expect( 1 );
       Tip.trigger('focus');
-      ok( $("div.tip").size() === 1 );
+      ok( ($("div.tip").size() === 1), "Tip found in DOM." );
     } );
 
     test( 'show', function(){
       expect( 1 );
       Tip.trigger('show');
-      ok( $("div.tip").size() === 1 );
+      ok( ($("div.tip").size() === 1), "Tip found in DOM." );
     } );
 
     test( 'hide', function(){
@@ -63,7 +63,7 @@
       var deferredA = $.Deferred();
 
       setTimeout(function() {
-        ok( $("div.tip").size() === 0 );
+        ok( ($("div.tip").size() === 0), "No tip found in DOM." );
         deferredA.resolve();
       }, 200);
 
