@@ -20,9 +20,12 @@
   <h2 id="qunit-banner"></h2>
   <div id="qunit-testrunner-toolbar"></div>
   <h2 id="qunit-userAgent"></h2>
-  <ol id="qunit-tests"></ol> 
+  <ol id="qunit-tests"></ol>
   <div id="qunit-fixture"></div>
-  
+
+  <div id="aq-container">
+  </div>
+
   <!-- Bootstrap:Util -->
   <script src="../scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
   <script src="../scripts/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
@@ -35,13 +38,46 @@
   <script>window.jQuery || document.write( '<script src="http://scripts/libraries/jquery-1.7.1.min.js"><\/script>' )</script>
 
   <script src="../scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
-  <script src="qunit/qunit-v1.4.0pre.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="qunit/qunit-v1.4.0pre.js" type="text/javascript" charset="utf-8"></script>
 
-  <script type="text/javascript" src="../socket.io/socket.io.js"></script>
-  <script src="base.js"></script>
+  <!-- Bootstrap:AQ/Socket.io -->
+  <script src="../socket.io/socket.io.js"></script>
+  <script src="../aq/aq.js"></script>
 
-  <div id="test-container">
-  </div>
+  <script>
+    require.clearCache();
+    require.ensure( ['lu'], function() {
+
+      window.AQ.start();
+
+      $(function() {
+
+        $AQ_CONTAINER = $('#aq-container');
+
+        $(window.AQ)
+          .on('beforeTestRun', function() {
+
+            var timer;
+
+            $AQ_CONTAINER.one('luExecuted', function() {
+              clearTimeout(timer);
+               window.AQ.run();
+            });
+
+            timer = setTimeout(function() {
+              window.AQ.run();
+            }, 1500);
+
+            window.lu.execute($AQ_CONTAINER);
+          });
+
+      });
+
+    });
+
+
+  </script>
+
 
 </body>
 

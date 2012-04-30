@@ -10,7 +10,7 @@ var Fs = require( 'fs' ),
     questions = common.questions,
     luControls = common.filetoVersion,
     build;
-    
+
 build = {
   init: function() {
     if( args.build ) {
@@ -20,7 +20,7 @@ build = {
     } else if( args.test ) {
       build.runTests();
     }
-    
+
   },
   startBuild: function() {
     //TODO lookup build answers from a passed in json file
@@ -60,14 +60,14 @@ build = {
     }
   },
   runTests: function() {
-    console.log('Running tests');  
-    tester.start();
+    console.log('Running tests');
+    tester = require( '../test-server' );
   },
   makeDocs: function() {
     //TODO: creates docs
   },
   copy: function( from, to, callback ) {
-    
+
     //verify directory structure exists
     var dir = Path.dirname(Path.resolve(to)),
         relativePath =  Path.relative('/', dir),
@@ -75,12 +75,12 @@ build = {
     names.forEach(function(currDir, i) {
       var dir = names.slice(0, i).concat(currDir),
           path ='/' + dir.join('/');
-          
+
       if (path && !Path.existsSync(path)) {
         Fs.mkdirSync(path);
       }
     });
-    
+
     if (Path.existsSync(from)) {
       //copies a read stream to write stream.
       Util.pump( Fs.createReadStream( from ), Fs.createWriteStream( to ), callback );
@@ -94,13 +94,13 @@ build = {
 function askBuildQuestions() {
   var cmdline = Readline.createInterface( process.stdin, process.stdout, null ),
       order = Object.keys( questions ).reverse();//['compilation_level', 'other'];
-    
+
   ( function prompt( k ) {
     var key = k || order.pop(),
         question = questions[key] && questions[key]();
-        
+
     if ( !question ) {
-     return build.run(); 
+     return build.run();
     }
 
     cmdline.question( question.question + '\n', function( response ) {
@@ -113,7 +113,7 @@ function askBuildQuestions() {
           console.log( question.help + '\n' );
         } else {
           console.log( 'Sorry I didn\'t understand your response. Try again.');
-        } 
+        }
         prompt(key);
       }
 
@@ -150,28 +150,28 @@ function parseBuildAnswers() {
   if( questions.underscore_mixins === 'y' || questions.underscore_mixins === '' ) {
     code.push( Fs.readFileSync( scriptsPath + '/lu-underscore-mixins.js' ).toString() );
   }
-  
+
   code.push( Fs.readFileSync( scriptsPath + '/lu.js' ).toString() );
-  
+
   srcCode = code.join('\n');
-  
+
   //compile lu.js
   Compiler.compile( srcCode, compilation_level, function( error, compiledSrc ) {
     if (error) {
       //there was an error compiling. Default to writing uncompile source
       compiledSrc = srcCode;
     }
-    
+
     Fs.writeFileSync( outputPath + '/lu.js', compiledSrc, 'utf-8' );//TODO: turn this in to a build.copy call
-    
+
     build.isRunDone( 'compile', !!error );
   } );
-  
+
   //process and copy lu-config.js
   build.copy( scriptsPath + '/lu-config.js', outputPath + '/lu-config.js', function(error) {
     build.isRunDone( 'lu-config', !!error );
   } );
-  
+
   //copy specified version of Lu controls to output path
   function isCopyDone() {
     ( --copyCount === 0 ) && build.isRunDone( 'copy' );
@@ -181,20 +181,20 @@ function parseBuildAnswers() {
     if( luControls.hasOwnProperty( control ) && semver.gte(luControls[control], version)){
       var filename = Path.relative(root + '/scripts/lu-controls/', control),
           controlTo = outputPath + '/lu-controls/' + filename;
-      
+
       //inc the amount of controls we're copying
       copyCount ++;
-      
+
       //compile first, then copy
       Compiler.compile( Fs.readFileSync( control ), compilation_level, function( controlTo, error, compiledControl) {
-        
+
         //copies a control (as a read stream) to the output path (as a write stream).)
         //if error, copy the uncompile source.
         if (error) {
           compiledControl = control;
         }
-        build.copy( compiledControl, controlTo, isCopyDone ); 
-        
+        build.copy( compiledControl, controlTo, isCopyDone );
+
       }.bind(null, controlTo));
     }
 
