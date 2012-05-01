@@ -1,37 +1,64 @@
-<a id="tip-test" href="" data-lu="Tip" title="I am a tip!">Heya</a>
+<a id="tip-test" href="http://www.google.com" data-lu="Tip" data-lu-config="{Tip: {
+  delay: '0',
+  placement: 'right'
+}}" title="Search using Google">Search</a>
 
 <script>
 
-function run(){
-  var $tip = $( '#tip-test' ),
-    Tip;
+  function run(){
+    var $tip = $( '#tip-test' ),
+      Tip;
 
-  Tip = lu.getControl( $tip );
+    Tip = lu.getControl( $tip );
 
-  module( 'API Tests', {} );
+    module( 'API Tests', {} );
 
-  test( 'show', function(){
-    expect( 1 );
-    ok( false );
-  } );
+    test( 'show', function() {
+      expect( 1 );
+      Tip.show();
+      ok( ($("div.tip").size() === 1), "Tip found in DOM." );
+    } );
 
-  test( 'hide', function(){
-    expect( 1 );
-    ok( false );
-  } );
+    asyncTest('hide -- async', 1, function() {
+      Tip.hide();
+      setTimeout(function() {
+        ok( ($("div.tip").size() === 0), "No tip found in DOM." );
+        start();
+      }, 200);
+    });    
 
-  module( 'Event Tests', {} );
+    module( 'Event Tests', {} );
 
-  test( 'mouseenter', function(){
-    expect( 1 );
-    ok( false );
-  } );
+// mouseenter, focus, hide, show
 
-  test( 'focus', function(){
-    expect( 1 );
-    ok( false );
-  } );
+    test( 'mouseenter', function(){
+      expect( 1 );
+      Tip.trigger('mouseenter');
+      ok( ($("div.tip").size() === 1), "Tip found in DOM." );
+    } );
 
-}
+    test( 'focus', function(){
+      expect( 1 );
+      Tip.trigger('focus');
+      ok( ($("div.tip").size() === 1), "Tip found in DOM." );
+    } );
+
+    test( 'show', function(){
+      expect( 1 );
+      Tip.trigger('show');
+      ok( ($("div.tip").size() === 1), "Tip found in DOM." );
+    } );
+
+
+
+    asyncTest('hide -- async', 1, function() {
+      Tip.trigger('hide');
+      setTimeout(function() {
+        ok( ($("div.tip").size() === 0), "No tip found in DOM." );
+        start();
+      }, 200);
+    });    
+
+  }
 
 </script>

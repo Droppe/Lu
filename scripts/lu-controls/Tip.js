@@ -201,8 +201,8 @@ Tip =  Class.create( Abstract,  ( function (){
        * Used to determine the position of the tip
        * @private
        * @method getPosition
-       * @param cache {Boolean} Uses the cached position by default or if set to true.
-       * @returns position {Object} And object containing a top and left
+       * @param {Boolean} cache Uses the cached position by default or if set to true.
+       * @return {Object} position And object containing a top and left
        */
       function getPosition( cache ){
         var elOffset = $element.offset(),
@@ -242,31 +242,29 @@ Tip =  Class.create( Abstract,  ( function (){
         return position;
       }
 
-      //This should now use Container
-      //require the Loader and set up listeners if a uri was specifed
-      if( settings.uri ){
+      //Require a Container and set up listeners if a URL was specifed
+      if( settings.url ){
         $content = $tip.find( '.content' );
-        require.ensure( ['lu/Loader'], function( require, module, exports ){
-          var id = 'lu/Loader',
-            Loader;
+        require.ensure( ['lu/Container'], function( require, module, exports ){
+          var Ctr = require( 'lu/Container' );
+          Ctr = new Ctr( $content, {/* empty config */});
 
-          Loader = require( id );
-          Loader = new Loader( $content, {} );
-
-         Loader.on( 'loaded', function( event ){
-           $tip.css( getPosition( false ) );
-         } );
-         $element.one( SHOWN_EVENT, function( event ){
-           Loader.trigger( 'load', [ settings.uri ] );
-         } );
-
+          Ctr.on( 'loaded', function( event ){
+            event.preventDefault();
+            $tip.css( getPosition( false ) );
+          } );
+          $element.one( SHOWN_EVENT, function( event ){
+            event.preventDefault();
+            Ctr.trigger( 'load', [ settings.url ] );
+          } );
         } );
       }
 
       /**
        * Show the tip
-       * @privelaged
+       * @priviledged
        * @method show
+       * @return {Void}
        */
       Tip.show = function(){
         if( shown === false ){
@@ -283,14 +281,15 @@ Tip =  Class.create( Abstract,  ( function (){
           } );
 
           shown = true;
-          $element.trigger( SHOWN_EVENT, $tip );
+          Tip.trigger( SHOWN_EVENT, $tip );
         }
       };
 
       /**
        * Hide the tip
-       * @privelaged
+       * @priviledged
        * @method hide
+       * @return {Void}
        */
       Tip.hide = function(){
         var timeout;
@@ -312,10 +311,16 @@ Tip =  Class.create( Abstract,  ( function (){
        * Function to run on mouseenter. Must be named so we can pass it specifically to jQuery's off.
        * @private
        * @method mouseenterEvent
+       * @param {Objct} event jQuery event object
+       * @return {Void}
        */
       function mouseenterEvent ( event ){
         //set up a listener on the document to be used in determing if the user has moused out of the threshold
+        event.stopPropagation();
+        
         $document.on( 'mousemove.lu.tip', function( event ){
+
+          event.stopPropagation();
           var pageX = event.pageX,
             pageY = event.pageY,
             left = $element.offset().left,
@@ -349,6 +354,7 @@ Tip =  Class.create( Abstract,  ( function (){
           }
 
         } );
+
         Tip.show();
       }
 
@@ -358,10 +364,12 @@ Tip =  Class.create( Abstract,  ( function (){
       Tip.on( 'focus', function( event ){
         event.stopPropagation();
         //Should this be Tip.on?
-        $element.on( 'blur.lu.tip', function( event ){
+        //$element.on( 'blur.lu.tip', function( event ){
+          Tip.on( 'blur.lu.tip', function( event ){
           event.stopPropagation();
           //Should this be Tip.off?
-          $element.off( 'blur.lu.tip' );
+          //$element.off( 'blur.lu.tip' );
+          Tip.off( 'blur.lu.tip' );          
           Tip.hide();
         } );
       
