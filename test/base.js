@@ -51,7 +51,7 @@ $(function() {
 					total: obj.total,
 					failedTests: failedTests
 				}
-				
+
 				console.log('DONE!', result);
 				socket.emit('done', result);
 				failedTests = [];
@@ -83,10 +83,10 @@ $(function() {
 			tester.clear();
 
 			$TEST_CONTAINER
-				.one('luExecuted', function() {
+				.one('luReady', function() {
 					socket.emit('executing', testName);
 					run();
-					QUnit.start();	
+					QUnit.start();
 				})
 				.load('unit-tests/' + testName, function () {
 					window.lu.execute($TEST_CONTAINER);
