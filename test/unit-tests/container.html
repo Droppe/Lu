@@ -87,7 +87,7 @@ function run(){
     Container.setState( 'FOO' ).addState( 'BOING' );
     state = Container.getState();
     ok( ( state.length === 2 && _.indexOf( state, 'FOO' ) > -1 && _.indexOf( state, 'BOING' ) > -1 && $container.hasClass( 'lu-state-BOING' ) ), 'state "BOING" was successfully added.' );
-    
+
     Container.addState( 'WOWZERZ' );
     state = Container.getState();
     ok( ( state.length === 3 && _.indexOf( state, 'FOO' ) > -1 && _.indexOf( state, 'BOING' ) > -1 && _.indexOf( state, 'WOWZERZ' ) > -1 && $container.hasClass( 'lu-state-WOWZERZ' ) ), 'state "WOWZERZ" was successfully added.' );
@@ -201,91 +201,87 @@ function run(){
      ok( success, 'content was updated successfully' );
   } );
 
-  ( function(){
-      var success = false;
 
-      window.setTimeout( function(){
-        Container.on( 'stated', function( event, $element, states ){
-          success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '<div>BOOYAHSHAKA!!!<div id="foo">1337 - W00T!</div></div>' );
-          if( success ){
-            Container.off( 'stated' );
-          }
-        } );
-        Container.trigger( 'load', ['unit-tests/container-load-test-a.html'] );
-        window.setTimeout( function(){
-          test( 'load:Path', function(){
-            ok( success, 'remote content loaded' );
-          } );
-        }, 2000 );
+  asyncTest('load:Path', function() {
+    var success = false;
 
-      }, 1000 );
-  }() );
+    Container.on( 'stated', function( event, $element, states ) {
+      console.log('here');
 
-  ( function(){
-      var success = false,
-        explodeURL = _.explodeURL( window.location.href ),
-        url;
+      success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '<div>BOOYAHSHAKA!!!<div id="foo">1337 - W00T!</div></div>' );
+      if( success ){
+        Container.off( 'stated' );
+      }
 
-      url = explodeURL.scheme + '://' + explodeURL.authority + '/test/unit-tests/container-load-test-b.html'
+    } );
 
-      window.setTimeout( function(){
-        Container.on( 'stated', function( event, $element, states ){
-          success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '<div>Sharky<div id="foo">has a temper.</div></div>' );
-          if( success ){
-            Container.off( 'stated' );
-          }
-        } );
-        Container.trigger( 'load', [url] );
-        window.setTimeout( function(){
-          test( 'load:URL', function(){
-            ok( success, 'remote content loaded' );
-          } );
-        }, 2000 );
+    Container.trigger( 'load', ['unit-tests/container-load-test-a.html'] );
+    window.setTimeout( function(){
+      ok( success, 'remote content loaded' );
+      start();
+    }, 2000 );
 
-      }, 3000 );
-  }() );
+  });
 
-  ( function(){
-      var success = false;
 
-      window.setTimeout( function(){
-        Container.on( 'stated', function( event, $element, states ){
-          success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '1337 - W00T!' );
-          if( success ){
-            Container.off( 'stated' );
-          }
-        } );
-        Container.trigger( 'load', ['unit-tests/container-load-test-a.html#foo'] );
-        window.setTimeout( function(){
-          test( 'load:URL:Node', function(){
-            ok( success, 'remote content loaded' );
-          } );
-        }, 2000 );
+  asyncTest('load:URL', function() {
+    var success = false,
+      explodeURL = _.explodeURL( window.location.href ),
+      url;
 
-      }, 5000 );
+    url = explodeURL.scheme + '://' + explodeURL.authority + '/test/unit-tests/container-load-test-b.html'
 
-  }() );
+    Container.on( 'stated', function( event, $element, states ){
+      success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '<div>Sharky<div id="foo">has a temper.</div></div>' );
+      if( success ){
+        Container.off( 'stated' );
+      }
+    } );
 
-  ( function(){
-      var success = false;
+    Container.trigger( 'load', [url] );
+    window.setTimeout( function(){
+        ok( success, 'remote content loaded' );
+        start();
+    }, 2000 );
 
-      window.setTimeout( function(){
-        Container.on( 'updated', function( event, $element, states ){
-          success = ( Container.getContent() === '<code>2b || !2b</code>' );
-          if( success ){
-            Container.off( 'stated' );
-          }
-        } );
-        Container.trigger( 'load', ['#lumen'] );
-        window.setTimeout( function(){
-          test( 'load:Node', function(){
-            ok( success, 'remote content loaded' );
-          } );
-        }, 2000 );
+  });
 
-      }, 7000 );
+  asyncTest('load:URL:Node', function() {
+    var success = false;
 
-  }() );
+    Container.on( 'stated', function( event, $element, states ){
+      success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '1337 - W00T!' );
+      if( success ){
+        Container.off( 'stated' );
+      }
+    } );
+
+    Container.trigger( 'load', ['unit-tests/container-load-test-a.html#foo'] );
+    window.setTimeout( function(){
+        ok( success, 'remote content loaded' );
+        start();
+    }, 2000 );
+
+  });
+
+  asyncTest('load:Node', function() {
+    var success = false;
+
+    Container.on( 'updated', function( event, $element, states ){
+      success = ( Container.getContent() === '<code>2b || !2b</code>' );
+      if( success ){
+        Container.off( 'stated' );
+      }
+    } );
+
+    Container.trigger( 'load', ['unit-tests/container-load-test-a.html#foo'] );
+    window.setTimeout( function(){
+        ok( success, 'remote content loaded' );
+        start();
+    }, 2000 );
+
+  });
+
 }
 
 </script>
