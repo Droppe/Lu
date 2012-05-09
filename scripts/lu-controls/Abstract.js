@@ -1,13 +1,15 @@
-var Class = require( 'class' ),
-  Abstract;
-
 /**
  * The base component class all other UI components inherit from.
  * @class Abstract
  * @constructor
- * @requires ptclass
+ * @require ptclass
  * @version 0.1.0
  */
+
+var Class = require( 'class' ),
+  Abstract;
+
+
 Abstract = Class.create( ( function(){
 
   // GLOBAL STATICS
