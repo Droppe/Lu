@@ -1,58 +1,117 @@
-<a id="abstarct-test" data-lu="Tip"></a>
-
+<a id="abstract-test" data-lu="Abstract"></a>
+<a id="funk-and-waggle" data-lu="Abstract"></a>
 <script>
 
 function run(){
-  var $abstract = $( '#abstract-test' ),
-    Abstract;
+  var Abstract,
+    Observer,
+    $abstract = $( '#abstract-test' ),
+    $observer = $( '#funk-and-waggle' ),
+    hongKong = 'phooey';
 
   Abstract = lu.getControl( $abstract );
+  Observer = lu.getControl( $observer );
 
   module( 'API Tests', {} );
 
-  test( 'on', function(){
+  test( 'trigger', function(){
     expect( 1 );
-    ok( false );
+
+    Abstract.one( hongKong, function(){
+      ok( true , 'Event is successfully triggered.' );
+    } ).trigger( hongKong );
+
+  } );
+
+  test( 'on', function(){
+    var success = false;
+
+    expect( 1 );
+
+    Abstract.on( hongKong, function(){
+      success = ( _.indexOf( Abstract.events(), hongKong ) > -1 );
+      Abstract.off( hongKong );
+    } ).trigger( hongKong );
+
+
+    ok( success , 'Event is successfully bound.' );
+
   } );
 
   test( 'one', function(){
+    var success = false;
+
     expect( 1 );
-    ok( false );
+
+    Abstract.one( hongKong, function(){
+      success = ( _.indexOf( Abstract.events(), hongKong ) > -1 );
+      ok( success , 'Event is successfully bound.' );
+    } ).trigger( hongKong );
+
   } );
 
   test( 'off', function(){
-    expect( 1 );
-    ok( false );
-  } );
+    var success = false;
 
-  test( 'trigger', function(){
-    expect( 1 );
-    ok( false );
+    expect( 2 );
+
+    Abstract.on( hongKong, function(){
+      success = ( _.indexOf( Abstract.events(), hongKong ) > -1 );
+      ok( success , 'Event is successfully bound.' );
+      Abstract.off( hongKong );
+      success = ( _.indexOf( Abstract.events(), hongKong ) === -1 );
+      ok( success , 'Event is successfully unbound.' );
+    } ).trigger( hongKong );
+
   } );
 
   test( 'observe', function(){
+    var success;
     expect( 1 );
-    ok( false );
+    Abstract.one( hongKong, function(){
+      success = true;
+      ok( success, 'observation successful' );
+    } );
+    Abstract.observe( $observer );
+    Observer.trigger( hongKong );
+    Abstract.unobserve( $observer );
   } );
 
   test( 'unobserve', function(){
-    expect( 1 );
-    ok( false );
+    var success = false;
+    expect( 2 );
+    Abstract.on( hongKong, function(){
+      success = true;
+      ok( success, 'observation successful' );
+    } );
+
+    Abstract.observe( $observer );
+    Observer.trigger( hongKong );
+
+    Abstract.unobserve( $observer );
+
+    success = false;
+    Observer.trigger( hongKong );
+    Abstract.off( hongKong );
+
+    ok( !success, 'unobservation successful' );
   } );
 
   test( 'setNamespace', function(){
-    expect( 1 );
-    ok( false );
+    var success = false;
+    expect( 2 );
+    Abstract.setNamespace( hongKong );
+    ok( Abstract.getNamespace() === hongKong, 'Namspace set' );
+    Abstract.one( hongKong, function(){
+      success = true;
+    } ).trigger( hongKong + '.' + hongKong );
+    ok( success, 'Event fired in namspace' );
   } );
 
   test( 'getNamespace', function(){
-    expect( 1 );
-    ok( false );
-  } );
-
-  test( 'events', function(){
-    expect( 1 );
-    ok( false );
+    expect( 2 );
+    ok( !Abstract.setNamespace().getNamespace() );
+    ok( Abstract.setNamespace( hongKong ).getNamespace() === hongKong );
   } );
 
 }
