@@ -1,14 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
-  LastButton;
-
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class LastButton
  * @constructor
  * @extends Button
+ * @require ptclass
  * @version 0.1.0
  */
+
+var Class = require( 'class' ),
+  Button = require( 'lu/Button' ),
+  LastButton;
+
 LastButton = Class.create( Button,  ( function(){
 
   var MAXED_EVENT = 'maxed',

@@ -262,7 +262,6 @@ Tip =  Class.create( Abstract,  ( function (){
 
       /**
        * Show the tip
-       * @priviledged
        * @method show
        * @return {Void}
        */
@@ -287,7 +286,6 @@ Tip =  Class.create( Abstract,  ( function (){
 
       /**
        * Hide the tip
-       * @priviledged
        * @method hide
        * @return {Void}
        */

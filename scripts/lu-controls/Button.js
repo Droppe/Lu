@@ -1,15 +1,17 @@
-var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
-  Button;
-
 /**
  * Representation of a button element
  * @class Button
  * @constructor
  * @extends Abstract
- * @requires ptclass, Abstract
+ * @require ptclass, Abstract
  * @version 0.1.0
  */ 
+
+var Class = require( 'class' ),
+  Abstract = require( 'lu/Abstract' ),
+  Button;
+
+
 Button = Class.create( Abstract, ( function(){
 
   // CONSTANTS
