@@ -1,18 +1,15 @@
-
-var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
-  SelectButton;
-
 /**
- * Representation of a button element preconfigured with a 'next' event
+ * Representation of a button element preconfigured with a 'select' event
  * @class SelectButton
  * @constructor
  * @extends Button
  * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  * @version 0.1.0
  */
+
+var Class = require( 'class' ),
+  Button = require( 'lu/Button' ),
+  SelectButton;
 
 SelectButton = Class.create( Button, ( function (){
 

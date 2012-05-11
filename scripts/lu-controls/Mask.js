@@ -40,7 +40,6 @@ Mask = Class.create( Abstract,  ( function (){
       $container = $( settings.container );
       /**
        * Show the mask
-       * @privelaged
        * @method open
        */
         Mask.show = function(){
@@ -54,7 +53,6 @@ Mask = Class.create( Abstract,  ( function (){
 
         /**
          * Hide the mask
-         * @privelaged
          * @method close
          */
         Mask.hide = function(){

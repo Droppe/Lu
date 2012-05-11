@@ -1,4 +1,6 @@
 /**
+ * Lu Control Framework
+ * @module Lu
  * @license
  *
  * Lu Control Framework v0.1.3
@@ -25,11 +27,10 @@
 ( function( document, window, undefined ){
 
   /**
-   * Lu Control Framework
-   * @module Lu
+   * Lu's main class
    * @class Lu
    * @constructor
-   * @requires inject
+   * @require inject
    * @param {Object} settings Configuration properties for this instance
    */
   function Lu(){

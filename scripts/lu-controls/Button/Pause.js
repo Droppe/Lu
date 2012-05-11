@@ -1,18 +1,15 @@
+/**
+ * Representation of a button element preconfigured with a 'pause' event
+ * @class PauseButton
+ * @constructor
+ * @extends Button
+ * @requires ptclass
+ * @version 0.1.0
+ */
 
 var Class = require( 'class' ),
   Button = require( 'lu/Button' ),
   PauseButton;
-
-/**
- * Representation of a button element preconfigured with a 'next' event
- * @class NextButton
- * @constructor
- * @extends Button
- * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
- * @version 0.1.0
- */
 
 PauseButton = Class.create( Button, ( function (){
 

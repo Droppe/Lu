@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
-  LoadButton;
-
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class LoadButton
  * @constructor
  * @extends Button
- * @requires ptclass
+ * @require ptclass
  * @version 0.0.0
  */
+
+var Class = require( 'class' ),
+  Button = require( 'lu/Button' ),
+  LoadButton;
+
 
 LoadButton = Class.create( Button, ( function (){
 

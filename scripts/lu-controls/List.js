@@ -1,15 +1,17 @@
-var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
-  List;
-
 /**
  * A representation of a stateful list
  * @class List
  * @constructor
+ * @require ptclass
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.1.0
  */
+
+var Class = require( 'class' ),
+  Abstract = require( 'lu/Abstract' ),
+  List;
+
  
 List =  Class.create( Abstract, ( function (){
 
