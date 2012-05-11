@@ -1,14 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
-  FirstButton;
-
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class FirstButton
  * @constructor
+ * @require ptclass
  * @extends Button
  * @version 0.1.0
  */
+
+var Class = require( 'class' ),
+  Button = require( 'lu/Button' ),
+  FirstButton;
+
 FirstButton = Class.create( Button,  ( function (){
 
   var FLOORED_EVENT = 'floored',

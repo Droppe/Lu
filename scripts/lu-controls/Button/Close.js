@@ -1,14 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
-  CloseButton;
-
 /**
  * Representation of a button element preconfigured with a 'next' event
  * @class CloseButton
  * @constructor
+ * @require ptclass
  * @extends Button
  * @version 0.1.0
  */
+
+var Class = require( 'class' ),
+  Button = require( 'lu/Button' ),
+  CloseButton;
+
 CloseButton = Class.create( Button,  ( function (){
 
    // RETURN METHODS OBJECT

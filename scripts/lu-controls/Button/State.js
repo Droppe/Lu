@@ -1,14 +1,16 @@
-var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
-  StateButton;
-
 /**
  * Representation of a button element preconfigured with a 'state' event
  * @class StateButton
  * @constructor
  * @extends Button
+ * @requires ptclass
  * @version 0.1.3
  */
+
+var Class = require( 'class' ),
+  Button = require( 'lu/Button' ),
+  StateButton;
+
 StateButton = Class.create( Button, ( function (){
 
    // RETURN METHODS OBJECT

@@ -1,15 +1,16 @@
-var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
-  Panel;
-
 /**
  * A representation of a stateful list
  * @class Panel
  * @constructor
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
- * @version 0.0.0
+ * @version 0.0.1
  */
+
+var Class = require( 'class' ),
+  Abstract = require( 'lu/Abstract' ),
+  Panel;
+
 Panel = Class.create( Abstract, ( function () {
 
   //CONSTANTS

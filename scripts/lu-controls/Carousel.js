@@ -1,16 +1,17 @@
-
-var Class = require( 'class' ),
-  List = require( 'lu/List' ),
-  Carousel;
-
 /**
  * A representation of a stateful list
  * @class Carousel
+ * @require ptclass
  * @constructor
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.1.0
  */
+
+var Class = require( 'class' ),
+  List = require( 'lu/List' ),
+  Carousel;
+
 
 Carousel =  Class.create( List, ( function(){
 

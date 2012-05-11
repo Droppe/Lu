@@ -36,7 +36,6 @@ Dialog = Class.create( Abstract,  ( function (){
 
       /**
        * Open the dialog
-       * @privelaged
        * @method open
        */
         Dialog.open = function(){
@@ -49,7 +48,6 @@ Dialog = Class.create( Abstract,  ( function (){
 
         /**
          * Close the dialog
-         * @privelaged
          * @method close
          */
         Dialog.close = function(){

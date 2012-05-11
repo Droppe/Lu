@@ -1,11 +1,9 @@
 /**
- * Representation of a button element preconfigured with a 'next' event
- * @class NextButton
+ * Representation of a button element preconfigured with a 'previous' event
+ * @class PreviousButton
  * @constructor
  * @extends Button
  * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
  * @version 0.1.0
  */
 
