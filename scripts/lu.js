@@ -1,18 +1,20 @@
 /**
+ * Lu Control Framework
+ * @module Lu
  * @license
  *
  * Lu Control Framework v0.1.3
  * https://iheartweb.github.com/Lu
- * 
+ *
  * Copyright (c) 2011,2012 Robert Martone <iheartweb@gmail.com>.
  * All Rights Reserved. Apache Software License 2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,11 +27,10 @@
 ( function( document, window, undefined ){
 
   /**
-   * Lu Control Framework
-   * @module Lu
+   * Lu's main class
    * @class Lu
    * @constructor
-   * @requires inject
+   * @require inject
    * @param {Object} settings Configuration properties for this instance
    */
   function Lu(){
@@ -45,7 +46,7 @@
     //Private Methods
 
     /**
-     * Gets the JQuery data object for an Lu control 
+     * Gets the JQuery data object for an Lu control
      * within the 'lu-controls' namespace
      * @method getData
      * @private
@@ -74,7 +75,7 @@
     }
 
     /**
-     * Sets the JQuery data object for an Lu control 
+     * Sets the JQuery data object for an Lu control
      * within the 'lu-controls' namespace
      * @method setData
      * @private
@@ -92,7 +93,7 @@
     //Public Methods
 
     /**
-     * Returns true if the passed in element is a control an optional key can be 
+     * Returns true if the passed in element is a control an optional key can be
      * used to match a specific Control
      * @public
      * @static
@@ -145,7 +146,7 @@
      * @static
      * @method getKeys
      * @param {Object} $element a jQuery collection
-     * @return {Array} An array of Lu keys 
+     * @return {Array} An array of Lu keys
      */
     lu.getKeys = function( $element ){
       return ( $element.attr( ATTR ) || '' ).split( ' ' );
@@ -249,7 +250,7 @@
         _.each( required, function( requirement, index ){
           packages[ requirement ] = require( requirement );
         } );
-              
+
         $controls.each( function( index, control ){
           var defObj,
             $control = $(control);
@@ -274,7 +275,7 @@
       } );
 
       return $element;
-    }; 
+    };
 
     /**
      * Notifies observers of events
@@ -288,9 +289,9 @@
      */
     lu.notify = function( $element, event, parameters ){
       var $observers = getData( $element, '$observers' );
-    
+
       if ( $observers ){
-        $observers.each( function ( index, item ){
+        $observers.each( function( index, item ){
 
           var $item = $( item ),
             Deferred;
@@ -301,7 +302,7 @@
             // If the deferred object is already resolved
             // adding a new .done() fires the enclosed function
             // immediately.
-            Deferred.done( function (){
+            Deferred.done( function(){
               _.each( lu.getControls( $item ), function( item, index ){
                 //Filter out Controls that don't listen for the event
                 if( _.indexOf( item.events(), event ) > -1 ){
@@ -621,15 +622,15 @@
   ( function( $ ){
 
     /**
-     * Lu JQuery plugin 
+     * Lu JQuery plugin
      * @method lu
      * @public
-     */    
+     */
     $.fn.lu = function(){
       var $this = $( this ),
         parameters = Array.prototype.slice.call( arguments ),
         method = parameters[0];
-    
+
       parameters[ 0 ] = $this;
 
       if( typeof window.lu[method] === 'function' ){
@@ -703,6 +704,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( window.lu );
   } else if( module.exports ){
-   module.exports = window.lu; 
+   module.exports = window.lu;
   }
 }

@@ -6,6 +6,7 @@
     PATH_TO_LU_CONTROLS = '/scripts/lu-controls/',
     PATH_TO_PTCLASS = '/scripts/libraries/ptclass.js',
     PATH_TO_JSON2 = '/scripts/libraries/json2.js',
+    PATH_TO_RISK = '/scripts/libraries/risk.js',
     //log (>=5), debug (>=4),info (>=3), warn (>=2), error (>=1)
     DEBUG = 0;
 
@@ -35,6 +36,10 @@
       //Extracted Class Lib from prototype see: https://github.com/Jakobo/PTClass
       window.require.addRule( 'class', {
         path: PATH_TO_PTCLASS
+      } );
+
+      window.require.addRule( 'risk', {
+        path: PATH_TO_RISK
       } );
 
       //JSON2

@@ -1,13 +1,15 @@
-var Class = require( 'class' ),
-  Abstract;
-
 /**
  * The base component class all other UI components inherit from.
  * @class Abstract
  * @constructor
- * @requires ptclass
+ * @require ptclass
  * @version 0.1.0
  */
+
+var Class = require( 'class' ),
+  Abstract;
+
+
 Abstract = Class.create( ( function(){
 
   // GLOBAL STATICS
@@ -188,6 +190,7 @@ Abstract = Class.create( ( function(){
         var store = eventStore[ event ];
 
         $element.lu( 'notify', event, parameters );
+
         if( store && store.method === 'one' ){
           removeEventFromStorage( event );
         }
@@ -202,6 +205,16 @@ Abstract = Class.create( ( function(){
        */
       function observe( $observer ){
         $observer.lu( 'observe', $element );
+      }
+
+      /**
+       * Unobserve events from $observer
+       * @method unobserve
+       * @private
+       * @param {Array} $observer A jQuery collection to be unobserved
+       */
+      function unobserve( $observer ){
+        $observer.lu( 'unobserve', $element );
       }
 
       // Set up observers and notifiers
@@ -304,7 +317,7 @@ Abstract = Class.create( ( function(){
        */
       Abstract.unobserve = function( $observer ){
         $element.lu( 'console' ).log( 'unobserve called with arguments :: ', arguments );
-        return $element.lu( 'unobserve', $observer );
+        return unobserve( $observer );
       };
 
       /**
@@ -322,11 +335,15 @@ Abstract = Class.create( ( function(){
        * @method setNamespace
        * @public
        * @param {String} value the new namespace
-       * @return namespace
+       * @return Abstract
        */
       Abstract.setNamespace = function( value ){
-        namespace = value;
-        return namespace;
+        if( value ){
+          namespace = value;
+          return Abstract;
+        }
+        namespace = undefined;
+        return Abstract;
       };
 
       /**

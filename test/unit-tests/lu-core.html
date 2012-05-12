@@ -1,0 +1,144 @@
+<div id="container" data-lu="Container">
+  <ul id="list" data-lu="List">
+    <li>A</li>
+    <li>B</li>
+    <li>C</li>
+    <li>D</li>
+  </ul>
+<!--<button id="previous" type="button" data-lu="Button:Previous">Previous</button>
+  <button id="next" type="button" data-lu="Button:Next">Next</button>-->
+</div>
+<div id="observer" data-lu="Container"></div>
+
+<script>
+
+
+function run(){
+
+    var $container = $( '#container' ),
+      $list = $( '#list' ),
+      $previous = $( '#previous' ),
+      $next = $( '#next' );
+      $li = $list.find( ':first-child' ),
+      $observer = $( '#observer' );
+
+    module( 'API Tests', {} );
+
+    test( 'getContol', function(){
+      expect( 1 );
+      ok( typeof lu.getControl( $container ) === 'object', 'The control interface is returned.' );
+    } );
+
+    test( 'getContols', function(){
+      expect( 1 );
+      console.log( lu.getControls( $container )['Container'] );
+      ok( typeof lu.getControls( $container )['Container'] === 'object', 'getControls returns an Object keyed by Control' );
+    } );
+
+    test( 'isControl', function(){
+      expect( 2 );
+      ok( lu.isControl( $container ) === true, '$container is a control.' );
+      ok( lu.isControl( $li ) === false, '$li is not a control.' );
+    } );
+
+    test( 'isReady', function(){
+      expect( 2 );
+      ok( lu.isReady( $container ) === true, '$container is ready.' );
+      ok( lu.isReady( $li ) === false, '$li is not ready.' );
+    } );
+
+    test( 'isExecuted', function(){
+      expect( 2 );
+      ok( lu.isExecuted( $container ) === true, '$container is executed.' );
+      ok( lu.isExecuted( $li ) === false, '$li is not executed.' );
+    } );
+
+    test( 'getKeys', function(){
+      expect( 3 );
+      ok( _.isArray( lu.getKeys( $container ) ) === true, 'getKeys returns an Array.' );
+      ok( lu.getKeys( $container ).length === 1, 'getKeys returns the correct number of keys.' );
+      ok( lu.getKeys( $container )[0] === 'Container', 'getKeys returns the correct keys.' );
+    } );
+
+    test( 'execute', function(){
+      var $html = $( '<div data-lu="Container"></div>' );
+      $html.on( 'luExecuted', function(){
+        expect( 1 );
+        ok( lu.isExecuted( $html ) === true, 'Lu was executed.' );
+      } );
+      lu.execute( $html );
+    } );
+
+    test( 'observe', function(){
+      expect( 1 );
+      lu.observe( $container, $observer );
+      ok( $observer.is( $container.data( 'luControls' ).$observers ), 'Observer sucsessfully added' );
+      lu.unobserve( $container, $observer );
+    } );
+
+    test( 'unobserve', function(){
+      expect( 1 );
+      lu.observe( $container, $observer );
+      lu.unobserve( $container, $observer );
+      ok( !$observer.is( $container.data( 'luControls' ).$observers ), 'Observer sucsessfully removed' );
+    } );
+
+    test( 'notify', function(){
+      expect( 1 );
+      lu.observe( $container, $observer );
+      $observer.on( 'Lu!', function(){
+        console.log( 'hellllllooooooo' );
+      } );
+      $observer.on( 'cks', function() {
+        console.log( 'hehek' );
+      } );
+      $observer.trigger.call( $observer, 'cks' );
+      lu.getControl( $observer ).one( 'Lu!', function(){
+        ok( true, 'Lu!' );
+      } );
+      lu.notify( $container, 'Lu!', [ true, false, 'politics' ] );
+    } );
+
+    test( 'destroy', function(){
+      expect( 1 );
+      ok( false, '' );
+    } );
+
+    test( 'decorate', function(){
+      expect( 1 );
+      ok( false, '' );
+    } );
+
+    test( 'create', function(){
+      expect( 1 );
+      ok( false, '' );
+    } );
+
+    test( 'getChildren', function(){
+      expect( 1 );
+      ok( false, '' );
+    } );
+
+    test( 'getDescendants', function(){
+      expect( 1 );
+      ok( false, '' );
+    } );
+
+    test( 'getParent', function(){
+      expect( 1 );
+      ok( false, '' );
+    } );
+
+    test( 'getParents', function(){
+      expect( 1 );
+      ok( false, '' );
+    } );
+
+    test( 'console', function(){
+      expect( 1 );
+      ok( false, '' );
+    } );
+
+}
+
+</script>
