@@ -29,33 +29,11 @@
 
 <body>
 
-  <div id="container" class="container grid clearfix">
-    <div id="luContainer" data-lu="Container" data-lu-config="{
-      'Container': {
-        autoHeight: true,
-        target: '.content'
-      }
-    }">
-      <div class="content">
-        <p class="less">Lorem ipsum dolor sit amet, consectetur adipisicing elit&hellip;</p>
-        <p class="more">Lorem ipsum dolor sit amet, consectetur adipisicing elit sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      </p>
-      <button data-lu="Button:Expand" type="button">More</button>
-      <button data-lu="Button:Less" type="button">Less</button>
-    </div>
-  </div>
-
   <!-- Bootstrap:Util -->
   <script src="scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
   <script src="scripts/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
 
   <!-- Bootstrap:CommonJS Loader -->
-  <script src="scripts/libraries/ie-localstorage-json-shim.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" src="scripts/libraries/inject.js"></script>
 
   <!-- Bootstrap:UI -->
@@ -68,7 +46,8 @@
     //Set your debug level here
     window.lu_debug = 5;
     //Bust your cache
-    require.clearCache();
+    localStorage.clear();
+    //require.clearCache();
     //MAGIC!!!
     require.ensure( ['lu'], function() {} );
   </script>

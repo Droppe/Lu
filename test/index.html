@@ -60,14 +60,9 @@
 
             var timer;
 
-            $AQ_CONTAINER.one('luExecuted', function() {
-              clearTimeout(timer);
+            $AQ_CONTAINER.one('luReady', function() {
                window.AQ.run();
             });
-
-            timer = setTimeout(function() {
-              window.AQ.run();
-            }, 1500);
 
             window.lu.execute($AQ_CONTAINER);
           });

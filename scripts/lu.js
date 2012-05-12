@@ -201,7 +201,7 @@
           }
         } );
 
-       _.each( lu.getControls( $node ), function( item, index ){
+        _.each( lu.getControls( $node ), function( item, index ){
           $node.trigger( 'luExecuted', [keys] );
         } );
 
@@ -403,8 +403,7 @@
 
       if( settings ){
         result = $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSON.stringify( settings ) );
-      }
-      else {
+      } else {
         result = $element.attr( ATTR, keys.join( ' ' ) );
       }
       return result;
@@ -665,7 +664,6 @@
 
         }() )
       };
-
     } () );
   }( window.jQuery ) );
 
@@ -682,7 +680,7 @@
         window.lu.console( $body ).info( 'ready' );
       } );
 
-      window.lu.decorate( $body, ['Abstract'] );
+      window.lu.decorate( $body, ['Abstract2'] );
       window.lu.execute( $body );
       window.lu.console( $body ).info( 'executing' );
 
