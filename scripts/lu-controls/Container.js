@@ -24,7 +24,7 @@ Container = Class.create( Abstract, ( function(){
 
   return {
     /**
-     * PTClass constructor 
+     * PTClass constructor
      * @method initialize
      * @public
      * @param {Object} $super Pointer to superclass constructor
@@ -267,7 +267,7 @@ Container = Class.create( Abstract, ( function(){
       }
 
       /**
-       * Calls Container.setState on a state event 
+       * Calls Container.setState on a state event
        * @method state
        * @private
        * @event
@@ -281,8 +281,8 @@ Container = Class.create( Abstract, ( function(){
       }
 
       /**
-       * Updates content on an update event 
-       * @method update 
+       * Updates content on an update event
+       * @method update
        * @private
        * @param {Object} event The jQuery Event object
        * @param {String} content The content to set
@@ -308,7 +308,7 @@ Container = Class.create( Abstract, ( function(){
 
       /**
        * Returns the computed height of the Container; result has no units
-       * @method getHeight 
+       * @method getHeight
        * @public
        * @return {Integer} Computed height of the Container (result drops units)
        */
@@ -552,6 +552,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Container );
   } else if( module.exports ){
-   module.exports = Container; 
+   module.exports = Container;
   }
 }

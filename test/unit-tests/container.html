@@ -246,7 +246,7 @@ function run(){
 
   });
 
-  asyncTest('load:URL:Node', function() {
+  asyncTest('load:URL:Node', function(){
     var success = false;
 
     Container.on( 'stated', function( event, $element, states ){
@@ -264,20 +264,20 @@ function run(){
 
   });
 
-  asyncTest('load:Node', function() {
+  asyncTest( 'load:Node', function(){
     var success = false;
 
-    Container.on( 'updated', function( event, $element, states ){
+    Container.on( 'stated', function( event, $element, states ){
       success = ( Container.getContent() === '<code>2b || !2b</code>' );
       if( success ){
         Container.off( 'stated' );
       }
     } );
 
-    Container.trigger( 'load', ['unit-tests/container-load-test-a.html#foo'] );
+    Container.trigger( 'load', ['unit-tests/container-load-test-a.html#lumen'] );
     window.setTimeout( function(){
-        ok( success, 'remote content loaded' );
-        start();
+      ok( success, 'remote content loaded' );
+      start();
     }, 2000 );
 
   });

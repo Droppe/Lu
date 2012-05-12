@@ -188,6 +188,7 @@ Abstract = Class.create( ( function(){
         var store = eventStore[ event ];
 
         $element.lu( 'notify', event, parameters );
+
         if( store && store.method === 'one' ){
           removeEventFromStorage( event );
         }

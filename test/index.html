@@ -45,7 +45,8 @@
   <script src="../aq/aq.js"></script>
 
   <script>
-    require.clearCache();
+    //require.clearCache();//This is broken in inject
+    localStorage.clear();
     require.ensure( ['lu'], function() {
 
       window.AQ.start();
