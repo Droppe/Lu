@@ -1,18 +1,15 @@
+/**
+ * Representation of a button element preconfigured with a 'next' event, also allows repeating events
+ * @class NextRepeat
+ * @constructor
+ * @extends ButtonNext
+ * @require ptclass
+ * @version 0.0.0
+ */
 
 var Class = require( 'class' ),
   NextButton = require( 'lu/Button/Next' ),
   NextRepeatButton;
-
-/**
- * Representation of a button element preconfigured with a 'next' event
- * @class NextButton
- * @constructor
- * @extends Button
- * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance
- * @version 0.0.0
- */
 
 NextRepeatButton = Class.create( NextButton, ( function () {
 
