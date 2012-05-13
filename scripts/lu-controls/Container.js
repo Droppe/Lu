@@ -1,38 +1,134 @@
 /**
- * Contains content and maintains state
- * @class Container
- * @constructor
- * @extends Abstract
- * @requires ptclass
- * @version 0.1.3
- */
+* Contains content and maintains state
+* @class Container
+* @constructor
+* @extends Abstract
+* @version 0.2.5
+*/
 
-var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
+//The Full path is given do to an error in inject :(
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
   Container;
 
-Container = Class.create( Abstract, ( function(){
+Container = Abstract.extend( function( Abstract ){
   var STATE_EVENT = 'state',
     STATED_EVENT = 'stated',
-    STATE_FLAG_PREFIX = 'lu-state-',
     UPDATE_EVENT = 'update',
     UPDATED_EVENT = 'updated',
     LOAD_EVENT = 'load',
     LOADING_STATE = 'loading',
     LOADED_STATE = 'loaded',
-    ERRED_STATE = 'erred';
+    ERRED_STATE = 'erred',
+    /**
+     * Default configuration values
+     * @property defaults
+     * @type Object
+     * @private
+     * @final
+     */
+    defaults = {
+      /**
+       * The default state or states to be applied to the Container.
+       * This can be an Array of strings or comma delimeted string
+       * representing multiple states.
+       * It can also be a string representing a single state
+       * @property states
+       * @type {String|Array}
+       * @default null
+       */
+      states: null,
+      content: null,
+      /**
+       * A URL to be used as a content source.
+       * @property url
+       * @type {String}
+       * @default null
+       */
+      url: null,
+      /**
+       * A CSS selctor for an element to be used as a content source.
+       * @property selector
+       * @type {String}
+       * @default null
+       */
+      selector: null,
+      /**
+       * Set to true if the content should be loaded in an iframe
+       * @property frame
+       * @type {Boolean}
+       * @default false
+       */
+      frame: false,
+      /**
+       * When true the $element's height is set to the content height.
+       * @property autoHeight
+       * @type {Boolean}
+       * @default false
+       */
+      autoHeight: false,
+      /**
+       * When true the $element's width is set to the content width.
+       * @property autoWidth
+       * @type {Boolean}
+       * @default false
+       */
+      autoWidth: false,
+      /**
+       * A selector that specifies a target within the Container to inject content.
+       * @property target
+       * @type {String}
+       * @default null
+       */
+      target: null,
+      prefix: 'lu-state-'
+    };
+
+  function normalizeStates( states ){
+    if( states ){
+      if( typeof states === 'string' ){
+        states = states.replace( ' ', '' ).split( ',' );
+      }
+    }
+    return states;
+  }
+
+  /**
+   * Add Classes representing the current states to $element and remove
+   * invalid states
+   * @method applyState
+   * @private
+   * @param {Object} event The jQuery Event object
+   * @param {Array} states an array of states to set
+   * @return {Function} Container.setState
+   */
+  function applyState( $element, states, prefix ){
+    var removed = [],
+      classes = [],
+      classAttr = $element.attr( 'class' ) || '';
+
+    _.each( classAttr.split( ' ' ), function( clss, index ){
+      if( clss.indexOf( prefix ) > -1 ){
+        removed.push( clss );
+      }
+    } );
+
+    _.each( states, function( clss, index ){
+      classes.push( prefix + clss );
+    } );
+
+    $element.removeClass( removed.join( ' ' ) ).addClass( classes.join( ' ' ) );
+  }
 
   return {
     /**
-     * PTClass constructor
-     * @method initialize
+     * Constructor
+     * @method init
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by
      * the component
      * @param {Object} settings Configuration settings
      */
-    initialize: function( $super, $element, settings ){
+    init: function( $element, settings ){
       /**
        * Instance of Container
        * @property Container
@@ -40,77 +136,6 @@ Container = Class.create( Abstract, ( function(){
        * @private
        */
       var Container = this,
-        /**
-         * Default configuration values
-         * @property defaults
-         * @type Object
-         * @private
-         * @final
-         */
-        defaults = {
-          /**
-           * The default state or states to be applied to the Container.
-           * This can be an Array of strings or comma delimeted string
-           * representing multiple states.
-           * It can also be a string representing a single state
-           * @property states
-           * @type {String|Array}
-           * @default null
-           */
-          states: null,
-          /**
-           * The default state or states to be applied to the Container.
-           * This can be an Array of strings or comma delimeted string
-           * representing multiple states. It can also be a string
-           * representing a single state.
-           * @property content
-           * @type {String}
-           * @default null
-           */
-          content: null,
-          /**
-           * A URL to be used as a content source.
-           * @property url
-           * @type {String}
-           * @default null
-           */
-          url: null,
-          /**
-           * A CSS selctor for an element to be used as a content source.
-           * @property selector
-           * @type {String}
-           * @default null
-           */
-          selector: null,
-          /**
-           * Set to true if the content should be loaded in an iframe
-           * @property frame
-           * @type {Boolean}
-           * @default false
-           */
-          frame: false,
-          /**
-           * When true the $element's height is set to the content height.
-           * @property autoHeight
-           * @type {Boolean}
-           * @default false
-           */
-          autoHeight: false,
-          /**
-           * When true the $element's width is set to the content width.
-           * @property autoWidth
-           * @type {Boolean}
-           * @default false
-           */
-          autoWidth: false,
-          /**
-           * A selector that specifies a target within the Container to inject content.
-           * @property target
-           * @type {String}
-           * @default null
-           */
-          target: null
-        },
         /**
          * The content of the container
          * @property content
@@ -145,59 +170,20 @@ Container = Class.create( Abstract, ( function(){
          * @type String
          * @private
          */
-        classAttr = $element.attr( 'class' ) || '';
+         classAttr = $element.attr( 'class' ) || '';
 
-      //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      //Normalize states to array
-      if( settings.states ){
-        if( typeof settings.states === 'string' ){
-          //states can be a comma deliminated string
-          states = states.split( ',' );
-        } else if( _.isArray( settings.states ) ){
-          //yea! it's somthing we can work with!
-          states = settings.states;
-        }
-      }
+      Abstract.init.call( this, $element, settings );
 
-      //Set the target
+      states = normalizeStates( states );
+
       if( settings.target ){
         $target = $element.find( settings.target );
       } else {
         $target = $element;
       }
 
-      //CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
-
-      /**
-       * Add Classes representing the current states to $element and remove
-       * invalid states
-       * @method applyState
-       * @private
-       * @param {Object} event The jQuery Event object
-       * @param {Array} states an array of states to set
-       * @return {Function} Container.setState
-       */
-      function applyState(){
-        var removed = [],
-          classes = [];
-
-        classAttr = $element.attr( 'class' ) || '';
-
-        _.each( classAttr.split( ' ' ), function( clss, index ){
-          if( clss.indexOf( STATE_FLAG_PREFIX ) > -1 ){
-            removed.push( clss );
-          }
-        } );
-
-        _.each( states, function( clss, index ){
-          classes.push( STATE_FLAG_PREFIX + clss );
-        } );
-
-        $element.removeClass( removed.join( ' ' ) ).addClass( classes.join( ' ' ) );
-      }
 
       /**
        * Loads content and then triggers an update event. Called on load event.
@@ -265,7 +251,7 @@ Container = Class.create( Abstract, ( function(){
       }
 
       /**
-       * Calls Container.setState on a state event
+       * Updates states on a state event
        * @method state
        * @private
        * @param {Object} event The jQuery Event object
@@ -384,7 +370,7 @@ Container = Class.create( Abstract, ( function(){
 
         states = value;
 
-        applyState();
+        applyState( $element, states, settings.prefix );
         Container.trigger( STATED_EVENT, [$element, states] );
 
         return Container;
@@ -405,7 +391,7 @@ Container = Class.create( Abstract, ( function(){
         }
         if( _.difference( value, states ).length > 0 ){
           states = _.union( states, value );
-          applyState();
+          applyState( $element, states, settings.prefix );
           Container.trigger( STATED_EVENT, [$element, states] );
         }
         return Container;
@@ -430,7 +416,7 @@ Container = Class.create( Abstract, ( function(){
 
         if( intersection.length > 0 ){
           states = _.without( states, value );
-          applyState();
+          applyState( $element, states, settings.prefix );
           Container.trigger( STATED_EVENT, [$element, states] );
         }
 
@@ -505,7 +491,6 @@ Container = Class.create( Abstract, ( function(){
         return Container.setContent( value + content );
       };
 
-      //Populate initial content
       if( settings.url ){
         //Load content from url
         Container.trigger( 'load' );
@@ -516,8 +501,8 @@ Container = Class.create( Abstract, ( function(){
 
       //Sets default states specified in the class attribute
       _.each( classAttr.split( ' ' ), function( clss, index ){
-        if( clss.indexOf( STATE_FLAG_PREFIX ) > -1 ){
-          Container.addState( clss.replace( STATE_FLAG_PREFIX, '' ) );
+        if( clss.indexOf( settings.prefix ) > -1 ){
+          Container.addState( clss.replace( settings.prefix, '' ) );
         }
       } );
 
@@ -539,10 +524,9 @@ Container = Class.create( Abstract, ( function(){
 
       //Bind load event to load
       Container.on( LOAD_EVENT, load );
-
     }
   };
-}() ) );
+} );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

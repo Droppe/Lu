@@ -680,7 +680,7 @@
         window.lu.console( $body ).info( 'ready' );
       } );
 
-      window.lu.decorate( $body, ['Abstract2'] );
+      window.lu.decorate( $body, ['Abstract'] );
       window.lu.execute( $body );
       window.lu.console( $body ).info( 'executing' );
 

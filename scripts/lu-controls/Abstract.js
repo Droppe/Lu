@@ -6,9 +6,9 @@ var Class = require( 'class' ),
  * @class Abstract
  * @constructor
  * @require ptclass
- * @version 0.1.0
+ * @version 0.2.5
  */
-Abstract = Class.extend( function( base ){
+Abstract = Class.extend( function( Class ){
   /**
    * Default configuration values
    * @property defaults
@@ -69,13 +69,15 @@ Abstract = Class.extend( function( base ){
      */
     init: function( $element, settings ){
       //Set up observers and notifiers
-      var $observe = $( settings.observe ),
-          $notify = $( settings.notify );
+      var $observe,
+        $notify;
+
+        console.log( arguments );
 
       _.defaults( settings, defaults );
 
-      //Reverse Notification
-      $notify = $notify.add( $element.lu( 'getDescendants' ) );
+      $observe = $( settings.observe );
+      $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
 
       if( $observe.length ){
         this.observe( $observe );

@@ -1,13 +1,13 @@
 ( function( window ){
   // Stores whether the object is being initialized, and thus not
   // run the <init> function, or not.
-  var initializing = false,
-    // The base Class implementation
-    Class = function(){};
+  var initializing = false;
+
+  // The base Class implementation
+  function Class(){};
 
   // Create a new Class that inherits from this class
   Class.extend = function( fn ){
-
     // Keep a reference to the current prototye
     var base = this.prototype,
       // Invoke the function which will return an object literal used to define
@@ -22,7 +22,7 @@
       function constructor(){
         if( !initializing && this.init ){
           // All construction is done in the init method
-          this.init.apply(this, arguments);
+          this.init.apply( this, arguments );
         }
       }
 

@@ -205,8 +205,7 @@ function run(){
   asyncTest('load:Path', function() {
     var success = false;
 
-    Container.on( 'stated', function( event, $element, states ) {
-      console.log('here');
+    Container.on( 'stated', function( event, $element, states ){
 
       success = ( _.indexOf( states, 'loaded' ) > -1 && Container.getContent() === '<div>BOOYAHSHAKA!!!<div id="foo">1337 - W00T!</div></div>' );
       if( success ){
@@ -264,17 +263,18 @@ function run(){
 
   });
 
-  asyncTest( 'load:Node', function(){
+  test( 'load:Node', function(){
     var success = false;
 
     Container.on( 'stated', function( event, $element, states ){
+      console( Container.getContent() );
       success = ( Container.getContent() === '<code>2b || !2b</code>' );
       if( success ){
         Container.off( 'stated' );
       }
     } );
 
-    Container.trigger( 'load', ['unit-tests/container-load-test-a.html#lumen'] );
+    Container.trigger( 'load', ['#lumen'] );
     window.setTimeout( function(){
       ok( success, 'remote content loaded' );
       start();
