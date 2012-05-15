@@ -3,7 +3,7 @@
 * @class Container
 * @constructor
 * @extends Abstract
-* @version 0.2.5
+* @version 0.2.4
 */
 
 //The Full path is given do to an error in inject :(
@@ -170,20 +170,23 @@ Container = Abstract.extend( function( Abstract ){
          * @type String
          * @private
          */
-         classAttr = $element.attr( 'class' ) || '';
+         classAttr = $element.attr( 'class' ) || '',
+         prefix,
+         target;
 
       _.defaults( settings, defaults );
 
       Abstract.init.call( this, $element, settings );
 
       states = normalizeStates( states );
+      prefix = settings.prefix;
+      target = settings.target;
 
-      if( settings.target ){
-        $target = $element.find( settings.target );
+      if( target ){
+        $target = $element.find( target );
       } else {
         $target = $element;
       }
-
 
       /**
        * Loads content and then triggers an update event. Called on load event.
@@ -357,6 +360,7 @@ Container = Abstract.extend( function( Abstract ){
        * @return {Object} Container
        */
       Container.setState = function( value ){
+        console.log ( value );
         if( typeof value === 'string' ){
           value = value.split( ',' ).sort();
         }
@@ -370,7 +374,7 @@ Container = Abstract.extend( function( Abstract ){
 
         states = value;
 
-        applyState( $element, states, settings.prefix );
+        applyState( $element, states, prefix );
         Container.trigger( STATED_EVENT, [$element, states] );
 
         return Container;
@@ -391,8 +395,8 @@ Container = Abstract.extend( function( Abstract ){
         }
         if( _.difference( value, states ).length > 0 ){
           states = _.union( states, value );
-          applyState( $element, states, settings.prefix );
-          Container.trigger( STATED_EVENT, [$element, states] );
+          applyState( $element, states, prefix );
+          Container.trigger( STATED_EVENT, [$element, settings] );
         }
         return Container;
       };
@@ -416,8 +420,8 @@ Container = Abstract.extend( function( Abstract ){
 
         if( intersection.length > 0 ){
           states = _.without( states, value );
-          applyState( $element, states, settings.prefix );
-          Container.trigger( STATED_EVENT, [$element, states] );
+          applyState( $element, states, prefix );
+          Container.trigger( STATED_EVENT, [$element, states, settings] );
         }
 
         return Container;
@@ -501,8 +505,8 @@ Container = Abstract.extend( function( Abstract ){
 
       //Sets default states specified in the class attribute
       _.each( classAttr.split( ' ' ), function( clss, index ){
-        if( clss.indexOf( settings.prefix ) > -1 ){
-          Container.addState( clss.replace( settings.prefix, '' ) );
+        if( clss.indexOf( prefix ) > -1 ){
+          Container.addState( clss.replace( prefix, '' ) );
         }
       } );
 

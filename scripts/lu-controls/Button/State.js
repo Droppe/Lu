@@ -16,7 +16,7 @@ StateButton = Class.create( Button, ( function (){
    // RETURN METHODS OBJECT
    return {
      /**
-      * PTClass constructor 
+      * PTClass constructor
       * @method initialize
       * @public
       * @param {Object} $super Pointer to superclass constructor
@@ -59,7 +59,7 @@ StateButton = Class.create( Button, ( function (){
        $super( $element, settings );
      }
   };
-  
+
 }() ) );
 
 //Export to Common JS Loader
@@ -67,6 +67,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( StateButton );
   } else if( module.exports ){
-   module.exports = StateButton; 
+   module.exports = StateButton;
   }
 }

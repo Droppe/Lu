@@ -72,8 +72,6 @@ Abstract = Class.extend( function( Class ){
       var $observe,
         $notify;
 
-        console.log( arguments );
-
       _.defaults( settings, defaults );
 
       $observe = $( settings.observe );

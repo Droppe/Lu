@@ -305,7 +305,8 @@
             Deferred.done( function(){
               _.each( lu.getControls( $item ), function( item, index ){
                 //Filter out Controls that don't listen for the event
-                if( _.indexOf( item.events(), event ) > -1 ){
+                events = ( item.events ) ? item.events() : [];
+                if( _.indexOf( events, event ) > -1 ){
                   item.trigger( event, parameters );
                 }
               } );
