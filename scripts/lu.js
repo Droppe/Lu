@@ -89,6 +89,9 @@
       return $element;
     }
 
+    function escapeJson( string ){
+      return string.replace(/[\\]/g, '\\\\').replace(/[\"]/g, '\\\"').replace(/[\/]/g, '\\/').replace(/[\b]/g, '\\b').replace(/[\f]/g, '\\f').replace(/[\n]/g, '\\n').replace(/[\r]/g, '\\r').replace(/[\t]/g, '\\t');
+    }
 
     //Public Methods
 
@@ -403,10 +406,12 @@
       keys = _.union( nodeKeys, keys );
 
       if( settings ){
-        result = $element.attr( ATTR, keys.join( ' ' ) ).attr( ATTR + '-config', JSON.stringify( settings ) );
+        result = $element.attr( ATTR, keys.join( ' ' ) );
+        $element.attr( ATTR + '-config', escapeJson( JSON.stringify( settings ) ) );
       } else {
         result = $element.attr( ATTR, keys.join( ' ' ) );
       }
+
       return result;
     };
 

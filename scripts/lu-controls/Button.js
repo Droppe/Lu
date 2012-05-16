@@ -5,7 +5,7 @@
  * @extends Abstract
  * @require ptclass, Abstract
  * @version 0.1.0
- */ 
+ */
 
 var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
@@ -24,13 +24,13 @@ Button = Class.create( Abstract, ( function(){
   // RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor 
+     * PTClass constructor
      * @method initialize
      * @public
      * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
-     */    
+     */
     initialize: function( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
@@ -59,14 +59,14 @@ Button = Class.create( Abstract, ( function(){
          */
         item,
         /**
-         * 
+         *
          * @property index
          * @type Number
          * @private
          */
         index,
         /**
-         * 
+         *
          * @property states
          * @type Array
          * @private
@@ -81,8 +81,8 @@ Button = Class.create( Abstract, ( function(){
         action,
         /**
          * Flag to denote whether the button component is a button or anchor element
-         * @property isAnchor 
-         * @type Boolean 
+         * @property isAnchor
+         * @type Boolean
          * @private
          */
         isAnchor = $element.is( 'a' );
@@ -109,34 +109,34 @@ Button = Class.create( Abstract, ( function(){
       // === PRIVATE METHODS ===
 
       /**
-       * Setups accessibility for the button.  If the button is a "link" then it will have an ARIA role of button and 
-       * will be selectable by the space bar.  
-       * @method setupAlly 
+       * Setups accessibility for the button.  If the button is a "link" then it will have an ARIA role of button and
+       * will be selectable by the space bar.
+       * @method setupAlly
        * @private
        * @return {Void}
        */
       function setupAlly(){
-        
+
         if ( isAnchor ){
-          // If "role" exists, do nothing... 
+          // If "role" exists, do nothing...
           if ( !$element.attr( ARIA_ROLE ) ){
             $element.attr( ARIA_ROLE, 'button' );
           }
 
-          $element.on( 'keyup', function( event ){ 
+          $element.on( 'keyup', function( event ){
             // Pressed space bar
-            if ( event.keyCode === 32 ){   
+            if ( event.keyCode === 32 ){
               Button.trigger( settings.on );
-            } 
+            }
           } );
-        }  
+        }
       }
 
       // === PRIVILEDGED METHODS ===
 
       /**
        * Disables the Button by adding a disabled attribute (inputs and buttons only) and the class lu-disabled
-       * @method disable 
+       * @method disable
        * @public
        * @return {Void}
        */
@@ -149,7 +149,7 @@ Button = Class.create( Abstract, ( function(){
 
       /**
        * Enables the Button by removing a disabled attribute (inputs and buttons only) and the class lu-disabled
-       * @method disable 
+       * @method disable
        * @public
        * @return {Void}
        */
@@ -161,7 +161,7 @@ Button = Class.create( Abstract, ( function(){
       };
 
       // === EVENT BINDINGS ===
-      
+
       Button.on( settings.on, function( event ){
         event.preventDefault();
 
@@ -196,11 +196,11 @@ Button = Class.create( Abstract, ( function(){
             break;
         }
         if( action !== undefined ){
-          Button.trigger( action, parameters ); 
+          Button.trigger( action, parameters );
         }
       } );
 
-      // Setup accessibility - ally 
+      // Setup accessibility - ally
       setupAlly();
       Button.enable();
 
@@ -214,6 +214,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Button );
   } else if( module.exports ){
-    module.exports = Button; 
+    module.exports = Button;
   }
 }

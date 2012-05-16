@@ -292,20 +292,20 @@ ButtonFactory = Class.extend( function( Class ){
         } );
       };
     },
-    select: function( on, item, idx ){
+    select: function( on, item ){
       return function( Button ){
-        Button.on( SELECTED_STATE, function( event, $subject, $item, index ){
-          event.stopPropagation();
-          if( $item.is( item ) || index === idx ){
-            Button.disable();
-          } else {
-            Button.enable();
-          }
-        } );
+        // Button.on( SELECTED_STATE, function( event, $subject, $item, index ){
+        //   event.stopPropagation();
+        //   if( $item.is( item ) ){
+        //     Button.disable();
+        //   } else {
+        //     Button.enable();
+        //   }
+        // } );
         Button.on( on, function( event ){
           event.preventDefault();
           focus( Button.$element );
-          Button.trigger( 'select', item, index );
+          Button.trigger( 'select', item );
         } );
       };
     },
@@ -355,7 +355,6 @@ ButtonFactory = Class.extend( function( Class ){
           }
 
           decorator = decorator( settings.on, settings.states, settings.index );
-
           break;
         case 'select':
           if( !settings.item && settings.item !== 0 ){
@@ -364,14 +363,18 @@ ButtonFactory = Class.extend( function( Class ){
             } else if ( $element.is( 'a' ) ){
               controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
             }
-
             if( controls && controls !== '' ){
               settings.item = $( '#' + controls );
             } else {
-              settings.item = $( '> li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' ) );
+              if( params[0] || params[0] === 0 ){
+                settings.item = params[0];
+              } else {
+                settings.item = $( '> li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' ) );
+              }
             }
           }
-          decorator = decorator( settings.on );
+          _.defaults( settings, defaults );
+          decorator = decorator( settings.on, settings.item );
           break;
         default:
           _.defaults( settings, defaults );

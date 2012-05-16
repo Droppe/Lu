@@ -16,17 +16,90 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
+  <style type="text/css">
+    #list {
+      display: block;
+      width: 200px;
+      height: 150px;
+      overflow: hidden;
+      margin: 50px auto;
+      border: 3px solid #333;
+      background-color: #cde;
+      padding: 0;
+    }
+    #list li {
+      display: none;
+      float: left;
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+      line-height: 150px;
+    }
+    #list .lu-state-selected {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
 
-  <div data-lu="Container">
-    <a href="#hello" data-lu="Button2" data-lu-config="{
-      Button2: {
-        __params__: ['state']
-      }
-    }">Press Firmly</a>
-  </div>
+  <ul id="list" data-lu="List2">
+    <li class="lu-state-selected">Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+    <li>Item 4</li>
+  </ul>
+
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['previous'],
+      notify: '#list'
+    }
+  }">Previous</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['first'],
+      notify: '#list'
+    }
+  }">First</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 0],
+      notify: '#list'
+    }
+  }">1</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 1],
+      notify: '#list'
+    }
+  }">2</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 2],
+      notify: '#list'
+    }
+  }">3</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 3],
+      notify: '#list'
+    }
+  }">4</button>
+  <button data-lu="Button2" data-lu-config="{
+  Button2: {
+    __params__: ['last'],
+    notify: '#list'
+  }
+  }">Last</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['next'],
+      notify: '#list'
+    }
+  }">Next</button>
 
   <!-- Bootstrap:Util -->
   <script src="scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>

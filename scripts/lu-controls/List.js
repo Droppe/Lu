@@ -12,7 +12,7 @@ var Class = require( 'class' ),
   Abstract = require( 'lu/Abstract' ),
   List;
 
- 
+
 List =  Class.create( Abstract, ( function (){
 
   //CONSTANTS
@@ -38,16 +38,16 @@ List =  Class.create( Abstract, ( function (){
     DIRECTION_FLAG_REVERSE = 'lu-direction-reverse',
     ITEMS_FLAG = 'lu-items';
 
-  //RETURN METHODS OBJECT 
+  //RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor 
+     * PTClass constructor
      * @method initialize
      * @public
      * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
-     */    
+     */
     initialize: function ( $super, $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
@@ -56,7 +56,7 @@ List =  Class.create( Abstract, ( function (){
        * @property List
        * @type Object
        * @private
-       */  
+       */
       var List = this,
 
         /**
@@ -69,7 +69,7 @@ List =  Class.create( Abstract, ( function (){
         defaults = {
            /**
             * Denotes the behavior of left, right, top and down arrow keys.
-            * @property direction 
+            * @property direction
             * @default 'horizontal'
             * @type String
             * @final
@@ -92,7 +92,7 @@ List =  Class.create( Abstract, ( function (){
         direction = 'forward',
         transitioning = false;
 
-      $element.addClass( DIRECTION_FLAG_FORWARD );   
+      $element.addClass( DIRECTION_FLAG_FORWARD );
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
@@ -103,30 +103,30 @@ List =  Class.create( Abstract, ( function (){
 
       /**
        * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
-       * arrows.  Left and up correspond to action "previous" and right and next correspond to "next". 
+       * arrows.  Left and up correspond to action "previous" and right and next correspond to "next".
        * @method handleKeyup
        * @private
        * @param {Event} event An event object
        * @param {Object} item An object or a number
        * @return {Void}
-       */  
+       */
       function handleKeyup( event ){
         var keyCode = event.keyCode,
             item = $( event.target );
 
         // A "vertical" list orentation means that the up and down arrow keys work
-        if ( settings.orientation === VERTICAL ){  
+        if ( settings.orientation === VERTICAL ){
           switch ( keyCode ){
             case 38: // Up arrow
               List.previous();
               break;
-            case 40: // Down arrow 
+            case 40: // Down arrow
               List.next();
             default:
               break;
           }
         } else {
-          // By default, list orientation is "horizontal" and left and right arrows work 
+          // By default, list orientation is "horizontal" and left and right arrows work
           switch ( keyCode ){
             case 37: // Left arrow
               List.previous();
@@ -149,7 +149,6 @@ List =  Class.create( Abstract, ( function (){
           default:
             break;
         }
-
       }
 
       //Scan for items from the provided selector, or default to the children of the container.
@@ -185,7 +184,7 @@ List =  Class.create( Abstract, ( function (){
        * @public
        * @param {Array} A jQuery Collection of $items to append
        * @return {Object} List
-       */  
+       */
       List.append = function( $item ){
         $items.parent().append( $item );
         return List;
@@ -197,7 +196,7 @@ List =  Class.create( Abstract, ( function (){
        * @public
        * @param {Array} A jQuery Collection of $items to remove
        * @return {Object} List
-       */  
+       */
       List.remove = function( $item ){
         $( $item, $items ).remove();
         return List;
@@ -209,7 +208,7 @@ List =  Class.create( Abstract, ( function (){
        * @public
        * @param {Integer|String|Object} item The index of the item to select, a css selector, or a JQuery collection containting the item.
        * @return {Object} List
-       */ 
+       */
       List.select = function( item ){
         var $item,
           $links,
@@ -293,7 +292,7 @@ List =  Class.create( Abstract, ( function (){
         }
 
         return List;
-        
+
       };
 
       /**
@@ -312,11 +311,11 @@ List =  Class.create( Abstract, ( function (){
       };
 
       /**
-       * Selects the previous item in the list. 
+       * Selects the previous item in the list.
        * @method previous
        * @public
        * @return {Object} List
-       */  
+       */
       List.previous = function(){
         if( List.hasPrevious() ){
           List.select( List.index() - 1 );
@@ -327,7 +326,7 @@ List =  Class.create( Abstract, ( function (){
       };
 
       /**
-       * Selects the last item in the list. 
+       * Selects the last item in the list.
        * @method last
        * @public
        * @return {Object} List
@@ -338,11 +337,11 @@ List =  Class.create( Abstract, ( function (){
       };
 
       /**
-       * Selects the first item in the list. 
+       * Selects the first item in the list.
        * @method first
        * @public
        * @return {Object} List
-       */  
+       */
       List.first = function(){
         List.select( 0 );
         return List;
@@ -383,23 +382,23 @@ List =  Class.create( Abstract, ( function (){
        * @method current
        * @public
        * @return {Object} JQuery object-reference to the selected item
-       */  
+       */
       List.current = function(){
         return $items.eq( List.index() );
       };
 
       /**
-       * Returns the array of list items. 
+       * Returns the array of list items.
        * @method items
        * @public
        * @return {Array} The array of list items
-       */  
+       */
       List.items = function(){
         return $items;
       };
 
       /**
-       * Returns the number of items in the list. 
+       * Returns the number of items in the list.
        * @method size
        * @public
        * @return {Number} The number of items in the list
@@ -421,7 +420,7 @@ List =  Class.create( Abstract, ( function (){
 
           // We need to ensure that [item] is a descendant of our List
           item = $element.find( item );
-          
+
           // Now check for empty JQuery object
           if ( item.length < 1){
             item = $( event.target ).closest( 'li' ).index();
@@ -430,7 +429,7 @@ List =  Class.create( Abstract, ( function (){
           List.select( item );
 
         }
-        
+
       } );
       List.on( NEXT_EVENT, function( event ){
         event.stopPropagation();
@@ -470,6 +469,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( List );
   } else if( module.exports ){
-   module.exports = List; 
+   module.exports = List;
   }
 }

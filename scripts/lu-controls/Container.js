@@ -8,6 +8,7 @@
 
 //The Full path is given do to an error in inject :(
 var Abstract = require( '/scripts/lu-controls/Abstract' ),
+  StateDecorator = require( '/scripts/lu-decorators/State' ),
   Container;
 
 Container = Abstract.extend( function( Abstract ){
@@ -27,16 +28,6 @@ Container = Abstract.extend( function( Abstract ){
      * @final
      */
     defaults = {
-      /**
-       * The default state or states to be applied to the Container.
-       * This can be an Array of strings or comma delimeted string
-       * representing multiple states.
-       * It can also be a string representing a single state
-       * @property states
-       * @type {String|Array}
-       * @default null
-       */
-      states: null,
       content: null,
       /**
        * A URL to be used as a content source.
@@ -79,45 +70,8 @@ Container = Abstract.extend( function( Abstract ){
        * @type {String}
        * @default null
        */
-      target: null,
-      prefix: 'lu-state-'
+      target: null
     };
-
-  function normalizeStates( states ){
-    if( states ){
-      if( typeof states === 'string' ){
-        states = states.replace( ' ', '' ).split( ',' );
-      }
-    }
-    return states;
-  }
-
-  /**
-   * Add Classes representing the current states to $element and remove
-   * invalid states
-   * @method applyState
-   * @private
-   * @param {Object} event The jQuery Event object
-   * @param {Array} states an array of states to set
-   * @return {Function} Container.setState
-   */
-  function applyState( $element, states, prefix ){
-    var removed = [],
-      classes = [],
-      classAttr = $element.attr( 'class' ) || '';
-
-    _.each( classAttr.split( ' ' ), function( clss, index ){
-      if( clss.indexOf( prefix ) > -1 ){
-        removed.push( clss );
-      }
-    } );
-
-    _.each( states, function( clss, index ){
-      classes.push( prefix + clss );
-    } );
-
-    $element.removeClass( removed.join( ' ' ) ).addClass( classes.join( ' ' ) );
-  }
 
   return {
     /**
@@ -157,29 +111,13 @@ Container = Abstract.extend( function( Abstract ){
          * @private
          */
         cache = {},
-        /**
-         * An array of string representing the current state(s)
-         * @property states
-         * @type Array
-         * @private
-         */
-        states = [],
-        /**
-         * A placeholder for the classes on element
-         * @property classAttr
-         * @type String
-         * @private
-         */
-         classAttr = $element.attr( 'class' ) || '',
-         prefix,
-         target;
+        target;
 
       _.defaults( settings, defaults );
 
       Abstract.init.call( this, $element, settings );
+      Container.decorate( StateDecorator );
 
-      states = normalizeStates( states );
-      prefix = settings.prefix;
       target = settings.target;
 
       if( target ){
@@ -245,25 +183,11 @@ Container = Abstract.extend( function( Abstract ){
 
           },
           failure: function(){
-            Container.removeState( LOADING_STATE );
-            Container.addState( ERRED_STATE );
+            Container.removeState( LOADING_STATE ).addState( ERRED_STATE );
           }
         } );
 
         return Container;
-      }
-
-      /**
-       * Updates states on a state event
-       * @method state
-       * @private
-       * @param {Object} event The jQuery Event object
-       * @param {Array} states an array of states to set
-       * @return {Function} Container.setState
-       */
-      function state( event, states ){
-        event.stopPropagation();
-        return Container.setState( states );
       }
 
       /**
@@ -341,104 +265,6 @@ Container = Abstract.extend( function( Abstract ){
       };
 
       /**
-       * Returns the state(s) of the Container
-       * @method getState
-       * @public
-       * @return {Array} an Array of strings representing the state(s)
-       */
-      Container.getState = function(){
-        return states;
-      };
-
-      /**
-       * Sets the state(s) of the Container replacing other states
-       * @method setState
-       * @param {Array|String} value This can be an Array of strings or comma
-       * delimeted string representing multiple states. It can also be
-       * a string representing a single state
-       * @public
-       * @return {Object} Container
-       */
-      Container.setState = function( value ){
-        console.log ( value );
-        if( typeof value === 'string' ){
-          value = value.split( ',' ).sort();
-        }
-
-        value = value.sort();
-        states = states.sort();
-
-        if( _.isEqual( value, states ) ){
-          return Container;
-        }
-
-        states = value;
-
-        applyState( $element, states, prefix );
-        Container.trigger( STATED_EVENT, [$element, states] );
-
-        return Container;
-      };
-
-      /**
-       * Adds a state or states to the Container
-       * @method addState
-       * @param {Array|String} value This can be an Array of strings or comma
-       * delimeted string representing multiple states. It can also be
-       * a string representing a single state
-       * @public
-       * @return {Object} Container
-       */
-      Container.addState = function( value ){
-        if( typeof value === 'string' ){
-          value = value.split( ',' );
-        }
-        if( _.difference( value, states ).length > 0 ){
-          states = _.union( states, value );
-          applyState( $element, states, prefix );
-          Container.trigger( STATED_EVENT, [$element, settings] );
-        }
-        return Container;
-      };
-
-      /**
-       * Removes the state(s) from the Container
-       * @method addState
-       * @param {Array|String} value This can be an Array of strings or comma
-       * delimeted string representing multiple states. It can also be
-       * a string representing a single state
-       * @public
-       * @return {Object} Container
-       */
-      Container.removeState = function( value ){
-        var intersection;
-        if( typeof value === 'string' ){
-          value = value.split( ',' );
-        }
-
-        intersection = _.intersection( states, value );
-
-        if( intersection.length > 0 ){
-          states = _.without( states, value );
-          applyState( $element, states, prefix );
-          Container.trigger( STATED_EVENT, [$element, states, settings] );
-        }
-
-        return Container;
-      };
-
-      /**
-       * Checks to see if the state has been applied
-       * @method hasState
-       * @param {String} The state to check
-       * @public
-       * @return {Boolean} True if the state has been applied.
-       */
-      Container.hasState = function( value ){
-        return ( _.indexOf( states, value ) > -1 );
-      };
-
-      /**
        * Returns the contents of the Container
        * @method getContent
        * @public
@@ -503,13 +329,6 @@ Container = Abstract.extend( function( Abstract ){
         content = $element.html();
       }
 
-      //Sets default states specified in the class attribute
-      _.each( classAttr.split( ' ' ), function( clss, index ){
-        if( clss.indexOf( prefix ) > -1 ){
-          Container.addState( clss.replace( prefix, '' ) );
-        }
-      } );
-
       //sets the height of the container automagically if autoHeight is set to true.
       if( settings.autoHeight ){
         Container.setHeight( Container.getHeight() );
@@ -519,9 +338,6 @@ Container = Abstract.extend( function( Abstract ){
       if( settings.autoWidth ){
         Container.setWidth( Container.getWidth() );
       }
-
-      //Bind state event to state
-      Container.on( STATE_EVENT, state );
 
       //Bind update event to update
       Container.on( UPDATE_EVENT, update );
