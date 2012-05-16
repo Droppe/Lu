@@ -29,7 +29,7 @@ Container = Abstract.extend( function( Abstract ){
     defaults = {
       /**
        * The default state or states to be applied to the Container.
-       * This can be an Array of strings or comma delimeted string
+       * This can be an Array of strings or comma-delimited string
        * representing multiple states.
        * It can also be a string representing a single state
        * @property states
@@ -360,7 +360,6 @@ Container = Abstract.extend( function( Abstract ){
        * @return {Object} Container
        */
       Container.setState = function( value ){
-        console.log ( value );
         if( typeof value === 'string' ){
           value = value.split( ',' ).sort();
         }
@@ -384,7 +383,7 @@ Container = Abstract.extend( function( Abstract ){
        * Adds a state or states to the Container
        * @method addState
        * @param {Array|String} value This can be an Array of strings or comma
-       * delimeted string representing multiple states. It can also be
+       * delimited string representing multiple states. It can also be
        * a string representing a single state
        * @public
        * @return {Object} Container
