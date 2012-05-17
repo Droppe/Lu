@@ -3,16 +3,16 @@
  * @class Tabs
  * @constructor
  * @extends Abstract
- * @requires ptclass
+ * @requires class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
+  Abstract = require( '/scripts/lu-controls/Abstract' ),
   Tabs;
 
-Tabs = Class.create( Abstract, ( function () {
+Tabs = Class.extend( function (Abstract) {
 
   var SELECT_EVENT = 'select',
     SELECTED_EVENT = 'selected',
@@ -28,11 +28,10 @@ Tabs = Class.create( Abstract, ( function () {
      * PTClass constructor
      * @method initialize
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */
-    initialize: function ( $super, $element, settings ) {
+    init: function ( $element, settings ) {
 
       /**
        * Instance of Tabs
@@ -145,7 +144,7 @@ Tabs = Class.create( Abstract, ( function () {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      Abstract.call.init( this, $element, settings );
 
       // Initialize a bunch of stuff for the tabs!
       tabInit();
@@ -173,7 +172,7 @@ Tabs = Class.create( Abstract, ( function () {
 
   };
 
-}() ) );
+} );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ) {
