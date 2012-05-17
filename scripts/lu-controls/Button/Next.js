@@ -3,16 +3,16 @@
  * @class NextButton
  * @constructor
  * @extends Button
- * @require ptclass
+ * @require class
  * @version 0.1.0
  */
 
 var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
+  Button = require( '/scripts/lu-controls/Button' ),
   NextButton;
 
 
-NextButton = Class.create( Button, ( function (){
+NextButton = Class.extend( function (Button) {
 
   var MAXED_EVENT = 'maxed',
     SELECTED_EVENT = 'selected',
@@ -25,14 +25,13 @@ NextButton = Class.create( Button, ( function (){
   // RETURN METHODS OBJECT
   return {
    /**
-    * PTClass constructor 
-    * @method initialize
+    * Class constructor 
+    * @method init
     * @public
-    * @param {Object} $super Pointer to superclass constructor
     * @param {Object} $element JQuery object for the element wrapped by the component
     * @param {Object} settings Configuration settings
     */    
-    initialize: function ( $super, $element, settings ){
+    init: function ( $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -53,13 +52,18 @@ NextButton = Class.create( Button, ( function (){
          defaults = {
            action: 'next'
          },
+         /**
+          * Is Playing flag
+          * @property playing
+          * @type Boolean
+          */
          playing = false;
 
       // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      Button.call.init( this, $element, settings );
 
       NextButton.on( SELECTED_EVENT, function( event ){
         event.stopPropagation();
@@ -102,7 +106,7 @@ NextButton = Class.create( Button, ( function (){
 
     }
   };
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

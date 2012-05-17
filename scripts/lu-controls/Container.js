@@ -210,7 +210,6 @@ Container = Abstract.extend( function( Abstract ){
           explodedURL = undefined;
         }
 
-
         explodedURL = explodedURL || _.explodeURL( url );
 
         if( !explodedURL.authority && !explodedURL.path && !explodedURL.extension && explodedURL.fragment ){
@@ -226,29 +225,31 @@ Container = Abstract.extend( function( Abstract ){
         Container.removeState( LOADED_STATE );
         Container.addState( LOADING_STATE );
 
-        $.ajax( {
-          url: url,
-          success: function( data, textStatus, jXHR ){
-            var content;
+        if (url) {
+          $.ajax( {
+            url: url,
+            success: function( data, textStatus, jXHR ){
+              var content;
 
-            if( settings.selector ){
-              content = $( data ).find( settings.selector ).html();
-            } else if( explodedURL.fragment ){
-              content = $( data ).find( '#' + explodedURL.fragment ).html() || data;
-            } else {
-              content = data;
+              if( settings.selector ){
+                content = $( data ).find( settings.selector ).html();
+              } else if( explodedURL.fragment ){
+                content = $( data ).find( '#' + explodedURL.fragment ).html() || data;
+              } else {
+                content = data;
+              }
+
+              Container.removeState( LOADING_STATE );
+              Container.trigger( UPDATE_EVENT, content, method );
+              Container.addState( LOADED_STATE );
+
+            },
+            failure: function(){
+              Container.removeState( LOADING_STATE );
+              Container.addState( ERRED_STATE );
             }
-
-            Container.removeState( LOADING_STATE );
-            Container.trigger( UPDATE_EVENT, content, method );
-            Container.addState( LOADED_STATE );
-
-          },
-          failure: function(){
-            Container.removeState( LOADING_STATE );
-            Container.addState( ERRED_STATE );
-          }
-        } );
+          } );          
+        }
 
         return Container;
       }

@@ -3,16 +3,14 @@
  * @class Accordion
  * @constructor
  * @extends List
- * @requires ptclass
- * @param {HTMLElement} element The HTML element surrounded by the control
- * @param {Object} settings Configuration properties for this instance 
+ * @require class
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-  List = require( 'lu/List' ),
+  List = require( '/scripts/lu-controls/List' ),
   Accordion;
 
-Accordion =  Class.create( List, ( function (){
+Accordion =  Class.extend( function (List) {
 
   //CONSTANTS
   var HIDDEN_CSS = "lu-hidden",
@@ -22,14 +20,13 @@ Accordion =  Class.create( List, ( function (){
   //RETURN METHODS OBJECT 
   return {
     /**
-     * PTClass constructor 
-     * @method initialize
+     * Class constructor 
+     * @method init
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ){
+    init: function ( $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -76,7 +73,7 @@ Accordion =  Class.create( List, ( function (){
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      List.call.init( this, $element, settings );
 
       $panels = $(settings.notify, $element);
       $buttons = $('[data-lu*="Button:Select"]', $element);
@@ -109,7 +106,7 @@ Accordion =  Class.create( List, ( function (){
 
   };
 
-}() ) );
+});
 
 
 //Export to Common JS Loader

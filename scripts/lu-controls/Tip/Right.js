@@ -3,30 +3,30 @@
  * @class RightTip
  * @constructor
  * @extends Tip
- * @requires ptclass
+ * @requires class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-  Tip = require( 'lu/Tip' ),
+  Tip = require( '/scripts/lu-controls/Tip' ),
   RightTip;
 
-RightTip = Class.create( Tip, ( function (){
+RightTip = Class.extend( function (Tip) {
 
    return {
-     initialize: function ( $super, $element, settings ){
+     init: function ( $element, settings ){
 
        var defaults = {
          placement: 'right'
        };
 
        _.defaults( settings, defaults );
-       $super( $element, settings );
+       Tip.call.init( this, $element, settings );
      }
   };
 
-}() ) );
+} );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

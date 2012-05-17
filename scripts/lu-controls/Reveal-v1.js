@@ -3,13 +3,13 @@
  * @class Reveal
  * @constructor
  * @extends SelectButton
- * @requires ptclass
+ * @requires class
  */
 var Class = require( 'class' ),
-  SelectButton = require( 'lu/Button/Select' ),
+  SelectButton = require( '/scripts/lu-controls/Button/Select' ),
   Reveal;
 
-Reveal = Class.create( SelectButton,  ( function () {
+Reveal = Class.extend( function (SelectButton) {
 
   // RETURN METHODS OBJECT
   return {
@@ -17,11 +17,10 @@ Reveal = Class.create( SelectButton,  ( function () {
      * PTClass constructor 
      * @method initialize
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
+    init: function ( $element, settings ) {
 
       // PRIVATE INSTANCE PROPERTIES
 
@@ -82,7 +81,7 @@ Reveal = Class.create( SelectButton,  ( function () {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      SelectButton.call.init( this, $element, settings );
 
       targetNode = settings.targetNode;
       _.log("TARGETNODE:", targetNode);
@@ -177,7 +176,7 @@ Reveal = Class.create( SelectButton,  ( function () {
  
     }
   };  
-}() ));
+} );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ) {
