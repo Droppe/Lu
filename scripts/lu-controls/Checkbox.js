@@ -19,7 +19,7 @@ Checkbox = Abstract.extend( function (Abstract) {
   // RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor 
+     * Checkbox constructor 
      * @method init
      * @public
      * @param {Object} $element JQuery object for the element wrapped by the component

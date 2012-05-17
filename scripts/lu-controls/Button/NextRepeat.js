@@ -3,15 +3,15 @@
  * @class NextRepeat
  * @constructor
  * @extends ButtonNext
- * @require ptclass
+ * @require class
  * @version 0.0.0
  */
 
 var Class = require( 'class' ),
-  NextButton = require( 'lu/Button/Next' ),
+  NextButton = require( '/scripts/lu-controls/Button/Next' ),
   NextRepeatButton;
 
-NextRepeatButton = Class.create( NextButton, ( function () {
+NextRepeatButton = Class.extend( function (NextButton) {
 
   var REPEAT_INTERVAL = 1000,
      PREVIOUS_EVENT = "previous",
@@ -21,14 +21,13 @@ NextRepeatButton = Class.create( NextButton, ( function () {
   // RETURN METHODS OBJECT
   return {
    /**
-    * PTClass constructor 
-    * @method initialize
+    * Class constructor 
+    * @method init
     * @public
-    * @param {Object} $super Pointer to superclass constructor
     * @param {Object} $element JQuery object for the element wrapped by the component
     * @param {Object} settings Configuration settings
     */    
-   initialize: function ( $super, $element, settings ) {
+   init: function ( $element, settings ) {
 
      // PRIVATE INSTANCE PROPERTIES
      /**
@@ -65,7 +64,7 @@ NextRepeatButton = Class.create( NextButton, ( function () {
      _.defaults( settings, defaults );
 
      // CALL THE PARENT'S CONSTRUCTOR
-     $super( $element, settings );
+     NextButton.call.init( this, $element, settings );
 
      item = settings.item || null;
 
@@ -90,7 +89,7 @@ NextRepeatButton = Class.create( NextButton, ( function () {
    }
   };
   
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ) {

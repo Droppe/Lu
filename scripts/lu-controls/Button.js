@@ -3,16 +3,16 @@
  * @class Button
  * @constructor
  * @extends Abstract
- * @require ptclass, Abstract
+ * @require class, Abstract
  * @version 0.1.0
  */ 
 
 var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
+  Abstract = require( '/scripts/lu-controls/Abstract' ),
   Button;
 
 
-Button = Class.create( Abstract, ( function(){
+Button = Class.extend( function (Abstract) {
 
   // CONSTANTS
   var CLICK_EVENT = 'click',
@@ -24,14 +24,13 @@ Button = Class.create( Abstract, ( function(){
   // RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor 
-     * @method initialize
+     * Class constructor 
+     * @method init
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function( $super, $element, settings ){
+    init: function( $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -92,7 +91,7 @@ Button = Class.create( Abstract, ( function(){
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      Abstract.call.init( this, $element, settings );
 
       item = settings.item;
       states = settings.states;
@@ -207,7 +206,7 @@ Button = Class.create( Abstract, ( function(){
     }
   };
 
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
