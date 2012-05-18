@@ -3,15 +3,13 @@
  * @class PauseButton
  * @constructor
  * @extends Button
- * @require class
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   PauseButton;
 
-PauseButton = Class.extend( function (Button) {
+PauseButton = Button.extend( function (Button) {
 
   var PLAYING_EVENT = 'playing',
     PAUSED_EVENT = 'paused',

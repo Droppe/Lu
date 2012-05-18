@@ -3,15 +3,13 @@
  * @class NextRepeat
  * @constructor
  * @extends ButtonNext
- * @require class
  * @version 0.0.0
  */
 
-var Class = require( 'class' ),
-  NextButton = require( '/scripts/lu-controls/Button/Next' ),
+var NextButton = require( '/scripts/lu-controls/Button/Next' ),
   NextRepeatButton;
 
-NextRepeatButton = Class.extend( function (NextButton) {
+NextRepeatButton = NextButton.extend( function (NextButton) {
 
   var REPEAT_INTERVAL = 1000,
      PREVIOUS_EVENT = "previous",

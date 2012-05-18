@@ -5,11 +5,10 @@
  * @extends SelectButton
  * @requires class
  */
-var Class = require( 'class' ),
-  SelectButton = require( '/scripts/lu-controls/Button/Select' ),
+var SelectButton = require( '/scripts/lu-controls/Button/Select' ),
   Reveal;
 
-Reveal = Class.extend( function (SelectButton) {
+Reveal = SelectButton.extend( function (SelectButton) {
 
   // RETURN METHODS OBJECT
   return {

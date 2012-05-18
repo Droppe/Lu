@@ -3,14 +3,13 @@
  * @class Tip
  * @constructor
  * @extends Container
- * @requires ptclass, Loader
+ * @requires Loader
  * @version 0.1.3
  */
-var Class = require( '/scripts/libraries/class' ),
-  Container = require( '/scripts/lu-controls/Container' ),
+var Container = require( '/scripts/lu-controls/Container' ),
   Tip;
 
-Tip = Class.extend( function (Container){
+Tip = Container.extend( function (Container){
 
   //Observed events 
   var HIDE_EVENT = 'hide',

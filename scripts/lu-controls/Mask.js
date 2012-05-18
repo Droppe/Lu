@@ -3,16 +3,14 @@
  * @class Mask
  * @constructor
  * @extends Abstract
- * @requires class
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-    Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
     Mask;
 
-Mask = Class.extend( function (Abstract) {
+Mask = Abstract.extend( function (Abstract) {
 
   //Observed events 
   var SHOW_EVENT = 'show',

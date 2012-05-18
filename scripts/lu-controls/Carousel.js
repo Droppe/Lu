@@ -7,11 +7,10 @@
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  List = require( '/scripts/lu-controls/List' ),
+var List = require( '/scripts/lu-controls/List' ),
   Carousel;
 
-Carousel =  Class.extend( function (List) {
+Carousel =  List.extend( function (List) {
 
   var MAXED_EVENT = 'maxed',
     FLOORED_EVENT = 'floored',

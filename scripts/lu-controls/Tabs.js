@@ -3,16 +3,14 @@
  * @class Tabs
  * @constructor
  * @extends Abstract
- * @requires class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-  Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
   Tabs;
 
-Tabs = Class.extend( function (Abstract) {
+Tabs = Abstract.extend( function (Abstract) {
 
   var SELECT_EVENT = 'select',
     SELECTED_EVENT = 'selected',
