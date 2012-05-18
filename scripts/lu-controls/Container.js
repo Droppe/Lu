@@ -8,7 +8,7 @@
 
 //The Full path is given do to an error in inject :(
 var Abstract = require( '/scripts/lu-controls/Abstract' ),
-  StateDecorator = require( '/scripts/lu-decorators/State' ),
+  stateDecorator = require( '/scripts/lu-decorators/State' ),
   Container;
 
 Container = Abstract.extend( function( Abstract ){
@@ -116,7 +116,7 @@ Container = Abstract.extend( function( Abstract ){
       _.defaults( settings, defaults );
 
       Abstract.init.call( this, $element, settings );
-      Container.decorate( StateDecorator );
+      Container.decorate( stateDecorator );
 
       target = settings.target;
 

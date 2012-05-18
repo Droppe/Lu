@@ -1,38 +1,30 @@
 var Class = require( 'class' ),
   Abstract = require( '/scripts/lu-controls/Abstract' ),
-  ButtonFactory,
+  stateDecorator = require( '/scripts/lu-decorators/State' ),
   Button;
 
-ButtonFactory = Class.extend( function( Class ){
+Button = Abstract.extend( function( Abstract ){
   var DISABLED = 'disabled',
     HAS_A18_ATTRS = 'button, input',
     DISABLED_STATE = DISABLED,
     STATED_EVENT = 'stated',
+    SELECTED_EVENT = 'selected',
     LOADED_STATE = 'loaded',
     MAXED_STATE = 'maxed',
-    SELECTED_STATE = 'selected',
+    SELECTED_STATE = SELECTED_EVENT,
     FLOORED_STATE = 'floored',
     TRANSITIONING_STATE = 'transitioning',
     TRANSITIONED_STATE = 'transitioned',
     PLAYING_STATE = 'playing',
     PAUSED_STATE = 'paused',
-    buttonDecorators,
+    commandDecorators,
     defaults = {
       on: 'click'
     },
-    stateDefaults = {
+    stateButtonDefaults = {
       states: ['on','off'],
       index: 0
     };
-
-  function normalizeStates( states ){
-    if( states ){
-      if( typeof states === 'string' ){
-        states = states.replace( ' ', '' ).split( ',' );
-      }
-    }
-    return states;
-  }
 
   function focus( $element ){
     if( $element.is( 'a' ) ){
@@ -55,253 +47,143 @@ ButtonFactory = Class.extend( function( Class ){
     } );
   }
 
-  Button = Abstract.extend( function( Abstract ){
-    return {
-      init: function( $element, settings ){
-        var Button = this;
+  commandDecorators = {
+    first: function( Button, settings ){
+      var on = settings.on;
+      return function( Button ){
+        Button.on( SELECTED_EVENT, function( event, Control ){
+          event.stopPropagation();
+          if( Control.index === 0 ){
+            Button.disable();
+          } else {
+            Button.enable();
+          }
+        } );
+      };
+    },
+    last: function( Button, settings ){
+      var on = settings.on;
+      return function( Button ){
+        Button.on( SELECTED_EVENT, function( event, Control ){
+          event.stopPropagation();
+          if( Control.index === Control.size() - 1 ){
+            Button.disable();
+          } else {
+            Button.enable();
+          }
+        } );
+      };
+    },
+    load: function( Button, settings ){
+      var on = settings.on;
+      return function( Button ){
+        Button.on( STATED_EVENT, function( event, $subject, states ){
+          event.stopPropagation();
+          if( _.indexOf( states, LOADED_STATE ) > -1 ){
+            Button.disable();
+          }
+        } );
+      };
+    },
+    next: function( Button, settings ){
+      var on = settings.on;
+      return function( Button ){
+        Button.on( SELECTED_EVENT, function( event, Control, item ){
+          event.stopPropagation();
+          if( Control.hasNext() ){
+            Button.enable();
+          } else {
+            Button.disable();
+          }
+        } );
+      };
+    },
+    pause: function( Button, settings ){
+      var on = settings.on;
+      return function( Button ){
+        var playing = true;
+        Button.on( STATED_EVENT, function( event, $subject, states ){
+          event.stopPropagation();
+          if( _.indexOf( states, PAUSED_STATE ) > -1 ){
+            Button.disable();
+            playing = false;
+          }
+          if( _.indexOf( states, PLAYING_STATE ) > -1 ){
+            Button.enable();
+            playing = true;
+          }
+        } );
+      };
+    },
+    play: function( Button, settings ){
+      var on = settings.on;
+      return function( Button ){
+        var playing = true;
+        Button.on( STATED_EVENT, function( event, $subject, states ){
+          event.stopPropagation();
+          if( _.indexOf( states, PAUSED_STATE ) > -1 ){
+            Button.enable();
+            playing = false;
+          }
+          if( _.indexOf( states, PLAYING_STATE ) > -1 ){
+            Button.disable();
+            playing = true;
+          }
+        } );
+      };
+    },
+    previous: function( Button, settings ){
+      var on = settings.on;
+      return function( Button ){
+        Button.on( SELECTED_EVENT, function( event, Control, item ){
+          event.stopPropagation();
+          if( Control.hasPrevious() ){
+            Button.enable();
+          } else {
+            Button.disable();
+          }
+        } );
+      };
+    },
+    select: function( Button, settings ){
+      var $element = Button.$element,
+        item = settings.item,
+        on = settings.on,
+        controls,
+        __params__ = settings.__params__;
 
-        Abstract.init.call( this, $element, settings );
-
-        if( $element.is( 'a' ) ){
-          applyRoleAttr( $element );
-        }
-
-        bindSpaceBar( $element, settings.on );
-      },
-      disable: function(){
-        var $element = this.element;
-        if( $element.is( HAS_A18_ATTRS ) ){
-          $element.prop( DISABLED, true );
-        }
-        $element.addClass( DISABLED_STATE );
-      },
-      enable: function(){
-        var $element = this.element;
-        if( $element.is( HAS_A18_ATTRS ) ){
-          $element.removeProp( DISABLED );
-        }
-        $element.removeClass( DISABLED_STATE );
+      if( $element.is( HAS_A18_ATTRS ) ){
+        controls = $element.attr( 'aria-controls' );
+      } else if ( $element.is( 'a' ) ){
+        controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
       }
-    };
-  } );
 
-  buttonDecorators = {
-    dflt: function( on, command ){
+      if( item === undefined ){
+        if( controls && controls !== '' ){
+          item = controls;
+        } else if( __params__ ){
+          item = __params__.shift();
+        } else {
+          item = $( '> li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' ) );
+        }
+      }
+
       return function( Button ){
-        Button.on( on, function( event ){
-          event.preventDefault();
-          focus( Button.$element );
-          if( command !== undefined ){
-            Button.trigger( command );
-          }
-        } );
-      };
-    },
-    first: function( on ){
-      return function( Button ){
-        Button.on( SELECTED_STATE, function( event ){
-         event.stopPropagation();
-         Button.enable();
-        } );
-        Button.on( STATED_EVENT, function( event, $subject, state ){
+        Button.on( SELECTED_EVENT, function( event, List ){
+          var $item;
           event.stopPropagation();
-          if( state === FLOORED_STATE ){
+
+          if( typeof item === 'number' ){
+            $item = List.$items.eq( item );
+          } else if ( typeof item === 'string' ){
+            $item = List.$items.filter( item );
+          }
+          if( List.current().is( $item ) ){
             Button.disable();
-          }
-        } );
-        Button.on( on, function( event ){
-          event.preventDefault();
-          focus( Button.$element );
-          Button.trigger( 'first' );
-        } );
-      };
-    },
-    last: function( on ){
-      return function( Button ){
-        Button.on( SELECTED_STATE, function( event ){
-          event.stopPropagation();
-          Button.enable();
-        } );
-        Button.on( STATED_EVENT, function( event, $subject, state ){
-          event.stopPropagation();
-          if( state === MAXED_STATE ){
-            Button.disable();
-          }
-        } );
-        Button.on( on, function( event ){
-          event.preventDefault();
-          focus( Button.$element );
-          Button.trigger( 'last' );
-        } );
-      };
-    },
-    load: function( on ){
-      return function( Button ){
-        Button.on( STATED_EVENT, function( event, $subject, state ){
-          event.stopPropagation();
-          if( state === LOADED_STATE ){
-            Button.disable();
-          }
-        } );
-        Button.on( on, function( event ){
-          event.preventDefault();
-          focus( Button.$element );
-          Button.trigger( 'load' );
-        } );
-      };
-    },
-    next: function( on ){
-      return function( Button ){
-        var playing = false;
-        Button.on( SELECTED_STATE, function( event ){
-          event.stopPropagation();
-          if( !playing ){
+          } else {
             Button.enable();
           }
         } );
-        Button.on( MAXED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          var Control = $subject.lu( 'getControl' );
-          if( !Control.hasNext() ){
-            Button.disable();
-          }
-        } );
-        Button.on( TRANSITIONED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          Button.enable();
-        } );
-        Button.on( TRANSITIONING_STATE, function( event, $subject ){
-          event.stopPropagation();
-          if( playing ){
-            Button.disable();
-          }
-        } );
-        Button.on( PAUSED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          playing = false;
-        } );
-        Button.on( PLAYING_STATE, function( event, $subject ){
-          event.stopPropagation();
-          playing = true;
-        } );
-        Button.on( on, function( event ){
-          event.preventDefault();
-          focus( Button.$element );
-          Button.trigger( 'next' );
-        } );
-      };
-    },
-    pause: function( on ){
-      return function( Button ){
-        var paused = false;
-        Button.on( PLAYING_STATE, function( event, $subject ){
-          event.stopPropagation();
-          Button.enable();
-          paused = false;
-        } );
-        Button.on( PAUSED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          Button.disable();
-          paused = true;
-        } );
-        Button.on( TRANSITIONED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          if( !paused ){
-           Button.enable();
-          }
-        } );
-        Button.on( TRANSITIONING_STATE, function( event, $subject ){
-          event.stopPropagation();
-          Button.disable();
-        } );
-        Button.on( on, function( event ){
-          event.preventDefault();
-          focus( Button.$element );
-          Button.trigger( 'pause' );
-        } );
-      };
-    },
-    play: function( on ){
-      return function( Button ){
-        var paused = false;
-        Button.on( PAUSED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          Button.enable();
-          paused = true;
-        } );
-        Button.on( PLAYING_STATE, function( event, $subject ){
-          event.stopPropagation();
-          Button.disable();
-          paused = false;
-        } );
-        Button.on( TRANSITIONED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          if( !paused ){
-           Button.enable();
-          }
-        } );
-        Button.on( TRANSITIONING_STATE, function( event, $subject ){
-          event.stopPropagation();
-          Button.disable();
-        } );
-        Button.on( on, function( event ){
-          event.preventDefault();
-          focus( Button.$element );
-          Button.trigger( 'play' );
-        } );
-      };
-    },
-    previous: function( on ){
-      return function( Button ){
-        var playing = false;
-        Button.on( SELECTED_STATE, function( event ){
-          event.stopPropagation();
-          if( !playing ){
-            Button.enable();
-          }
-        } );
-        Button.on( FLOORED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          var Control = $subject.lu( 'getControl' );
-          if( !Control.hasPrevious() ){
-            Button.disable();
-          }
-        } );
-        Button.on( TRANSITIONED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          Button.enable();
-        } );
-        Button.on( TRANSITIONING_STATE, function( event, $subject ){
-          event.stopPropagation();
-          if( playing ){
-            Button.disable();
-          }
-        } );
-        Button.on( PAUSED_STATE, function( event, $subject ){
-          event.stopPropagation();
-          playing = false;
-        } );
-        Button.on( PLAYING_STATE, function( event, $subject ){
-          event.stopPropagation();
-          playing = true;
-        } );
-        Button.on( on, function( event ){
-          event.preventDefault();
-          focus( Button.$element );
-          Button.trigger( 'previous' );
-        } );
-      };
-    },
-    select: function( on, item ){
-      return function( Button ){
-        // Button.on( SELECTED_STATE, function( event, $subject, $item, index ){
-        //   event.stopPropagation();
-        //   if( $item.is( item ) ){
-        //     Button.disable();
-        //   } else {
-        //     Button.enable();
-        //   }
-        // } );
         Button.on( on, function( event ){
           event.preventDefault();
           focus( Button.$element );
@@ -309,9 +191,21 @@ ButtonFactory = Class.extend( function( Class ){
         } );
       };
     },
-    state: function( on, states, index ){
-      index = index || 0;
-      _.log( states );
+    state: function( Button, settings ){
+      var on = settings.on,
+        states = settings.states,
+        index = settings.index || 0,
+        __params__ = settings.__params__;
+
+      function normalize( states ){
+        if( states ){
+          if( typeof states === 'string' ){
+            states = states.replace( ' ', '' ).split( ',' );
+          }
+        }
+        return states;
+      }
+
       function state(){
         if( index === undefined ){
           index = 0;
@@ -323,6 +217,13 @@ ButtonFactory = Class.extend( function( Class ){
           index = 0;
         }
       }
+
+      if( states ){
+        states = normalize( states );
+      } else if( __params__ ){
+        states = __params__;
+      }
+
       return function( Button ){
         Button.on( on, function( event ){
           event.preventDefault();
@@ -335,67 +236,117 @@ ButtonFactory = Class.extend( function( Class ){
   };
 
   return {
-    create: function( $element, settings ){
-      var command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
-        params = settings.__params__,
-        decorator = buttonDecorators[command] || buttonDecorators.dflt,
-        controls;
+    init: function( $element, settings ){
+      var Button = this,
+        command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
+        decorators = [ stateDecorator ];
+
+      function defaultDecorator( Button, settings ){
+        var on = settings.on,
+          command = settings.action;
+
+        console.log( settings.on, settings.action );
+        return function( Button ){
+          Button.on( on, function( event ){
+            event.preventDefault();
+            focus( Button.$element );
+            if( command !== undefined ){
+              Button.trigger( command );
+            }
+          } );
+        };
+      }
+
+      settings.action = command;
+
+      if( $element.is( 'a' ) ){
+        applyRoleAttr( $element );
+      }
+      bindSpaceBar( $element, settings.on );
+
+      Abstract.init.call( this, $element, settings );
 
       switch( command ){
         case 'state':
-
-          settings.action = command;
-
-          _.defaults( settings, stateDefaults, defaults );
-
-          if( settings.states ){
-            settings.states = normalizeStates( settings.states );
-          } else if( params ){
-            settings.states = params;
-          }
-
-          decorator = decorator( settings.on, settings.states, settings.index );
+          decorators.push( commandDecorators[command]( Button, _.defaults( settings, stateButtonDefaults, defaults ) ) );
           break;
         case 'select':
-          if( !settings.item && settings.item !== 0 ){
-            if( $element.is( HAS_A18_ATTRS ) ){
-              controls = $element.attr( 'aria-controls' );
-            } else if ( $element.is( 'a' ) ){
-              controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
-            }
-            if( controls && controls !== '' ){
-              settings.item = $( '#' + controls );
-            } else {
-              if( params[0] || params[0] === 0 ){
-                settings.item = params[0];
-              } else {
-                settings.item = $( '> li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' ) );
-              }
-            }
-          }
+          decorators.push( commandDecorators[command]( Button, _.defaults( settings, defaults ) ) );
+          break;
+        case 'first':
           _.defaults( settings, defaults );
-          decorator = decorator( settings.on, settings.item );
+          decorators.push( defaultDecorator( Button, settings ) );
+          decorators.push( commandDecorators[command]( Button, settings ) );
+          break;
+        case 'last':
+          _.defaults( settings, defaults );
+          decorators.push( defaultDecorator( Button, settings ) );
+          decorators.push( commandDecorators[command]( Button, settings ) );
+          break;
+        case 'previous':
+          _.defaults( settings, defaults );
+          decorators.push( defaultDecorator( Button, settings ) );
+          decorators.push( commandDecorators[command]( Button, settings ) );
+          break;
+        case 'next':
+          _.defaults( settings, defaults );
+          decorators.push( defaultDecorator( Button, settings ) );
+          decorators.push( commandDecorators[command]( Button, settings ) );
+          break;
+        case 'play':
+          _.defaults( settings, defaults );
+          decorators.push( defaultDecorator( Button, settings ) );
+          decorators.push( commandDecorators[command]( Button, settings ) );
+          break;
+        case 'pause':
+          _.defaults( settings, defaults );
+          decorators.push( defaultDecorator( Button, settings ) );
+          decorators.push( commandDecorators[command]( Button, settings ) );
+          break;
+        case 'load':
+          _.defaults( settings, defaults );
+          decorators.push( defaultDecorator( Button, settings ) );
+          decorators.push( commandDecorators[command]( Button, settings ) );
           break;
         default:
-          _.defaults( settings, defaults );
-          decorator = decorator( settings.on, command );
+          decorators.push( defaultDecorator( Button, _.defaults( settings, defaults ) ) );
       }
 
-      return ( new Button( $element, settings ) ).decorate( decorator );
+      //Decorators for buttons should be separated into other files,
+      //somthing like the below should be possible.
+      // require.ensure( [command], function( require, module, exports ){
+      //   var req = require,
+      //     decorator = ( req( command ) )( Button, settings );
+      //  Button.decorate.apply( this, decorators );
+      // } );
+
+      Button.decorate.apply( this, decorators );
+    },
+    disable: function(){
+      var $element = this.$element;
+      if( $element.is( HAS_A18_ATTRS ) ){
+        $element.prop( DISABLED, true );
+      }
+      this.addState( DISABLED_STATE );
+      return this;
+    },
+    enable: function(){
+      var $element = this.$element;
+      if( $element.is( HAS_A18_ATTRS ) ){
+        $element.removeProp( DISABLED );
+      }
+      this.removeState( DISABLED_STATE );
+      return this;
     }
   };
+
 } );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( new ButtonFactory().create );
+    module.setExports( Button );
   } else if( module.exports ){
-   module.exports = new ButtonFactory().create;
+   module.exports = Button;
   }
 }
-
-
-
-
-

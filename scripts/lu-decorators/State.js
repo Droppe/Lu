@@ -49,6 +49,7 @@ function stateDecorator() {
         states.push( item.replace( prefix, '' ) );
       }
     } );
+
     return states;
   }
 
@@ -110,7 +111,7 @@ function stateDecorator() {
       states = value;
 
       applyState( $element, states, prefix );
-      instance.trigger( STATED_EVENT, [$element, states] );
+      instance.trigger( STATED_EVENT, [instance] );
 
       return instance;
     };
@@ -131,7 +132,7 @@ function stateDecorator() {
       if( _.difference( value, states ).length > 0 ){
         states = _.union( states, value );
         applyState( $element, states, prefix );
-        instance.trigger( STATED_EVENT, [$element, states] );
+        instance.trigger( STATED_EVENT, [instance] );
       }
       return instance;
     };
@@ -156,7 +157,7 @@ function stateDecorator() {
       if( intersection.length > 0 ){
         states = _.without( states, value );
         applyState( $element, states, prefix );
-        instance.trigger( STATED_EVENT, [$element, states] );
+        instance.trigger( STATED_EVENT, [instance] );
       }
 
       return instance;
@@ -173,7 +174,6 @@ function stateDecorator() {
       return ( _.indexOf( states, value ) > -1 );
     };
 
-    console.log( getAppliedStates( $element, prefix ) );
     instance.addState( getAppliedStates( $element, prefix ) );
 
     //Bind state event to state

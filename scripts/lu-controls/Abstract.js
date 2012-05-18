@@ -152,7 +152,7 @@ Abstract = Class.extend( function( Class ){
      * @param {Array} $observer A jQuery collection to be unobserved
      */
     unobserve: function( $observer ){
-      lu.unobserve($observer, this.$element );
+      lu.unobserve( $observer, this.$element );
       return this;
     },
     /**

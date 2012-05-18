@@ -17,10 +17,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
   <style type="text/css">
+    body {
+      text-align: center;
+    }
     #list {
       display: block;
-      width: 200px;
-      height: 150px;
+      width: 600px;
+      height: 400px;
       overflow: hidden;
       margin: 50px auto;
       border: 3px solid #333;
@@ -35,7 +38,8 @@
       padding: 0;
       margin: 0;
       text-align: center;
-      line-height: 150px;
+      line-height: 400px;
+      font-size: 24px;
     }
     #list .lu-state-selected {
       display: block;
@@ -45,11 +49,21 @@
 
 <body>
 
-  <ul id="list" data-lu="List2">
-    <li class="lu-state-selected">Item 1</li>
-    <li>Item 2</li>
-    <li>Item 3</li>
-    <li>Item 4</li>
+  <ul id="list" data-lu="List2" data-lu-config="{
+    List2: {
+      notify: '[data-lu=Button2]'
+    }
+  }">
+    <li data-lu="Container" class="lu-state-selected">0</li>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
   </ul>
 
   <button data-lu="Button2" data-lu-config="{
@@ -57,7 +71,7 @@
       __params__: ['previous'],
       notify: '#list'
     }
-  }">Previous</button>
+  }">&laquo;</button>
   <button data-lu="Button2" data-lu-config="{
     Button2: {
       __params__: ['first'],
@@ -69,37 +83,73 @@
       __params__: ['select', 0],
       notify: '#list'
     }
-  }">1</button>
-  <button data-lu="Button2" data-lu-config="{
+  }">0</button>
+    <button data-lu="Button2" data-lu-config="{
     Button2: {
       __params__: ['select', 1],
       notify: '#list'
     }
-  }">2</button>
-  <button data-lu="Button2" data-lu-config="{
+  }">1</button>
+    <button data-lu="Button2" data-lu-config="{
     Button2: {
       __params__: ['select', 2],
       notify: '#list'
     }
-  }">3</button>
-  <button data-lu="Button2" data-lu-config="{
+  }">2</button>
+    <button data-lu="Button2" data-lu-config="{
     Button2: {
       __params__: ['select', 3],
       notify: '#list'
     }
+  }">3</button>
+    <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 4],
+      notify: '#list'
+    }
   }">4</button>
   <button data-lu="Button2" data-lu-config="{
-  Button2: {
-    __params__: ['last'],
-    notify: '#list'
-  }
+    Button2: {
+      __params__: ['select', 5],
+      notify: '#list'
+    }
+  }">5</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 6],
+      notify: '#list'
+    }
+  }">6</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 7],
+      notify: '#list'
+    }
+  }">7</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 8],
+      notify: '#list'
+    }
+  }">8</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['select', 9],
+      notify: '#list'
+    }
+  }">9</button>
+  <button data-lu="Button2" data-lu-config="{
+    Button2: {
+      __params__: ['last'],
+      notify: '#list'
+    }
   }">Last</button>
   <button data-lu="Button2" data-lu-config="{
     Button2: {
       __params__: ['next'],
       notify: '#list'
     }
-  }">Next</button>
+  }">&raquo;</button>
 
   <!-- Bootstrap:Util -->
   <script src="scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
@@ -121,7 +171,10 @@
     localStorage.clear();
     //require.clearCache();
     //MAGIC!!!
-    require.ensure( ['lu'], function() {} );
+    console.time( 'Lu' );
+    require.ensure( ['lu'], function() {
+      console.timeEnd( 'Lu' );
+    } );
   </script>
 
 </body>

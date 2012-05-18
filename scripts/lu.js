@@ -165,9 +165,9 @@
      */
     lu.execute = function( $element ){
       var $controls,
-         keys = [],
-         required = [],
-         numberOfControls = 0;
+        keys = [],
+        required = [],
+        numberOfControls = 0;
 
       /**
        * Instantiates a control with selected element.
@@ -231,7 +231,6 @@
 
         Deferred = getData( $node, 'Deferred' );
 
-
         if( !Deferred ){
           setData( $node, {'Deferred': $.Deferred()} );
         }
@@ -240,7 +239,6 @@
         numberOfControls += controls.length;
 
         _.each( controls, function( key, index ){
-
           var pckg = NAMESPACE + '/' + key.replace( /:/g, '/' );
           if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ){
             required.push( pckg );
@@ -249,31 +247,29 @@
       } );
 
       window.require.ensure( required, function( require, module, exports ){
-
         _.each( required, function( requirement, index ){
-          packages[ requirement ] = require( requirement );
+          packages[requirement] = require( requirement );
         } );
 
         $controls.each( function( index, control ){
           var defObj,
-            $control = $(control);
+            $control = $( control );
 
           execute( $control );
           numberOfControls -= 1;
 
           if( numberOfControls === 0 ){
-            $element.trigger( 'luReady', [ $element ] );
+            $element.trigger( 'luReady', [$element] );
           }
 
           // Resolve any deferred objects stored within the control's data object.
           defObj = getData( $control, 'Deferred' );
 
-          if ( defObj ){
-            if( !defObj.isResolved() ){
+          if( defObj ){
+            if( defObj.state() === 'pending' ){
               defObj.resolve();
             }
           }
-
         } );
       } );
 
@@ -313,7 +309,6 @@
                   item.trigger( event, parameters );
                 }
               } );
-
             } );
 
           }
@@ -401,13 +396,15 @@
      */
     lu.decorate = function( $element, keys, settings ){
       var result,
-        nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [];
+        nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [],
+        config;
 
       keys = _.union( nodeKeys, keys );
 
       if( settings ){
         result = $element.attr( ATTR, keys.join( ' ' ) );
-        $element.attr( ATTR + '-config', escapeJson( JSON.stringify( settings ) ) );
+        config = $element.data( ATTR + '-config' ) || {};
+        $element.data( ATTR + '-config', _.extend( config, settings ) );
       } else {
         result = $element.attr( ATTR, keys.join( ' ' ) );
       }
@@ -440,7 +437,7 @@
      */
     lu.getControl = function( $element, key ){
       var data = getData( $element ),
-        instance;
+        instance = null;
 
       if( _.keys( data ).length === 0 ){
         return null;
@@ -470,23 +467,22 @@
     lu.getControls = function( $element ){
       var data = getData( $element ),
         keys,
-        controls = null;
+        controls = null,
+        dataKeys = _.keys( data );
 
-      if( _.keys( data ).length === 0 ){
+      if( dataKeys.length === 0 ){
         return controls;
       }
 
       keys = lu.getKeys( $element );
 
-      _.each( _.keys( data ), function( key, index ){
-
+      _.each( dataKeys, function( key, index ){
         if( _.indexOf( keys, key ) > -1 ){
           if( !controls ){
             controls = {};
           }
           controls[key] = lu.getControl( $element, key );
         }
-
       } );
 
       return controls;
@@ -692,14 +688,8 @@
 
     }
 
-    if( window.JSON === undefined ){
-      //Inject Crockford's JSON library
-      require.ensure( ['JSON'], function (){
-        execute();
-      } );
-    } else {
-      execute();
-    }
+    execute();
+
   } );
 }( document, window ) );
 

@@ -64,6 +64,10 @@
     //Facade for console.error
     error: function(){
       return doit( 'error', arguments );
+    },
+    wait: function( milliseconds ){
+      milliseconds += new Date().getTime();
+      while( new Date() < milliseconds ){}
     }
   } );
 }() );
