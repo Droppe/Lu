@@ -2,7 +2,8 @@
  * A representation of a stateful list
  * @class List
  * @constructor
- * @require ptclass
+ * @extends Abstract
+ * @require Container
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.2.4

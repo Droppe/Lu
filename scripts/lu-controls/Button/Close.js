@@ -2,16 +2,14 @@
  * Representation of a button element preconfigured with a 'next' event
  * @class CloseButton
  * @constructor
- * @require class
  * @extends Button
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   CloseButton;
 
-CloseButton = Class.extend( function (Button) {
+CloseButton = Button.extend( function (Button) {
 
    // RETURN METHODS OBJECT
    return {

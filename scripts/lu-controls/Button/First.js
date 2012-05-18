@@ -2,16 +2,14 @@
  * Representation of a button element preconfigured with a 'next' event
  * @class FirstButton
  * @constructor
- * @require class
  * @extends Button
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   FirstButton;
 
-FirstButton = Class.extend( function (Button) {
+FirstButton = Button.extend( function (Button) {
 
   var FLOORED_EVENT = 'floored',
     SELECTED_EVENT = 'selected';

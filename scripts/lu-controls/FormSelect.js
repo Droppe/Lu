@@ -3,16 +3,14 @@
  * @class FormSelect
  * @constructor
  * @extends Button
- * @requires ptclass
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   FormSelect;
   
-FormSelect = Class.extend( function (Button) {
+FormSelect = Button.extend( function (Button) {
 
   // RETURN METHODS OBJECT
   return {

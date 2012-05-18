@@ -3,16 +3,14 @@
  * @class Dialog
  * @constructor
  * @extends Abstract
- * @require class
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-    Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
     Dialog;
 
-Dialog = Class.extend( function (Abstract) {
+Dialog = Abstract.extend( function (Abstract) {
 
   //Observed events 
   var OPEN_EVENT = 'open',

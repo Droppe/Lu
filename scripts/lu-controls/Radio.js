@@ -3,16 +3,14 @@
  * @class RadioButton
  * @constructor
  * @extends FormSelect
- * @requires class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance 
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-  FormSelect = require( 'scripts/lu-controls/FormSelect' ),
+var FormSelect = require( 'scripts/lu-controls/FormSelect' ),
   RadioButton;
 
-RadioButton = Class.extend( function (FormSelect) {
+RadioButton = FormSelect.extend( function (FormSelect) {
 
   // RETURN METHODS OBJECT
   return {

@@ -3,15 +3,13 @@
  * @class LastButton
  * @constructor
  * @extends Button
- * @require class
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   LastButton;
 
-LastButton = Class.extend( function (Button){
+LastButton = Button.extend( function (Button){
 
   var MAXED_EVENT = 'maxed',
     SELECTED_EVENT = 'selected';

@@ -3,15 +3,13 @@
  * @class StateButton
  * @constructor
  * @extends Button
- * @requires class
  * @version 0.1.3
  */
 
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   StateButton;
 
-StateButton = Class.extend( function (Button) {
+StateButton = Button.extend( function (Button) {
 
    // RETURN METHODS OBJECT
    return {
