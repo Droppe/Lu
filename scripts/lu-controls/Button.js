@@ -91,7 +91,7 @@ Button = Class.extend( function (Abstract) {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      Abstract.call.init( this, $element, settings );
+      Abstract.init.call( this, $element, settings );
 
       item = settings.item;
       states = settings.states;

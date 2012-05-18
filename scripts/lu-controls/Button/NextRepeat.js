@@ -64,7 +64,7 @@ NextRepeatButton = Class.extend( function (NextButton) {
      _.defaults( settings, defaults );
 
      // CALL THE PARENT'S CONSTRUCTOR
-     NextButton.call.init( this, $element, settings );
+     NextButton.init.call( this, $element, settings );
 
      item = settings.item || null;
 

@@ -55,7 +55,7 @@ PreviousButton = Class.extend( function (Button) {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      Button.call.init( this, $element, settings );
+      Button.init.call( this, $element, settings );
 
       PreviousButton.on( SELECTED_EVENT, function( event ){
         event.stopPropagation();

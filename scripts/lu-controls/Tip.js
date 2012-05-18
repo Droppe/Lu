@@ -6,11 +6,11 @@
  * @requires ptclass, Loader
  * @version 0.1.3
  */
-var Class = require( 'class' ),
+var Class = require( '/scripts/libraries/class' ),
   Container = require( '/scripts/lu-controls/Container' ),
   Tip;
 
-Tip =  Class.extend( function (Container){
+Tip = Class.extend( function (Container){
 
   //Observed events 
   var HIDE_EVENT = 'hide',
@@ -243,8 +243,8 @@ Tip =  Class.extend( function (Container){
       //Require a Container and set up listeners if a URL was specifed
       if( settings.url ){
         $content = $tip.find( '.content' );
-        require.ensure( ['lu/Container'], function( require, module, exports ){
-          var Ctr = require( 'lu/Container' );
+        require.ensure( ['/scripts/lu-controls/Container'], function( require, module, exports ){
+          var Ctr = require( '/scripts/lu-controls/Container' );
           Ctr = new Ctr( $content, {/* empty config */});
 
           Ctr.on( 'loaded', function( event ){
@@ -386,7 +386,7 @@ Tip =  Class.extend( function (Container){
     }
   };
 
-}()  );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
