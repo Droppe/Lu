@@ -4,28 +4,28 @@
  * @class Checkbox
  * @constructor
  * @extends Abstract
- * @requires ptclass
+ * @requires class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance 
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
-  Checkbox;
 
-Checkbox = Class.create( Abstract,  ( function () {
+ var Class = require( 'class' ),
+   Abstract = require( '/scripts/lu-controls/Abstract' ),
+   Checkbox;
+
+Checkbox = Abstract.extend( function (Abstract) { 
 
   // RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor 
-     * @method initialize
+     * Checkbox constructor 
+     * @method init
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
+    init: function ( $element, settings ) {
 
 
       // PRIVATE INSTANCE PROPERTIES
@@ -67,9 +67,9 @@ Checkbox = Class.create( Abstract,  ( function () {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      Abstract.init.call( this, $element, settings );
 
-      // PRIVATE METHODS
+      // === PRIVATE METHODS ===
 
       /**
        * Is the Checkbox checked?
@@ -81,6 +81,8 @@ Checkbox = Class.create( Abstract,  ( function () {
         return !!( $element.prop("checked") );
       };
 
+
+      // === PRIVILEDGED METHODS ===
       Checkbox.disable = function() {
         $element
          .prop( 'disabled', true )
@@ -93,7 +95,6 @@ Checkbox = Class.create( Abstract,  ( function () {
          .removeClass( 'lu-disabled' );
       };
       
-      // PRIVILEGED METHODS
       Checkbox.triggerAction = function () {
         var action = settings.actionUncheck,
           index = 0;
@@ -105,18 +106,16 @@ Checkbox = Class.create( Abstract,  ( function () {
 
         checkedState = settings.states[index];
 
-        settings.action = ( isChecked() ) ? settings.actionUnCheck : settings.action;
-
+        settings.action = ( isChecked() ) ? settings.actionUncheck : action;
         
         _.log("Checkbox", action, checkedState, $element);
-        Checkbox.trigger(action);
+        Checkbox.trigger(settings.action, checkedState);
       };
-
 
       // Initially hide the extra content unless the checkbox is checked
       Checkbox.triggerAction();
       
-      // EVENT LISTENERS
+      // === EVENT LISTENERS ===
       Checkbox.on(settings.on, function(event) {
         event.stopPropagation();
         Checkbox.triggerAction();
@@ -124,8 +123,8 @@ Checkbox = Class.create( Abstract,  ( function () {
       
  
     }
-  };  
-}() ));
+  };
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ) {
@@ -135,3 +134,5 @@ if( typeof module !== 'undefined' ) {
     module.exports = Checkbox; 
   }
 }
+
+

@@ -1,19 +1,17 @@
 /**
  * A representation of a stateful list
  * @class Carousel
- * @require ptclass
+ * @require class
+ * @extends List
  * @constructor
- * @param {HTMLElement} element The HTML element containing this component
- * @param {Object} settings Configuration properties for this instance
  * @version 0.1.0
  */
 
 var Class = require( 'class' ),
-  List = require( 'lu/List' ),
+  List = require( '/scripts/lu-controls/List' ),
   Carousel;
 
-
-Carousel =  Class.create( List, ( function(){
+Carousel =  Class.extend( function (List) {
 
   var MAXED_EVENT = 'maxed',
     FLOORED_EVENT = 'floored',
@@ -36,14 +34,13 @@ Carousel =  Class.create( List, ( function(){
   // RETURN METHODS OBJECT
   return {
     /**
-     * PTClass constructor
+     * Class constructor
      * @method initialize
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */
-    initialize: function ( $super, $element, settings ){
+    init: function ( $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
 
@@ -124,7 +121,7 @@ Carousel =  Class.create( List, ( function(){
       delay = settings.delay;
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      List.init.call( this, $element, settings );
 
       // PRIVILEGED METHODS
      /**
@@ -278,7 +275,7 @@ Carousel =  Class.create( List, ( function(){
     }
   };
 
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

@@ -2,16 +2,15 @@
  * Tooltip class
  * @class Tip
  * @constructor
- * @extends Abstract
+ * @extends Container
  * @requires ptclass, Loader
  * @version 0.1.3
  */
-var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
-  //Loader = require( 'lu/Loader' ),
+var Class = require( '/scripts/libraries/class' ),
+  Container = require( '/scripts/lu-controls/Container' ),
   Tip;
 
-Tip =  Class.create( Abstract,  ( function (){
+Tip = Class.extend( function (Container){
 
   //Observed events 
   var HIDE_EVENT = 'hide',
@@ -20,7 +19,7 @@ Tip =  Class.create( Abstract,  ( function (){
       HIDDEN_EVENT = 'hidden',
       SHOWN_EVENT = 'shown',
   
-  // OTHER CONSTANTS
+  // OTHER CONSTANTS
       TITLE = 'title',
       CLASS = 'class';
 
@@ -28,13 +27,12 @@ Tip =  Class.create( Abstract,  ( function (){
 
     /**
      * Tip constructor 
-     * @method initialize
+     * @method init
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery collection containing the related element.
      * @param {Object} settings Configuration settings
      */
-    initialize: function ( $super, $element, settings ){
+    init: function ( $element, settings ){
 
       /**
        * Instance of Tip
@@ -180,7 +178,7 @@ Tip =  Class.create( Abstract,  ( function (){
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      $super( $element, settings );
+      Container.init.call( this, $element, settings );
 
       //Instantiate the tip
       $tip = $( _.template( settings.template, { content: settings.content } ) );
@@ -245,8 +243,8 @@ Tip =  Class.create( Abstract,  ( function (){
       //Require a Container and set up listeners if a URL was specifed
       if( settings.url ){
         $content = $tip.find( '.content' );
-        require.ensure( ['lu/Container'], function( require, module, exports ){
-          var Ctr = require( 'lu/Container' );
+        require.ensure( ['/scripts/lu-controls/Container'], function( require, module, exports ){
+          var Ctr = require( '/scripts/lu-controls/Container' );
           Ctr = new Ctr( $content, {/* empty config */});
 
           Ctr.on( 'loaded', function( event ){
@@ -388,7 +386,7 @@ Tip =  Class.create( Abstract,  ( function (){
     }
   };
 
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

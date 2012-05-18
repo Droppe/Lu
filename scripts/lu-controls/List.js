@@ -9,11 +9,10 @@
  */
 
 var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
+  Abstract = require( '/scripts/lu-controls/Abstract' ),
   List;
 
-
-List =  Class.create( Abstract, ( function (){
+List =  Class.extend( function ( Abstract ) {
 
   //CONSTANTS
   var NEXT_EVENT = 'next',
@@ -44,11 +43,10 @@ List =  Class.create( Abstract, ( function (){
      * PTClass constructor
      * @method initialize
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */
-    initialize: function ( $super, $element, settings ){
+    init: function ( $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -98,7 +96,7 @@ List =  Class.create( Abstract, ( function (){
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      Abstract.init.call( this, $element, settings );
 
 
       /**
@@ -461,7 +459,7 @@ List =  Class.create( Abstract, ( function (){
 
   };
 
-}() ) );
+});
 
 
 //Export to Common JS Loader

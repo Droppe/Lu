@@ -3,16 +3,16 @@
  * @class RadioButton
  * @constructor
  * @extends FormSelect
- * @requires ptclass
+ * @requires class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance 
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-  FormSelect = require( 'lu/Abstract' ),
+  FormSelect = require( 'scripts/lu-controls/FormSelect' ),
   RadioButton;
 
-RadioButton = Class.create( FormSelect,  ( function () {
+RadioButton = Class.extend( function (FormSelect) {
 
   // RETURN METHODS OBJECT
   return {
@@ -20,11 +20,10 @@ RadioButton = Class.create( FormSelect,  ( function () {
      * PTClass constructor 
      * @method initialize
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
+    init: function ( $element, settings ) {
 
       // PRIVATE INSTANCE PROPERTIES
 
@@ -75,7 +74,7 @@ RadioButton = Class.create( FormSelect,  ( function () {
       settings.notify = settings.notify || getNotifyIds().join();
        
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      FormSelect.init.call( this, $element, settings );
       
       // PRIVILEDGED METHODS
       /**
@@ -100,7 +99,7 @@ RadioButton = Class.create( FormSelect,  ( function () {
       });
     }
   };  
-}() ));
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ) {

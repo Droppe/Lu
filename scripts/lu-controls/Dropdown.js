@@ -2,16 +2,17 @@
  * The Dropdown component is a subclass of Abstract.
  * @class Dropdown 
  * @constructor
+ * @require class
  * @extends Abstract 
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
+  Abstract = require( '/scripts/lu-controls/Abstract' ),
   Dropdown;
 
-Dropdown =  Class.create( Abstract,  ( function () {
+Dropdown =  Class.extend( function (Abstract) {
 
   // Constants
   var KEYUP_EVENT = 'keyup',
@@ -27,14 +28,13 @@ Dropdown =  Class.create( Abstract,  ( function () {
   // RETURN METHODS OBJECT 
   return {
     /**
-     * PTClass constructor 
-     * @method initialize
+     * Class constructor 
+     * @method init
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
+    init: function ( $element, settings ) {
       // PRIVATE
       // INSTANCE PROPERTIES
       
@@ -374,7 +374,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
       DropdownInit( settings );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      Abstract.init.call( this, $element, settings );
      
       // Attach event listeners
       // Dropdown list
@@ -388,7 +388,7 @@ Dropdown =  Class.create( Abstract,  ( function () {
       $selectedItem.on( SELECTED_EVENT, selectedItemHandler ); 
     }
   };
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ) {

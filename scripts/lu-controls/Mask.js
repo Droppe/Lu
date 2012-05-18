@@ -3,16 +3,16 @@
  * @class Mask
  * @constructor
  * @extends Abstract
- * @requires ptclass
+ * @requires class
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-    Abstract = require( 'lu/Abstract' ),
+    Abstract = require( '/scripts/lu-controls/Abstract' ),
     Mask;
 
-Mask = Class.create( Abstract,  ( function (){
+Mask = Class.extend( function (Abstract) {
 
   //Observed events 
   var SHOW_EVENT = 'show',
@@ -22,8 +22,15 @@ Mask = Class.create( Abstract,  ( function (){
       HIDDEN_EVENT = 'hidden';
 
   return {
-
-    initialize: function ( $super, $element, settings ){
+    /**
+     * Constructor
+     * @method init
+     * @public
+     * @param {Object} $element JQuery object for the element wrapped by
+     * the component
+     * @param {Object} settings Configuration settings
+     */
+    init: function ( $element, settings ){
 
       var Mask = this,
         defaults = {
@@ -35,7 +42,7 @@ Mask = Class.create( Abstract,  ( function (){
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      $super( $element, settings );
+      Abstract.init.call( this, $element, settings );
 
       $container = $( settings.container );
       /**
@@ -80,7 +87,7 @@ Mask = Class.create( Abstract,  ( function (){
 
   };
 
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

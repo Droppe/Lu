@@ -1,11 +1,11 @@
-var Class = require( 'class' ),
+var Class = require( '/scripts/libraries/class' ),
   Abstract;
 
 /**
  * The base component class all other UI components inherit from.
  * @class Abstract
  * @constructor
- * @require ptclass
+ * @require class
  * @version 0.2.5
  */
 Abstract = Class.extend( function( Class ){

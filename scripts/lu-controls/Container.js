@@ -8,10 +8,9 @@
 
 //The Full path is given do to an error in inject :(
 var Abstract = require( '/scripts/lu-controls/Abstract' ),
-  stateDecorator = require( '/scripts/lu-decorators/State' ),
   Container;
 
-Container = Abstract.extend( function( Abstract ){
+Container = Abstract.extend( function ( Class ) {
   var STATE_EVENT = 'state',
     STATED_EVENT = 'stated',
     UPDATE_EVENT = 'update',
@@ -28,6 +27,16 @@ Container = Abstract.extend( function( Abstract ){
      * @final
      */
     defaults = {
+      /**
+       * The default state or states to be applied to the Container.
+       * This can be an Array of strings or comma-delimited string
+       * representing multiple states.
+       * It can also be a string representing a single state
+       * @property states
+       * @type {String|Array}
+       * @default null
+       */
+      states: null,
       content: null,
       /**
        * A URL to be used as a content source.
@@ -148,7 +157,6 @@ Container = Abstract.extend( function( Abstract ){
           explodedURL = undefined;
         }
 
-
         explodedURL = explodedURL || _.explodeURL( url );
 
         if( !explodedURL.authority && !explodedURL.path && !explodedURL.extension && explodedURL.fragment ){
@@ -164,17 +172,28 @@ Container = Abstract.extend( function( Abstract ){
         Container.removeState( LOADED_STATE );
         Container.addState( LOADING_STATE );
 
-        $.ajax( {
-          url: url,
-          success: function( data, textStatus, jXHR ){
-            var content;
+        if (url) {
+          $.ajax( {
+            url: url,
+            success: function( data, textStatus, jXHR ){
+              var content;
 
-            if( settings.selector ){
-              content = $( data ).find( settings.selector ).html();
-            } else if( explodedURL.fragment ){
-              content = $( data ).find( '#' + explodedURL.fragment ).html() || data;
-            } else {
-              content = data;
+              if( settings.selector ){
+                content = $( data ).find( settings.selector ).html();
+              } else if( explodedURL.fragment ){
+                content = $( data ).find( '#' + explodedURL.fragment ).html() || data;
+              } else {
+                content = data;
+              }
+
+              Container.removeState( LOADING_STATE );
+              Container.trigger( UPDATE_EVENT, content, method );
+              Container.addState( LOADED_STATE );
+
+            },
+            failure: function(){
+              Container.removeState( LOADING_STATE );
+              Container.addState( ERRED_STATE );
             }
 
             Container.removeState( LOADING_STATE );
@@ -262,6 +281,103 @@ Container = Abstract.extend( function( Abstract ){
         cache.width = value;
         $element.width( value );
         return Container;
+      };
+
+      /**
+       * Returns the state(s) of the Container
+       * @method getState
+       * @public
+       * @return {Array} an Array of strings representing the state(s)
+       */
+      Container.getState = function(){
+        return states;
+      };
+
+      /**
+       * Sets the state(s) of the Container replacing other states
+       * @method setState
+       * @param {Array|String} value This can be an Array of strings or comma
+       * delimeted string representing multiple states. It can also be
+       * a string representing a single state
+       * @public
+       * @return {Object} Container
+       */
+      Container.setState = function( value ){
+        if( typeof value === 'string' ){
+          value = value.split( ',' ).sort();
+        }
+
+        value = value.sort();
+        states = states.sort();
+
+        if( _.isEqual( value, states ) ){
+          return Container;
+        }
+
+        states = value;
+
+        applyState( $element, states, prefix );
+        Container.trigger( STATED_EVENT, [$element, states] );
+
+        return Container;
+      };
+
+      /**
+       * Adds a state or states to the Container
+       * @method addState
+       * @param {Array|String} value This can be an Array of strings or comma
+       * delimited string representing multiple states. It can also be
+       * a string representing a single state
+       * @public
+       * @return {Object} Container
+       */
+      Container.addState = function( value ){
+        if( typeof value === 'string' ){
+          value = value.split( ',' );
+        }
+        if( _.difference( value, states ).length > 0 ){
+          states = _.union( states, value );
+          applyState( $element, states, prefix );
+          Container.trigger( STATED_EVENT, [$element, settings] );
+        }
+        return Container;
+      };
+
+      /**
+       * Removes the state(s) from the Container
+       * @method addState
+       * @param {Array|String} value This can be an Array of strings or comma
+       * delimeted string representing multiple states. It can also be
+       * a string representing a single state
+       * @public
+       * @return {Object} Container
+       */
+      Container.removeState = function( value ){
+        var intersection;
+        if( typeof value === 'string' ){
+          value = value.split( ',' );
+        }
+
+        intersection = _.intersection( states, value );
+
+        if( intersection.length > 0 ){
+          states = _.without( states, value );
+          applyState( $element, states, prefix );
+          Container.trigger( STATED_EVENT, [$element, states, settings] );
+        }
+
+        return Container;
+      };
+
+      /**
+       * Checks to see if the state has been applied
+       * @method hasState
+       * @param {String} The state to check
+       * @public
+       * @return {Boolean} True if the state has been applied.
+       */
+      Container.hasState = function( value ){
+        return ( _.indexOf( states, value ) > -1 );
       };
 
       /**

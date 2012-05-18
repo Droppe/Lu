@@ -3,16 +3,16 @@
  * @class Dialog
  * @constructor
  * @extends Abstract
- * @requires ptclass
+ * @require class
  * @param {HTMLElement} element The HTML element surrounded by the control
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-    Abstract = require( 'lu/Abstract' ),
+    Abstract = require( '/scripts/lu-controls/Abstract' ),
     Dialog;
 
-Dialog = Class.create( Abstract,  ( function (){
+Dialog = Class.extend( function (Abstract) {
 
   //Observed events 
   var OPEN_EVENT = 'open',
@@ -23,7 +23,14 @@ Dialog = Class.create( Abstract,  ( function (){
 
   return {
 
-    initialize: function ( $super, $element, settings ){
+    /**
+     * Class constructor 
+     * @method init
+     * @public
+     * @param {Object} $element JQuery object for the element wrapped by the component
+     * @param {Object} settings Configuration settings
+     */    
+    init: function ( $element, settings ){
 
       var Dialog = this,
         defaults = {},
@@ -32,7 +39,7 @@ Dialog = Class.create( Abstract,  ( function (){
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      $super( $element, settings );
+      Abstract.init.call( this,$element, settings );
 
       /**
        * Open the dialog
@@ -73,7 +80,7 @@ Dialog = Class.create( Abstract,  ( function (){
 
   };
 
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

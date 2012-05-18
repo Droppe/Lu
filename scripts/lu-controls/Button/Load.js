@@ -3,28 +3,27 @@
  * @class LoadButton
  * @constructor
  * @extends Button
- * @require ptclass
+ * @require class
  * @version 0.0.0
  */
 
 var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
+  Button = require( '/scripts/lu-controls/Button' ),
   LoadButton;
 
 
-LoadButton = Class.create( Button, ( function (){
+LoadButton = Class.extend( function (Button) {
 
    // RETURN METHODS OBJECT
    return {
      /**
       * PTClass constructor 
-      * @method initialize
+      * @method init
       * @public
-      * @param {Object} $super Pointer to superclass constructor
       * @param {Object} $element JQuery object for the element wrapped by the component
       * @param {Object} settings Configuration settings
       */    
-     initialize: function ( $super, $element, settings ){
+     init: function ( $element, settings ){
 
        // PRIVATE INSTANCE PROPERTIES
 
@@ -43,11 +42,11 @@ LoadButton = Class.create( Button, ( function (){
        _.defaults( settings, defaults );
    
        // CALL THE PARENT'S CONSTRUCTOR
-       $super( $element, settings );
+       Button.init.call( this, $element, settings );
      }
   };
   
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

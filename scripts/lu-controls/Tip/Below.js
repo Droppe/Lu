@@ -3,19 +3,19 @@
  * @class BelowTip
  * @constructor
  * @extends Tip
- * @requires ptclass
+ * @requires class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-  Tip = require( 'lu/Tip' ),
+  Tip = require( '/scripts/lu-controls/Tip' ),
   BelowTip;
 
-BelowTip = Class.create( Tip, ( function (){
+BelowTip = Class.extend( function (Tip){
 
    return {
-     initialize: function ( $super, $element, settings ){
+     init: function ( $element, settings ){
 
        var defaults = {
          placement: 'below'
@@ -23,11 +23,11 @@ BelowTip = Class.create( Tip, ( function (){
 
        _.defaults( settings, defaults );
 
-       $super( $element, settings );
+       Tip.init.call( this, $element, settings );
      }
   };
 
-}() ) );
+} );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

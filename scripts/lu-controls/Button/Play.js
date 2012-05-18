@@ -3,29 +3,28 @@
  * @class PlayButton
  * @constructor
  * @extends Button
- * @requires ptclass
+ * @require class
  * @version 0.1.0
  */
 
 var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
+  Button = require( '/scripts/lu-controls/Button' ),
   PlayButton;
 
-PlayButton = Class.create( Button, ( function (){
+PlayButton = Class.extend( function (Button) {
   var PLAYING_EVENT = 'playing',
     PAUSED_EVENT = 'paused';
 
   // RETURN METHODS OBJECT
   return {
    /**
-    * PTClass constructor 
-    * @method initialize
+    * Class constructor 
+    * @method init
     * @public
-    * @param {Object} $super Pointer to superclass constructor
     * @param {Object} $element JQuery object for the element wrapped by the component
     * @param {Object} settings Configuration settings
     */
-    initialize: function ( $super, $element, settings ){
+    init: function ( $element, settings ){
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -50,7 +49,7 @@ PlayButton = Class.create( Button, ( function (){
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      Button.init.call( this, $element, settings );
 
       PlayButton.on( PLAYING_EVENT, function( event ){
         event.stopImmediatePropagation();
@@ -66,7 +65,7 @@ PlayButton = Class.create( Button, ( function (){
 
   };
 
-}() ) );
+});
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

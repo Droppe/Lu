@@ -9,10 +9,10 @@
  * @version 0.0.0
  */
 var Class = require( 'class' ),
-  Button = require( 'lu/Button' ),
+  Button = require( '/scripts/lu-controls/Button' ),
   FormSelect;
   
-FormSelect = Class.create( Button,  ( function () {
+FormSelect = Class.extend( function (Button) {
 
   // RETURN METHODS OBJECT
   return {
@@ -20,11 +20,10 @@ FormSelect = Class.create( Button,  ( function () {
      * PTClass constructor 
      * @method initialize
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
+    init: function ( $element, settings ) {
 
       // PRIVATE INSTANCE PROPERTIES
 
@@ -81,7 +80,7 @@ FormSelect = Class.create( Button,  ( function () {
 
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      Button.init.call( this, $element, settings );
       
       
       // PRIVILEGED METHODS
@@ -108,7 +107,7 @@ FormSelect = Class.create( Button,  ( function () {
 
     }
   };  
-}() ));
+});
 
 //Export to CommonJS Loader
 if( module && module.exports ) {

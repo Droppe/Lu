@@ -2,16 +2,17 @@
  * A representation of a stateful list
  * @class Panel
  * @constructor
+ * @require class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.1
  */
 
 var Class = require( 'class' ),
-  Abstract = require( 'lu/Abstract' ),
+  Abstract = require( '/scripts/lu-controls/Abstract' ),
   Panel;
 
-Panel = Class.create( Abstract, ( function () {
+Panel = Class.extend( function (Abstract) {
 
   //CONSTANTS
   var ACTIVATE_EVENT = 'activate',
@@ -24,11 +25,10 @@ Panel = Class.create( Abstract, ( function () {
      * PTClass constructor 
      * @method initialize
      * @public
-     * @param {Object} $super Pointer to superclass constructor
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */    
-    initialize: function ( $super, $element, settings ) {
+    init: function ( $element, settings ) {
 
       // PRIVATE INSTANCE PROPERTIES
       /**
@@ -55,7 +55,7 @@ Panel = Class.create( Abstract, ( function () {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      $super( $element, settings );
+      $Abstract.init.call( this, $element, settings );
 
       content = _.explodeURL( settings.content );
 
@@ -80,12 +80,12 @@ Panel = Class.create( Abstract, ( function () {
           $element.append( $content );
         }
         Panel.trigger( 'activated', $element );
-      }
+      };
 
       Panel.deactivate = function() {
         $element.removeClass( ACTIVE_FLAG );
         Panel.trigger( 'deactivated', $element );
-      }
+      };
 
       Panel.on( ACTIVATE_EVENT, function( event ) {
         event.stopPropagation();
@@ -99,7 +99,7 @@ Panel = Class.create( Abstract, ( function () {
     }
   };
 
-}() ) );
+});
 
 
 //Export to Common JS Loader
