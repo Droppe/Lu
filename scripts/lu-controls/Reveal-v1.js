@@ -81,7 +81,7 @@ Reveal = Class.extend( function (SelectButton) {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      SelectButton.call.init( this, $element, settings );
+      SelectButton.init.call( this, $element, settings );
 
       targetNode = settings.targetNode;
       _.log("TARGETNODE:", targetNode);

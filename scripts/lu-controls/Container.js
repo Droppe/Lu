@@ -6,11 +6,12 @@
 * @version 0.2.4
 */
 
-//The Full path is given do to an error in inject :(
-var Abstract = require( '/scripts/lu-controls/Abstract' ),
+//The Full path is given do to an error in inject :( 
+var Class = require( '/scripts/libraries/class' ),
+  Abstract = require( '/scripts/lu-controls/Abstract' ),
   Container;
 
-Container = Abstract.extend( function( Abstract ){
+Container = Class.extend( function ( Abstract ) {
   var STATE_EVENT = 'state',
     STATED_EVENT = 'stated',
     UPDATE_EVENT = 'update',

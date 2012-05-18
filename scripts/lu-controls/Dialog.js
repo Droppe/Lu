@@ -39,7 +39,7 @@ Dialog = Class.extend( function (Abstract) {
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      Abstract.call.init( this,$element, settings );
+      Abstract.init.call( this,$element, settings );
 
       /**
        * Open the dialog

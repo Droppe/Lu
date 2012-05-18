@@ -74,7 +74,7 @@ RadioButton = Class.extend( function (FormSelect) {
       settings.notify = settings.notify || getNotifyIds().join();
        
       // CALL THE PARENT'S CONSTRUCTOR
-      FormSelect.call.init( this, $element, settings );
+      FormSelect.init.call( this, $element, settings );
       
       // PRIVILEDGED METHODS
       /**
