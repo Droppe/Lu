@@ -22,7 +22,7 @@ RightTip = Class.extend( function (Tip) {
        };
 
        _.defaults( settings, defaults );
-       Tip.call.init( this, $element, settings );
+       Tip.init.call( this, $element, settings );
      }
   };
 

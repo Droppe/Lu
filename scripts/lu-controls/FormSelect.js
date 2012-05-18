@@ -80,7 +80,7 @@ FormSelect = Class.extend( function (Button) {
 
 
       // CALL THE PARENT'S CONSTRUCTOR
-      Button.call.init( this, $element, settings );
+      Button.init.call( this, $element, settings );
       
       
       // PRIVILEGED METHODS

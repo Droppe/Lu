@@ -144,7 +144,7 @@ Tabs = Class.extend( function (Abstract) {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      Abstract.call.init( this, $element, settings );
+      Abstract.init.call( this, $element, settings );
 
       // Initialize a bunch of stuff for the tabs!
       tabInit();

@@ -73,7 +73,7 @@ Accordion =  Class.extend( function (List) {
       _.defaults( settings, defaults );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      List.call.init( this, $element, settings );
+      List.init.call( this, $element, settings );
 
       $panels = $(settings.notify, $element);
       $buttons = $('[data-lu*="Button:Select"]', $element);

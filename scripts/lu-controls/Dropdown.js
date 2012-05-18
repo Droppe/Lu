@@ -374,7 +374,7 @@ Dropdown =  Class.extend( function (Abstract) {
       DropdownInit( settings );
 
       // CALL THE PARENT'S CONSTRUCTOR
-      Abstract.call.init( this, $element, settings );
+      Abstract.init.call( this, $element, settings );
      
       // Attach event listeners
       // Dropdown list

@@ -121,7 +121,7 @@ Carousel =  Class.extend( function (List) {
       delay = settings.delay;
 
       // CALL THE PARENT'S CONSTRUCTOR
-      List.call.init( this, $element, settings );
+      List.init.call( this, $element, settings );
 
       // PRIVILEGED METHODS
      /**
