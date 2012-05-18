@@ -1,5 +1,4 @@
-var Class = require( 'class' ),
-  Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
   stateDecorator = require( '/scripts/lu-decorators/State' ),
   Button;
 
@@ -245,7 +244,6 @@ Button = Abstract.extend( function( Abstract ){
         var on = settings.on,
           command = settings.action;
 
-        console.log( settings.on, settings.action );
         return function( Button ){
           Button.on( on, function( event ){
             event.preventDefault();

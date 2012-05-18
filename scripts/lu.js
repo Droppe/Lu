@@ -186,10 +186,21 @@
 
         _.each( keys, function( key, index ){
           var Control,
-            pckg = NAMESPACE + '/' + key.replace( /:/g, '/' ),
+            __params__ = key.split( ':' ),
+            pckg = NAMESPACE + '/' + __params__.shift(),
             nodeData;
 
+          _.each( __params__, function( item, index ){
+              __params__[index] = item.toLowerCase();
+          } );
+
           config = new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
+
+          if( __params__.length > 0 ){
+            config.__params__ = __params__;
+            console.log( __params__ );
+          }
+
           Control = new packages[pckg]( $node, config );
 
           nodeData = getData( $node, key );
@@ -239,7 +250,7 @@
         numberOfControls += controls.length;
 
         _.each( controls, function( key, index ){
-          var pckg = NAMESPACE + '/' + key.replace( /:/g, '/' );
+          var pckg = NAMESPACE + '/' + key.split( ':' ).shift();
           if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ){
             required.push( pckg );
           }
