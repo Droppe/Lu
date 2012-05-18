@@ -3,15 +3,13 @@
  * @class SelectButton
  * @constructor
  * @extends Button
- * @requires class
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   SelectButton;
 
-SelectButton = Class.extend( function (Button) {
+SelectButton = Button.extend( function (Button) {
 
   var SELECTED_EVENT = 'selected';
   // RETURN METHODS OBJECT

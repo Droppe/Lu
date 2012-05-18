@@ -2,17 +2,16 @@
  * A representation of a stateful list
  * @class Panel
  * @constructor
- * @require class
+ * @extends Abstract
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.1
  */
 
-var Class = require( 'class' ),
-  Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
   Panel;
 
-Panel = Class.extend( function (Abstract) {
+Panel = Abstract.extend( function (Abstract) {
 
   //CONSTANTS
   var ACTIVATE_EVENT = 'activate',

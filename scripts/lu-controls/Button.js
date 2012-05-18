@@ -3,16 +3,13 @@
  * @class Button
  * @constructor
  * @extends Abstract
- * @require class, Abstract
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
   Button;
 
-
-Button = Class.extend( function (Abstract) {
+Button = Abstract.extend( function (Abstract) {
 
   // CONSTANTS
   var CLICK_EVENT = 'click',

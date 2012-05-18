@@ -2,17 +2,16 @@
  * A representation of a stateful list
  * @class List
  * @constructor
- * @require ptclass
+ * @extends Abstract
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
   List;
 
-List =  Class.extend( function ( Abstract ) {
+List =  Abstract.extend( function ( Abstract ) {
 
   //CONSTANTS
   var NEXT_EVENT = 'next',

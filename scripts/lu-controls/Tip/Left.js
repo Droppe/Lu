@@ -3,16 +3,14 @@
  * @class LeftTip
  * @constructor
  * @extends Tip
- * @requires class
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-  Tip = require( '/scripts/lu-controls/Tip' ),
+var Tip = require( '/scripts/lu-controls/Tip' ),
   LeftTip;
 
-LeftTip = Class.extend( function(Tip) {
+LeftTip = Tip.extend( function(Tip) {
 
    return {
      init: function ( $element, settings ){

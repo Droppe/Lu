@@ -3,16 +3,14 @@
  * @class LoadButton
  * @constructor
  * @extends Button
- * @require class
  * @version 0.0.0
  */
 
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   LoadButton;
 
 
-LoadButton = Class.extend( function (Button) {
+LoadButton = Button.extend( function (Button) {
 
    // RETURN METHODS OBJECT
    return {

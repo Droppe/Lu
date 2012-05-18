@@ -3,15 +3,13 @@
  * @class PreviousButton
  * @constructor
  * @extends Button
- * @require class
  * @version 0.1.0
  */
 
-var Class = require( 'class' ),
-  Button = require( '/scripts/lu-controls/Button' ),
+var Button = require( '/scripts/lu-controls/Button' ),
   PreviousButton;
 
-PreviousButton = Class.extend( function (Button) {
+PreviousButton = Button.extend( function (Button) {
 
   var FLOORED_EVENT = 'floored',
       SELECTED_EVENT = 'selected',

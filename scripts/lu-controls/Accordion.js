@@ -3,14 +3,12 @@
  * @class Accordion
  * @constructor
  * @extends List
- * @require class
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-  List = require( '/scripts/lu-controls/List' ),
+var List = require( '/scripts/lu-controls/List' ),
   Accordion;
 
-Accordion =  Class.extend( function (List) {
+Accordion = List.extend( function (List) {
 
   //CONSTANTS
   var HIDDEN_CSS = "lu-hidden",

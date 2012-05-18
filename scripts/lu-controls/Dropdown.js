@@ -2,17 +2,15 @@
  * The Dropdown component is a subclass of Abstract.
  * @class Dropdown 
  * @constructor
- * @require class
  * @extends Abstract 
  * @param {HTMLElement} element The HTML element containing this component
  * @param {Object} settings Configuration properties for this instance
  * @version 0.0.0
  */
-var Class = require( 'class' ),
-  Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
   Dropdown;
 
-Dropdown =  Class.extend( function (Abstract) {
+Dropdown =  Abstract.extend( function (Abstract) {
 
   // Constants
   var KEYUP_EVENT = 'keyup',
