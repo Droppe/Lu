@@ -300,7 +300,7 @@
     lu.notify = function( $element, event, parameters ){
       var $observers = getData( $element, '$observers' );
 
-      if ( $observers ){
+      if( $observers ){
         $observers.each( function( index, item ){
 
           var $item = $( item ),
@@ -317,7 +317,7 @@
                 //Filter out Controls that don't listen for the event
                 events = ( item.events ) ? item.events() : [];
                 if( _.indexOf( events, event ) > -1 ){
-                  item.trigger( event, parameters );
+                  item.trigger.call( item, new jQuery.Event( event, { target: $element[0] } ), parameters );
                 }
               } );
             } );

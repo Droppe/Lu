@@ -74,6 +74,9 @@ function stateDecorator() {
      */
     function state( event, states ){
       event.stopPropagation();
+      if( instance.$element.is( event.target ) ){
+        return;
+      }
       return instance.setState( states );
     }
 

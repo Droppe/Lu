@@ -12,9 +12,7 @@ var Abstract = require( '/scripts/lu-controls/Abstract' ),
   Container;
 
 Container = Abstract.extend( function ( Abstract ) {
-  var STATE_EVENT = 'state',
-    STATED_EVENT = 'stated',
-    UPDATE_EVENT = 'update',
+  var UPDATE_EVENT = 'update',
     UPDATED_EVENT = 'updated',
     LOAD_EVENT = 'load',
     LOADING_STATE = 'loading',

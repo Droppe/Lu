@@ -1,10 +1,3 @@
-/**
-* TBD
-* @class Abstract
-* @constructor
-* @version 0.0.0
-*/
-
 var Class = require( '/scripts/libraries/class' ),
   Abstract;
 

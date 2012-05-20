@@ -19,10 +19,6 @@ Button = Abstract.extend( function( Abstract ){
     commandDecorators,
     defaults = {
       on: 'click'
-    },
-    stateButtonDefaults = {
-      states: ['on','off'],
-      index: 0
     };
 
   function focus( $element ){
@@ -159,7 +155,7 @@ Button = Abstract.extend( function( Abstract ){
 
       if( item === undefined ){
         if( controls && controls !== '' ){
-          item = controls;
+          item = '#' + controls;
         } else if( __params__ ){
           item = __params__.shift();
         } else {
@@ -184,6 +180,7 @@ Button = Abstract.extend( function( Abstract ){
           }
         } );
         Button.on( on, function( event ){
+          console.log( 'select', item );
           event.preventDefault();
           focus( Button.$element );
           Button.trigger( 'select', item );
@@ -257,16 +254,11 @@ Button = Abstract.extend( function( Abstract ){
 
       settings.action = command;
 
-      if( $element.is( 'a' ) ){
-        applyRoleAttr( $element );
-      }
-      bindSpaceBar( $element, settings.on );
-
       Abstract.init.call( this, $element, settings );
 
       switch( command ){
         case 'state':
-          decorators.push( commandDecorators[command]( Button, _.defaults( settings, stateButtonDefaults, defaults ) ) );
+          decorators.push( commandDecorators[command]( Button, _.defaults( settings, defaults ) ) );
           break;
         case 'select':
           decorators.push( commandDecorators[command]( Button, _.defaults( settings, defaults ) ) );
@@ -319,6 +311,11 @@ Button = Abstract.extend( function( Abstract ){
       // } );
 
       Button.decorate.apply( this, decorators );
+
+      if( $element.is( 'a' ) ){
+        applyRoleAttr( $element );
+      }
+      bindSpaceBar( $element, settings.on );
     },
     disable: function(){
       var $element = this.$element;
