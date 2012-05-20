@@ -120,8 +120,6 @@ List = Abstract.extend( function( Abstract ){
           return List;
         }
 
-        console.log( 'LIST - ' + item );
-
         if( typeof item === 'number' ){
           $item = $items.eq( item );
         } else if ( typeof item === 'string' ){
