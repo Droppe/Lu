@@ -18,49 +18,80 @@
 
   <style type="text/css">
     body {
-      text-align: center;
       width: 800px;
       margin: 0 auto;
     }
-    #list {
+    #accordian {
       display: block;
       width: 600px;
-      height: 400px;
-      overflow: hidden;
-      margin: 50px auto;
-      border: 3px solid #333;
-      background-color: #cde;
-      padding: 0;
     }
-    #list li {
-      display: none;
-      float: left;
-      height: 100%;
-      width: 100%;
-      padding: 0;
-      margin: 0;
-      text-align: center;
-      line-height: 400px;
-      font-size: 24px;
-    }
-    #list .lu-state-selected {
+    #accordian li {
       display: block;
+      height: 52px;
+      overflow: hidden;
+    }
+    #accordian h2 {
+      height: 30px;
+      background: #cde;å
+      margin: 0;
+      padding: 0;
+      line-height: 0å;
+    }
+    #accordian .lu-state-selected {
+      height: auto;
     }
   </style>
 </head>
 
 <body>
 
-  <div id="list" data-lu="Container">
+  <ul id="accordian" data-lu="List">
+    <li id="one" data-lu="Container" class="lu-state-selected">
+      <h2><a href="#one" data-lu="Button:Select">One</a></h2>
+      <div class="content">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </div>
+    </li>
+    <li id="two">
+      <h2><a href="#two" data-lu="Button:Select">Two</a></h2>
+      <div class="content">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </div>
+    </li>
+    <li id="three">
+      <h2><a href="#three" data-lu="Button:Select">Three</a></h2>
+      <div class="content">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </div>
+    </li>
+    <li id="four">
+      <h2><a href="#four" data-lu="Button:Select">Four</a></h2>
+      <div class="content">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </div>
+    </li>
+  </ul>
 
-  </div>
-
-  <a href="#one" data-lu="Button2" data-lu-config="{
-    Button2: {
-      __params__: ['state', 'expanded', 'collapsed'],
-      notify: '#list'
-    }
-  }">1</a>
 
   <!-- Bootstrap:Util -->
   <script src="scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>

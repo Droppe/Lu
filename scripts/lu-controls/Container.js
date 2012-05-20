@@ -231,7 +231,14 @@ Container = Abstract.extend( function ( Abstract ) {
        * @return {Integer} Computed height of the Container (result drops units)
        */
       Container.getHeight = function(){
-        var height = cache.height = cache.height || $element.height();
+        var height = cache.height = cache.height;
+        if( !height ){
+          if( $target ){
+            height = $target.height();
+          } else {
+            height = $element.height();
+          }
+        }
         return height;
       };
 
@@ -244,7 +251,11 @@ Container = Abstract.extend( function ( Abstract ) {
        */
       Container.setHeight = function( value ){
         cache.height = value;
-        $element.height( value );
+        if( $target ){
+          $target.height( value );
+        } else {
+          $element.height( value );
+        }
         return Container;
       };
 

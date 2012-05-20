@@ -89,10 +89,6 @@
       return $element;
     }
 
-    function escapeJson( string ){
-      return string.replace(/[\\]/g, '\\\\').replace(/[\"]/g, '\\\"').replace(/[\/]/g, '\\/').replace(/[\b]/g, '\\b').replace(/[\f]/g, '\\f').replace(/[\n]/g, '\\n').replace(/[\r]/g, '\\r').replace(/[\t]/g, '\\t');
-    }
-
     //Public Methods
 
     /**
@@ -182,8 +178,6 @@
         var config = $node.data( 'lu-config' ),
          keys = lu.getKeys( $node );
 
-        config = config || '{}';
-
         _.each( keys, function( key, index ){
           var Control,
             __params__ = key.split( ':' ),
@@ -194,11 +188,14 @@
               __params__[index] = item.toLowerCase();
           } );
 
-          config = new Function( '$this', 'var config =' + config + '[\'' + key + '\'] || {}; return config;')( $node );
+          if( config ){
+            config = ( function(){ return eval( '( function(){ return ' + config + '; }() );' ) }()[key] || {} );
+          } else {
+            config = {};
+          }
 
           if( __params__.length > 0 ){
             config.__params__ = __params__;
-            console.log( __params__ );
           }
 
           Control = new packages[pckg]( $node, config );
@@ -317,7 +314,7 @@
                 //Filter out Controls that don't listen for the event
                 events = ( item.events ) ? item.events() : [];
                 if( _.indexOf( events, event ) > -1 ){
-                  item.trigger.call( item, new jQuery.Event( event, { target: $element[0] } ), parameters );
+                  item.trigger.call( item, new jQuery.Event( event, { target: $element } ), parameters );
                 }
               } );
             } );

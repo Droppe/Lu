@@ -73,10 +73,10 @@ function stateDecorator() {
      * @return {Function} Container.setState
      */
     function state( event, states ){
-      event.stopPropagation();
       if( instance.$element.is( event.target ) ){
         return;
       }
+      event.stopPropagation();
       return instance.setState( states );
     }
 
