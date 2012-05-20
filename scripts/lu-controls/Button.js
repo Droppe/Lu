@@ -180,7 +180,6 @@ Button = Abstract.extend( function( Abstract ){
           }
         } );
         Button.on( on, function( event ){
-          console.log( 'select', item );
           event.preventDefault();
           focus( Button.$element );
           Button.trigger( 'select', item );
@@ -225,7 +224,6 @@ Button = Abstract.extend( function( Abstract ){
           event.preventDefault();
           focus( Button.$element );
           state();
-          console.log( states[index] );
           Button.trigger( 'state', states[index] );
         } );
       };

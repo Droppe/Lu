@@ -11,13 +11,13 @@ var Container = require( '/scripts/lu-controls/Container' ),
 
 Tip = Container.extend( function (Container){
 
-  //Observed events 
+  //Observed events
   var HIDE_EVENT = 'hide',
       SHOW_EVENT = 'show',
       //Stateful published events
       HIDDEN_EVENT = 'hidden',
       SHOWN_EVENT = 'shown',
-  
+
   // OTHER CONSTANTS
       TITLE = 'title',
       CLASS = 'class';
@@ -25,7 +25,7 @@ Tip = Container.extend( function (Container){
   return {
 
     /**
-     * Tip constructor 
+     * Tip constructor
      * @method init
      * @public
      * @param {Object} $element JQuery collection containing the related element.
@@ -99,7 +99,7 @@ Tip = Container.extend( function (Container){
           sticky: true,
 
           /**
-           * The buffer in pixels around the element to be used in determing if the user has stopped 
+           * The buffer in pixels around the element to be used in determing if the user has stopped
            * interacting with the tip
            * @property threshold
            * @type Number
@@ -170,7 +170,7 @@ Tip = Container.extend( function (Container){
         content = $element.attr( TITLE );
         if( content !== undefined ){
           $element.removeAttr( TITLE );
-          settings.content = content; 
+          settings.content = content;
         }
       }
 
@@ -215,7 +215,7 @@ Tip = Container.extend( function (Container){
                 left: elOffset.left + elWidth / 2 - $tip.width() / 2 - settings.offsetLeft
               };
               break;
-            case 'above': 
+            case 'above':
               position = {
                 top: elOffset.top - $tip.height() - settings.offsetTop,
                 left: elOffset.left + elWidth / 2 - $tip.width() / 2 - settings.offsetLeft
@@ -312,7 +312,7 @@ Tip = Container.extend( function (Container){
       function mouseenterEvent ( event ){
         //set up a listener on the document to be used in determing if the user has moused out of the threshold
         event.stopPropagation();
-        
+
         $document.on( 'mousemove.lu.tip', function( event ){
 
           event.stopPropagation();
@@ -355,7 +355,7 @@ Tip = Container.extend( function (Container){
 
       //Event Listeners
       Tip.on( 'mouseenter', mouseenterEvent);
-      
+
       Tip.on( 'focus', function( event ){
         event.stopPropagation();
         //Should this be Tip.on?
@@ -364,12 +364,12 @@ Tip = Container.extend( function (Container){
           event.stopPropagation();
           //Should this be Tip.off?
           //$element.off( 'blur.lu.tip' );
-          Tip.off( 'blur.lu.tip' );          
+          Tip.off( 'blur.lu.tip' );
           Tip.hide();
         } );
-      
+
         Tip.show();
-      
+
       } );
 
       //Listen to these events from other controls
@@ -392,6 +392,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Tip );
   } else if( module.exports ){
-   module.exports = Tip; 
+   module.exports = Tip;
   }
 }
