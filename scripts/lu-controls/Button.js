@@ -6,11 +6,10 @@
 * @version 0.2.4
 */
 
-var Abstract = require( '/scripts/lu-controls/Abstract' ),
-  stateDecorator = require( '/scripts/lu-decorators/State' ),
+var Switch = require( '/scripts/lu-controls/Switch' ),
   Button;
 
-Button = Abstract.extend( function( Abstract ){
+Button = Switch.extend( function( Abstract ){
   var DISABLED = 'disabled',
     HAS_A18_ATTRS = 'button, input',
     DISABLED_STATE = DISABLED,
@@ -273,7 +272,7 @@ Button = Abstract.extend( function( Abstract ){
     init: function( $element, settings ){
       var Button = this,
         command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
-        decorators = [ stateDecorator ];
+        decorators = [];
 
       settings.action = command;
 
