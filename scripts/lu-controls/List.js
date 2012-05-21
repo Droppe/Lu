@@ -105,8 +105,12 @@ List = Abstract.extend( function( Abstract ){
         if( $element.is( 'ul, ol' ) ){
           $items = $element.children();
         } else {
-          $items = $element.find( 'ul, ol' ).first().children();
+          $items = $element.children( 'ul, ol' ).first();
         }
+      }
+
+      if( !$items ){
+        $items = $element.children();
       }
 
       Abstract.init.call( this, $element, settings );
@@ -119,6 +123,8 @@ List = Abstract.extend( function( Abstract ){
         if( item === undefined || item === null ){
           return List;
         }
+
+        console.log( $items );
 
         if( typeof item === 'number' ){
           $item = $items.eq( item );

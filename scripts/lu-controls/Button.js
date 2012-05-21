@@ -1,3 +1,11 @@
+/**
+* Button
+* @class Button
+* @constructor
+* @extends Abstract
+* @version 0.2.4
+*/
+
 var Abstract = require( '/scripts/lu-controls/Abstract' ),
   stateDecorator = require( '/scripts/lu-decorators/State' ),
   Button;
@@ -70,12 +78,26 @@ Button = Abstract.extend( function( Abstract ){
       };
     },
     load: function( Button, settings ){
-      var on = settings.on;
+      var on = settings.on,
+        $element = Button.$element,
+        isAnchor = $element.is( 'a' ),
+        url = settings.url || $element.attr( 'href' );
+
+
       return function( Button ){
         Button.on( STATED_EVENT, function( event, $subject, states ){
           event.stopPropagation();
           if( _.indexOf( states, LOADED_STATE ) > -1 ){
             Button.disable();
+          }
+        } );
+        Button.on( on, function( event ){
+          if( isAnchor && !settings.url ){
+            event.preventDefault();
+          }
+          focus( $element );
+          if( command !== undefined ){
+            Button.trigger( 'load', [url] );
           }
         } );
       };
@@ -145,7 +167,8 @@ Button = Abstract.extend( function( Abstract ){
         item = settings.item,
         on = settings.on,
         controls,
-        __params__ = settings.__params__;
+        __params__ = settings.__params__,
+        List;
 
       if( $element.is( HAS_A18_ATTRS ) ){
         controls = $element.attr( 'aria-controls' );
@@ -156,10 +179,10 @@ Button = Abstract.extend( function( Abstract ){
       if( item === undefined ){
         if( controls && controls !== '' ){
           item = '#' + controls;
-        } else if( __params__ ){
+        } else if( __params__.length > 0 ){
           item = __params__.shift();
         } else {
-          item = $( '> li', $element.closest( 'ul, ol' ) ).index( $element.closest( 'li' ) );
+          item = $element.closest( lu.getControl( $element.closest( '[data-lu=List]' ) ).$items );
         }
       }
 
@@ -170,9 +193,12 @@ Button = Abstract.extend( function( Abstract ){
 
           if( typeof item === 'number' ){
             $item = List.$items.eq( item );
-          } else if ( typeof item === 'string' ){
+          } else if( typeof item === 'string' ){
             $item = List.$items.filter( item );
+          } else if( item instanceof $ ){
+            $item = item;
           }
+
           if( List.current().is( $item ) ){
             Button.disable();
           } else {
@@ -180,9 +206,8 @@ Button = Abstract.extend( function( Abstract ){
           }
         } );
         Button.on( on, function( event ){
-          event.preventDefault();
           focus( Button.$element );
-          Button.trigger( 'select', item );
+          Button.trigger( 'select', [item] );
         } );
       };
     },
@@ -221,7 +246,6 @@ Button = Abstract.extend( function( Abstract ){
 
       return function( Button ){
         Button.on( on, function( event ){
-          event.preventDefault();
           focus( Button.$element );
           state();
           Button.trigger( 'state', states[index] );
@@ -230,26 +254,26 @@ Button = Abstract.extend( function( Abstract ){
     }
   };
 
+  function defaultDecorator( Button, settings ){
+    var on = settings.on,
+      command = settings.action,
+      $element = Button.$element;
+
+    return function( Button ){
+      Button.on( on, function( event ){
+        focus( $element );
+        if( command !== undefined ){
+          Button.trigger( command );
+        }
+      } );
+    };
+  }
+
   return {
     init: function( $element, settings ){
       var Button = this,
         command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
         decorators = [ stateDecorator ];
-
-      function defaultDecorator( Button, settings ){
-        var on = settings.on,
-          command = settings.action;
-
-        return function( Button ){
-          Button.on( on, function( event ){
-            event.preventDefault();
-            focus( Button.$element );
-            if( command !== undefined ){
-              Button.trigger( command );
-            }
-          } );
-        };
-      }
 
       settings.action = command;
 
@@ -294,7 +318,6 @@ Button = Abstract.extend( function( Abstract ){
           break;
         case 'load':
           _.defaults( settings, defaults );
-          decorators.push( defaultDecorator( Button, settings ) );
           decorators.push( commandDecorators[command]( Button, settings ) );
           break;
         default:

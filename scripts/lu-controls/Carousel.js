@@ -4,7 +4,7 @@
  * @require class
  * @extends List
  * @constructor
- * @version 0.1.0
+ * @version 0.2.4
  */
 
 var List = require( '/scripts/lu-controls/List' ),
@@ -48,7 +48,7 @@ Carousel =  List.extend( function (List) {
        * @property Carousel
        * @type Object
        * @private
-       */  
+       */
       var Carousel = this,
         /**
          * Default configuration values
@@ -155,7 +155,7 @@ Carousel =  List.extend( function (List) {
       Carousel.pause = function(){
         if( playing ){
           playing = false;
-          window.clearTimeout(playTimer);
+          window.clearTimeout( playTimer );
           Carousel.trigger( PAUSED_EVENT, [$element] );
         }
         return Carousel;
@@ -180,9 +180,9 @@ Carousel =  List.extend( function (List) {
       Carousel.hasPrevious = function(){
         return true;
       };
-      
+
       /**
-       * Selects the next item in the Carousel. 
+       * Selects the next item in the Carousel.
        * @method next
        * @public
        * @return {Object} List
@@ -192,17 +192,17 @@ Carousel =  List.extend( function (List) {
           Carousel.select( 0 );
         } else {
           var i  = Carousel.index() + 1;
-          Carousel.select( Carousel.index() + 1 ); 
+          Carousel.select( Carousel.index() + 1 );
         }
         return Carousel;
       };
 
       /**
-       * Selects the previous item in the Carousel. 
+       * Selects the previous item in the Carousel.
        * @method previous
        * @public
        * @return {Object} List
-       */  
+       */
       Carousel.previous = function(){
         Carousel.select( Carousel.index() - 1 );
         return Carousel;
@@ -281,6 +281,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Carousel );
   } else if( module.exports ){
-   module.exports = Carousel; 
+   module.exports = Carousel;
   }
 }
