@@ -5,34 +5,11 @@
  * @extends Button
  * @require Container
  * @version 0.0.1
- 
- Tip extends Button
- Tip settings, container, hover
- Tip manages a Container
- Tip is decorated by Above, Below, Left, Right
- 
- Tip.show() wraps Container.set()
- 
- 
- 
- +++
- 
- 
- List - mgr of containers
- Tab - mgr of Lists
- Tip - mgr of a Container
- Tip extends Btn
- 
- 
  */
 
 
 var Button = require( '/scripts/lu-controls/Button' ),
   //Container = require( '/scripts/lu-controls/Container' ),
-  positionRight = require('/scripts/lu-decorators/positionRight'),
-  positionLeft = require('/scripts/lu-decorators/positionLeft'),
-  positionAbove = require('/scripts/lu-decorators/positionAbove'), 
-  positionBelow = require('/scripts/lu-decorators/positionBelow'),    
   Tip2;
 
 Tip2 = Button.extend( function (Button){
@@ -220,8 +197,9 @@ Tip2 = Button.extend( function (Button){
          * @private
          */
         stuck,
+        
         /**
-         * Array of decorators to apply to this instance
+         * Array of decorators to apply to a Tip instance
          * @property decorators
          * @type Array
          */
@@ -253,30 +231,6 @@ Tip2 = Button.extend( function (Button){
       function render(content) {
         return $( _.template( settings.template, { content: content } ) );
       }
-
-          
-      /**
-       * Used to determine the position of the tip
-       * @private
-       * @method getPosition
-       * @param {Boolean} cache Uses the cached position by default or if set to true.
-       * @return {Object} position And object containing a top and left
-       */
-/*
-      Tip2.getPosition = function ( cache, settings ){
-        var elOffset = $element.offset(),
-          elHeight = $element.height(),
-          elWidth = $element.width();
-
-        if( !position || !cache ){
-          position = {
-            top: elOffset.top + elHeight / 2 - $tip.height() / 2,
-            left: elOffset.left + elWidth + settings.offsetLeft
-          };
-        }
-        return position;
-      };
-*/
       
       // If a content ID is specified in the config use that, else
       // if the HREF is a relative URL, use that as the content node ID
@@ -290,6 +244,9 @@ Tip2 = Button.extend( function (Button){
       else if ( href && (/^#\S+/).test(href) ) {
         content = $( href ).html();
       }
+  
+      // TODO: apply a Loader decorator if absolute URL found.
+      
   
       //Instantiate the tip
       $tip = render(content);
@@ -435,28 +392,30 @@ Tip2 = Button.extend( function (Button){
       
       // Decorate based on placement option
       switch (settings.placement) {
+        case "top":
         case "above":
-          //Tip2.decorate( positionAbove );
-          decorators.push( positionAbove );
+          decorators.push("/scripts/lu-decorators/positionAbove");
           break;
+        case "bottom":  
         case "below":
-          //Tip2.decorate( positionBelow );  
-          decorators.push( positionBelow );
+          decorators.push("/scripts/lu-decorators/positionBelow");
           break;
         case "left":
-          //Tip2.decorate( positionLeft );
-          decorators.push( positionLeft );
+          decorators.push("/scripts/lu-decorators/positionLeft");
           break;
         case "right":
           // same as default
         default:
-          //Tip2.decorate( positionRight );
-          decorators.push( positionRight );
+          decorators.push("/scripts/lu-decorators/positionRight");
       }
       
-      Tip2.decorate.apply(Tip2, decorators );
       
-    }        
+      require.ensure( decorators, function ( require, module, exports ) {
+        _.each( decorators, function ( decorator, index ) {
+          Tip2.decorate(require( decorator ) );
+        });
+      });
+    }
   };
 
 });
