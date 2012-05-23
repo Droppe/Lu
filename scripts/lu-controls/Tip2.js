@@ -22,7 +22,93 @@ Tip2 = Button.extend( function (Button){
       SHOWN_EVENT = 'shown',
   
   // OTHER CONSTANTS
-      CLASS = 'class';
+      CLASS = 'class',
+      TRUE = true,
+      FALSE = false,
+      
+      /**
+       * Default configuration values for all Tip2 instances
+       * @property defaults
+       * @type Object
+       * @private
+       * @final
+       */
+      defaults = {
+
+        /**
+         * Selector for in-page content
+         * @property contentSelector
+         * @type String
+         * @private
+         */
+        contentSelector: "",
+
+        /**
+         * The time in milliseconds before before the Tip2 hides after the user has stopped interacting with it.
+         * @property delay
+         * @type Number
+         * @private
+         */
+        delay: 300,
+
+        /**
+         * The placement of the tip. above || below || right || left
+         * @property placement
+         * @type String
+         * @private
+         */
+        placement: 'right',
+
+        /**
+         * The number of pixels from the top of the element the tip will be positioned at.
+         * @property offsetTop
+         * @type Number
+         * @private
+         */
+        offsetTop: 0,
+
+        /**
+         * The number of pixels from the left of the element the tip will be positioned at.
+         * @property offsetTop
+         * @type Number
+         * @private
+         */
+        offsetLeft: 0,
+
+        /**
+         * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
+         * @property template
+         * @type String
+         * @private
+         */
+        template: '<div class="lu-tip"><div class="lu-arrow"></div><div class="lu-content"><%= content %></div></div>',
+        
+        /**
+         * CSS styles for the Tip
+         * @property style
+         * @type String
+         * @private
+         */
+        style: '',
+
+        /**
+         * If set to true the tip will remain open until the mouse has left the tip.
+         * @property sticky
+         * @type Boolean
+         * @private
+         */
+        sticky: TRUE,
+
+        /**
+         * The buffer in pixels around the element to be used in determing if the user has stopped 
+         * interacting with the tip
+         * @property threshold
+         * @type Number
+         * @private
+         */
+        threshold: 10
+      };
+      
 
   return {
 
@@ -44,95 +130,12 @@ Tip2 = Button.extend( function (Button){
       var Tip2 = this,
 
         /**
-         * Default configuration values for all Tip2 instances
-         * @property defaults
-         * @type Object
-         * @private
-         * @final
-         */
-        defaults = {
-
-          /**
-           * Selector for in-page content
-           * @property contentSelector
-           * @type String
-           * @private
-           */
-          contentSelector: "",
-
-          /**
-           * The time in milliseconds before before the Tip2 hides after the user has stopped interacting with it.
-           * @property delay
-           * @type Number
-           * @private
-           */
-          delay: 300,
-
-          /**
-           * The placement of the tip. above || below || right || left
-           * @property placement
-           * @type String
-           * @private
-           */
-          placement: 'right',
-
-          /**
-           * The number of pixels from the top of the element the tip will be positioned at.
-           * @property offsetTop
-           * @type Number
-           * @private
-           */
-          offsetTop: 0,
-
-          /**
-           * The number of pixels from the left of the element the tip will be positioned at.
-           * @property offsetTop
-           * @type Number
-           * @private
-           */
-          offsetLeft: 0,
-
-          /**
-           * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
-           * @property template
-           * @type String
-           * @private
-           */
-          template: '<div class="lu-tip"><div class="lu-arrow"></div><div class="lu-content"><%= content %></div></div>',
-          
-          /**
-           * CSS styles for the Tip
-           * @property style
-           * @type String
-           * @private
-           */
-          style: '',
-
-          /**
-           * If set to true the tip will remain open until the mouse has left the tip.
-           * @property sticky
-           * @type Boolean
-           * @private
-           */
-          sticky: true,
-
-          /**
-           * The buffer in pixels around the element to be used in determing if the user has stopped 
-           * interacting with the tip
-           * @property threshold
-           * @type Number
-           * @private
-           */
-          threshold: 10
-        },
-
-        /**
          * An indicator of whether or not the tip has been rendered.
          * @property rendered
          * @type Boolean
          * @private
          */
-        rendered = false,
+        rendered = FALSE,
 
         /**
          * A jQuery collection that references the document.
@@ -268,20 +271,20 @@ Tip2 = Button.extend( function (Button){
        * @return {Void}
        */
       Tip2.show = function(){
-        if( rendered === false ){
+        if( rendered === FALSE ){
           append();
           $tip.css( Tip2.getPosition(null, settings) );
 
           $tip.on( 'mouseenter.lu.tip', function( event ){
-            stuck = true;
+            stuck = TRUE;
           } );
 
           $tip.on( 'mouseleave.lu.tip', function( event ){
-            stuck = false;
+            stuck = FALSE;
             Tip2.hide();
           } );
 
-          rendered = true;
+          rendered = TRUE;
           Tip2.trigger( SHOWN_EVENT, $tip );
         }
         else {
@@ -296,13 +299,13 @@ Tip2 = Button.extend( function (Button){
        */
       Tip2.hide = function(){
         var timeout;
-        if( rendered === true ){
+        if( rendered === TRUE ){
           timeout = window.setTimeout( function(){
             if( !stuck || !settings.sticky ){
               $tip.off( 'mouseenter.lu.tip' );
               $tip.off( 'mouseleave.lu.tip' );
               $tip.remove();
-              rendered = false;
+              rendered = FALSE;
               window.clearTimeout( timeout );
               Tip2.trigger( HIDDEN_EVENT, $tip );
             }
@@ -337,15 +340,15 @@ Tip2 = Button.extend( function (Button){
            * @method isMouseInside
            */
           function isMouseInside(){
-            var result = true;
+            var result = TRUE;
             if( pageX < left - settings.threshold - settings.offsetLeft ){
-              result = false;
+              result = FALSE;
             } else if( pageY < top - settings.threshold - settings.offsetTop ){
-              result = false;
+              result = FALSE;
             } else if ( pageX > left + width + settings.threshold + settings.offsetLeft ){
-              result = false;
+              result = FALSE;
             } else if ( pageY > top + height + settings.threshold + settings.offsetTop ){
-              result = false;
+              result = FALSE;
             }
             return result;
           }
