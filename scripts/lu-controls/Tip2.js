@@ -2,17 +2,17 @@
  * Tooltip class
  * @class Tip2
  * @constructor
- * @extends Button
+ * @extends Abstract
  * @require Container
  * @version 0.0.1
  */
 
 
-var Button = require( '/scripts/lu-controls/Button' ),
-  //Container = require( '/scripts/lu-controls/Container' ),
+var Abstract = require( '/scripts/lu-controls/Abstract' ),
+  Container = require( '/scripts/lu-controls/Container' ),
   Tip2;
 
-Tip2 = Button.extend( function (Button){
+Tip2 = Abstract.extend( function (Abstract){
 
   //Observed events s
   var HIDE_EVENT = 'hide',
@@ -36,14 +36,6 @@ Tip2 = Button.extend( function (Button){
       defaults = {
 
         /**
-         * Selector for in-page content
-         * @property contentSelector
-         * @type String
-         * @private
-         */
-        contentSelector: "",
-
-        /**
          * The time in milliseconds before before the Tip2 hides after the user has stopped interacting with it.
          * @property delay
          * @type Number
@@ -56,6 +48,7 @@ Tip2 = Button.extend( function (Button){
          * @property placement
          * @type String
          * @private
+         * @default right
          */
         placement: 'right',
 
@@ -93,11 +86,12 @@ Tip2 = Button.extend( function (Button){
 
         /**
          * If set to true the tip will remain open until the mouse has left the tip.
-         * @property sticky
+         * @property interactive
          * @type Boolean
          * @private
+         * @default false
          */
-        sticky: TRUE,
+        interactive: FALSE,
 
         /**
          * The buffer in pixels around the element to be used in determing if the user has stopped 
@@ -105,6 +99,7 @@ Tip2 = Button.extend( function (Button){
          * @property threshold
          * @type Number
          * @private
+         * @default 10
          */
         threshold: 10
       };
@@ -212,7 +207,7 @@ Tip2 = Button.extend( function (Button){
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      Button.init.call( this, $element, settings );
+      Abstract.init.call( this, $element, settings );
 
       /**
        * Appends the Tip to the document 
@@ -235,22 +230,15 @@ Tip2 = Button.extend( function (Button){
         return $( _.template( settings.template, { content: content } ) );
       }
       
-      // If a content ID is specified in the config use that, else
-      // if the HREF is a relative URL, use that as the content node ID
 
-      contentSelector = settings.contentSelector;
+      // TODO: replace this with Container instance
+      // if the HREF is a relative URL, use that as the content node ID
       href = $element.attr( 'href' );
 
-      if( contentSelector ){
-        content = $(contentSelector).html();
-      }
-      else if ( href && (/^#\S+/).test(href) ) {
+      if ( href && (/^#\S+/).test(href) ) {
         content = $( href ).html();
       }
-  
-      // TODO: apply a Loader decorator if absolute URL found.
-      
-  
+
       //Instantiate the tip
       $tip = render(content);
 
@@ -301,7 +289,7 @@ Tip2 = Button.extend( function (Button){
         var timeout;
         if( rendered === TRUE ){
           timeout = window.setTimeout( function(){
-            if( !stuck || !settings.sticky ){
+            if( !stuck || !settings.interactive ){
               $tip.off( 'mouseenter.lu.tip' );
               $tip.off( 'mouseleave.lu.tip' );
               $tip.remove();
