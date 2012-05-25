@@ -74,7 +74,7 @@ Tip2 = Abstract.extend( function (Abstract){
          * @type String
          * @private
          */
-        template: '<div class="lu-tip"><div class="lu-arrow"></div><div class="lu-content"><%= content %></div></div>',
+        template: '<div class="lu-tip" role="tooltip"><div class="lu-arrow"></div><div class="lu-content"><%= content %></div></div>',
         
         /**
          * CSS styles for the Tip
@@ -375,7 +375,7 @@ Tip2 = Abstract.extend( function (Abstract){
       
       Tip2.on( 'focus', function( event ){
         event.stopPropagation();
-          Tip2.on( 'blur.lu.tip', function( event ){
+        Tip2.on( 'blur.lu.tip', function( event ){
           event.stopPropagation();
           Tip2.off( 'blur.lu.tip' );          
           Tip2.hide();
@@ -396,7 +396,6 @@ Tip2 = Abstract.extend( function (Abstract){
       } );
 
       // PUBLIC ACCESS
-      Tip2.$element = $element;
       Tip2.$tip = $tip;
       Tip2.position = position;
       
