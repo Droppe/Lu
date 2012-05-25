@@ -89,9 +89,9 @@ Tip2 = Abstract.extend( function (Abstract){
          * @property interactive
          * @type Boolean
          * @private
-         * @default false
+         * @default true
          */
-        interactive: FALSE,
+        interactive: TRUE,
 
         /**
          * The buffer in pixels around the element to be used in determing if the user has stopped 
@@ -141,7 +141,7 @@ Tip2 = Abstract.extend( function (Abstract){
         $document = $( document ),
 
         /**
-         * A jQuery collection that references the the tip node.
+         * A jQuery collection that references the tip node.
          * @property $tip
          * @type Object
          * @private
@@ -261,7 +261,7 @@ Tip2 = Abstract.extend( function (Abstract){
       Tip2.show = function(){
         if( rendered === FALSE ){
           append();
-          $tip.css( Tip2.getPosition(null, settings) );
+          $tip.css( getPosition(null, settings) );
 
           $tip.on( 'mouseenter.lu.tip', function( event ){
             stuck = TRUE;
@@ -299,6 +299,41 @@ Tip2 = Abstract.extend( function (Abstract){
             }
           }, settings.delay );
         }
+      };
+      
+      /**
+       * Gets the position of the tip
+       * @method getPosition
+       * @param {Boolean} cache Uses the cached position by default or if set to true.
+       * @return {Object} position And object containing a top and left
+       * @private
+       */
+      function getPosition( cache, settings ){
+        var elOffset = $element.offset(),
+          elHeight = $element.height(),
+          elWidth = $element.width();
+
+        if( position === undefined || cache === false ){
+          position = Tip2.calcPosition(elOffset, elHeight, elWidth, settings);
+        }
+        return position;
+      }
+
+      /**
+       * Calculates the position of the tip
+       * @method calcPosition
+       * @param {Object} offset
+       * @param {Number} height
+       * @param {Number} width
+       * @param {Object} settings tip instance settings
+       * @private
+       */
+      Tip2.XcalcPosition = function (offset, height, width, settings) {
+        return {
+	        top: offset.top + height / 2 - Tip2.$tip.height() / 2,
+          left: offset.left + width + settings.offsetLeft
+        };
+        
       };
 
       /**
@@ -380,6 +415,7 @@ Tip2 = Abstract.extend( function (Abstract){
       // PUBLIC ACCESS
       Tip2.$element = $element;
       Tip2.$tip = $tip;
+      Tip2.position = position;
       
       // Decorate based on placement option
       switch (settings.placement) {

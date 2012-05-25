@@ -1,38 +1,26 @@
 var positionAbove = function () {
   
-  /**
-   * The cached position of the tip
-   * @property position
-   * @type Object
-   * @private
-   */
-  var position;
-  
   
   return function( instance ){
 
     /**
-     * Used to determine the position of the tip
+     * Calculates the position of the tip
+     * @method calcPosition
+     * @param {Object} offset
+     * @param {Number} height
+     * @param {Number} width
+     * @param {Object} settings tip instance settings
      * @private
-     * @method getPosition
-     * @param {Boolean} cache Uses the cached position by default or if set to true.
-     * @return {Object} position And object containing a top and left
      */
-    instance.getPosition = function ( cache, settings ){
-      var elOffset = instance.$element.offset(),
-        elHeight = instance.$element.height(),
-        elWidth = instance.$element.width();
+    instance.calcPosition = function (offset, height, width, settings) {
+      return {
 
-      if( !position || !cache){
-        position = {
-          top: elOffset.top - instance.$tip.height() - settings.offsetTop,
-          left: elOffset.left + elWidth / 2 - instance.$tip.width() / 2 - settings.offsetLeft
-        };
-      }
-      
-      return position;
+        top: offset.top - instance.$tip.height() - settings.offsetTop,
+        left: offset.left + width / 2 - instance.$tip.width() / 2 - settings.offsetLeft
+
+      };
     };
-
+    
   };
 };
 
