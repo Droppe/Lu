@@ -320,23 +320,6 @@ Tip2 = Abstract.extend( function (Abstract){
       }
 
       /**
-       * Calculates the position of the tip
-       * @method calcPosition
-       * @param {Object} offset
-       * @param {Number} height
-       * @param {Number} width
-       * @param {Object} settings tip instance settings
-       * @private
-       */
-      Tip2.XcalcPosition = function (offset, height, width, settings) {
-        return {
-	        top: offset.top + height / 2 - Tip2.$tip.height() / 2,
-          left: offset.left + width + settings.offsetLeft
-        };
-        
-      };
-
-      /**
        * Function to run on mouseenter. Must be named so we can pass it specifically to jQuery's off.
        * @private
        * @method mouseenterEvent
