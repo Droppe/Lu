@@ -7,11 +7,10 @@
 */
 
 //The Full path is given do to an error in inject :(
-var Abstract = require( '/scripts/lu-controls/Abstract' ),
-  stateDecorator = require( '/scripts/lu-decorators/State' ),
+var Switch = require( '/scripts/lu-controls/Switch' ),
   Container;
 
-Container = Abstract.extend( function ( Abstract ) {
+Container = Switch.extend( function ( Switch ) {
   var UPDATE_EVENT = 'update',
     UPDATED_EVENT = 'updated',
     LOAD_EVENT = 'load',
@@ -123,8 +122,7 @@ Container = Abstract.extend( function ( Abstract ) {
 
       _.defaults( settings, defaults );
 
-      Abstract.init.call( this, $element, settings );
-      Container.decorate( stateDecorator );
+      Switch.init.call( this, $element, settings );
 
       target = settings.target;
 

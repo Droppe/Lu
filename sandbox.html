@@ -21,65 +21,96 @@
       width: 800px;
       margin: 50px auto;
     }
-    .split-button {
-      display: inline-block;
+    ul {
       position: relative;
-      width: auto;
-      height: 30px;
-      border: 1px solid #ded;
-      padding-right: 30px;
-    }
-    .split-button .menu {
-      margin: 30px 0 0 0;
+      list-style: none;
+      display: block;
+      height: 60px;
+      width: 200px;
+      margin: 20px 0;
+      overflow: hidden;
       padding: 0;
     }
-    .split-button .menu li {
-      list-style: none;
-    }
-    .split-button .menu li a {
-      display: block;
-      padding: 3px 5px;
-      line-height: 24px;
-    }
-    .lu-state-closed li {
-      display: none;
-    }
-    .lu-state-open li {
-      display: block;
-      margin: 0;
-    }
-    .split-button .arrow {
+    li {
       position: absolute;
-      right: 0;
-      top: 0px;
-      width: 30px;
-      height: 30px;
+      background: #cde;
+      display: block;
+      height: 100%;
+      width: 100%;
       text-align: center;
-      line-height: 30px;
+      line-height: 60px;
+      z-index: 0;
+      padding: 0;
+      margin: 0;
+      left: 0;
+    }
+    li:nth-child( odd ) {
+      background-color: #ded;
+    }
+    .lu-state-forward li {
+      left: 0%;
+    }
+    .lu-state-reverse li {
+      left: 0%;
+    }
+    .lu-state-forward .lu-transition-out {
+      z-index: 2;
+      left: -100%;
+    }
+    .lu-state-reverse .lu-transition-out {
+      z-index: 2;
+      left: 100%;
+    }
+    .lu-transition-in,
+    .lu-transition-out {
+      -moz-transition-property: left;
+      -moz-transition-duration: 1s;
+      -moz-transition-delay: 0;
+      left: 0;
+    }
+    .lu-state-selected {
+      z-index: 1;
+    }
+    .lu-state-forward .lu-state-selected {
+      left: 0;
+    }
+    .lu-state-reverse .lu-state-selected {
+      left: 0;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="split-button lu-state-closed" data-lu="Switch">
-    <a href="#default-action" role="button">Action</a>
-    <button data-lu="Button:State" class="arrow" data-lu-config="{
-      'Button:State': {
-        states: ['closed', 'open']
-      }
-    }">&raquo;</button>
-    <ul class="menu">
-      <li>
-        <a href="#action1">Alt Action 1</a>
-      </li>
-      <li>
-        <a href="#action2">Alt Action 2</a>
-      </li>
-      <li>
-        <a href="#action2">Alt Action 3</a>
-      </li>
+  <div class="carousel lu-state-forward" data-lu="Carousel">
+
+    <ul class="items">
+      <li class="lu-state-selected" data-lu="Container">1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>10</li>
+      <li>11</li>
+      <li>12</li>
+      <li>13</li>
+      <li>14</li>
+      <li>15</li>
+      <li>16</li>
+      <li>17</li>
+      <li>18</li>
+      <li>19</li>
+      <li>20</li>
+      <li>21</li>
     </ul>
+
+    <button data-lu="Button:Previous" type="button">&laquo;</button>
+    <button data-lu="Button:Next" type="button">&raquo;</button>
+
   </div>
 
 

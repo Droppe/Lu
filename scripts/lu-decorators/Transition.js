@@ -8,15 +8,23 @@ function transitionDecorator(){
   ( function(){
     var body = document.body || document.documentElement,
       style = body.style,
-      support = style.transition !== undefined ||
-        style.WebkitTransition !== undefined ||
-        style.MozTransition !== undefined ||
-        style.MsTransition !== undefined ||
-        style.OTransition !== undefined;
+      transition;
 
-    if( support !== undefined ){
+      if( style.transition !== undefined ){
+        transition = 'transition';
+      } else if( style.WebkitTransition !== undefined ){
+        transition = 'WebkitTransition';
+      } else if( style.MozTransition !== undefined ){
+        transition = 'MozTransition';
+      } else if( style.MsTransition !== undefined ){
+        transition = 'MsTransition';
+      } else if( style.OTransition ){
+        transition = 'OTransition';
+      }
+
+    if( transition !== undefined ){
       SUPPORTS_TRANSITION = true;
-      TRANSITION_STYLE = support;
+      TRANSITION_STYLE = transition;
     }
   }() );
 
@@ -48,12 +56,15 @@ function transitionDecorator(){
         removed.push( clss );
       }
     } );
-    $element.removeClass( removed.join( ' ' ) ).trigger( TRANSITIONED_EVENT );
+    $element.removeClass( removed.join( ' ' ) );
   }
 
   return function( instance ){
-    var transitioning = false;
-    console.log( instance );
+    var transitioning = false,
+      resolving = false,
+      queue = [],
+      callback;
+
     if( SUPPORTS_TRANSITION ){
       _.each( instance, function( item, key ){
         var cache;
@@ -61,38 +72,60 @@ function transitionDecorator(){
           cache = item;
           instance[key] = function(){
             if( transitioning ){
-              return;
+              queue.push( { instance: instance, fn: key, args: arguments } );
+              return instance;
             } else {
-              cache.apply( instance, arguments );
+              return cache.apply( instance, arguments );
             }
           };
         }
       } );
     }
 
-    instance.startTransition = function( vectors ){
+    instance.startTransition = function( vectors, fn ){
       var transition;
+      if( SUPPORTS_TRANSITION && !transitioning && !resolving ){
+        transition = this.$element.get(0).style[TRANSITION_STYLE];
 
-      if( SUPPORTS_TRANSITION ){
-        transition = this.style[TRANSITION_STYLE];
-
-        if( transitioning ){
-          instance.stopTransition();
+        if( _.isArray( vectors ) ){
+          _.each( vectors, function( vector, index ){
+            vectors[index] = TRANSITION_PREFIX + vector;
+          } );
+          instance.$element.addClass( vectors.join( ' ' ) ).one( TRANSITIONED_EVENT, function( event ){
+            instance.stopTransition();
+          } );
         }
-
-        instance.$element.addClass( vectors.join( ' ' ) ).one( TRANSITIONED_EVENT, function(){
-          instance.stopTransition();
-        } );
-
+        if( typeof fn === 'function' ){
+          callback = fn;
+        }
         transitioning = true;
       }
       return instance;
     };
 
-    instance.stopTransition = function( vectors ){
-      if( transitioning && SUPPORTS_TRANSITION ){
+    instance.stopTransition = function(){
+      if( transitioning ){
+
+        resolving = true;
+
+        ( function resolve(){
+          var item;
+          while( queue.length > 0 ){
+            item = queue.shift();
+            instance[item.fn].apply( item.instance, item.args );
+          }
+        }() );
+
+        resolving = false;
+
         kill( instance.$element );
         transitioning = false;
+
+        if( callback ){
+          callback();
+          callback = undefined;
+        }
+
       }
       return instance;
     };
