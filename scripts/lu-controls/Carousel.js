@@ -8,6 +8,8 @@
  */
 
 var List = require( '/scripts/lu-controls/List' ),
+  stateDecorator = require( '/scripts/lu-decorators/State' ),
+  transitionDecorator = require( '/scripts/lu-decorators/Transition' ),
   Carousel;
 
 Carousel =  List.extend( function (List) {
@@ -121,6 +123,7 @@ Carousel =  List.extend( function (List) {
 
       // CALL THE PARENT'S CONSTRUCTOR
       List.init.call( this, $element, settings );
+      Carousel.decorate( stateDecorator );
 
       // PRIVILEGED METHODS
      /**
@@ -188,11 +191,10 @@ Carousel =  List.extend( function (List) {
        * @return {Object} List
        */
       Carousel.next = function(){
-        if( Carousel.size() === Carousel.index() + 1 ){
+        if( Carousel.size() === Carousel.index + 1 ){
           Carousel.select( 0 );
         } else {
-          var i  = Carousel.index() + 1;
-          Carousel.select( Carousel.index() + 1 );
+          Carousel.select( Carousel.index + 1 );
         }
         return Carousel;
       };
@@ -204,7 +206,7 @@ Carousel =  List.extend( function (List) {
        * @return {Object} List
        */
       Carousel.previous = function(){
-        Carousel.select( Carousel.index() - 1 );
+        Carousel.select( Carousel.index - 1 );
         return Carousel;
       };
 
@@ -238,7 +240,6 @@ Carousel =  List.extend( function (List) {
             item.first();
           }
         } );
-
       } );
 
       Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT, function( event ){
