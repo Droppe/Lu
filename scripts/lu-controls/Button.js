@@ -34,13 +34,6 @@ Button = Switch.extend( function( Abstract ){
     }
   }
 
-  function applyRoleAttr( $element ){
-    var role = 'role';
-    if ( !$element.attr( role ) ){
-      $element.attr( role, 'button' );
-    }
-  }
-
   function bindSpaceBar( $element, on ){
     $element.on( 'keyup', function( event ){
       if( event.keyCode === 32 ){
@@ -333,9 +326,6 @@ Button = Switch.extend( function( Abstract ){
 
       Button.decorate.apply( this, decorators );
 
-      if( $element.is( 'a' ) ){
-        applyRoleAttr( $element );
-      }
       bindSpaceBar( $element, settings.on );
     },
     disable: function(){

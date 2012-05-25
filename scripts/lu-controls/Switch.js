@@ -12,7 +12,7 @@ var Abstract = require( '/scripts/lu-controls/Abstract' ),
   Switch;
 
 Switch = Abstract.extend( function ( Abstract ) {
-    defaults = {};
+  defaults = {};
 
   return {
     /**

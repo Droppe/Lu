@@ -9,11 +9,12 @@
  * @version 0.2.4
  */
 
-var Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Switch = require( '/scripts/lu-controls/Switch' ),
   Container = require( '/scripts/lu-controls/Container' ),
+  transitionDecorator = require( '/scripts/lu-decorators/Transition' ),
   List;
 
-List = Abstract.extend( function( Abstract ){
+List = Switch.extend( function( Abstract ){
 
   var NEXT_EVENT = 'next',
     LAST_EVENT = 'last',
@@ -105,7 +106,7 @@ List = Abstract.extend( function( Abstract ){
         if( $element.is( 'ul, ol' ) ){
           $items = $element.children();
         } else {
-          $items = $element.children( 'ul, ol' ).first();
+          $items = $element.children( 'ul, ol' ).first().children();
         }
       }
 
@@ -113,18 +114,19 @@ List = Abstract.extend( function( Abstract ){
         $items = $element.children();
       }
 
+      _.defaults( settings, defaults );
+
       Abstract.init.call( this, $element, settings );
 
       List.select = function( item ){
         var Container,
           $item,
-          controls = 'lu-controls';
+          controls = 'lu-controls',
+          index;
 
         if( item === undefined || item === null ){
           return List;
         }
-
-        console.log( $items );
 
         if( typeof item === 'number' ){
           $item = $items.eq( item );
@@ -153,8 +155,10 @@ List = Abstract.extend( function( Abstract ){
           }
 
           Container = lu.getControl( $item, 'Container' );
+          Container.decorate( transitionDecorator );
 
           if( Container.hasState( SELECTED_STATE ) ){
+            Selected = Container;
             List.trigger( SELECTED_EVENT, [ List, Container ] );
             return List;
           }
@@ -163,14 +167,20 @@ List = Abstract.extend( function( Abstract ){
             if( Container.$element.is( Selected.$element ) ){
               return List;
             }
-          } else {
-            Selected = Container;
+            Previous = Selected;
+            Previous.removeState( SELECTED_STATE );
           }
 
-          Selected.removeState( SELECTED_STATE );
-          Previous = Selected;
-          Selected = Container;
           Container.addState( SELECTED_STATE );
+          Selected = Container;
+
+          index = $items.index( $item );
+
+          if( index > List.index ){
+            List.addState( FORWARD_STATE ).removeState( REVERSE_STATE );
+          } else {
+            List.addState( REVERSE_STATE ).removeState( FORWARD_STATE );
+          }
           List.index = $items.index( $item );
           List.trigger( SELECTED_EVENT, [ List, Container ] );
 

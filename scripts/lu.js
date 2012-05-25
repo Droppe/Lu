@@ -648,33 +648,6 @@
 
     };
 
-    //Twitter Bootstrap did such a nice job of this...
-    $.support.transitionEnd = ( function(){
-      var body = document.body || document.documentElement,
-        style = body.style,
-        support = style.transition !== undefined ||
-          style.WebkitTransition !== undefined ||
-          style.MozTransition !== undefined ||
-          style.MsTransition !== undefined ||
-          style.OTransition !== undefined;
-
-      return support && {
-        event: ( function(){
-          var transitionEnd = "TransitionEnd";
-
-          if ( $.browser.webkit ){
-            transitionEnd = "webkitTransitionEnd";
-          } else if ( $.browser.mozilla ){
-            transitionEnd = "transitionend";
-          } else if ( $.browser.opera ){
-            transitionEnd = "oTransitionEnd";
-          }
-
-          return transitionEnd;
-
-        }() )
-      };
-    } () );
   }( window.jQuery ) );
 
   //Do a first pass of the HTML with the body.
