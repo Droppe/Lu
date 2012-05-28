@@ -3,7 +3,7 @@
  * @module Lu
  * @license
  *
- * Lu Control Framework v0.1.3
+ * Lu Control Framework v0.2.4
  * https://iheartweb.github.com/Lu
  *
  * Copyright (c) 2011,2012 Robert Martone <iheartweb@gmail.com>.
@@ -176,7 +176,8 @@
        */
       function execute( $node ){
         var config = $node.data( 'lu-config' ),
-         keys = lu.getKeys( $node );
+          extraConfig = $node.data( 'luExtraConfig' ),
+          keys = lu.getKeys( $node );
 
         _.each( keys, function( key, index ){
           var Control,
@@ -193,6 +194,8 @@
           } else {
             config = {};
           }
+
+          config = _.extend( config, extraConfig );
 
           if( __params__.length > 0 ){
             config.__params__ = __params__;
@@ -299,20 +302,19 @@
 
       if( $observers ){
         $observers.each( function( index, item ){
-
           var $item = $( item ),
             Deferred;
 
           Deferred = getData( $item, 'Deferred' );
 
-          if ( Deferred ){
+          if( Deferred ){
             // If the deferred object is already resolved
             // adding a new .done() fires the enclosed function
             // immediately.
             Deferred.done( function(){
               _.each( lu.getControls( $item ), function( item, index ){
                 //Filter out Controls that don't listen for the event
-                events = ( item.events ) ? item.events() : [];
+                var events = ( item.events ) ? item.events() : [];
                 if( _.indexOf( events, event ) > -1 ){
                   item.trigger.call( item, new jQuery.Event( event, { target: $element } ), parameters );
                 }
@@ -336,7 +338,6 @@
      * @return {Object} The target element (allows chaining)
      */
     lu.observe = function( $element, $observer ){
-
       var $observers = getData( $element, '$observers' ) || $( [] );
 
       $observer = $observer.not( $observers );
@@ -384,12 +385,29 @@
      * @return {Object} A JQuery collection of Lu controls
      */
     lu.destroy = function( $element ){
-      var $controls = lu.getDescendants( $element );
+      var $controls = lu.getDescendants( $element ),
+        attrs = ['data-lu', 'data-lu-config'],
+        data = ['lu', 'luControls', 'luConfig']
+
       if( $element.is( UI_CONTROL_PATTERN ) ){
         $controls = $controls.add( $element );
       }
-      $controls.removeData( 'lu', 'lu-controls', 'lu-config' );
-      return $controls;
+
+      $controls.each( function( index, item ){
+        var $item = $( item );
+        _.each( lu.getControls( $item ), function( item, index ){
+          var events = ( item.events ) ? item.events() : [];
+          item.off( events.join( ' ' ) );
+        } );
+
+        $item.removeData( data );
+
+        _.each( attrs, function( attr, index ){
+          $item.removeAttr( attr );
+        } );
+      } );
+
+      return $element;
     };
 
     /**
@@ -405,17 +423,14 @@
     lu.decorate = function( $element, keys, settings ){
       var result,
         nodeKeys = ( $element.attr( ATTR ) ) ? $element.attr( ATTR ).split( ' ' ) : [],
-        config;
+        luExtraConfig = 'luExtraConfig';
+
+      settings = settings || {};
 
       keys = _.union( nodeKeys, keys );
 
-      if( settings ){
-        result = $element.attr( ATTR, keys.join( ' ' ) );
-        config = $element.data( ATTR + '-config' ) || {};
-        $element.data( ATTR + '-config', _.extend( config, settings ) );
-      } else {
-        result = $element.attr( ATTR, keys.join( ' ' ) );
-      }
+      result = $element.attr( ATTR, keys.join( ' ' ) );
+      $element.data( 'luExtraConfig', _.extend( $element.data( luExtraConfig ) || {}, settings ) );
 
       return result;
     };
