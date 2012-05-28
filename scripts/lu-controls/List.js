@@ -1,17 +1,13 @@
 /**
  * Manages a list of Containers.
  * @class List
- * @constructor
- * @extends Abstract
+ * @extends Switch
  * @require Container
- * @param {HTMLElement} element The HTML element containing this component
- * @param {Object} settings Configuration properties for this instance
  * @version 0.2.4
  */
 
 var Switch = require( '/scripts/lu-controls/Switch' ),
   Container = require( '/scripts/lu-controls/Container' ),
-  transitionDecorator = require( '/scripts/lu-decorators/Transition' ),
   List;
 
 List = Switch.extend( function( Abstract ){
@@ -90,6 +86,13 @@ List = Switch.extend( function( Abstract ){
   }
 
   return {
+    /**
+     * @constructor
+     * @method init
+     * @public
+     * @param {Object} $element JQuery object for the element wrapped by the component
+     * @param {Object} settings Configuration settings
+     */
     init: function( $element, settings ){
       var List = this,
         Selected,
@@ -118,6 +121,13 @@ List = Switch.extend( function( Abstract ){
 
       Abstract.init.call( this, $element, settings );
 
+      /**
+       * Select an item in the list
+       * @method select
+       * @public
+       * @param {Integer|String|Object} item The index of the item to select, a css selector, or a JQuery collection containting the item.
+       * @return {Object} List
+       */
       List.select = function( item ){
         var Container,
           $item,
@@ -244,16 +254,36 @@ List = Switch.extend( function( Abstract ){
         keyup( event, List );
       } );
     },
+    /**
+     * adds a new item to $element
+     * @method append
+     * @public
+     * @param {Array} A jQuery Collection of $items to append
+     * @return {Object} List
+     */
     add: function( $item ){
       this.$items = this.$items.add( $item );
       this.$items.parent().append( $item );
       return this;
     },
+    /**
+     * Removes an item from $element
+     * @method remove
+     * @public
+     * @param {Array} A jQuery Collection of $items to remove
+     * @return {Object} List
+     */
     remove: function( $item ){
       $( $( $item ), this.$items ).remove();
       this.$items = this.$items.not( $item );
       return this;
     },
+    /**
+     * Selects the next item in the list.
+     * @method next
+     * @public
+     * @return {Object} List
+     */
     next: function(){
       if( this.hasNext() ){
         this.select( this.index + 1 );
@@ -262,6 +292,12 @@ List = Switch.extend( function( Abstract ){
       }
       return this;
     },
+    /**
+     * Selects the previous item in the list.
+     * @method previous
+     * @public
+     * @return {Object} List
+     */
     previous: function(){
       if( this.hasPrevious() ){
         this.select( this.index - 1 );
@@ -270,23 +306,59 @@ List = Switch.extend( function( Abstract ){
       }
       return this;
     },
+    /**
+     * Selects the last item in the list.
+     * @method last
+     * @public
+     * @return {Object} List
+     */
     last: function(){
       this.select( this.$items.eq( this.size() - 1 ) );
       return this;
     },
+    /**
+     * Selects the first item in the list.
+     * @method first
+     * @public
+     * @return {Object} List
+     */
     first: function(){
       this.select( 0 );
       return this;
     },
+    /**
+     * Determines if there are any higher-index items in the list.
+     * @method hasNext
+     * @public
+     * @return {Boolean} true if not at the last item in the list
+     */
     hasNext: function(){
       return ( this.index < this.size() - 1 );
     },
+    /**
+     * Determines if there are any lower-index items in the list.
+     * @method hasPrevious
+     * @public
+     * @return {Boolean} true if not at the first item in the list
+     */
     hasPrevious: function(){
       return ( this.index > 0 );
     },
+    /**
+     * Returns the currently-selected item.
+     * @method current
+     * @public
+     * @return {Object} JQuery object-reference to the selected item
+     */
     current: function(){
       return this.$items.eq( this.index );
     },
+    /**
+     * Returns the number of items in the list.
+     * @method size
+     * @public
+     * @return {Number} The number of items in the list
+     */
     size: function(){
       return this.$items.size();
     }
