@@ -1,5 +1,5 @@
 /**
- * A representation of a stateful list
+ * Manages a list of Containers.
  * @class List
  * @constructor
  * @extends Abstract
@@ -34,7 +34,8 @@ List = Switch.extend( function( Abstract ){
     VERTICAL = 'vertical',
     HORIZONTAL = 'horizontal',
     defaults = {
-      orientation: HORIZONTAL
+      orientation: HORIZONTAL,
+      index: 0
     };
 
   function contain( $item ){
@@ -93,8 +94,7 @@ List = Switch.extend( function( Abstract ){
       var List = this,
         Selected,
         Previous,
-        $items,
-        index = 0;
+        $items;
 
       if( settings.items ){
         if( typeof settings.items === 'string' ){
@@ -121,6 +121,7 @@ List = Switch.extend( function( Abstract ){
       List.select = function( item ){
         var Container,
           $item,
+          $items = this.$items,
           controls = 'lu-controls',
           index;
 
@@ -138,7 +139,7 @@ List = Switch.extend( function( Abstract ){
           return List;
         }
 
-        if( $item.is( $items ) ){
+        if( $item.is( this.$items ) ){
           Container = $item.data( controls );
 
           if( !Container ){
@@ -155,7 +156,6 @@ List = Switch.extend( function( Abstract ){
           }
 
           Container = lu.getControl( $item, 'Container' );
-          Container.decorate( transitionDecorator );
 
           if( Container.hasState( SELECTED_STATE ) ){
             Selected = Container;
@@ -181,7 +181,8 @@ List = Switch.extend( function( Abstract ){
           } else {
             List.addState( REVERSE_STATE ).removeState( FORWARD_STATE );
           }
-          List.index = $items.index( $item );
+
+          List.index = index;
           List.trigger( SELECTED_EVENT, [ List, Container ] );
 
         } else {
@@ -190,7 +191,7 @@ List = Switch.extend( function( Abstract ){
         return List;
       };
 
-      List.index = index;
+      List.index = 0;
       List.$items = $items;
       List.orientation = settings.orientation;
 
@@ -244,11 +245,13 @@ List = Switch.extend( function( Abstract ){
       } );
     },
     add: function( $item ){
+      this.$items = this.$items.add( $item );
       this.$items.parent().append( $item );
       return this;
     },
     remove: function( $item ){
-      $( $item, this.$items ).remove();
+      $( $( $item ), this.$items ).remove();
+      this.$items = this.$items.not( $item );
       return this;
     },
     next: function(){
@@ -285,7 +288,7 @@ List = Switch.extend( function( Abstract ){
       return this.$items.eq( this.index );
     },
     size: function(){
-      return this.$items.length;
+      return this.$items.size();
     }
   };
 } );
