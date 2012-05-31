@@ -21,7 +21,7 @@ function run() {
 
 	      this.button.disable();
 
-	      ok(this.$button.hasClass('lu-disabled'), '"lu-disabled" class added to DOM element' );
+	      ok(this.$button.hasClass('lu-state-disabled'), '"lu-state-disabled" class added to DOM element' );
 	      equal(this.$button.prop('disabled'), true, '"disabled" property added to DOM element');
 	    });
 
@@ -30,7 +30,7 @@ function run() {
 
 	      this.button.enable();
 
-	      ok(!this.$button.hasClass('lu-disabled'), '"lu-disabled" class removed from DOM element' );
+	      ok(!this.$button.hasClass('lu-state-disabled'), '"lu-state-disabled" class removed from DOM element' );
 	      equal(this.$button.attr('disabled'), null, '"disabled" property removed from DOM element');
 	    });
 
@@ -50,8 +50,9 @@ function run() {
 
 	      ok(clicked, '"click" handler routed' );
 	    });
-	    
+
 	})();
+
 
 	(function linkbuttonTests() {
 
@@ -78,14 +79,14 @@ function run() {
 	      expect(1);
 
 	      this.button.disable();
-	      ok(this.$button.hasClass('lu-disabled'), "this test is fine" );
+	      ok(this.$button.hasClass('lu-state-disabled'), "this test is fine" );
 	    });
 
 	    test('Enable button', function() {
 	      expect(1);
 
 	      this.button.enable();
-	      ok(!this.$button.hasClass('lu-disabled'), "this test is fine" );
+	      ok(!this.$button.hasClass('lu-state-disabled'), "this test is fine" );
 	    });
 
 	    module('Link Button :: Eventing', {
@@ -96,7 +97,10 @@ function run() {
 	      expect(1);
 
 	      var e = $.Event('keyup');
-	      e.keyCode = 32 
+	      e.keyCode = 32
+
+				console.log('button', this.$button, this.$button.trigger);
+
 	      this.$button.trigger(e);
 
 	      equal(document.activeElement.id, this.$button[0].id, 'key-up event off the space bar focuses the link');
