@@ -34,7 +34,7 @@ Button = Switch.extend( function( Abstract ){
     }
   }
 
-  function bindSpaceBar( $element, on ){
+  function bindSpaceBar( Button, $element, on ){
     $element.on( 'keyup', function( event ){
       if( event.keyCode === 32 ){
         Button.trigger( on );
@@ -326,7 +326,7 @@ Button = Switch.extend( function( Abstract ){
 
       Button.decorate.apply( this, decorators );
 
-      bindSpaceBar( $element, settings.on );
+      bindSpaceBar( Button, $element, settings.on );
     },
     disable: function(){
       var $element = this.$element;
