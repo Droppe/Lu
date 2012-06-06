@@ -4,9 +4,8 @@
  * @license
  *
  * Lu Control Framework v0.2.4
- * https://iheartweb.github.com/Lu
  *
- * Copyright (c) 2011,2012 Robert Martone <iheartweb@gmail.com>.
+ * Copyright (c) 2011,2012 LinkedIn
  * All Rights Reserved. Apache Software License 2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
