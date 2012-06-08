@@ -236,7 +236,7 @@ Button = Switch.extend( function( Switch ){
         on = settings.on,
         controls,
         __params__ = settings.__params__,
-        List;
+        $items;
 
       if( $element.is( HAS_A18_ATTRS ) ){
         controls = $element.attr( 'aria-controls' );
@@ -250,7 +250,10 @@ Button = Switch.extend( function( Switch ){
         } else if( __params__.length > 0 ){
           item = __params__.shift();
         } else {
-          item = $element.closest( lu.getControl( $element.closest( '[data-lu=List]' ) ).$items );
+          $items = lu.getParent( $element ).$items;
+          if( $items ){
+            item = $element.closest( $items );
+          }
         }
       }
 
