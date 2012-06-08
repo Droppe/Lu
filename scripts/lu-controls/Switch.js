@@ -7,7 +7,7 @@
 */
 
 //The Full path is given do to an error in inject :(
-var Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/lu/Abstract' ),
   stateDecorator = require( '/scripts/lu-decorators/State' ),
   Switch;
 

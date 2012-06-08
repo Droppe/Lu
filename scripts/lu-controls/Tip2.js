@@ -8,7 +8,7 @@
  */
 
 
-var Abstract = require( '/scripts/lu-controls/Abstract' ),
+var Abstract = require( '/lu/Abstract' ),
   //Container = require( '/scripts/lu-controls/Container' ),
   Tip2;
 
@@ -20,12 +20,12 @@ Tip2 = Abstract.extend( function (Abstract){
       //Stateful published events
       HIDDEN_EVENT = 'hidden',
       SHOWN_EVENT = 'shown',
-  
+
   // OTHER CONSTANTS
       CLASS = 'class',
       TRUE = true,
       FALSE = false,
-      
+
       /**
        * Default configuration values for all Tip2 instances
        * @property defaults
@@ -75,7 +75,7 @@ Tip2 = Abstract.extend( function (Abstract){
          * @private
          */
         template: '<div class="lu-tip" role="tooltip"><div class="lu-arrow"></div><div class="lu-content"><%= content %></div></div>',
-        
+
         /**
          * CSS styles for the Tip
          * @property style
@@ -94,7 +94,7 @@ Tip2 = Abstract.extend( function (Abstract){
         interactive: TRUE,
 
         /**
-         * The buffer in pixels around the element to be used in determing if the user has stopped 
+         * The buffer in pixels around the element to be used in determing if the user has stopped
          * interacting with the tip
          * @property threshold
          * @type Number
@@ -103,12 +103,12 @@ Tip2 = Abstract.extend( function (Abstract){
          */
         threshold: 10
       };
-      
+
 
   return {
 
     /**
-     * Tip2 constructor 
+     * Tip2 constructor
      * @method init
      * @public
      * @param {Object} $element JQuery collection containing the related element.
@@ -195,7 +195,7 @@ Tip2 = Abstract.extend( function (Abstract){
          * @private
          */
         stuck,
-        
+
         /**
          * Array of decorators to apply to a Tip instance
          * @property decorators
@@ -203,24 +203,24 @@ Tip2 = Abstract.extend( function (Abstract){
          */
         decorators = [];
 
-    
+
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
       Abstract.init.call( this, $element, settings );
 
       /**
-       * Appends the Tip to the document 
+       * Appends the Tip to the document
        * @method append
        * @private
        * @return {Void}
        */
       function append() {
-        $( 'body' ).append( $tip );        
+        $( 'body' ).append( $tip );
       }
-          
+
       /**
-       * Renders the content and the template to create the tip 
+       * Renders the content and the template to create the tip
        * @method render
        * @private
        * @param {String} content The content to inject into the tip
@@ -229,7 +229,7 @@ Tip2 = Abstract.extend( function (Abstract){
       function render(content) {
         return $( _.template( settings.template, { content: content } ) );
       }
-      
+
 
       // TODO: replace this with Container instance
       // if the HREF is a relative URL, use that as the content node ID
@@ -300,7 +300,7 @@ Tip2 = Abstract.extend( function (Abstract){
           }, settings.delay );
         }
       };
-      
+
       /**
        * Gets the position of the tip
        * @method getPosition
@@ -329,7 +329,7 @@ Tip2 = Abstract.extend( function (Abstract){
       function mouseenterEvent ( event ){
         //set up a listener on the document to be used in determing if the user has moused out of the threshold
         event.stopPropagation();
-        
+
         $document.on( 'mousemove.lu.tip', function( event ){
 
           event.stopPropagation();
@@ -372,17 +372,17 @@ Tip2 = Abstract.extend( function (Abstract){
 
       //Event Listeners
       Tip2.on( 'mouseenter', mouseenterEvent);
-      
+
       Tip2.on( 'focus', function( event ){
         event.stopPropagation();
         Tip2.on( 'blur.lu.tip', function( event ){
           event.stopPropagation();
-          Tip2.off( 'blur.lu.tip' );          
+          Tip2.off( 'blur.lu.tip' );
           Tip2.hide();
         } );
-      
+
         Tip2.show();
-      
+
       } );
 
       //Listen to these events from other controls
@@ -398,14 +398,14 @@ Tip2 = Abstract.extend( function (Abstract){
       // PUBLIC ACCESS
       Tip2.$tip = $tip;
       Tip2.position = position;
-      
+
       // Decorate based on placement option
       switch (settings.placement) {
         case "top":
         case "above":
           decorators.push("/scripts/lu-decorators/positionAbove");
           break;
-        case "bottom":  
+        case "bottom":
         case "below":
           decorators.push("/scripts/lu-decorators/positionBelow");
           break;
@@ -417,8 +417,8 @@ Tip2 = Abstract.extend( function (Abstract){
         default:
           decorators.push("/scripts/lu-decorators/positionRight");
       }
-      
-      
+
+
       require.ensure( decorators, function ( require, module, exports ) {
         _.each( decorators, function ( decorator, index ) {
           Tip2.decorate(require( decorator ) );
@@ -434,6 +434,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Tip2 );
   } else if( module.exports ){
-   module.exports = Tip2; 
+   module.exports = Tip2;
   }
 }

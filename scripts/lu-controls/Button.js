@@ -6,7 +6,7 @@
 * @version 0.2.4
 */
 
-var Switch = require( '/scripts/lu-controls/Switch' ),
+var Switch = require( '/lu/Switch' ),
   Button;
 
 Button = Switch.extend( function( Switch ){

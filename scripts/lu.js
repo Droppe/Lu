@@ -200,7 +200,9 @@
             config.__params__ = __params__;
           }
 
-          Control = new packages[pckg]( $node, config );
+          //Note: the '/' was added to force an absolute path
+          //see - https://github.com/linkedin/inject/issues/116
+          Control = new packages['/' + pckg]( $node, config );
 
           nodeData = getData( $node, key );
 
@@ -251,12 +253,14 @@
         _.each( controls, function( key, index ){
           var pckg = NAMESPACE + '/' + key.split( ':' ).shift();
           if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ){
-            required.push( pckg );
+            //Note: the '/' was added to force an absolute path
+            //see - https://github.com/linkedin/inject/issues/116
+            required.push( '/' + pckg );
           }
         } );
       } );
 
-      window.require.ensure( required, function( require, module, exports ){
+      require.ensure( required, function( require, module, exports ){
         _.each( required, function( requirement, index ){
           packages[requirement] = require( requirement );
         } );

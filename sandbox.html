@@ -82,6 +82,8 @@
 
 <body>
 
+  <div class="carousel lu-state-forward" data-lu="Tip"></div>
+
   <div class="carousel lu-state-forward" data-lu="Carousel">
 
     <ul class="items">
@@ -115,28 +117,21 @@
 
 
   <!-- Bootstrap:Util -->
-  <script src="scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
-  <script src="scripts/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
 
   <!-- Bootstrap:CommonJS Loader -->
-  <script type="text/javascript" src="scripts/libraries/inject.js"></script>
+  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
 
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
 
-  <script src="scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    //Set your debug level here
     window.lu_debug = 5;
-    //Bust your cache
     localStorage.clear();
-    //require.clearCache();
-    //MAGIC!!!
-    console.time( 'Lu' );
-    require.ensure( ['lu'], function() {
-      console.timeEnd( 'Lu' );
-    } );
+    require.ensure( ['/scripts/lu.js'], function(){});
   </script>
 
 </body>
