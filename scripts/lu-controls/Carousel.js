@@ -7,7 +7,7 @@
  * @version 0.2.4
  */
 
-var List = require( '/lu/List' ),
+var List = require( 'lu/List' ),
   stateDecorator = require( '/scripts/lu-decorators/State' ),
   transitionDecorator = require( '/scripts/lu-decorators/Transition' ),
   Carousel;

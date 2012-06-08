@@ -7,7 +7,7 @@
 */
 
 //The Full path is given do to an error in inject :(
-var Switch = require( '/lu/Switch' ),
+var Switch = require( 'lu/Switch' ),
   Container;
 
 Container = Switch.extend( function ( Switch ) {

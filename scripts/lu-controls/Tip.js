@@ -6,7 +6,7 @@
  * @requires Loader
  * @version 0.1.3
  */
-var Container = require( '/lu/Container' ),
+var Container = require( 'lu/Container' ),
   Tip;
 
 Tip = Container.extend( function (Container){
@@ -242,8 +242,8 @@ Tip = Container.extend( function (Container){
       //Require a Container and set up listeners if a URL was specifed
       if( settings.url ){
         $content = $tip.find( '.content' );
-        require.ensure( ['/lu/Container'], function( require, module, exports ){
-          var Ctr = require( '/lu/Container' );
+        require.ensure( ['lu/Container'], function( require, module, exports ){
+          var Ctr = require( 'lu/Container' );
           Ctr = new Ctr( $content, {/* empty config */});
 
           Ctr.on( 'loaded', function( event ){

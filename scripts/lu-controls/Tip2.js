@@ -8,8 +8,8 @@
  */
 
 
-var Abstract = require( '/lu/Abstract' ),
-  //Container = require( '/scripts/lu-controls/Container' ),
+var Abstract = require( 'lu/Abstract' ),
+  //Container = require( 'lu/Container' ),
   Tip2;
 
 Tip2 = Abstract.extend( function (Abstract){

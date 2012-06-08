@@ -1,7 +1,7 @@
 (function() {/*
 
  Library: Inject
- Homepage: https://github.com/jakobo/inject
+ Homepage: https://github.com/linkedin/inject
  License: Apache 2.0 License
 */
 /*
@@ -264,86 +264,57 @@ var Porthole = typeof Porthole == "undefined" || !Porthole ? {} : Porthole;
   }}
 })();
 var lscache = function() {
-  var CACHESUFFIX = "-EXP", TOUCHEDSUFFIX = "-LRU";
-  var supportsStorage = function() {
-    try {
-      return!!localStorage.getItem
-    }catch(e) {
-      return false
+  var CACHE_PREFIX = "lscache-";
+  var CACHE_SUFFIX = "-cacheexpiration";
+  var EXPIRY_RADIX = 10;
+  var EXPIRY_UNITS = 60 * 1E3;
+  var MAX_DATE = Math.floor(864E13 / EXPIRY_UNITS);
+  var cachedStorage;
+  var cachedJSON;
+  var cacheBucket = "";
+  function supportsStorage() {
+    var key = "__lscachetest__";
+    var value = key;
+    if(cachedStorage !== undefined) {
+      return cachedStorage
     }
-  }();
-  var supportsJSON = window.JSON != null;
-  function expirationKey(key) {
-    return key + CACHESUFFIX
+    try {
+      setItem(key, value);
+      removeItem(key);
+      cachedStorage = true
+    }catch(exc) {
+      cachedStorage = false
+    }
+    return cachedStorage
   }
-  function touchedKey(key) {
-    return key + TOUCHEDSUFFIX
+  function supportsJSON() {
+    if(cachedJSON === undefined) {
+      cachedJSON = window.JSON != null
+    }
+    return cachedJSON
+  }
+  function expirationKey(key) {
+    return key + CACHE_SUFFIX
   }
   function currentTime() {
-    return Math.floor((new Date).getTime() / 6E4)
+    return Math.floor((new Date).getTime() / EXPIRY_UNITS)
   }
-  function attemptStorage(key, value, time) {
-    var purgeSize = 1, sorted = false, firstTry = true, storedKeys = [], storedKey, removeItem;
-    retryLoop();
-    function retryLoop() {
-      try {
-        localStorage.setItem(touchedKey(key), currentTime());
-        if(time > 0) {
-          localStorage.setItem(expirationKey(key), currentTime() + time);
-          localStorage.setItem(key, value)
-        }else {
-          if(time < 0 || time === 0) {
-            localStorage.removeItem(touchedKey(key));
-            localStorage.removeItem(expirationKey(key));
-            localStorage.removeItem(key);
-            return
-          }else {
-            localStorage.setItem(key, value)
-          }
-        }
-      }catch(e) {
-        if(e.name === "QUOTA_EXCEEDED_ERR" || e.name == "NS_ERROR_DOM_QUOTA_REACHED") {
-          if(storedKeys.length === 0 && !firstTry) {
-            localStorage.removeItem(touchedKey(key));
-            localStorage.removeItem(expirationKey(key));
-            localStorage.removeItem(key);
-            return false
-          }
-          if(firstTry) {
-            firstTry = false
-          }
-          if(!sorted) {
-            for(var i = 0, len = localStorage.length;i < len;i++) {
-              storedKey = localStorage.key(i);
-              if(storedKey.indexOf(TOUCHEDSUFFIX) > -1) {
-                var mainKey = storedKey.split(TOUCHEDSUFFIX)[0];
-                storedKeys.push({key:mainKey, touched:parseInt(localStorage.getItem(storedKey), 10)})
-              }
-            }
-            storedKeys.sort(function(a, b) {
-              return a.touched - b.touched
-            });
-            sorted = true
-          }
-          removeItem = storedKeys.shift();
-          if(removeItem) {
-            localStorage.removeItem(touchedKey(removeItem.key));
-            localStorage.removeItem(expirationKey(removeItem.key));
-            localStorage.removeItem(removeItem.key)
-          }
-          retryLoop()
-        }else {
-          return
-        }
-      }
-    }
+  function getItem(key) {
+    return localStorage.getItem(CACHE_PREFIX + cacheBucket + key)
+  }
+  function setItem(key, value) {
+    localStorage.removeItem(CACHE_PREFIX + cacheBucket + key);
+    localStorage.setItem(CACHE_PREFIX + cacheBucket + key, value)
+  }
+  function removeItem(key) {
+    localStorage.removeItem(CACHE_PREFIX + cacheBucket + key)
   }
   return{set:function(key, value, time) {
-    if(!supportsStorage) {
+    if(!supportsStorage()) {
       return
     }
-    if(typeof value != "string") {
-      if(!supportsJSON) {
+    if(typeof value !== "string") {
+      if(!supportsJSON()) {
         return
       }
       try {
@@ -352,52 +323,99 @@ var lscache = function() {
         return
       }
     }
-    attemptStorage(key, value, time)
-  }, get:function(key) {
-    if(!supportsStorage) {
-      return null
-    }
-    function parsedStorage(key) {
-      if(supportsJSON) {
+    try {
+      setItem(key, value)
+    }catch(e) {
+      if(e.name === "QUOTA_EXCEEDED_ERR" || e.name === "NS_ERROR_DOM_QUOTA_REACHED") {
+        var storedKeys = [];
+        var storedKey;
+        for(var i = 0;i < localStorage.length;i++) {
+          storedKey = localStorage.key(i);
+          if(storedKey.indexOf(CACHE_PREFIX + cacheBucket) === 0 && storedKey.indexOf(CACHE_SUFFIX) < 0) {
+            var mainKey = storedKey.substr((CACHE_PREFIX + cacheBucket).length);
+            var exprKey = expirationKey(mainKey);
+            var expiration = getItem(exprKey);
+            if(expiration) {
+              expiration = parseInt(expiration, EXPIRY_RADIX)
+            }else {
+              expiration = MAX_DATE
+            }
+            storedKeys.push({key:mainKey, size:(getItem(mainKey) || "").length, expiration:expiration})
+          }
+        }
+        storedKeys.sort(function(a, b) {
+          return b.expiration - a.expiration
+        });
+        var targetSize = (value || "").length;
+        while(storedKeys.length && targetSize > 0) {
+          storedKey = storedKeys.pop();
+          removeItem(storedKey.key);
+          removeItem(expirationKey(storedKey.key));
+          targetSize -= storedKey.size
+        }
         try {
-          var value = JSON.parse(localStorage.getItem(key));
-          return value
+          setItem(key, value)
         }catch(e) {
-          return localStorage.getItem(key)
+          return
         }
       }else {
-        return localStorage.getItem(key)
+        return
       }
     }
-    if(localStorage.getItem(expirationKey(key))) {
-      var expirationTime = parseInt(localStorage.getItem(expirationKey(key)), 10);
-      if(currentTime() >= expirationTime) {
-        localStorage.removeItem(key);
-        localStorage.removeItem(expirationKey(key));
-        localStorage.removeItem(touchedKey(key));
-        return null
-      }else {
-        localStorage.setItem(touchedKey(key), currentTime());
-        return parsedStorage(key)
-      }
+    if(time) {
+      setItem(expirationKey(key), (currentTime() + time).toString(EXPIRY_RADIX))
     }else {
-      if(localStorage.getItem(key)) {
-        localStorage.setItem(touchedKey(key), currentTime());
-        return parsedStorage(key)
-      }
+      removeItem(expirationKey(key))
     }
-    return null
-  }, remove:function(key) {
-    if(!supportsStorage) {
+  }, get:function(key) {
+    if(!supportsStorage()) {
       return null
     }
-    localStorage.removeItem(key);
-    localStorage.removeItem(expirationKey(key));
-    localStorage.removeItem(touchedKey(key))
+    var exprKey = expirationKey(key);
+    var expr = getItem(exprKey);
+    if(expr) {
+      var expirationTime = parseInt(expr, EXPIRY_RADIX);
+      if(currentTime() >= expirationTime) {
+        removeItem(key);
+        removeItem(exprKey);
+        return null
+      }
+    }
+    var value = getItem(key);
+    if(!value || !supportsJSON()) {
+      return value
+    }
+    try {
+      return JSON.parse(value)
+    }catch(e) {
+      return value
+    }
+  }, remove:function(key) {
+    if(!supportsStorage()) {
+      return null
+    }
+    removeItem(key);
+    removeItem(expirationKey(key))
+  }, supported:function() {
+    return supportsStorage()
+  }, flush:function() {
+    if(!supportsStorage()) {
+      return
+    }
+    for(var i = localStorage.length - 1;i >= 0;--i) {
+      var key = localStorage.key(i);
+      if(key.indexOf(CACHE_PREFIX + cacheBucket) === 0) {
+        localStorage.removeItem(key)
+      }
+    }
+  }, setBucket:function(bucket) {
+    cacheBucket = bucket
+  }, resetBucket:function() {
+    cacheBucket = ""
   }}
 }();
-var analyzeFile, anonDefineStack, applyRules, basedir, clearFileRegistry, commentRegex, commonJSFooter, commonJSHeader, context, createIframe, createModule, db, define, defineStaticRequireRegex, dispatchTreeDownload, downloadTree, executeFile, extractRequires, fileStorageToken, fileStore, fileSuffix, functionNewlineRegex, functionRegex, functionSpaceRegex, getFormattedPointcuts, getFunctionArgs, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, initializeExports, isIE, loadModules, namespace, 
-pauseRequired, processCallbacks, relativePathRegex, require, requireGreedyCapture, requireRegex, reset, responseSlicer, schemaVersion, sendToIframe, sendToXhr, treeNode, undef, userConfig, userModules, xDomainRpc, _db;
+var absolutePathRegex, analyzeFile, anonDefineStack, applyRules, basedir, clearFileRegistry, commentRegex, commonJSFooter, commonJSHeader, context, createEvalScript, createIframe, createModule, db, define, defineStaticRequireRegex, dispatchTreeDownload, docHead, downloadTree, evalModule, executeFile, extractRequires, fileStorageToken, fileSuffix, funcCount, functionNewlineRegex, functionRegex, functionSpaceRegex, getFormattedPointcuts, getFunctionArgs, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName,
+initializeExports, isIE, loadModules, lscacheSchemaVersion, namespace, oldError, onErrorOffset, pauseRequired, processCallbacks, relativePathRegex, require, requireGreedyCapture, requireRegex, reset, responseSlicer, schemaVersion, schemaVersionString, sendToIframe, sendToXhr, testScript, testScriptNode, treeNode, undef, userConfig, userModules, xDomainRpc, _db;
 var __hasProp = Object.prototype.hasOwnProperty, __indexOf = Array.prototype.indexOf || function(item) {
   for(var i = 0, l = this.length;i < l;i++) {
     if(this[i] === item) {
@@ -407,18 +425,21 @@ var __hasProp = Object.prototype.hasOwnProperty, __indexOf = Array.prototype.ind
   return-1
 };
 isIE = eval("/*@cc_on!@*/false");
+docHead = null;
+onErrorOffset = 0;
+funcCount = 0;
 userConfig = {};
 undef = undef;
-schemaVersion = 1;
 context = this;
 pauseRequired = false;
 _db = {};
 xDomainRpc = null;
-fileStorageToken = "FILEDB";
-fileStore = "Inject FileStorage";
+fileStorageToken = "INJECT";
+schemaVersion = 1;
+schemaVersionString = "!version";
 namespace = "Inject";
 userModules = {};
-fileSuffix = /.*?\.(js|txt)$/;
+fileSuffix = /.*?\.(js|txt)(\?.*)?$/;
 hostPrefixRegex = /^https?:\/\//;
 hostSuffixRegex = /^(.*?)(\/.*|$)/;
 iframeName = "injectProxy";
@@ -430,9 +451,48 @@ requireRegex = /(?:^|[^\w\$_.\(])require\s*\(\s*("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\
 defineStaticRequireRegex = /^[\r\n\s]*define\(\s*("\S+",|'\S+',|\s*)\s*\[([^\]]*)\],\s*(function\s*\(|{).+/;
 requireGreedyCapture = /require.*/;
 commentRegex = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
-relativePathRegex = /^(.\/|..\/).*/;
-commonJSHeader = '(function() {\n  with (window) {\n    var __module = __INJECT_NS__.createModule("__MODULE_ID__", "__MODULE_URI__"),\n        __require = __INJECT_NS__.require,\n        __exe = null;\n    __INJECT_NS__.setModuleExports("__MODULE_ID__", __module.exports)\n    __exe = function(require, module, exports) {\n      __POINTCUT_BEFORE__';
-commonJSFooter = "    __POINTCUT_AFTER__\n  };\n  __INJECT_NS__.defineAs(__module.id);\n  __exe.call(__module, __require, __module, __module.exports);\n  __INJECT_NS__.undefineAs();\n  return __module;\n}\n})();";
+relativePathRegex = /^([A-Za-z]|.\/|..\/).*/;
+absolutePathRegex = /^([A-Za-z]+:)?(\/)+/;
+lscache.setBucket(fileStorageToken);
+lscacheSchemaVersion = lscache.get(schemaVersionString);
+if(lscacheSchemaVersion && lscacheSchemaVersion > 0 && lscacheSchemaVersion < schemaVersion) {
+  lscache.flush();
+  lscacheSchemaVersion = 0
+}
+if(!lscacheSchemaVersion) {
+  lscache.set(schemaVersionString, schemaVersion)
+}
+commonJSHeader = '__INJECT_NS__.execute.__FUNCTION_ID__ = function() {\n  with (window) {\n    var __module = __INJECT_NS__.createModule("__MODULE_ID__", "__MODULE_URI__"),\n        __require = __INJECT_NS__.require,\n        __exe = null;\n    __INJECT_NS__.setModuleExports("__MODULE_ID__", __module.exports);\n    __exe = function(require, module, exports) {\n      __POINTCUT_BEFORE__';
+commonJSFooter = "    __POINTCUT_AFTER__\n  };\n  __INJECT_NS__.defineAs(__module.id);\n  try {\n    __exe.call(__module, __require, __module, __module.exports);\n  }\n  catch (__EXCEPTION__) {\n    __module.error = __EXCEPTION__;\n  }\n  __INJECT_NS__.undefineAs();\n  return __module;\n}\n};";
+createEvalScript = function(code) {
+  var scr;
+  if(!docHead) {
+    docHead = document.getElementsByTagName("head")[0]
+  }
+  scr = document.createElement("script");
+  try {
+    scr.text = code
+  }catch(innerTextException) {
+    try {
+      scr.innerHTML = code
+    }catch(innerHTMLException) {
+      return false
+    }
+  }
+  return scr
+};
+testScript = 'function Inject_Test_Known_Error() {\n  function nil() {}\n  nil("Known Syntax Error Line 3";\n}';
+testScriptNode = createEvalScript(testScript);
+oldError = context.onerror;
+context.onerror = function(err, where, line) {
+  onErrorOffset = 3 - line;
+  window.setTimeout(function() {
+    return docHead.removeChild(testScriptNode)
+  });
+  return true
+};
+docHead.appendChild(testScriptNode);
+context.onerror = oldError;
 db = {"module":{"create":function(moduleId) {
   var registry;
   registry = _db.moduleRegistry;
@@ -508,30 +568,28 @@ db = {"module":{"create":function(moduleId) {
   db.module.create(moduleId);
   return registry[moduleId].path = path
 }, "getFile":function(moduleId) {
-  var file, path, registry, token, _ref;
+  var file, path, registry, _ref;
   registry = _db.moduleRegistry;
   path = db.module.getPath(moduleId);
-  token = "" + fileStorageToken + schemaVersion + path;
   if((_ref = registry[moduleId]) != null ? _ref.file : void 0) {
     return registry[moduleId].file
   }
   if(userConfig.fileExpires === 0) {
     return false
   }
-  file = lscache.get(token);
+  file = lscache.get(path);
   if(file && typeof file === "string" && file.length) {
     db.module.setFile(moduleId, file);
     return file
   }
   return false
 }, "setFile":function(moduleId, file) {
-  var path, registry, token;
+  var path, registry;
   registry = _db.moduleRegistry;
   db.module.create(moduleId);
   registry[moduleId].file = file;
   path = db.module.getPath(moduleId);
-  token = "" + fileStorageToken + schemaVersion + path;
-  return lscache.set(token, file, userConfig.fileExpires)
+  return lscache.set(path, file, userConfig.fileExpires)
 }, "clearAllFiles":function() {
   var data, moduleId, registry, _results;
   registry = _db.moduleRegistry;
@@ -756,24 +814,12 @@ reset = function() {
   return userConfig = {"moduleRoot":null, "fileExpires":1440, "xd":{"inject":null, "xhr":null}}
 };
 reset();
-clearFileRegistry = function(version) {
-  var token;
-  if(version == null) {
-    version = schemaVersion
-  }
+clearFileRegistry = function() {
   if(!(__indexOf.call(context, "localStorage") >= 0)) {
     return
   }
-  token = "" + fileStorageToken + version;
-  for(var i = 0;i < localStorage.length;i++) {
-    var key = localStorage.key(i);
-    if(key.indexOf(token) !== -1) {
-      localStorage.removeItem(key)
-    }
-  }
-  if(version === schemaVersion) {
-    return db.module.clearAllFiles()
-  }
+  db.module.clearAllFiles();
+  return lscache.flush()
 };
 createIframe = function() {
   var iframe, localSrc, src, trimHost, _ref, _ref2;
@@ -981,6 +1027,9 @@ downloadTree = function(tree, callback) {
       return sendToXhr(moduleId, processCallbacks)
     }
   };
+  if(db.module.getExports(moduleId)) {
+    return callback()
+  }
   db.queue.file.add(moduleId, onDownloadComplete);
   if(db.module.getLoading(moduleId)) {
     return
@@ -1095,7 +1144,7 @@ applyRules = function(moduleId, save, relativePath) {
     if(typeof userConfig.moduleRoot === "undefined") {
       throw new Error("Module Root must be defined");
     }else {
-      if(typeof userConfig.moduleRoot === "string") {
+      if(typeof userConfig.moduleRoot === "string" && absolutePathRegex.test(workingPath) !== true) {
         workingPath = "" + userConfig.moduleRoot + workingPath
       }else {
         if(typeof userConfig.moduleRoot === "function") {
@@ -1104,7 +1153,7 @@ applyRules = function(moduleId, save, relativePath) {
       }
     }
   }
-  if(typeof relativePath === "string") {
+  if(typeof relativePath === "string" && absolutePathRegex.test(workingPath) !== true) {
     workingPath = basedir(relativePath) + moduleId
   }
   if(!fileSuffix.test(workingPath)) {
@@ -1122,7 +1171,7 @@ applyRules = function(moduleId, save, relativePath) {
 };
 anonDefineStack = [];
 executeFile = function(moduleId) {
-  var cuts, filePath, footer, header, message, module, newErr, path, requiredModuleId, runCmd, runHeader, sourceString, text, _i, _len, _ref;
+  var cuts, footer, functionId, header, module, path, requiredModuleId, runCmd, runHeader, sourceString, text, _i, _len, _ref;
   if(db.module.getExecuted(moduleId)) {
     return
   }
@@ -1136,23 +1185,75 @@ executeFile = function(moduleId) {
   cuts = getFormattedPointcuts(moduleId);
   path = db.module.getPath(moduleId);
   text = db.module.getFile(moduleId);
-  header = commonJSHeader.replace(/__MODULE_ID__/g, moduleId).replace(/__MODULE_URI__/g, path).replace(/__INJECT_NS__/g, namespace).replace(/__POINTCUT_BEFORE__/g, cuts.before);
+  functionId = "exec" + funcCount++;
+  header = commonJSHeader.replace(/__MODULE_ID__/g, moduleId).replace(/__MODULE_URI__/g, path).replace(/__FUNCTION_ID__/g, functionId).replace(/__INJECT_NS__/g, namespace).replace(/__POINTCUT_BEFORE__/g, cuts.before);
   footer = commonJSFooter.replace(/__INJECT_NS__/g, namespace).replace(/__POINTCUT_AFTER__/g, cuts.after);
   sourceString = isIE ? "" : "//@ sourceURL=" + path;
   runHeader = header + "\n";
   runCmd = [runHeader, text, ";", footer, sourceString].join("\n");
-  try {
-    module = context.eval(runCmd)
-  }catch(err) {
-    filePath = db.module.getPath(moduleId);
-    message = "(inject module eval) " + err.message + "\n    in " + path;
-    newErr = new Error(message);
-    newErr.name = err.name;
-    newErr.type = err.type;
-    newErr.origin = err;
-    throw newErr;
-  }
+  module = evalModule({moduleId:moduleId, cmd:runCmd, url:path, functionId:functionId, preamble:header, originalCode:text});
   return db.module.setExports(module.id, module.exports)
+};
+evalModule = function(options) {
+  var actualErrorLine, code, errorObject, functionId, getLineNumberFromException, message, module, moduleId, newError, originalCode, preamble, preambleLines, scr, url;
+  moduleId = options.moduleId;
+  code = options.cmd;
+  url = options.url;
+  functionId = options.functionId;
+  preamble = options.preamble;
+  originalCode = options.originalCode;
+  oldError = context.onerror;
+  errorObject = null;
+  preambleLines = preamble.split(/\n/).length + 1;
+  newError = function(err, where, line) {
+    var actualErrorLine, linesOfCode, message, originalLinesOfCode;
+    actualErrorLine = onErrorOffset - preambleLines + line;
+    linesOfCode = code.split("\n").length;
+    originalLinesOfCode = originalCode.split("\n").length;
+    if(line === linesOfCode) {
+      actualErrorLine = originalLinesOfCode
+    }
+    message = "Parse error in " + moduleId + " (" + url + ") on line " + actualErrorLine + ":\n  " + err;
+    errorObject = new Error(message);
+    return true
+  };
+  getLineNumberFromException = function(e) {
+    var lines, phrases;
+    if(typeof e.lineNumber !== "undefined" && e.lineNumber !== null) {
+      return e.lineNumber
+    }
+    if(e.stack) {
+      lines = e.stack.split("\n");
+      phrases = lines[1].split(":");
+      return parseInt(phrases[phrases.length - 2], 10)
+    }
+    return 0
+  };
+  context.onerror = newError;
+  scr = createEvalScript(code);
+  if(scr) {
+    docHead.appendChild(scr);
+    window.setTimeout(function() {
+      return docHead.removeChild(scr)
+    })
+  }
+  if(!errorObject) {
+    module = Inject.execute[functionId]();
+    if(module.error) {
+      actualErrorLine = onErrorOffset - preambleLines + getLineNumberFromException(module.error);
+      message = "Parse error in " + moduleId + " (" + url + ") on line " + actualErrorLine + ":\n  " + module.error.message;
+      errorObject = new Error(message)
+    }
+  }
+  context.onerror = oldError;
+  if(typeof Inject !== "undefined" && Inject !== null ? Inject.execute[functionId] : void 0) {
+    delete Inject.execute[functionId]
+  }
+  if(errorObject) {
+    require.clearCache();
+    throw errorObject;
+  }
+  return module
 };
 sendToXhr = function(moduleId, callback) {
   var path, xhr;
@@ -1227,6 +1328,7 @@ createModule = function(id, uri, exports) {
   module["id"] = id || null;
   module["uri"] = uri || null;
   module["exports"] = exports || db.module.getExports(id) || {};
+  module["error"] = null;
   module["setExports"] = function(xobj) {
     var name, _i, _len, _ref;
     _ref = module["exports"];
@@ -1304,6 +1406,9 @@ require.run = function(moduleId) {
 };
 require.ensure = function(moduleList, callback) {
   var ensureExecutionCallback, run;
+  if(!(moduleList instanceof Array)) {
+    throw new Error("moduleList is not an Array");
+  }
   if(userConfig.xd.xhr != null && !xDomainRpc && !pauseRequired) {
     createIframe();
     pauseRequired = true
@@ -1345,8 +1450,8 @@ require.setCrossDomain = function(local, remote) {
   userConfig.xd.inject = local;
   return userConfig.xd.xhr = remote
 };
-require.clearCache = function(version) {
-  return clearFileRegistry(version)
+require.clearCache = function() {
+  return clearFileRegistry()
 };
 require.manifest = function(manifest) {
   var item, ruleSet, rules, _results;
@@ -1439,6 +1544,7 @@ define = function(moduleId, deps, callback) {
       module.setExports(callback)
     }
     db.module.setExports(moduleId, module.exports);
+    db.module.setExecuted(moduleId, true);
     db.module.setLoading(moduleId, false);
     amdCallbackQueue = db.queue.amd.get(moduleId);
     for(_j = 0, _len2 = amdCallbackQueue.length;_j < _len2;_j++) {
@@ -1461,7 +1567,7 @@ define = function(moduleId, deps, callback) {
   }
   return loadModules(allDeps, afterLoadModules)
 };
-define["amd"] = {"jQuery":true};
+define["amd"] = {};
 context["require"] = require;
 context["define"] = define;
 context["Inject"] = {"defineAs":function(moduleId) {
@@ -1470,7 +1576,7 @@ context["Inject"] = {"defineAs":function(moduleId) {
   return db.queue.define.remove()
 }, "createModule":createModule, "setModuleExports":function(moduleId, exports) {
   return db.module.setExports(moduleId, exports)
-}, "require":require, "define":define, "reset":reset, "debug":function() {
+}, "require":require, "define":define, "reset":reset, "execute":{}, "debug":function() {
   return typeof console !== "undefined" && console !== null ? console.dir(_db) : void 0
 }};
 context["require"]["ensure"] = require.ensure;
