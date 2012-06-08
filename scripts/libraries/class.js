@@ -1,7 +1,7 @@
 /**
  * Class Inheritance model
  *
- * Copyright (c) 2012 Kirollos Risk <kirollos@gmail.com>.
+ * Copyright (c) 2012 LinkedIn.
  * All Rights Reserved. Apache Software License 2.0
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

@@ -21,7 +21,7 @@
                                                 \::/    /        \::/____/        
                                                  \/____/          ~~
 
-                                     Get started @ http://iheartweb.github.com/Lu/
+                                     
 ```
 
 Lu is developed using [nodejs](http://nodejs.org/) and [compass](http://compass-style.org/). To start contributing:
