@@ -6,8 +6,8 @@
  * @require Container
  * @version 0.0.1
  */
-var Abstract = require( '/scripts/lu-controls/Abstract' ),
-  Container = require( '/scripts/lu-controls/Container' ),
+var Abstract = require( 'lu/Abstract' ),
+  Container = require( 'lu/Container' ),
   Tip;
 
 Tip = Abstract.extend( function (Abstract){
