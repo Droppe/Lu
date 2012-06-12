@@ -6,8 +6,8 @@
  * @version 0.2.4
  */
 
-var Switch = require( '/scripts/lu-controls/Switch' ),
-  Container = require( '/scripts/lu-controls/Container' ),
+var Switch = require( 'lu/Switch' ),
+  Container = require( 'lu/Container' ),
   List;
 
 List = Switch.extend( function( Abstract ){

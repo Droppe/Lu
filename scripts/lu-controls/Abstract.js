@@ -1,4 +1,4 @@
-var Class = require( '/scripts/libraries/class' ),
+var Class = require( 'class' ),
   Abstract;
 
 /**
