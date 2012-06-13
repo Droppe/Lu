@@ -47,7 +47,7 @@
   <script>
     //require.clearCache();//This is broken in inject
     localStorage.clear();
-    require.ensure( ['lu'], function() {
+    require.ensure( ['/scripts/lu.js'], function(){
 
       window.AQ.start();
 
