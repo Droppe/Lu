@@ -6,17 +6,17 @@ var positionAbove = function () {
     /**
      * Calculates the position of the tip
      * @method calcPosition
-     * @param {Object} offset
-     * @param {Number} height
-     * @param {Number} width
+     * @param {Object} offset jQuery object of the element's current coordinates
+     * @param {Number} height element outer height
+     * @param {Number} width element outer width
      * @param {Object} settings tip instance settings
      * @private
      */
     instance.calcPosition = function (offset, height, width, settings) {
       return {
 
-        top: offset.top - instance.$tip.height() - settings.offsetTop,
-        left: offset.left + width / 2 - instance.$tip.width() / 2 - settings.offsetLeft
+        top: offset.top - instance.$tip.outerHeight() - settings.offsetTop,
+        left: offset.left + width / 2 - instance.$tip.outerWidth() / 2 - settings.offsetLeft
 
       };
     };

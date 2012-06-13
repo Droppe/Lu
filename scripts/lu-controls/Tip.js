@@ -2,14 +2,15 @@
  * Tooltip class
  * @class Tip
  * @constructor
- * @extends Container
- * @requires Loader
- * @version 0.1.3
+ * @extends Abstract
+ * @require Container
+ * @version 0.1.4
  */
-var Container = require( 'lu/Container' ),
+var Abstract = require( 'lu/Abstract' ),
+  Container = require( 'lu/Container' ),
   Tip;
 
-Tip = Container.extend( function (Container){
+Tip = Abstract.extend( function (Abstract){
 
   //Observed events
   var HIDE_EVENT = 'hide',
@@ -17,15 +18,97 @@ Tip = Container.extend( function (Container){
       //Stateful published events
       HIDDEN_EVENT = 'hidden',
       SHOWN_EVENT = 'shown',
-
+  
   // OTHER CONSTANTS
-      TITLE = 'title',
-      CLASS = 'class';
+      CLASS = 'class',
+      TRUE = true,
+      FALSE = false,
+      DECORATORS_PATH = '/scripts/lu-controls/Tip/position',
+      
+      /**
+       * Default configuration values for all Tip instances
+       * @property defaults
+       * @type Object
+       * @private
+       * @final
+       */
+      defaults = {
+
+        /**
+         * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
+         * @property delay
+         * @type Number
+         * @private
+         */
+        delay: 300,
+
+        /**
+         * The placement of the tip. Valid options are "above"/"below"/"right/"left"
+         * Can also be passed in via Lu's auto-param ("__param__") as "Tip:Above", etc.
+         * @property placement
+         * @type String
+         * @private
+         * @default right
+         */
+        placement: 'right',
+
+        /**
+         * The number of pixels from the top of the element the tip will be positioned at.
+         * @property offsetTop
+         * @type Number
+         * @private
+         */
+        offsetTop: 0,
+
+        /**
+         * The number of pixels from the left of the element the tip will be positioned at.
+         * @property offsetTop
+         * @type Number
+         * @private
+         */
+        offsetLeft: 0,
+
+        /**
+         * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
+         * @property template
+         * @type String
+         * @private
+         */
+        template: '<div class="lu-tip" role="tooltip"><div class="lu-arrow"></div><div class="lu-content"><!-- CONTENT PLACEHOLDER --></div></div>',
+        
+        /**
+         * CSS styles for the Tip
+         * @property style
+         * @type String
+         * @private
+         */
+        style: '',
+
+        /**
+         * If set to true the tip will remain open until the mouse has left the tip.
+         * @property interactive
+         * @type Boolean
+         * @private
+         * @default true
+         */
+        interactive: TRUE,
+
+        /**
+         * The buffer in pixels around the element to be used in determing if the user has stopped 
+         * interacting with the tip
+         * @property threshold
+         * @type Number
+         * @private
+         * @default 10
+         */
+        threshold: 10
+      };
+      
 
   return {
 
     /**
-     * Tip constructor
+     * Tip constructor 
      * @method init
      * @public
      * @param {Object} $element JQuery collection containing the related element.
@@ -42,79 +125,12 @@ Tip = Container.extend( function (Container){
       var Tip = this,
 
         /**
-         * Default configuration values for all Tip instances
-         * @property defaults
-         * @type Object
-         * @private
-         * @final
-         */
-        defaults = {
-
-          /**
-           * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
-           * @property delay
-           * @type Number
-           * @private
-           */
-          delay: 300,
-
-          /**
-           * The placement of the tip. above || below || right || left
-           * @property placement
-           * @type String
-           * @private
-           */
-          placement: 'above',
-
-          /**
-           * The number of pixels from the top of the element the tip will be positioned at.
-           * @property offsetTop
-           * @type Number
-           * @private
-           */
-          offsetTop: 0,
-
-          /**
-           * The number of pixels from the left of the element the tip will be positioned at.
-           * @property offsetTop
-           * @type Number
-           * @private
-           */
-          offsetLeft: 0,
-
-          /**
-           * An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)
-           * @property template
-           * @type String
-           * @private
-           */
-          template: '<div class="tip"><div class="arrow"></div><div class="content"><%= content %></div></div>',
-
-          /**
-           * If set to true the tip will remain open until the mouse has left the tip.
-           * @property sticky
-           * @type Boolean
-           * @private
-           */
-          sticky: true,
-
-          /**
-           * The buffer in pixels around the element to be used in determing if the user has stopped
-           * interacting with the tip
-           * @property threshold
-           * @type Number
-           * @private
-           */
-          threshold: 10
-        },
-
-        /**
-         * An indicator of whether or not the tip is currently shown.
-         * @property shown
+         * An indicator of whether or not the tip has been rendered.
+         * @property rendered
          * @type Boolean
          * @private
          */
-        shown = false,
+        rendered = FALSE,
 
         /**
          * A jQuery collection that references the document.
@@ -125,7 +141,7 @@ Tip = Container.extend( function (Container){
         $document = $( document ),
 
         /**
-         * A jQuery collection that references the the tip.
+         * A jQuery collection that references the tip node.
          * @property $tip
          * @type Object
          * @private
@@ -133,12 +149,19 @@ Tip = Container.extend( function (Container){
         $tip,
 
         /**
+         * A reference to the tip's Container instance.
+         * @property TipContainer
+         * @type Object
+         * @private
+         */
+        TipContainer,
+
+        /**
          * A jQuery collection that references the tip's content.
          * @property $content
          * @type Object
          * @private
          */
-         //This should use Container
         $content,
 
         /**
@@ -148,6 +171,14 @@ Tip = Container.extend( function (Container){
          * @private
          */
         position,
+
+        /**
+         * A URL from the Tip's anchor tag
+         * @property href
+         * @type String
+         * @private
+         */
+        href,
 
         /**
          * The derived content used in the tip
@@ -163,98 +194,76 @@ Tip = Container.extend( function (Container){
          * @type Object
          * @private
          */
-        stuck;
+        stuck,
+        
+        /**
+         * Array of decorators to apply to a Tip instance
+         * @property decorators
+         * @type Array
+         */
+        decorators = [];
 
-      //Use the title as content id if content not provide in settings
-      if( settings.content === undefined ){
-        content = $element.attr( TITLE );
-        if( content !== undefined ){
-          $element.removeAttr( TITLE );
-          settings.content = content;
-        }
+      if (settings['__params__']) {
+        settings.placement = settings['__params__'][0] || settings.placement;       
       }
-
+      
+    
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      Container.init.call( this, $element, settings );
+      Abstract.init.call( this, $element, settings );
 
-      //Instantiate the tip
-      $tip = $( _.template( settings.template, { content: settings.content } ) );
+      href = settings.url || $element.attr( 'href' );
 
-      //transfer the styles from the target to the tip if style is not specified
-      if( settings.style ){
-        $tip.addClass( settings.placement + ' ' + settings.style );
-      } else {
-        if( $element.attr( CLASS ) ){
-          $tip.addClass( settings.placement + ' ' + $element.attr( CLASS ) );
-        } else {
-          $tip.addClass( settings.placement );
-        }
-      }
+      $tip = renderTip();
+      styleTip();
+      TipContainer = new Container( $tip, {
+        target: '.lu-content',
+        frame: settings.frame,
+        notify: $element
+      });
 
 
       /**
-       * Used to determine the position of the tip
+       * Appends the Tip to the document 
+       * @method append
        * @private
-       * @method getPosition
-       * @param {Boolean} cache Uses the cached position by default or if set to true.
-       * @return {Object} position And object containing a top and left
+       * @return {Void}
        */
-      function getPosition( cache ){
-        var elOffset = $element.offset(),
-          elHeight = $element.height(),
-          elWidth = $element.width();
-
-        if( position === undefined || cache === false ){
-
-          switch ( settings.placement ){
-            case 'below':
-              position = {
-                top: elOffset.top + elHeight + settings.offsetTop,
-                left: elOffset.left + elWidth / 2 - $tip.width() / 2 - settings.offsetLeft
-              };
-              break;
-            case 'above':
-              position = {
-                top: elOffset.top - $tip.height() - settings.offsetTop,
-                left: elOffset.left + elWidth / 2 - $tip.width() / 2 - settings.offsetLeft
-              };
-              break;
-            case 'left':
-              position = {
-                top: elOffset.top + elHeight / 2 - $tip.height() / 2,
-                left: elOffset.left - $tip.width() - settings.offsetLeft
-              };
-              break;
-            case 'right':
-              position = {
-                top: elOffset.top + elHeight / 2 - $tip.height() / 2,
-                left: elOffset.left + elWidth + settings.offsetLeft
-              };
-              break;
-          }
-
-        }
-        return position;
+      function append() {
+        $( 'body' ).append( $tip );        
       }
-
-      //Require a Container and set up listeners if a URL was specifed
-      if( settings.url ){
-        $content = $tip.find( '.content' );
-        require.ensure( ['lu/Container'], function( require, module, exports ){
-          var Ctr = require( 'lu/Container' );
-          Ctr = new Ctr( $content, {/* empty config */});
-
-          Ctr.on( 'loaded', function( event ){
-            event.preventDefault();
-            $tip.css( getPosition( false ) );
-          } );
-          $element.one( SHOWN_EVENT, function( event ){
-            event.preventDefault();
-            Ctr.trigger( 'load', [ settings.url ] );
-          } );
-        } );
+          
+      /**
+       * Renders the content and the template to create the tip 
+       * @method renderTip
+       * @private
+       * @param {String} content The content to inject into the tip
+       * @return {Object} A JQuery collection that references the tip
+       */
+      function renderTip(content) {
+        return $(settings.template);
+      }
+      
+      /**
+       * Transfer the styles from the target to the tip if style is not specified
+       * @method styleTip
+       * @public
+       * @return {Void}
+       */
+      function styleTip() {
+        var placement = settings.placement,
+          style = settings.style;
+          
+        if( placement && style ){
+          $tip.addClass( placement + ' ' + style );
+        } else {
+          if( $element.attr( CLASS ) ){
+            $tip.addClass( placement + ' ' + $element.attr( CLASS ) );
+          } else {
+            $tip.addClass( placement );
+          }
+        }
       }
 
       /**
@@ -263,24 +272,25 @@ Tip = Container.extend( function (Container){
        * @return {Void}
        */
       Tip.show = function(){
-        if( shown === false ){
-          $( 'body' ).append( $tip );
-          $tip.css( getPosition() );
 
-          $tip.on( 'mouseenter.lu.tip', function( event ){
-            stuck = true;
-          } );
+        TipContainer.one( 'mouseenter.lu.tip', function( event ){
+          stuck = TRUE;
+        } );
 
-          $tip.on( 'mouseleave.lu.tip', function( event ){
-            stuck = false;
-            Tip.hide();
-          } );
-
-          shown = true;
-          Tip.trigger( SHOWN_EVENT, $tip );
+        TipContainer.one( 'mouseleave.lu.tip', function( event ){
+          stuck = FALSE;
+          Tip.hide();
+        } );
+        
+        if( rendered === FALSE ){
+          TipContainer.trigger("load", href);
+        }
+        else {
+          $tip.show();
         }
       };
-
+      
+      
       /**
        * Hide the tip
        * @method hide
@@ -288,19 +298,34 @@ Tip = Container.extend( function (Container){
        */
       Tip.hide = function(){
         var timeout;
-        if( shown === true ){
+        if( rendered === TRUE ){
           timeout = window.setTimeout( function(){
-            if( !stuck || !settings.sticky ){
-              $tip.off( 'mouseenter.lu.tip' );
-              $tip.off( 'mouseleave.lu.tip' );
-              $tip.remove();
-              shown = false;
+            if( !stuck || !settings.interactive ){
+              $tip.hide();
               window.clearTimeout( timeout );
-              Tip.trigger( HIDDEN_EVENT, $tip );
+              Tip.trigger( HIDDEN_EVENT, [Tip, TipContainer] );
             }
           }, settings.delay );
         }
       };
+      
+      /**
+       * Gets the position of the tip
+       * @method getPosition
+       * @param {Boolean} cache Uses the cached position by default or if set to true.
+       * @return {Object} position And object containing a top and left
+       * @private
+       */
+      function getPosition( cache, settings ){
+        var elOffset = $element.offset(),
+          elHeight = $element.outerHeight(),
+          elWidth = $element.outerWidth();
+
+        if( position === undefined || cache === false ){
+          position = Tip.calcPosition(elOffset, elHeight, elWidth, settings);
+        }
+        return position;
+      }
 
       /**
        * Function to run on mouseenter. Must be named so we can pass it specifically to jQuery's off.
@@ -312,16 +337,15 @@ Tip = Container.extend( function (Container){
       function mouseenterEvent ( event ){
         //set up a listener on the document to be used in determing if the user has moused out of the threshold
         event.stopPropagation();
-
+                
         $document.on( 'mousemove.lu.tip', function( event ){
-
           event.stopPropagation();
           var pageX = event.pageX,
             pageY = event.pageY,
             left = $element.offset().left,
             top = $element.offset().top,
-            width = $element.width(),
-            height = $element.height();
+            width = $element.outerWidth(),
+            height = $element.outerHeight();
 
           /**
            * Returns true if the mouse is within the threshold area
@@ -329,15 +353,15 @@ Tip = Container.extend( function (Container){
            * @method isMouseInside
            */
           function isMouseInside(){
-            var result = true;
+            var result = TRUE;
             if( pageX < left - settings.threshold - settings.offsetLeft ){
-              result = false;
+              result = FALSE;
             } else if( pageY < top - settings.threshold - settings.offsetTop ){
-              result = false;
+              result = FALSE;
             } else if ( pageX > left + width + settings.threshold + settings.offsetLeft ){
-              result = false;
+              result = FALSE;
             } else if ( pageY > top + height + settings.threshold + settings.offsetTop ){
-              result = false;
+              result = FALSE;
             }
             return result;
           }
@@ -353,24 +377,29 @@ Tip = Container.extend( function (Container){
         Tip.show();
       }
 
-      //Event Listeners
+      // === Event Listeners ===
       Tip.on( 'mouseenter', mouseenterEvent);
-
+      
       Tip.on( 'focus', function( event ){
         event.stopPropagation();
-        //Should this be Tip.on?
-        //$element.on( 'blur.lu.tip', function( event ){
-          Tip.on( 'blur.lu.tip', function( event ){
+        Tip.on( 'blur.lu.tip', function( event ){
           event.stopPropagation();
-          //Should this be Tip.off?
-          //$element.off( 'blur.lu.tip' );
           Tip.off( 'blur.lu.tip' );
           Tip.hide();
         } );
-
+      
         Tip.show();
-
+      
       } );
+
+      // === APPEND TIP TO DOM FOLLOWING UPDATE EVENT ===
+      Tip.on('updated', function(event) {
+        event.stopPropagation();
+        append();
+        $tip.css( getPosition(false, settings) );
+        rendered = TRUE;
+        Tip.trigger( SHOWN_EVENT, [Tip, TipContainer] );
+      });
 
       //Listen to these events from other controls
       Tip.on( HIDE_EVENT, function( event ){
@@ -382,6 +411,35 @@ Tip = Container.extend( function (Container){
         Tip.show();
       } );
 
+      // PUBLIC ACCESS
+      Tip.$tip = $tip;
+      Tip.position = position;
+      
+      // Decorate based on placement option
+      switch (settings.placement) {
+        case "top":
+        case "above":
+          decorators.push(DECORATORS_PATH + 'Above');
+          break;
+        case "bottom":  
+        case "below":
+          decorators.push(DECORATORS_PATH + 'Below');
+          break;
+        case "left":
+          decorators.push(DECORATORS_PATH + 'Left');
+          break;
+        case "right":
+          // same as default
+        default:
+          decorators.push(DECORATORS_PATH + 'Right');
+      }
+      
+      require.ensure( decorators, function ( require, module, exports ) {
+        _.each( decorators, function ( decorator, index ) {
+          Tip.decorate(require( decorator ) );
+        });
+      });
+      
     }
   };
 
@@ -392,6 +450,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Tip );
   } else if( module.exports ){
-   module.exports = Tip;
+   module.exports = Tip; 
   }
 }

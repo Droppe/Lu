@@ -1,10 +1,11 @@
 @import 'base.scss';
 
+
 .lu-tip {
-  border: 1px solid #ccc;
+  background-color: $white;
+  border: 1px solid $medium-grey;
   @include border-radius(5px);
-  margin-left: 10px;
-  margin-top: -10px;
+  margin: 0;
   padding: 5px;
   position: absolute;
 }
