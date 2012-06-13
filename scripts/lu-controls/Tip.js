@@ -23,6 +23,7 @@ Tip = Abstract.extend( function (Abstract){
       CLASS = 'class',
       TRUE = true,
       FALSE = false,
+      DECORATORS_PATH = '/scripts/lu-controls/Tip/position',
       
       /**
        * Default configuration values for all Tip instances
@@ -418,19 +419,19 @@ Tip = Abstract.extend( function (Abstract){
       switch (settings.placement) {
         case "top":
         case "above":
-          decorators.push("/scripts/lu-decorators/positionAbove");
+          decorators.push(DECORATORS_PATH + 'Above');
           break;
         case "bottom":  
         case "below":
-          decorators.push("/scripts/lu-decorators/positionBelow");
+          decorators.push(DECORATORS_PATH + 'Below');
           break;
         case "left":
-          decorators.push("/scripts/lu-decorators/positionLeft");
+          decorators.push(DECORATORS_PATH + 'Left');
           break;
         case "right":
           // same as default
         default:
-          decorators.push("/scripts/lu-decorators/positionRight");
+          decorators.push(DECORATORS_PATH + 'Right');
       }
       
       require.ensure( decorators, function ( require, module, exports ) {
