@@ -14,15 +14,15 @@ var positionRight = function () {
     /**
      * Calculates the position of the tip
      * @method calcPosition
-     * @param {Object} offset
-     * @param {Number} height
+     * @param {Object} offset jQuery object of the element's current coordinates
+     * @param {Number} height element outer height
      * @param {Number} width
      * @param {Object} settings tip instance settings
      * @private
      */
     instance.calcPosition = function (offset, height, width, settings) {
       return {
-        top: offset.top + height / 2 - instance.$tip.height() / 2,
+        top: offset.top + height / 2 - instance.$tip.outerHeight() / 2,
         left: offset.left + width + settings.offsetLeft
       };
       

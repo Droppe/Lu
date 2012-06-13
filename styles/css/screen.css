@@ -2496,17 +2496,17 @@ input[type="button"].full-width {
   display: block;
 }
 
-/* line 3, ../sass/controls/tip.scss */
+/* line 4, ../sass/controls/tip.scss */
 .lu-tip {
-  border: 1px solid #ccc;
+  background-color: white;
+  border: 1px solid #444444;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
   -o-border-radius: 5px;
   -ms-border-radius: 5px;
   -khtml-border-radius: 5px;
   border-radius: 5px;
-  margin-left: 10px;
-  margin-top: -10px;
+  margin: 0;
   padding: 5px;
   position: absolute;
 }
