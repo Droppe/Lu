@@ -4,7 +4,7 @@
  * @constructor
  * @extends Abstract
  * @require Container
- * @version 0.0.1
+ * @version 0.1.4
  */
 var Abstract = require( 'lu/Abstract' ),
   Container = require( 'lu/Container' ),
