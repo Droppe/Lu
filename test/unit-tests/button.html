@@ -1,13 +1,13 @@
-<div class="buttons-galore">
+<div class="buttons-galore" data-lu="Abstract">
   <button id="button" data-lu="Button" type="button">Button</button>
   <button id="buttonFoo" data-lu="Button:Foo" type="button">Button:Foo</button>
   <button id="buttonFirst" data-lu="Button:First" type="button">Button:First</button>
   <button id="buttonLast" data-lu="Button:Last" type="button">Button:Last</button>
   <button id="buttonPrevious" data-lu="Button:Previous" type="button">Button:Previous</button>
   <button id="buttonNext" data-lu="Button:Next" type="button">Button:Next</button>
-  <button id="buttonPlay" data-lu="Button:Play" type="button">Button:Next</button>
-  <button id="buttonPause" data-lu="Button:Pause" type="button">Button:Next</button>
-  <button id="buttonLoad" data-lu="Button:Load" type="button">Button:Next</button>
+  <button id="buttonPlay" data-lu="Button:Play" type="button">Button:Play</button>
+  <button id="buttonPause" data-lu="Button:Pause" type="button">Button:Pause</button>
+  <button id="buttonLoad" data-lu="Button:Load" type="button">Button:Load</button>
   <button id="buttonState" data-lu="Button:State" type="button">Button:State</button>
   <button id="buttonSelect" data-lu="Button:Select" type="button">Button:Select</button>
 </div>
@@ -15,6 +15,7 @@
 <script>
 
 function run(){
+  var Abstract = lu.getControl( $( '.buttons-galore' ), 'Abstract' );
 
   module( 'Button', {
     setup: function(){
@@ -34,127 +35,159 @@ function run(){
     ok( !this.Button.hasState( 'disabled' ) && !this.Button.$element.prop( 'disabled' ) );
   } );
 
+  test( 'spacebar', function(){
+    expect(1);
+
+    var event = $.Event( 'keyup' );
+    event.keyCode = 32;
+
+    Abstract.on( 'keyup', function( event ){
+      ok( ( event.keyCode === 32 ), 'Event broadcast correctly' );
+    } );
+
+    this.Button.trigger( event );
+
+  } );
+
   module( 'Button:Foo', {
     setup: function(){
-      this.Button = lu.getControl( $( '#buttonFoo' ), 'Button' );
+      this.Button = lu.getControl( $( '#buttonFoo' ), 'Button:Foo' );
     }
   } );
 
   test( 'click', function(){
     expect( 1 );
-    this.Button.on( 'foo', function(){
-      ok( )
+    Abstract.on( 'foo', function(){
+      ok( true, 'Event broadcast correctly' );
     } );
     this.Button.$element.click();
-    ok( this.Button.hasState( 'disabled' ) && this.Button.$element.prop( 'disabled' ) );
   } );
 
+  module( 'Button:First', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonFirst' ), 'Button:First' );
+    }
+  } );
+
+  test( 'click', function(){
+    expect( 1 );
+    Abstract.on( 'first', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
+
+  module( 'Button:Last', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonLast' ), 'Button:Last' );
+    }
+  } );
+
+  test( 'click', function(){
+    expect( 1 );
+    Abstract.on( 'last', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
+
+  module( 'Button:Previous', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonPrevious' ), 'Button:Previous' );
+    }
+  } );
+
+  test( 'click', function(){
+    expect( 1 );
+    Abstract.on( 'previous', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
+
+  module( 'Button:Next', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonNext' ), 'Button:Next' );
+    }
+  } );
+
+  test( 'click', function(){
+    expect( 1 );
+    Abstract.on( 'next', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
+
+  module( 'Button:Play', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonPlay' ), 'Button:Play' );
+    }
+  } );
+
+  test( 'play', function(){
+    expect( 1 );
+    Abstract.on( 'play', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
+
+  module( 'Button:Pause', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonPause' ), 'Button:Pause' );
+    }
+  } );
+
+  test( 'pause', function(){
+    expect( 1 );
+    Abstract.on( 'pause', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
+
+  module( 'Button:Load', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonLoad' ), 'Button:Load' );
+    }
+  } );
+
+  test( 'load', function(){
+    expect( 1 );
+    this.Button.on( 'load', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
+
+  module( 'Button:State', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonState' ), 'Button:State' );
+    }
+  } );
+
+  test( 'state', function(){
+    expect( 1 );
+    Abstract.on( 'state', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
+
+  module( 'Button:Select', {
+    setup: function(){
+      this.Button = lu.getControl( $( '#buttonSelect' ), 'Button:Select' );
+    }
+  } );
+
+  test( 'select', function(){
+    expect( 1 );
+    Abstract.on( 'select', function(){
+      ok( true, 'Event broadcast correctly' );
+    } );
+    this.Button.$element.click();
+  } );
 }
-
-// function run() {
-
-// 	(function plainButtonTests() {
-
-// 	    function setup() {
-// 	      this.$button = $('#plain-button-test');
-// 	      this.button = this.$button.lu('getControl')
-// 	    }
-
-// 	    module('Plain Button :: Basic API', {
-// 	      setup: setup
-// 	    });
-
-// 	    test('Disable', function() {
-// 	      expect(2);
-
-// 	      this.button.disable();
-
-// 	      ok(this.$button.hasClass('lu-state-disabled'), '"lu-state-disabled" class added to DOM element' );
-// 	      equal(this.$button.prop('disabled'), true, '"disabled" property added to DOM element');
-// 	    });
-
-// 	    test('Enable', function() {
-// 	      expect(2);
-
-// 	      this.button.enable();
-
-// 	      ok(!this.$button.hasClass('lu-state-disabled'), '"lu-state-disabled" class removed from DOM element' );
-// 	      equal(this.$button.attr('disabled'), null, '"disabled" property removed from DOM element');
-// 	    });
-
-// 	    module('Plain Button :: Eventing', {
-// 	      setup: setup
-// 	    });
-
-// 	    test('Click', function() {
-// 	      expect(1);
-
-// 	      var clicked = false;
-// 	      this.button.on('click', function() {
-// 	        clicked = true;
-// 	      });
-
-// 	      this.$button.trigger('click');
-
-// 	      ok(clicked, '"click" handler routed' );
-// 	    });
-
-// 	})();
-
-
-// 	(function linkbuttonTests() {
-
-// 	    function setup() {
-// 	      this.$button = $('#link-button-test');
-// 	      this.button = this.$button.lu('getControl')
-// 	    }
-
-// 	    module('Link Button :: Construction', {
-// 	      setup: setup
-// 	    });
-
-// 	    test('ARIA', function() {
-// 	      expect(1);
-
-// 	      equal(this.$button.attr('role'), 'button', '"role=button" added to DOM element' );
-// 	    });
-
-// 	    module('Link Button :: Basic API', {
-// 	      setup: setup
-// 	    });
-
-// 	    test('Disable button', function() {
-// 	      expect(1);
-
-// 	      this.button.disable();
-// 	      ok(this.$button.hasClass('lu-state-disabled'), "this test is fine" );
-// 	    });
-
-// 	    test('Enable button', function() {
-// 	      expect(1);
-
-// 	      this.button.enable();
-// 	      ok(!this.$button.hasClass('lu-state-disabled'), "this test is fine" );
-// 	    });
-
-// 	    module('Link Button :: Eventing', {
-// 	      setup: setup
-// 	    })
-
-// 	    test('Space-bar event', function() {
-// 	      expect(1);
-
-// 	      var e = $.Event('keyup');
-// 	      e.keyCode = 32
-
-// 				console.log('button', this.$button, this.$button.trigger);
-
-// 	      this.$button.trigger(e);
-
-// 	      equal(document.activeElement.id, this.$button[0].id, 'key-up event off the space bar focuses the link');
-// 	    });
-
-// 	})();
-// }
 
 </script>
