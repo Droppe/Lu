@@ -109,7 +109,6 @@ Button = Switch.extend( function( Switch ){
      */
     load: function( Button, settings ){
       var on = settings.on,
-        command = settings.action,
         $element = Button.$element,
         isAnchor = $element.is( 'a' ),
         url = settings.url || $element.attr( 'href' );
