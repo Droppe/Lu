@@ -104,32 +104,34 @@ Container = Switch.extend( function ( Switch ) {
          * @private
          */
         content,
-        /**
-         * A jquery object to inject content into
-         * @property target
-         * @type {Object}
-         * @private
-         */
-        $target,
-        /**
-         * A cache to store the height and width of the $element
-         * @property cache
-         * @type Object
-         * @private
-         */
-        cache = {},
         target;
 
       _.defaults( settings, defaults );
 
       Switch.init.call( this, $element, settings );
 
+      /**
+       * A cache to store the height and width of the $element
+       * @property cache
+       * @type Object
+       * @public
+       */
+      this.cache = {};
+
+      /**
+       * A jquery object to inject content into
+       * @property target
+       * @type {Object}
+       * @public
+       */
+      this.$target;
+
       target = settings.target;
 
       if( target ){
-        $target = $element.find( target );
+        this.$target = $element.find( target );
       } else {
-        $target = $element;
+        this.$target = $element;
       }
 
       /**
@@ -223,65 +225,6 @@ Container = Switch.extend( function ( Switch ) {
       }
 
       /**
-       * Returns the computed height of the Container; result has no units
-       * @method getHeight
-       * @public
-       * @return {Integer} Computed height of the Container (result drops units)
-       */
-      Container.getHeight = function(){
-        var height = cache.height = cache.height;
-        if( !height ){
-          if( $target ){
-            height = $target.height();
-          } else {
-            height = $element.height();
-          }
-        }
-        return height;
-      };
-
-      /**
-       * Sets the height of the Container.
-       * @method setHeight
-       * @param {Integer} value The height in pixels to set
-       * @public
-       * @return {Object} Container
-       */
-      Container.setHeight = function( value ){
-        cache.height = value;
-        if( $target ){
-          $target.height( value );
-        } else {
-          $element.height( value );
-        }
-        return Container;
-      };
-
-      /**
-       * Returns the computed width of the Container; result has no units
-       * @method getHeight
-       * @public
-       * @return {Integer} Computed height of the Container (result drops units)
-       */
-      Container.getWidth = function(){
-        var width = cache.width = cache.width || $element.width();
-        return width;
-      };
-
-      /**
-       * Sets the width of the Container
-       * @method setWidth
-       * @param {Integer} value The width in pixels to set
-       * @public
-       * @return {Object} Container
-       */
-      Container.setWidth = function( value ){
-        cache.width = value;
-        $element.width( value );
-        return Container;
-      };
-
-      /**
        * Returns the contents of the Container
        * @method getContent
        * @public
@@ -300,15 +243,15 @@ Container = Switch.extend( function ( Switch ) {
        */
       Container.setContent = function( value ){
         content = value;
-        $target.html( content );
+        this.$target.html( content );
 
         if( settings.autoHeight ){
-          delete cache.height;
+          delete this.cache.height;
           Container.setHeight( Container.getHeight() );
         }
 
         if( settings.autoWidth ){
-          delete cache.width;
+          delete this.cache.width;
           Container.setWidth( Container.getWidth() );
         }
 
@@ -340,7 +283,7 @@ Container = Switch.extend( function ( Switch ) {
 
       if( settings.url ){
         //Load content from url
-        Container.trigger( 'load' );
+        Container.trigger( LOAD_EVENT );
       } else {
         //Store the $elements content
         content = $element.html();
@@ -361,9 +304,87 @@ Container = Switch.extend( function ( Switch ) {
 
       //Bind load event to load
       Container.on( LOAD_EVENT, load );
+    },
+    /**
+     * Returns the computed height of the Container; result has no units
+     * @method getHeight
+     * @public
+     * @return {Integer} Computed height of the Container (result drops units)
+     */
+    getHeight: function(){
+      var height = this.cache.height,
+          $target = this.$target;
+
+      if( !height ){
+        if( $target ){
+          height = $target.height();
+        } else {
+          height = this.$element.height();
+        }
+        this.cache.height = height;
+      }
+      return height;
+    },
+    /**
+     * Sets the height of the Container.
+     * @method setHeight
+     * @param {Integer} value The height in pixels to set
+     * @public
+     * @return {Object} Container
+     */
+    setHeight: function( value ){
+      var $target = this.$target;
+
+      this.cache.height = value;
+      if( $target ){
+        $target.height( value );
+      } else {
+        this.$element.height( value );
+      }
+      return this;
+    },
+    /**
+     * Returns the computed width of the Container; result has no units
+     * @method getHeight
+     * @public
+     * @return {Integer} Computed height of the Container (result drops units)
+     */
+    getWidth: function(){
+      var width = this.cache.width,
+          $target = this.$target;
+
+      if( !width ) {
+        if( $target ){
+          width = $target.width();
+        } else {
+          width = this.$element.width();
+        }
+        this.cache.width = width;
+      }
+      return width;
+    },
+    /**
+     * Sets the width of the Container
+     * @method setWidth
+     * @param {Integer} value The width in pixels to set
+     * @public
+     * @return {Object} Container
+     */
+    setWidth: function( value ){
+      var $target = this.$target;
+
+      this.cache.width = value;
+      if( $target ){
+        $target.width( value );
+      } else {
+        this.$element.width( value );
+      }
+      return this;
     }
   };
 } );
+
+
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
