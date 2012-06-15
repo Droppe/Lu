@@ -109,6 +109,7 @@ Button = Switch.extend( function( Switch ){
      */
     load: function( Button, settings ){
       var on = settings.on,
+        command = settings.action,
         $element = Button.$element,
         isAnchor = $element.is( 'a' ),
         url = settings.url || $element.attr( 'href' );
@@ -125,9 +126,7 @@ Button = Switch.extend( function( Switch ){
             event.preventDefault();
           }
           focus( $element );
-          if( command !== undefined ){
-            Button.trigger( 'load', [url] );
-          }
+          Button.trigger( 'load', [url] );
         } );
       };
     },
@@ -428,7 +427,7 @@ Button = Switch.extend( function( Switch ){
       Button.decorate.apply( this, decorators );
 
       //binds the spacebar to the on event
-      bindSpaceBar( Button, $element, settings.on );
+      bindSpaceBar( Button, settings.on );
     },
     /**
      * Adds a disabled state to the Button
