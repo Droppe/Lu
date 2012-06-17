@@ -1,8 +1,10 @@
-(function() {/*
+(function() {
 
+/*
  Library: Inject
  Homepage: https://github.com/linkedin/inject
  License: Apache 2.0 License
+ version 0.3.0
 */
 /*
 
@@ -414,8 +416,8 @@ var lscache = function() {
     cacheBucket = ""
   }}
 }();
-var absolutePathRegex, analyzeFile, anonDefineStack, applyRules, basedir, clearFileRegistry, commentRegex, commonJSFooter, commonJSHeader, context, createEvalScript, createIframe, createModule, db, define, defineStaticRequireRegex, dispatchTreeDownload, docHead, downloadTree, evalModule, executeFile, extractRequires, fileStorageToken, fileSuffix, funcCount, functionNewlineRegex, functionRegex, functionSpaceRegex, getFormattedPointcuts, getFunctionArgs, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName,
-initializeExports, isIE, loadModules, lscacheSchemaVersion, namespace, oldError, onErrorOffset, pauseRequired, processCallbacks, relativePathRegex, require, requireGreedyCapture, requireRegex, reset, responseSlicer, schemaVersion, schemaVersionString, sendToIframe, sendToXhr, testScript, testScriptNode, treeNode, undef, userConfig, userModules, xDomainRpc, _db;
+var absolutePathRegex, analyzeFile, anonDefineStack, applyRules, basedir, clearFileRegistry, commentRegex, commonJSFooter, commonJSHeader, context, createEvalScript, createIframe, createModule, db, define, defineStaticRequireRegex, dispatchTreeDownload, docHead, downloadTree, evalModule, executeFile, extractRequires, fileStorageToken, fileSuffix, funcCount, functionNewlineRegex, functionRegex, functionSpaceRegex, getFormattedPointcuts, getFunctionArgs, getXHR, hostPrefixRegex, hostSuffixRegex, iframeName, 
+initializeExports, isIE, loadModules, lscacheSchemaVersion, namespace, oldError, onErrorOffset, pauseRequired, processCallbacks, relativePathRegex, require, requireGreedyCapture, requireRegex, reset, responseSlicer, schemaVersion, schemaVersionString, sendToIframe, sendToXhr, standardizeModuleId, stripBuiltIns, testScript, testScriptNode, treeNode, undef, userConfig, userModules, xDomainRpc, _db;
 var __hasProp = Object.prototype.hasOwnProperty, __indexOf = Array.prototype.indexOf || function(item) {
   for(var i = 0, l = this.length;i < l;i++) {
     if(this[i] === item) {
@@ -451,8 +453,8 @@ requireRegex = /(?:^|[^\w\$_.\(])require\s*\(\s*("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\
 defineStaticRequireRegex = /^[\r\n\s]*define\(\s*("\S+",|'\S+',|\s*)\s*\[([^\]]*)\],\s*(function\s*\(|{).+/;
 requireGreedyCapture = /require.*/;
 commentRegex = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
-relativePathRegex = /^([A-Za-z]|.\/|..\/).*/;
-absolutePathRegex = /^([A-Za-z]+:)?(\/)+/;
+relativePathRegex = /^(\.{1,2}\/).+/;
+absolutePathRegex = /^([A-Za-z]+:)?\/\//;
 lscache.setBucket(fileStorageToken);
 lscacheSchemaVersion = lscache.get(schemaVersionString);
 if(lscacheSchemaVersion && lscacheSchemaVersion > 0 && lscacheSchemaVersion < schemaVersion) {
@@ -811,7 +813,7 @@ treeNode = function() {
 }();
 reset = function() {
   _db = {"moduleRegistry":{}, "transactionRegistry":{}, "transactionRegistryCounter":0, "loadQueue":[], "rulesQueue":[], "fileQueue":[], "amdQueue":[], "defineQueue":[]};
-  return userConfig = {"moduleRoot":null, "fileExpires":1440, "xd":{"inject":null, "xhr":null}}
+  return userConfig = {"moduleRoot":null, "fileExpires":1440, "xd":{"inject":null, "xhr":null}, "debug":{"sourceMap":false}}
 };
 reset();
 clearFileRegistry = function() {
@@ -967,6 +969,7 @@ loadModules = function(modList, callback) {
   _results = [];
   for(_i = 0, _len = modList.length;_i < _len;_i++) {
     moduleId = modList[_i];
+    moduleId = standardizeModuleId(moduleId);
     node = new treeNode(moduleId);
     _results.push(dispatchTreeDownload(id, tree, node, execute))
   }
@@ -1140,21 +1143,23 @@ applyRules = function(moduleId, save, relativePath) {
       pointcuts.after.push(rule.pointcuts.after)
     }
   }
-  if(workingPath.indexOf("/") !== 0) {
-    if(typeof userConfig.moduleRoot === "undefined") {
-      throw new Error("Module Root must be defined");
-    }else {
-      if(typeof userConfig.moduleRoot === "string" && absolutePathRegex.test(workingPath) !== true) {
-        workingPath = "" + userConfig.moduleRoot + workingPath
+  if(!absolutePathRegex.test(workingPath)) {
+    if(workingPath.indexOf("/") !== 0) {
+      if(typeof userConfig.moduleRoot === "undefined") {
+        throw new Error("Module Root must be defined");
       }else {
-        if(typeof userConfig.moduleRoot === "function") {
-          workingPath = userConfig.moduleRoot(workingPath)
+        if(typeof userConfig.moduleRoot === "string") {
+          workingPath = "" + userConfig.moduleRoot + workingPath
+        }else {
+          if(typeof userConfig.moduleRoot === "function") {
+            workingPath = userConfig.moduleRoot(workingPath)
+          }
         }
       }
     }
-  }
-  if(typeof relativePath === "string" && absolutePathRegex.test(workingPath) !== true) {
-    workingPath = basedir(relativePath) + moduleId
+    if(typeof relativePath === "string") {
+      workingPath = basedir(relativePath) + moduleId
+    }
   }
   if(!fileSuffix.test(workingPath)) {
     workingPath = "" + workingPath + ".js"
@@ -1171,7 +1176,7 @@ applyRules = function(moduleId, save, relativePath) {
 };
 anonDefineStack = [];
 executeFile = function(moduleId) {
-  var cuts, footer, functionId, header, module, path, requiredModuleId, runCmd, runHeader, sourceString, text, _i, _len, _ref;
+  var cuts, footer, functionId, header, module, path, requiredModuleId, runCmd, runHeader, text, _i, _len, _ref;
   if(db.module.getExecuted(moduleId)) {
     return
   }
@@ -1188,14 +1193,13 @@ executeFile = function(moduleId) {
   functionId = "exec" + funcCount++;
   header = commonJSHeader.replace(/__MODULE_ID__/g, moduleId).replace(/__MODULE_URI__/g, path).replace(/__FUNCTION_ID__/g, functionId).replace(/__INJECT_NS__/g, namespace).replace(/__POINTCUT_BEFORE__/g, cuts.before);
   footer = commonJSFooter.replace(/__INJECT_NS__/g, namespace).replace(/__POINTCUT_AFTER__/g, cuts.after);
-  sourceString = isIE ? "" : "//@ sourceURL=" + path;
   runHeader = header + "\n";
-  runCmd = [runHeader, text, ";", footer, sourceString].join("\n");
+  runCmd = [runHeader, text, ";", footer].join("\n");
   module = evalModule({moduleId:moduleId, cmd:runCmd, url:path, functionId:functionId, preamble:header, originalCode:text});
   return db.module.setExports(module.id, module.exports)
 };
 evalModule = function(options) {
-  var actualErrorLine, code, errorObject, functionId, getLineNumberFromException, message, module, moduleId, newError, originalCode, preamble, preambleLines, scr, url;
+  var actualErrorLine, code, errorObject, functionId, getLineNumberFromException, message, module, moduleId, newError, originalCode, preamble, preambleLines, scr, sourceString, toExec, url;
   moduleId = options.moduleId;
   code = options.cmd;
   url = options.url;
@@ -1238,7 +1242,14 @@ evalModule = function(options) {
     })
   }
   if(!errorObject) {
-    module = Inject.execute[functionId]();
+    if(userConfig.debug.sourceMap) {
+      sourceString = isIE ? "" : "//@ sourceURL=" + url;
+      toExec = ["(", Inject.execute[functionId].toString(), ")()"].join("");
+      toExec = [toExec, sourceString].join("\n");
+      module = eval(toExec)
+    }else {
+      module = Inject.execute[functionId]()
+    }
     if(module.error) {
       actualErrorLine = onErrorOffset - preambleLines + getLineNumberFromException(module.error);
       message = "Parse error in " + moduleId + " (" + url + ") on line " + actualErrorLine + ":\n  " + module.error.message;
@@ -1347,25 +1358,41 @@ basedir = function(path) {
   }
   return path
 };
+standardizeModuleId = function(moduleId) {
+  var rule, _i, _len, _ref;
+  _ref = db.queue.rules.get();
+  for(_i = 0, _len = _ref.length;_i < _len;_i++) {
+    rule = _ref[_i];
+    if(typeof rule.path === "string" && rule.path.replace(/.js$/i, "") === moduleId) {
+      moduleId = rule.key
+    }
+  }
+  return moduleId
+};
+stripBuiltIns = function(modules) {
+  var mId, strippedModuleList, _i, _len;
+  strippedModuleList = [];
+  for(_i = 0, _len = modules.length;_i < _len;_i++) {
+    mId = modules[_i];
+    if(mId !== "require" && mId !== "exports" && mId !== "module") {
+      strippedModuleList.push(mId)
+    }
+  }
+  return strippedModuleList
+};
 require = function(moduleId, callback) {
-  var exports, isCircular, mId, strippedModuleList, _i, _len;
+  var exports, isCircular, strippedModuleList;
   if(callback == null) {
     callback = function() {
     }
   }
   if(Object.prototype.toString.call(moduleId) === "[object Array]") {
-    strippedModuleList = [];
-    for(_i = 0, _len = moduleId.length;_i < _len;_i++) {
-      mId = moduleId[_i];
-      if(mId !== "require" && mId !== "exports" && mId !== "module") {
-        strippedModuleList.push(mId)
-      }
-    }
+    strippedModuleList = stripBuiltIns(moduleId);
     require.ensure(strippedModuleList, function(require, module, exports) {
-      var args, mId, _j, _len2;
+      var args, mId, _i, _len;
       args = [];
-      for(_j = 0, _len2 = moduleId.length;_j < _len2;_j++) {
-        mId = moduleId[_j];
+      for(_i = 0, _len = moduleId.length;_i < _len;_i++) {
+        mId = moduleId[_i];
         switch(mId) {
           case "require":
             args.push(require);
@@ -1384,6 +1411,7 @@ require = function(moduleId, callback) {
     });
     return
   }
+  moduleId = standardizeModuleId(moduleId);
   exports = db.module.getExports(moduleId);
   isCircular = db.module.getCircular(moduleId);
   if(exports === false && isCircular === false) {
@@ -1396,6 +1424,7 @@ require = function(moduleId, callback) {
   return exports
 };
 require.run = function(moduleId) {
+  moduleId = standardizeModuleId(moduleId);
   if(db.module.getFile(moduleId) === false) {
     return require.ensure([moduleId], function() {
     })
@@ -1409,6 +1438,7 @@ require.ensure = function(moduleList, callback) {
   if(!(moduleList instanceof Array)) {
     throw new Error("moduleList is not an Array");
   }
+  moduleList = stripBuiltIns(moduleList);
   if(userConfig.xd.xhr != null && !xDomainRpc && !pauseRequired) {
     createIframe();
     pauseRequired = true
@@ -1576,8 +1606,11 @@ context["Inject"] = {"defineAs":function(moduleId) {
   return db.queue.define.remove()
 }, "createModule":createModule, "setModuleExports":function(moduleId, exports) {
   return db.module.setExports(moduleId, exports)
-}, "require":require, "define":define, "reset":reset, "execute":{}, "debug":function() {
-  return typeof console !== "undefined" && console !== null ? console.dir(_db) : void 0
+}, "require":require, "define":define, "reset":reset, "execute":{}, "enableDebug":function(key, value) {
+  if(value == null) {
+    value = true
+  }
+  return userConfig.debug[key] = value
 }};
 context["require"]["ensure"] = require.ensure;
 context["require"]["setModuleRoot"] = require.setModuleRoot;
