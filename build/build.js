@@ -6,7 +6,8 @@ var Fs = require( 'fs' ),
     args = require( 'optimist' ).argv,
     common = require( './common' ),
     semver = require("semver"),
-    tester = require( '../test-server' ),
+    //tester = require( '../test-server' ),
+    tester,
     questions = common.questions,
     luControls = common.filetoVersion,
     build;
@@ -18,6 +19,7 @@ build = {
     } else if( args.docs ) {
       build.makeDocs();
     } else if( args.test ) {
+      tester = require( '../test-server' );
       build.runTests();
     }
 
@@ -45,7 +47,7 @@ build = {
       if( runners['copy'] && runners['compile'] && runners['lu-config'] ) {
         build.runDone(failures);
       }
-    }
+    };
   }() ),
   runDone: function(failures) {
     var failed = !!failures.length;
@@ -135,11 +137,11 @@ function parseBuildAnswers() {
 
   //verify output path exists
   if ( !Path.existsSync( outputPath ) ){
-    Fs.mkdirSync( outputPath, 0777 )
+    Fs.mkdirSync( outputPath, 0777 );
   }
   //verify path for Lu controls exist
   if ( !Path.existsSync( outputPath + '/lu-controls' ) ){
-    Fs.mkdirSync(outputPath + '/lu-controls', 0777 )
+    Fs.mkdirSync(outputPath + '/lu-controls', 0777 );
   }
 
   //concat lu.js together
