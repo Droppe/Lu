@@ -27,6 +27,9 @@ function processDirectory( options, cb ) {
     // for each file, uglify, attach header, place in output/lu-controls
     Seq()
     .par(function() {
+      bu.grab( header, this );
+    })
+    .par(function() {
       bu.grabAndUglify( filePath, this );
     })
     .seq(function() {
