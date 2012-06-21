@@ -18,13 +18,21 @@ exports.copy = function(src, dest, cb) {
 };
 
 // grab a file from src and pass to callback
+grabCache = {};
 exports.grab = function(src, cb) {
   src = path.normalize(src);
+  
+  if (grabCache[src]) {
+    cb(null, grabCache[src]);
+    return;
+  }
+  
   fs.readFile(src, function (err, data) {
     if (err) {
       cb(err);
     }
     else {
+      grabCache[src] = data;
       cb(null, data);
     }
   });
