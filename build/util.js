@@ -21,7 +21,7 @@ exports.copy = function(src, dest, cb) {
 grabCache = {};
 exports.grab = function(src, cb) {
   src = path.normalize(src);
-  
+
   if (grabCache[src]) {
     cb(null, grabCache[src]);
     return;
@@ -134,8 +134,8 @@ exports.mkdirpSync = function (dir) {
         return;
 
       case "ENOENT":
-        mkdirpSync(path.dirname, dir)
-        mkdirpSync(dir)
+        mkdirpSync(path.dirname(dir));
+        mkdirpSync(dir);
         return;
 
       default:
