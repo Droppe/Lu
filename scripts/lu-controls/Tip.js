@@ -6,7 +6,6 @@
  * @require Container
  * @version 0.1.4
  */
-
 var Abstract = require( 'lu/Abstract' ),
   Container = require( 'lu/Container' ),
   Tip;
