@@ -23,7 +23,7 @@ Tip = Abstract.extend( function (Abstract){
       CLASS = 'class',
       TRUE = true,
       FALSE = false,
-      DECORATORS_PATH = '/scripts/lu-controls/Tip/position',
+      DECORATORS_PATH = 'lu/Tip/position',
       
       /**
        * Default configuration values for all Tip instances

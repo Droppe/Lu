@@ -29,13 +29,16 @@ List = Switch.extend( function( Abstract ){
     REVERSE_STATE = 'reverse',
     VERTICAL = 'vertical',
     HORIZONTAL = 'horizontal',
+    LIST_TAGS = 'ul, ol, dl',
+    STRING = 'string',
+    CONTAINER = 'Container',
     defaults = {
       orientation: HORIZONTAL,
       index: 0
     };
 
   function contain( $item ){
-    return lu.create( $item, ['Container'], { 'Container': {} } );
+    return lu.create( $item, [CONTAINER], { 'Container': {} } );
   }
 
   /**
@@ -100,16 +103,16 @@ List = Switch.extend( function( Abstract ){
         $items;
 
       if( settings.items ){
-        if( typeof settings.items === 'string' ){
+        if( typeof settings.items === STRING ){
           $items = $element.children( settings.items );
         } else {
           $items = settings.items;
         }
       } else {
-        if( $element.is( 'ul, ol' ) ){
+        if( $element.is( LIST_TAGS ) ){
           $items = $element.children();
         } else {
-          $items = $element.children( 'ul, ol' ).first().children();
+          $items = $element.children( LIST_TAGS ).first().children();
         }
       }
 
@@ -125,7 +128,8 @@ List = Switch.extend( function( Abstract ){
        * Select an item in the list
        * @method select
        * @public
-       * @param {Integer|String|Object} item The index of the item to select, a css selector, or a JQuery collection containting the item.
+       * @param {Integer|String|Object} item The index of the item to 
+       * select, a css selector, or a JQuery collection containing the item.
        * @return {Object} List
        */
       List.select = function( item ){
@@ -141,7 +145,7 @@ List = Switch.extend( function( Abstract ){
 
         if( typeof item === 'number' ){
           $item = $items.eq( item );
-        } else if ( typeof item === 'string' ){
+        } else if ( typeof item === STRING ){
           $item = $items.filter( item );
         } else if( item instanceof $ ){
           $item = item;
@@ -165,7 +169,7 @@ List = Switch.extend( function( Abstract ){
             return List;
           }
 
-          Container = lu.getControl( $item, 'Container' );
+          Container = lu.getControl( $item, CONTAINER );
 
           if( Container.hasState( SELECTED_STATE ) ){
             Selected = Container;
@@ -288,7 +292,7 @@ List = Switch.extend( function( Abstract ){
       if( this.hasNext() ){
         this.select( this.index + 1 );
       } else {
-        this.trigger( OUT_OF_BOUNDS_EVENT, [ this.$element, 'next' ] );
+        this.trigger( OUT_OF_BOUNDS_EVENT, [ this.$element, NEXT_EVENT ] );
       }
       return this;
     },
@@ -302,7 +306,7 @@ List = Switch.extend( function( Abstract ){
       if( this.hasPrevious() ){
         this.select( this.index - 1 );
       } else {
-        this.trigger( OUT_OF_BOUNDS_EVENT, [ this.$element, 'previous' ] );
+        this.trigger( OUT_OF_BOUNDS_EVENT, [ this.$element, PREVIOUS_EVENT ] );
       }
       return this;
     },
