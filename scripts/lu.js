@@ -189,7 +189,7 @@
           } );
 
           if( config ){
-            config = ( function(){ return eval( '( function(){ return ' + config + '; }() );' ) }()[key] || {} );
+            config = ( function(){ return eval( '( function(){ return ' + config + '; }() );' ); }()[key] || {} );
           } else {
             config = {};
           }
@@ -386,9 +386,9 @@
     lu.destroy = function( $element ){
       var $controls = lu.getDescendants( $element ),
         attrs = ['data-lu', 'data-lu-config'],
-        data = ['lu', 'luControls', 'luConfig']
+        data = ['lu', 'luControls', 'luConfig'];
 
-      if( $element.is( UI_CONTROL_PATTERN ) ){
+      if ( $element.is( UI_CONTROL_PATTERN ) ){
         $controls = $controls.add( $element );
       }
 
