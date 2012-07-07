@@ -321,7 +321,7 @@ Tip = Abstract.extend( function (Abstract){
           elHeight = $element.outerHeight(),
           elWidth = $element.outerWidth();
 
-        if( position === undefined || cache === false ){
+        if( typeof position === 'undefined' || cache === false ){
           position = Tip.calcPosition(elOffset, elHeight, elWidth, settings);
         }
         return position;
