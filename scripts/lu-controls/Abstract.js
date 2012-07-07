@@ -30,6 +30,22 @@ Abstract = Class.extend( function( Class ){
     notify: ''
   };
 
+/**
+ * Trims whitespace from strings.  Uses native JS when available.
+ * @method trim
+ * @private
+ * @param {String} input The string to clean up
+ * @returns {String} The cleaned-up string
+ */
+  function trim(input){
+    if (typeof String.trim === 'function') {
+      return input.trim();
+    }
+    else {
+      return input.replace(/^\s+|\s+$/g, '');
+    }
+  }
+  
   /**
    * Adds an event, or a string of joined events to the eventStore
    * @method addEventToStorage
@@ -39,7 +55,7 @@ Abstract = Class.extend( function( Class ){
    */
   function addToEventStore( event, method ){
     var eventStore = this.eventStore;
-    _.each( event.trim().split( /\s+/g ), function( item ){
+    _.each( trim(event).split( /\s+/g ), function( item ){
       eventStore[item] = { method: method };
     } );
   }
@@ -52,7 +68,7 @@ Abstract = Class.extend( function( Class ){
    */
   function removeFromEventStore( event ){
     var eventStore = this.eventStore;
-    _.each( event.trim().split( /\s+/g ), function( item ){
+    _.each( trim(event).split( /\s+/g ), function( item ){
       if ( eventStore[event] ){
         delete eventStore[event];
       }
