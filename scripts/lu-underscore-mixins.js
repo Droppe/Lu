@@ -68,6 +68,19 @@
     wait: function( milliseconds ){
       milliseconds += new Date().getTime();
       while( new Date() < milliseconds ){}
-    }
+    },
+    trim: (function () {
+      console.log('first');
+      if (typeof String.prototype.trim === 'function') {
+        return function (input) {
+          return input.trim();
+        };
+      }
+      else {
+        return function (input) {
+          return input.replace(/^\s+|\s+$/g, '');
+        };
+      }
+    }())
   } );
 }() );
