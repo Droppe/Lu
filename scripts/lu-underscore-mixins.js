@@ -70,7 +70,6 @@
       while( new Date() < milliseconds ){}
     },
     trim: (function () {
-      console.log('first');
       if (typeof String.prototype.trim === 'function') {
         return function (input) {
           return input.trim();
