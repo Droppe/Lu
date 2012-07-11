@@ -10,7 +10,7 @@ var Switch = require( 'lu/Switch' ),
   Container = require( 'lu/Container' ),
   List;
 
-List = Switch.extend( function( Abstract ){
+List = Switch.extend( function( Switch ){
 
   var NEXT_EVENT = 'next',
     LAST_EVENT = 'last',
@@ -122,7 +122,7 @@ List = Switch.extend( function( Abstract ){
 
       _.defaults( settings, defaults );
 
-      Abstract.init.call( this, $element, settings );
+      Switch.init.call( this, $element, settings );
 
       /**
        * Select an item in the list
@@ -135,7 +135,7 @@ List = Switch.extend( function( Abstract ){
       List.select = function( item ){
         var Container,
           $item,
-          $items = this.$items,
+          $items = List.$items,
           controls = 'lu-controls',
           index;
 
@@ -145,8 +145,18 @@ List = Switch.extend( function( Abstract ){
 
         if( typeof item === 'number' ){
           $item = $items.eq( item );
-        } else if ( typeof item === STRING ){
-          $item = $items.filter( item );
+        } else if ( typeof item === STRING ){          
+          $item = $items.filter( function(index){
+            // Is the selected item one of the list elements?
+            if ($items[index] === item) {
+              return true;
+            }
+            // Or is the selected item contained by one of the list elements?
+            else {
+              return ( $.contains($items[index], $(item)[0]) );
+            }
+            return false;
+          } );
         } else if( item instanceof $ ){
           $item = item;
         } else {
