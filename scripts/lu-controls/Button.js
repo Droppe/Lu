@@ -25,8 +25,7 @@ Button = Switch.extend( function( Switch ){
     PAUSED_STATE = 'paused',
     commandDecorators,
     defaults = {
-      on: 'click',
-      '__params__': [0,1,2]
+      on: 'click'
     };
 
   /**
@@ -373,8 +372,10 @@ Button = Switch.extend( function( Switch ){
         }
       }
       else {
-        commmand = undefined;
+        command = undefined;
       }
+
+      settings.action = command;
 
       Switch.init.call( this, $element, settings );
 

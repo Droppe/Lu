@@ -37,8 +37,49 @@ List = Switch.extend( function( Switch ){
       index: 0
     };
 
+/**
+ * Instantiates Container objects on list items.
+ * @param  {Object} $item  A JQuery collection referencing a list item to create a Container on
+ * @return {Object} The target element
+ */
   function contain( $item ){
-    return lu.create( $item, [CONTAINER], { 'Container': {} } );
+    return lu.create( $item, [CONTAINER], { CONTAINER: {} } );
+  }
+
+/**
+ * findSelectTarget Determine $item from item param
+ * @method findSelectTarget
+ * @private
+ * @param {Object|String|Number item The list item DOM node to select (JQuery object, CSS selector, or index number)
+ * @param {Object} $items The JQuery collection of all the list items
+ * @return {Object} A JQuery collection referencing the list item to select
+ */
+  function findSelectTarget( item, $items ) {
+    var $item = $(); //empty JQuery object
+
+    if (!$items || $items.length ===0 ) {
+      return $item;
+    }
+
+    if( typeof item === 'number' ){
+      $item = $items.eq( item );
+    } else if ( typeof item === STRING ){          
+      $item = $items.filter( function ( index ) {
+        var tmp = $(item)[0];
+        // Is the selected item one of the list elements?
+        if ($items[index] === tmp )  {
+          return true;
+        }
+        // Or is the selected item contained by one of the list elements?
+        else {
+          return ( $.contains($items[index], tmp) );
+        }
+      } );
+    } else if( item instanceof $ ){
+      $item = item;
+    }
+
+    return $item;    
   }
 
   /**
@@ -62,7 +103,9 @@ List = Switch.extend( function( Switch ){
           break;
         case 40: // Down arrow
           List.next();
+          break;
         default:
+          // no op
       }
     } else {
       // By default, list orientation is "horizontal" and left and right arrows work
@@ -124,6 +167,7 @@ List = Switch.extend( function( Switch ){
 
       Switch.init.call( this, $element, settings );
 
+
       /**
        * Select an item in the list
        * @method select
@@ -139,46 +183,38 @@ List = Switch.extend( function( Switch ){
           controls = 'lu-controls',
           index;
 
+        // 1. Check for item param
         if( item === undefined || item === null ){
           return List;
         }
 
-        if( typeof item === 'number' ){
-          $item = $items.eq( item );
-        } else if ( typeof item === STRING ){          
-          $item = $items.filter( function(index){
-            // Is the selected item one of the list elements?
-            if ($items[index] === item) {
-              return true;
-            }
-            // Or is the selected item contained by one of the list elements?
-            else {
-              return ( $.contains($items[index], $(item)[0]) );
-            }
-            return false;
-          } );
-        } else if( item instanceof $ ){
-          $item = item;
-        } else {
+        // 2. Determine $item from item param, punt if not found
+        $item = findSelectTarget( item, $items );
+        if ($item.length === 0) {
           return List;
         }
 
-        if( $item.is( this.$items ) ){
+        // 3. Find Container for $item
+        if( $item.is( List.$items ) ){
+          // Get the Container from the node's data object
           Container = $item.data( controls );
 
           if( !Container ){
             contain( $item );
           }
 
+          // Find the Container's Deferred object
           Container = $item.data( controls ).Deferred;
 
-          if( Container.state() === 'pending' ){
+
+          if( Container && Container.state() === 'pending' ){
             Container.done( function(){
               List.select( $item );
             } );
             return List;
           }
 
+          // Now set it back to the normal Container
           Container = lu.getControl( $item, CONTAINER );
 
           if( Container.hasState( SELECTED_STATE ) ){

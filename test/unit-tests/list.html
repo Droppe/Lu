@@ -4,14 +4,12 @@
   }
 </style>
 
-<div id="list" data-lu="List">
-  <ol>
-    <li id="zero" data-lu="Container" class="lu-state-selected"><a href="#">Zero</a></li>
-    <li id="one" data-lu="Container"><a href="#">One</a></li>
-    <li id="two" data-lu="Container"><a href="#">Two</a></li>
-    <li id="three" data-lu="Container"><a href="#">Three</a></li>
-  </ol>
-</div>
+<ol id="list" data-lu="List">
+  <li id="zero" xdata-lu="Container" class="lu-state-selected"><a href="#">Zero</a></li>
+  <li id="one" xdata-lu="Container"><a href="#">One</a></li>
+  <li id="two" xdata-lu="Container"><a href="#">Two</a></li>
+  <li id="three" xdata-lu="Container"><a href="#">Three</a></li>
+</ol>
 
 <script>
 
@@ -22,52 +20,84 @@ function run(){
   module( 'API', {} );
 
   test( 'next', function(){
-    expect( 1 );
+    expect(1);
     List.next();
-    ok( List.index === 1, 'The next item was selected.' );
+    ok( List.index === 1, 'The next item was selected. ' + List.index );
   } );
 
   test( 'previous', function(){
-    expect( 1 );
+    expect(1);
     List.previous();
-    ok( List.index === 0, 'The previous item was selected.' );
+    ok( List.index === 0, 'The previous item was selected. ' + List.index );
   } );
 
-  test( 'hasNext', function(){
-    expect( 2 );
-    ok( List.first().hasNext() === true, 'The list correctly reports hasNext when the first item is selected.' );
-    ok( List.last().hasNext() === false, 'The list correctly reports hasNext when the last item is selected.' );
+  test( 'hasNext - first', function(){
+    expect(1);
+    List.first();
+    ok( List.hasNext() === true, 'The list correctly reports hasNext when the first item is selected.' );      
   } );
 
-  test( 'hasPrevious', function(){
-    expect( 2 );
-    ok( List.last().hasPrevious() === true, 'The list correctly reports hasPrevious when the last item is selected.' );
-    ok( List.first().hasPrevious() === false, 'The list correctly reports hasPrevious when the first item is selected.' );
+  test( 'hasNext - last', function(){
+    expect(1);
+    List.last();
+    ok( List.hasNext() === false, 'The list correctly reports hasNext when the last item is selected.' );
   } );
+
+  test( 'hasPrevious - last', function(){
+    expect(1);
+    List.last();
+    ok( List.hasPrevious() === true, 'The list correctly reports hasPrevious when the last item is selected.' );
+  } );
+
+  test( 'hasPrevious - first', function() {
+    expect(1);
+    List.first();
+    ok( List.hasPrevious() === false, 'The list correctly reports hasPrevious when the first item is selected.' );
+  } );
+    
+  test( 'current', function(){
+    expect(1);
+    List.last();
+    ok( List.current().is( '#three' ), 'Item three is current when last is selected.' );
+  } );  
+
 
   test( 'current', function(){
-    expect( 2 );
-    ok( List.last().current().is( '#three' ), 'Item three is current when last is selected.' );
-    ok( List.first().current().is( '#zero' ), 'Item zero is current when first is selected.' );
+    expect(1);
+    List.first();
+    ok( List.current().is( '#zero' ), 'Item zero is current when first is selected.' );
   } );
 
   test( 'last', function(){
-    expect( 1 );
+    expect(1);
     List.last();
     ok( List.index === $list.find( 'li' ).size() - 1, 'The last item was selected.' );
   } );
 
-  test( 'select', function(){
-    expect( 4 );
+  test( 'select A', function(){
+    expect(1);
     List.select( 0 );
-    ok( List.index === 0, 'The first item was selected.' );
-    List.select( '#one' );
-    ok( List.index === 1, 'The second item was selected.' );
-    List.select( $( '#zero' ) );
-    ok( List.index === 0, 'The first item was selected.' );
-    List.select( 2 );
-    ok( List.index === 2, 'The second item was selected.' );
+    ok( List.index === 0, 'The first item was selected. A' );
   } );
+  
+  test( 'select B', function(){
+    expect(1);
+    List.select( '#one' );
+    ok( List.index === 1, 'The second item was selected. B ' + List.index );
+  } );
+  
+  test( 'select C', function(){
+    expect(1);
+    List.select( $( '#zero' ) );
+    ok( List.index === 0, 'The first item was selected. C' );
+  } );
+  
+  test( 'select D', function(){
+    expect(1)
+    List.select( 2 );
+    ok( List.index === 2, 'The second item was selected. D' );
+  } );
+
 
   test( 'first', function(){
     expect( 1 );
@@ -156,5 +186,6 @@ function run(){
 
   } );
 }
-
+//@ sourceURL=/test/unit-tests/list.html
 </script>
+
