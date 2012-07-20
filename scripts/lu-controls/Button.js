@@ -362,8 +362,18 @@ Button = Switch.extend( function( Switch ){
      */
     init: function( $element, settings ){
       var Button = this,
-        command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
+        command = settings.action,
         decorators = [];
+
+      // Determine the appropriate value for 'command'
+      if ( !command ) {
+        if ( settings && settings.__params__ ) {
+          command = settings.__params__.shift();
+        }
+      }
+      else {
+        command = undefined;
+      }
 
       settings.action = command;
 
