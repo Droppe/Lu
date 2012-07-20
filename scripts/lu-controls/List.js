@@ -40,11 +40,17 @@ List = Switch.extend( function( Switch ){
 /**
  * Instantiates Container objects on list items.
  * @param  {Object} $item  A JQuery collection referencing a list item to create a Container on
- * @return {Object} The target element
+ * @return {Object} Promise 
  */
   function contain( $item ){
-    return lu.create( $item, [CONTAINER], { CONTAINER: {} } );
+    return $.Deferred(function( dfd ){
+      lu.create( $item, [CONTAINER], { CONTAINER: {} } );
+      $item.data('lu-controls').Deferred.done( function() {
+        dfd.resolve($item);
+      });
+    }).promise();
   }
+  
 
 /**
  * findSelectTarget Determine $item from item param
@@ -84,14 +90,14 @@ List = Switch.extend( function( Switch ){
 
   /**
    * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
-   * arrows.Left and up correspond to action "previous" and right and next correspond to "next".
+   * arrows.  Left and up correspond to action "previous" and right and next correspond to "next".
    * @method handleKeyup
    * @private
    * @param {Event} event An event object
    * @param {Object} List the list control to handle
    * @return {Void}
    */
-  function keyup( event, List ){
+  function handleKeyup( event, List ){
     var keyCode = event.keyCode,
       item = $( event.target );
 
@@ -198,24 +204,17 @@ List = Switch.extend( function( Switch ){
         if( $item.is( List.$items ) ){
           // Get the Container from the node's data object
           Container = $item.data( controls );
-
-          if( !Container ){
-            contain( $item );
-          }
-
-          // Find the Container's Deferred object
-          Container = $item.data( controls ).Deferred;
-
-
-          if( Container && Container.state() === 'pending' ){
-            Container.done( function(){
+          
+          if( !Container || Container.Deferred.state() === "pending" ){
+          
+            $.when(contain( $item )).then( function ($item) {
+              console.log($item[0] + " resolved, calling then");
               List.select( $item );
-            } );
+            });
             return List;
           }
 
-          // Now set it back to the normal Container
-          Container = lu.getControl( $item, CONTAINER );
+          Container = lu.getControl($item);
 
           if( Container.hasState( SELECTED_STATE ) ){
             Selected = Container;
@@ -251,9 +250,13 @@ List = Switch.extend( function( Switch ){
         return List;
       };
 
+
+
       List.index = 0;
       List.$items = $items;
       List.orientation = settings.orientation;
+
+
 
       List.on( SELECT_EVENT, function( event, item ){
         event.stopPropagation();
@@ -301,9 +304,11 @@ List = Switch.extend( function( Switch ){
       } );
 
       $( 'body' ).keyup( function( event ){
-        keyup( event, List );
+        handleKeyup( event, List );
       } );
     },
+
+
     /**
      * adds a new item to $element
      * @method append
