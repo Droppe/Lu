@@ -249,7 +249,6 @@
         numberOfControls += controls.length;
 
         _.each( controls, function( key, index ){
-          console.log( key );
           var pckg = NAMESPACE + '/' + key.split( ':' ).shift();
           if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ){
             required.push( pckg );
