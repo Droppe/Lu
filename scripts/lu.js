@@ -35,12 +35,13 @@
   function Lu(){
     var lu = this,
       packages = {},
-      ATTR,
-      UI_CONTROL_PATTERN,
-      NAMESPACE = 'lu';
+      NAMESPACE = 'lu',
+      ATTR = 'data-' + NAMESPACE,
+      ATTR_CONFIG = ATTR + '-config', 
+      LU_CONTROLS = NAMESPACE + '-controls',
+      LU_CONFIG = NAMESPACE + '-config',
+      UI_CONTROL_PATTERN = '[' + ATTR + ']';
 
-    ATTR = 'data-' + NAMESPACE;
-    UI_CONTROL_PATTERN = '[' + ATTR + ']';
 
     //Private Methods
 
@@ -54,7 +55,7 @@
      * @return {Object} The data object
      */
     function getData( $element, key ){
-      var data = $element.data( 'lu-controls' ),
+      var data = $element.data( LU_CONTROLS ),
         ret;
 
       if( data ){
@@ -66,7 +67,7 @@
       } else if( key ){
         ret = undefined;
       } else {
-        $element.data('lu-controls', {} );
+        $element.data(LU_CONTROLS, {} );
         ret = {};
       }
 
@@ -84,7 +85,7 @@
      */
     function setData( $element, data ){
       // Mixin the new data with the current data.
-      $element.data( 'lu-controls', $.extend( true, getData( $element ), data ) );
+      $element.data( LU_CONTROLS, $.extend( true, getData( $element ), data ) );
       return $element;
     }
 
@@ -174,7 +175,7 @@
        * @return {Void}
        */
       function execute( $node ){
-        var config = $node.data( 'lu-config' ),
+        var config = $node.data( LU_CONFIG ),
           extraConfig = $node.data( 'luExtraConfig' ),
           keys = lu.getKeys( $node );
 
@@ -385,8 +386,8 @@
      */
     lu.destroy = function( $element ){
       var $controls = lu.getDescendants( $element ),
-        attrs = ['data-lu', 'data-lu-config'],
-        data = ['lu', 'luControls', 'luConfig'];
+        attrs = [ATTR, ATTR_CONFIG],
+        data = [NAMESPACE, LU_CONTROLS, LU_CONFIG];
 
       if ( $element.is( UI_CONTROL_PATTERN ) ){
         $controls = $controls.add( $element );
