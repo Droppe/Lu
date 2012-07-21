@@ -188,7 +188,7 @@
               __params__[index] = item.toLowerCase();
           } );
 
-          if( config ){
+          if( config && typeof config === 'string' ){
             config = ( function(){ return eval( '( function(){ return ' + config + '; }() );' ); }()[key] || {} );
           } else {
             config = {};
@@ -249,6 +249,7 @@
         numberOfControls += controls.length;
 
         _.each( controls, function( key, index ){
+          console.log( key );
           var pckg = NAMESPACE + '/' + key.split( ':' ).shift();
           if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ){
             required.push( pckg );
