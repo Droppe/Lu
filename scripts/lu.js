@@ -189,7 +189,7 @@
               __params__[index] = item.toLowerCase();
           } );
 
-          if( config ){
+          if( config && typeof config === 'string' ){
             config = ( function(){ return eval( '( function(){ return ' + config + '; }() );' ); }()[key] || {} );
           } else {
             config = {};
