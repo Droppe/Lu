@@ -5,15 +5,15 @@
 
   if( typeof window.require === 'function' ) {
 
-    if( typeof window.require.addRule === 'function' ) {
-      window.require.addRule( /^lu\//, {
+    if( typeof window.Inject.addRule === 'function' ) {
+      window.Inject.addRule( /^lu\//, {
         path: function( module ) {
           module = module.replace( 'lu/', '' );
           return PATH_TO_LU_CONTROLS + module + '.js';
         }
       } );
 
-      window.require.addRule( 'class', {
+      window.Inject.addRule( 'class', {
         path: PATH_TO_CLASS
       } );
     }
