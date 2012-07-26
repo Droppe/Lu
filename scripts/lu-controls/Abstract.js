@@ -73,11 +73,11 @@ Abstract = Class.extend( function( Class ){
         $notify;
 
       _.defaults( settings, defaults );
-
+      
+      this.$element = $element;
+      
       $observe = $( settings.observe );
       $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
-
-      this.$element = $element;
 
       if( $observe.length ){
         this.observe( $observe );
