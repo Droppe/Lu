@@ -21,7 +21,7 @@
       width: 800px;
       margin: 50px auto;
     }
-    .carousel ul {
+    ul {
       position: relative;
       list-style: none;
       display: block;
@@ -31,7 +31,7 @@
       overflow: hidden;
       padding: 0;
     }
-    .carousel li {
+    li {
       position: absolute;
       background: #cde;
       display: block;
@@ -44,56 +44,73 @@
       margin: 0;
       left: 0;
     }
-    .carousel li:nth-child( odd ) {
+    li:nth-child( odd ) {
       background-color: #ded;
     }
-    .carousel .lu-state-forward li {
+    .lu-state-forward li {
       left: 0%;
     }
-    .carousel .lu-state-reverse li {
+    .lu-state-reverse li {
       left: 0%;
     }
-    .carousel .lu-state-forward .lu-transition-out {
+    .lu-state-forward .lu-transition-out {
       z-index: 2;
       left: -100%;
     }
-    .carousel .lu-state-reverse .lu-transition-out {
+    .lu-state-reverse .lu-transition-out {
       z-index: 2;
       left: 100%;
     }
-    .carousel .lu-transition-in,
-    .carousel .lu-transition-out {
+    .lu-transition-in,
+    .lu-transition-out {
       -moz-transition-property: left;
       -moz-transition-duration: 1s;
       -moz-transition-delay: 0;
       left: 0;
     }
-    .carousel .lu-state-selected {
+    .lu-state-selected {
       z-index: 1;
     }
-    .carousel .lu-state-forward .lu-state-selected {
+    .lu-state-forward .lu-state-selected {
       left: 0;
     }
-    .carousel .lu-state-reverse .lu-state-selected {
-      left: 100px;
+    .lu-state-reverse .lu-state-selected {
+      left: 0;
     }
-
-	.list .lu-state-selected {
-		font-weight:bold;
-	}
   </style>
 </head>
 
 <body>
-  <div data-lu="Container">
-	<ul id="tabcontrols" data-lu="Abstract">
-		<li data-lu="Abstract"><a href="#content0" data-lu="Button:Select">Select Tab Zero</a></li>
-		<li data-lu="Abstract"><a href="#content1" data-lu="Button:Select">Select Tab One</a></li>
-	</ul>
-	<ul class="list" id="tablist" data-lu="List" data-lu-config="{ 'List': { observe: '#tabcontrols a' } }">
-		<li id="content0" class="lu-state-selected" data-lu="Container">Tab Content Zero</li>
-		<li id="content1"  data-lu="Container">Tab Content One</li>
-	</ul>
+
+  <div class="carousel lu-state-forward" data-lu="Carousel">
+
+    <ul class="items">
+      <li class="lu-state-selected" data-lu="Container">1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>10</li>
+      <li>11</li>
+      <li>12</li>
+      <li>13</li>
+      <li>14</li>
+      <li>15</li>
+      <li>16</li>
+      <li>17</li>
+      <li>18</li>
+      <li>19</li>
+      <li>20</li>
+      <li>21</li>
+    </ul>
+
+    <button data-lu="Button:Previous" type="button">&laquo;</button>
+    <button data-lu="Button:Next Button:State:Foo:Bar" type="button">&raquo;</button>
+
   </div>
 
 
