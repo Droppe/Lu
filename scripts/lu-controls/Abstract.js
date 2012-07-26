@@ -77,6 +77,8 @@ Abstract = Class.extend( function( Class ){
       $observe = $( settings.observe );
       $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
 
+      this.$element = $element;
+
       if( $observe.length ){
         this.observe( $observe );
       }
@@ -85,7 +87,6 @@ Abstract = Class.extend( function( Class ){
         $element.lu( 'observe', $notify );
       }
 
-      this.$element = $element;
       this.eventStore = {};
     },
     /**

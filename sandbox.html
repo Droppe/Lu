@@ -21,7 +21,7 @@
       width: 800px;
       margin: 50px auto;
     }
-    ul {
+    .carousel ul {
       position: relative;
       list-style: none;
       display: block;
@@ -31,7 +31,7 @@
       overflow: hidden;
       padding: 0;
     }
-    li {
+    .carousel li {
       position: absolute;
       background: #cde;
       display: block;
@@ -44,47 +44,51 @@
       margin: 0;
       left: 0;
     }
-    li:nth-child( odd ) {
+    .carousel li:nth-child( odd ) {
       background-color: #ded;
     }
-    .lu-state-forward li {
+    .carousel .lu-state-forward li {
       left: 0%;
     }
-    .lu-state-reverse li {
+    .carousel .lu-state-reverse li {
       left: 0%;
     }
-    .lu-state-forward .lu-transition-out {
+    .carousel .lu-state-forward .lu-transition-out {
       z-index: 2;
       left: -100%;
     }
-    .lu-state-reverse .lu-transition-out {
+    .carousel .lu-state-reverse .lu-transition-out {
       z-index: 2;
       left: 100%;
     }
-    .lu-transition-in,
-    .lu-transition-out {
+    .carousel .lu-transition-in,
+    .carousel .lu-transition-out {
       -moz-transition-property: left;
       -moz-transition-duration: 1s;
       -moz-transition-delay: 0;
       left: 0;
     }
-    .lu-state-selected {
+    .carousel .lu-state-selected {
       z-index: 1;
     }
-    .lu-state-forward .lu-state-selected {
+    .carousel .lu-state-forward .lu-state-selected {
       left: 0;
     }
-    .lu-state-reverse .lu-state-selected {
-      left: 0;
+    .carousel .lu-state-reverse .lu-state-selected {
+      left: 100px;
     }
+
+	.list .lu-state-selected {
+		font-weight:bold;
+	}
   </style>
 </head>
 
 <body>
-
+<!--
   <div class="carousel lu-state-forward" data-lu="Tip"></div>
 
-  <div class="carousel lu-state-forward" data-lu="Carousel">
+  <div class="carousel" data-lu="Carousel">
 
     <ul class="items">
       <li class="lu-state-selected" data-lu="Container">1</li>
@@ -113,6 +117,24 @@
     <button data-lu="Button:Previous" type="button">&laquo;</button>
     <button data-lu="Button:Next" type="button">&raquo;</button>
 
+  </div>
+-->
+  <div class="list" data-lu="Container">
+	<!--
+	<span id="content4"  data-lu="Container">Select #1 <a href="#content1" data-lu="Button:Select"  data-lu-config="{
+		'Button:Select': {
+			notify: '#tablist' 
+		}
+	}">Now!</a></span>
+	-->
+	<ul id="tabcontrols" data-lu="Abstract">
+		<li data-lu="Abstract"><a href="#content0" data-lu="Button:Select">Select Zero</a></li>
+		<li data-lu="Abstract"><a href="#content1" data-lu="Button:Select">Select One</a></li>
+	</ul>
+	<ul id="tablist" data-lu="List" data-lu-config="{ 'List': { observe: '#tabcontrols a' } }">
+		<li id="content0" class="lu-state-selected" data-lu="Container">Content Zero</li>
+		<li id="content1"  data-lu="Container">Content One</li>
+	</ul>
   </div>
 
 
