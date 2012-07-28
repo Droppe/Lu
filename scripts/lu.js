@@ -467,7 +467,9 @@
       }
 
       if( key ){
-        instance = data[key].instance;
+        if( data[key] ){
+          instance = data[key].instance;
+        }
       } else {
         _.each( data, function( item, index ){
           if( !instance ){

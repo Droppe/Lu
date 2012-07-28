@@ -1,36 +1,23 @@
 /**
- * A representation of a stateful list
  * @class Carousel
- * @require class
  * @extends List
- * @constructor
- * @version 0.2.4
  */
 
 var List = require( 'lu/List' ),
-  stateDecorator = require( '/scripts/lu-decorators/State' ),
-  transitionDecorator = require( '/scripts/lu-decorators/Transition' ),
   Carousel;
 
-Carousel =  List.extend( function (List) {
+Carousel =  List.extend( function ( base ) {
 
-  var MAXED_EVENT = 'maxed',
-    FLOORED_EVENT = 'floored',
-    PLAY_EVENT = 'play',
-    PLAYING_EVENT = 'playing',
+  var PLAY_EVENT = 'play',
     PAUSE_EVENT = 'pause',
-    PAUSED_EVENT = 'paused',
     FIRST_EVENT = 'first',
     LAST_EVENT = 'last',
     SELECT_EVENT = 'select',
-    SELECTED_EVENT = 'selected',
     PREVIOUS_EVENT = 'previous',
-    SHOWN_EVENT = 'shown',
-    HIDDEN_EVENT = 'hidden',
     NEXT_EVENT = 'next',
     OUT_OF_BOUNDS_EVENT = 'out-of-bounds',
-    PLAYING_FLAG = 'lu-playing',
-    PAUSED_FLAG = 'lu-paused',
+    PLAYING_STATE = 'playing',
+    PAUSED_STATE = 'paused',
 
     /**
      * Default configuration values
@@ -54,7 +41,7 @@ Carousel =  List.extend( function (List) {
        * @private
        * @final
        */
-      autoplay: true,
+      autoplay: false,
       /**
        * The time in milliseconds to remain on an item while playing
        * @property delay
@@ -106,126 +93,91 @@ Carousel =  List.extend( function (List) {
      */
     init: function ( $element, settings ){
 
-      // PRIVATE INSTANCE PROPERTIES
+       var self = this;
 
-      /**
-       * Instance of Carousel
-       * @property Carousel
-       * @type Object
-       * @private
-       */
-       var Carousel = this;
-
-      // MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
+      base.init.call( this, $element, settings );
 
-      this.settings = settings;
-      this.$element = $element;
-
-      // CALL THE PARENT'S CONSTRUCTOR
-      List.init.call( this, $element, settings );
-      Carousel.decorate( stateDecorator );
-
-      Carousel.on( PLAY_EVENT, function( event ){
-        event.stopPropagation();
-        Carousel.play();
-      } );
-
-      Carousel.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT, HIDDEN_EVENT].join( ' ' ), function( event, item ){
-        event.stopPropagation();
-        Carousel.pause();
-      } );
-
-      Carousel.on( SHOWN_EVENT, function( event ){
-        event.stopPropagation();
-        if ( settings.autoplay ){
-          Carousel.play();
+     /**
+       * Plays the Carousel
+       * @method play
+       * @privileged
+       * @return {Object} Carousel
+       */
+      this.play = function(){
+        if( !this.hasState( PLAYING_STATE ) ){
+          ( function recurse( ){
+            playTimer = window.setTimeout( function(){
+              if( !self.hasState( PLAYING_STATE ) ){
+                self.next();
+                recurse();
+              }
+            }, settings.delay );
+          }() );
+          this.setState( PLAYING_STATE );
         }
-      });
+        return this;
+      };
 
-      Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT, function( event ){
-        var controls;
-
+      this.on( PLAY_EVENT, function( event ){
         event.stopPropagation();
-
-        Carousel.next();
-
-        controls = Carousel.current().lu( 'getControls' );
-        _.each( controls, function( item, index ){
-          if ( typeof item.first === 'function' ){
-            item.first();
-          }
-        } );
+        self.play();
       } );
 
-      Carousel.on( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT, function( event ){
-        var controls;
-
+      this.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT].join( ' ' ), function( event, item ){
         event.stopPropagation();
-
-        Carousel.previous();
-
-        controls = Carousel.current().lu( 'getControls' );
-        _.each( controls, function( item, index ){
-          if ( typeof item.last === 'function' ){
-            item.last();
-          }
-        } );
+        self.pause();
       } );
 
-      Carousel.on( PLAYING_EVENT, function( event ){
-        $element.addClass( PLAYING_FLAG ).removeClass( PAUSED_FLAG );
-      } );
+      // this.on( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT, function( event ){
+      //   var controls;
 
-      Carousel.on( PAUSED_EVENT, function( event ){
-        $element.addClass( PAUSED_FLAG ).removeClass( PLAYING_FLAG );
-      } );
+      //   event.stopPropagation();
 
-      // Play if autoplay was true in settings
+      //   self.next();
+
+      //   controls = self.current().lu( 'getControls' );
+      //   _.each( controls, function( item, index ){
+      //     if ( typeof item.first === 'function' ){
+      //       item.first();
+      //     }
+      //   } );
+      // } );
+
+      // this.on( OUT_OF_BOUNDS_EVENT + '.' + PREVIOUS_EVENT, function( event ){
+      //   var controls;
+
+      //   event.stopPropagation();
+
+      //   self.previous();
+
+      //   controls = self.current().lu( 'getControls' );
+      //   _.each( controls, function( item, index ){
+      //     if ( typeof item.last === 'function' ){
+      //       item.last();
+      //     }
+      //   } );
+      // } );
+
+      // Play if autoplay is true in settings
       if( settings.autoplay ){
-        Carousel.play();
+        this.play();
       } else {
-        Carousel.trigger( PAUSED_EVENT, [$element] );
+        this.pause();
       }
 
-    },
-
-
-   /**
-     * Plays the Carousel when paused
-     * @method play
-     * @public
-     * @return {Object} The Carousel instance
-     */
-    play: function(){
-      var self = this;
-
-      if( playing === false ){
-        playing = true;
-        ( function recurse( ){
-          playTimer = window.setTimeout( function(){
-            if( playing ){
-              self.next();
-              recurse();
-            }
-          }, self.settings.delay );
-        }() );
-        this.trigger( PLAYING_EVENT, [this.$element] );
-      }
-      return this;
     },
 
     /**
-     * Pauses the Carousel when playing
+     * Pauses the Carousel
      * @method pause
      * @public
-     * @return {Object} The Carousel instance
+     * @return {Object} Carousel
      */
     pause: function(){
-      if( playing ){
-        playing = false;
+      if( !this.hasState( PAUSED_STATE ) ){
         window.clearTimeout( playTimer );
-        this.trigger( PAUSED_EVENT, [this.$element] );
+        this.setState( PAUSED_STATE );
       }
       return this;
     },
@@ -234,7 +186,7 @@ Carousel =  List.extend( function (List) {
      * Carousels wrap, so they always have next
      * @method hasNext
      * @public
-     * @return {Boolean} true if not at the last item in the list
+     * @return {Boolean} true
      */
     hasNext: function(){
       return true;
@@ -254,14 +206,16 @@ Carousel =  List.extend( function (List) {
      * Selects the next item in the Carousel.
      * @method next
      * @public
-     * @return {Object} List
+     * @return {Object} Carousel
      */
     next: function(){
-      if( this.size() === this.index + 1 ){
-        this.select( 0 );
+      console.log( this.index(), this.size() );
+      if( this.index() + 1 === this.size() ){
+        this.first();
       } else {
-        this.select( this.index + 1 );
+        this.select( this.index() + 1 );
       }
+      console.log( this.index(), this.size() );
       return this;
     },
 
@@ -269,10 +223,14 @@ Carousel =  List.extend( function (List) {
      * Selects the previous item in the Carousel.
      * @method previous
      * @public
-     * @return {Object} List
+     * @return {Object} Carousel
      */
     previous: function(){
-      this.select( this.index - 1 );
+      if( this.index() === 0 ){
+        this.last();
+      } else {
+        this.select( this.index() - 1 );
+      }
       return this;
     }
   };
