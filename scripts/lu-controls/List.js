@@ -10,7 +10,7 @@ var Switch = require( 'lu/Switch' ),
   Container = require( 'lu/Container' ),
   List;
 
-List = Switch.extend( function( Abstract ){
+List = Switch.extend( function( Switch ){
 
   var NEXT_EVENT = 'next',
     LAST_EVENT = 'last',
@@ -37,20 +37,67 @@ List = Switch.extend( function( Abstract ){
       index: 0
     };
 
+/**
+ * Instantiates Container objects on list items.
+ * @param  {Object} $item  A JQuery collection referencing a list item to create a Container on
+ * @return {Object} Promise 
+ */
   function contain( $item ){
-    return lu.create( $item, [CONTAINER], { 'Container': {} } );
+    return $.Deferred(function( dfd ){
+      lu.create( $item, [CONTAINER], { CONTAINER: {} } );
+      $item.data('lu-controls').Deferred.done( function() {
+        dfd.resolve($item);
+      });
+    }).promise();
+  }
+  
+
+/**
+ * findSelectTarget Determine $item from item param
+ * @method findSelectTarget
+ * @private
+ * @param {Object|String|Number item The list item DOM node to select (JQuery object, CSS selector, or index number)
+ * @param {Object} $items The JQuery collection of all the list items
+ * @return {Object} A JQuery collection referencing the list item to select
+ */
+  function findSelectTarget( item, $items ) {
+    var $item = $(); //empty JQuery object
+
+    if (!$items || $items.length ===0 ) {
+      return $item;
+    }
+
+    if( typeof item === 'number' ){
+      $item = $items.eq( item );
+    } else if ( typeof item === STRING ){          
+      $item = $items.filter( function ( index ) {
+        var tmp = $(item)[0];
+        // Is the selected item one of the list elements?
+        if ($items[index] === tmp )  {
+          return true;
+        }
+        // Or is the selected item contained by one of the list elements?
+        else {
+          return ( $.contains($items[index], tmp) );
+        }
+      } );
+    } else if( item instanceof $ ){
+      $item = item;
+    }
+
+    return $item;    
   }
 
   /**
    * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
-   * arrows.Left and up correspond to action "previous" and right and next correspond to "next".
+   * arrows.  Left and up correspond to action "previous" and right and next correspond to "next".
    * @method handleKeyup
    * @private
    * @param {Event} event An event object
    * @param {Object} List the list control to handle
    * @return {Void}
    */
-  function keyup( event, List ){
+  function handleKeyup( event, List ){
     var keyCode = event.keyCode,
       item = $( event.target );
 
@@ -62,7 +109,9 @@ List = Switch.extend( function( Abstract ){
           break;
         case 40: // Down arrow
           List.next();
+          break;
         default:
+          // no op
       }
     } else {
       // By default, list orientation is "horizontal" and left and right arrows work
@@ -122,7 +171,8 @@ List = Switch.extend( function( Abstract ){
 
       _.defaults( settings, defaults );
 
-      Abstract.init.call( this, $element, settings );
+      Switch.init.call( this, $element, settings );
+
 
       /**
        * Select an item in the list
@@ -135,41 +185,36 @@ List = Switch.extend( function( Abstract ){
       List.select = function( item ){
         var Container,
           $item,
-          $items = this.$items,
+          $items = List.$items,
           controls = 'lu-controls',
           index;
 
+        // 1. Check for item param
         if( item === undefined || item === null ){
           return List;
         }
 
-        if( typeof item === 'number' ){
-          $item = $items.eq( item );
-        } else if ( typeof item === STRING ){
-          $item = $items.filter( item );
-        } else if( item instanceof $ ){
-          $item = item;
-        } else {
+        // 2. Determine $item from item param, punt if not found
+        $item = findSelectTarget( item, $items );
+        if ($item.length === 0) {
           return List;
         }
 
-        if( $item.is( this.$items ) ){
+        // 3. Find Container for $item
+        if( $item.is( List.$items ) ){
+          // Get the Container from the node's data object
           Container = $item.data( controls );
-
-          if( !Container ){
-            contain( $item );
-          }
-
-          Container = $item.data( controls ).Deferred;
-
-          if( Container.state() === 'pending' ){
-            Container.done( function(){
+          
+          if( !Container || Container.Deferred.state() === "pending" ){
+          
+            $.when(contain( $item )).then( function ($item) {
+              console.log($item[0] + " resolved, calling then");
               List.select( $item );
-            } );
+            });
             return List;
           }
 
-          Container = lu.getControl( $item, CONTAINER );
+          Container = lu.getControl($item);
 
           if( Container.hasState( SELECTED_STATE ) ){
             Selected = Container;
@@ -205,9 +250,13 @@ List = Switch.extend( function( Abstract ){
         return List;
       };
 
+
+
       List.index = 0;
       List.$items = $items;
       List.orientation = settings.orientation;
+
+
 
       List.on( SELECT_EVENT, function( event, item ){
         event.stopPropagation();
@@ -255,9 +304,11 @@ List = Switch.extend( function( Abstract ){
       } );
 
       $( 'body' ).keyup( function( event ){
-        keyup( event, List );
+        handleKeyup( event, List );
       } );
     },
+
+
     /**
      * adds a new item to $element
      * @method append
