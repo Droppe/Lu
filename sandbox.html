@@ -85,7 +85,7 @@
   <div id="carousel" data-lu="Carousel">
 
     <ul class="items">
-      <li class="lu-state-selected">1</li>
+      <li class="lu-state-selected" data-lu="Container">1</li>
       <li>2</li>
       <li>3</li>
       <li>4</li>
@@ -127,9 +127,13 @@
   <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    window.lu_debug = 5;
-    localStorage.clear();
-    require.ensure( ['/scripts/lu.js'], function(){} );
+    Inject.setExpires(0);
+    Inject.clearCache();
+    Inject.setModuleRoot("http://localhost:1337/");
+    window.lu_debug = 5
+
+    require.ensure( ['/scripts/lu'], function() {} );
+
   </script>
 
 </body>

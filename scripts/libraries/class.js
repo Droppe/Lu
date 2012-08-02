@@ -35,6 +35,9 @@
 
   // Create a new Class that inherits from this class
   Class.extend = function( fn ){
+
+    //debugger;
+    
     // Keep a reference to the current prototye
     var base = this.prototype,
       // Invoke the function which will return an object literal used to define
@@ -164,7 +167,7 @@
     var obj = this.extend( fn ),
       args = arguments;
 
-    return (function() {
+    return ( function() {
       var instance;
 
       return {

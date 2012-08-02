@@ -209,13 +209,12 @@ Carousel =  List.extend( function ( base ) {
      * @return {Object} Carousel
      */
     next: function(){
-      console.log( this.index(), this.size() );
+      console.log( 'next' );
       if( this.index() + 1 === this.size() ){
         this.first();
       } else {
         this.select( this.index() + 1 );
       }
-      console.log( this.index(), this.size() );
       return this;
     },
 

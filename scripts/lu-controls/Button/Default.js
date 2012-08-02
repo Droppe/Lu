@@ -6,7 +6,7 @@
  * @private
  */
 function defaultDecorator() {
-
+console.log( 'HELLO' );
   function focus( $element ){
     if( $element.is( 'a' ) ){
       $element.focus();
@@ -14,14 +14,20 @@ function defaultDecorator() {
   }
 
   return function( base, settings ){
+
+    console.log( 'NAME CLASS "BEEF GYRO"' );
+
     var instance = this,
       on = settings.on,
       command = settings.action,
       $element = instance.$element;
 
+    console.log( on );
+
     instance.on( on, function( event ){
       focus( $element );
       if( command !== undefined ){
+        console.log( 'command :: ', command );
         instance.trigger( command );
       }
     } );

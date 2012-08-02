@@ -6,7 +6,8 @@
 * @version 0.2.4
 */
 
-var Switch = require( 'lu/Switch' ),
+var Class = require( 'class' ),
+  Switch = require( 'lu/Switch' ),
   Constants = require( 'lu/Constants' ),
   Button;
 
@@ -41,6 +42,8 @@ Button = Switch.extend( function( base ){
     } );
   }
 
+  console.log( 'STARTING' );
+
   return {
     /**
      * Class constructor
@@ -50,12 +53,14 @@ Button = Switch.extend( function( base ){
      * @param {Object} settings Configuration settings
      */
     init: function( $element, settings ){
+
+      console.log( 'settings' )
       var Button = this,
-        Class = require( 'class' ),
         command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
         decorators = [],
         decorator;
 
+      console.log( 'init' );
       settings.action = command;
 
       base.init.call( this, $element, settings );
@@ -63,16 +68,16 @@ Button = Switch.extend( function( base ){
       //Applies a decorator based on the command given
       _.defaults( settings, defaults );
 
-      console.log('command', settings, command);
+      console.log( '+++++++++++', command );
 
-      if (command) {
+      if( command ) {
         // Somewhat nasty right now.
-        decorators = [ "lu/Button/" + command.charAt( 0 ).toUpperCase() + command.substr( 1 ) ];
+        decorators = [ 'lu/Button/' + command.charAt( 0 ).toUpperCase() + command.substr( 1 ) ];
       } else {
-        decorators = [ "lu/Button/Default" ];
+        decorators = [ 'lu/Button/Default' ];
       }
 
-      console.log('decorators', decorators);
+      console.log( '+++++++++++', command );
 
       require.ensure( decorators, function( require, module, exports ){
 
@@ -80,22 +85,22 @@ Button = Switch.extend( function( base ){
             try {
               decorator = require( path );
             } catch (e) {
-              decorator = require( "lu/Button/Default" );
+              decorator = require( 'lu/Button/Default' );
               console.log('ERROR!', e);
             }
 
             Class.decorate( Button, decorator, settings );
           } );
-
       } );
 
       //binds the spacebar to the on event
       bindSpaceBar( Button, settings.on );
     },
+
     /**
      * Adds a disabled state to the Button
      * as well as adding the prop disabled if
-     * it is a button or input.
+     * it is a button or input element.
      * @method disable
      * @public
      */
@@ -107,10 +112,11 @@ Button = Switch.extend( function( base ){
       this.addState( Constants.states.DISABLED );
       return this;
     },
+
     /**
      * Removes the disabled state from the Button
      * as well the prop disabled if
-     * it is a button or input.
+     * it is a button or input element.
      * @method enable
      * @public
      */
@@ -121,8 +127,9 @@ Button = Switch.extend( function( base ){
       return this;
     }
   };
-
 } );
+
+console.log( 'hello' );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

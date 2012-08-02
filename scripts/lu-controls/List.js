@@ -109,11 +109,12 @@ List = Switch.extend( function( Switch ){
      * @param {Object} settings Configuration settings
      */
     init: function( $element, settings ){
+      console.log( 'THIS LIST HAS INIT BITCHESS' );
       var self = this,
         Selected,
         Previous,
         $items,
-        index = 0;
+        index;
 
       if( settings.items ){
         if( typeof settings.items === STRING ){
@@ -135,6 +136,8 @@ List = Switch.extend( function( Switch ){
 
       _.defaults( settings, defaults );
 
+      index = settings.index;
+
       Switch.init.call( this, $element, settings );
 
       /**
@@ -155,7 +158,7 @@ List = Switch.extend( function( Switch ){
        */
       this.current = function(){
         return Selected;
-      }
+      };
 
       /**
        * Select an item in the list
@@ -213,13 +216,23 @@ List = Switch.extend( function( Switch ){
 
         //Once the item is fully instantiated, select it.
         Deferred.done( function(){
+          var current = self.current();
+
+          console.log( 'HELLO THAR' );
+          //everything is already done!
+          if( current.$element.is( Container.$element ) ){
+            return;
+          }
+
           //If there is a currently selected item remove the selected state
-          if( self.current() ){
-            self.current().removeState( SELECTED_STATE );
+          if( current ){
+            current.removeState( SELECTED_STATE );
           }
 
           Container = lu.getControl( $item, 'Container' );
-          Container.addState( SELECTED_STATE );
+          if( !Container.hasState( SELECTED_STATE ) ){
+            Container.addState( SELECTED_STATE );
+          }
           Selected = Container;
           index = idx;
           self.trigger( SELECTED_EVENT, [self] );
@@ -258,23 +271,23 @@ List = Switch.extend( function( Switch ){
       } );
 
       this.on( STATED_EVENT, function( event, Control ){
-        var $stated = Control.$element;
-
-        if( $stated.is( $element ) ){
-          return;
-        }
+        var $stated,
+          current;
 
         event.stopPropagation();
 
-        if( !Selected ){
-          Selected = Control;
-          self.select( $stated );
-          return;
+        if( Control.hasState( SELECTED_STATE ) ){
+          current = self.current();
+          $stated = Control.$element;
+
+          if( current ){
+            if( $stated.is( current.$element ) ){
+             return;
+            }
+          }
+          //self.select( $stated );
         }
 
-        if( Control.hasState( SELECTED_STATE ) && !$stated.is( Selected.$element ) ){
-          self.select( $stated );
-        }
       } );
 
       $( 'body' ).keyup( function( event ){
@@ -314,7 +327,6 @@ List = Switch.extend( function( Switch ){
      * @return {Object} List
      */
     next: function(){
-      console.log( 'HELLO' );
       if( this.hasNext() ){
         this.select( this.index() + 1 );
       } else {

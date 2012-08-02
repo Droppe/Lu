@@ -25,7 +25,6 @@ Switch = Abstract.extend( function ( base ) {
      */
     init: function( $element, settings ){
       _.defaults( settings, defaults );
-
       base.init.call( this, $element, settings );
       this.decorate( stateDecorator );
     }
