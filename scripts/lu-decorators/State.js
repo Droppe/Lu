@@ -40,6 +40,7 @@ function stateDecorator() {
     $element.removeClass( removed.join( ' ' ) ).addClass( classes.join( ' ' ) );
   }
 
+
   function getAppliedStates( $element, prefix ){
     var classes = $element.attr( 'class' ) || '',
       states = [];
@@ -123,7 +124,7 @@ function stateDecorator() {
      * Adds a state or states to the instance
      * @method addState
      * @param {Array|String} value This can be an Array of strings or comma
-     * delimeted string representing multiple states. It can also be
+     * delimited string representing multiple states. It can also be
      * a string representing a single state
      * @public
      * @return {Object} instance
@@ -144,7 +145,7 @@ function stateDecorator() {
      * Removes the state(s) from the instance
      * @method addState
      * @param {Array|String} value This can be an Array of strings or comma
-     * delimeted string representing multiple states. It can also be
+     * delimited string representing multiple states. It can also be
      * a string representing a single state
      * @public
      * @return {Object} instance
