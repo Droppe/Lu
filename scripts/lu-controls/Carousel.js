@@ -92,7 +92,7 @@ Carousel =  List.extend( function ( base ) {
      * @param {Object} settings Configuration settings
      */
     init: function ( $element, settings ){
-       var self = this;
+      var self = this;
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
 

@@ -22,31 +22,31 @@ function stateDecorator() {
    * @param {Array} states an array of states to set
    * @return {Function} Container.setState
    */
-  function applyState( $element, states, prefix ){
+  function applyState( $element, states ){
     var removed = [],
       classes = [],
       classAttr = $element.attr( 'class' ) || '';
 
     _.each( classAttr.split( ' ' ), function( clss, index ){
-      if( clss.indexOf( prefix ) > -1 ){
+      if( clss.indexOf( STATE_PREFIX ) > -1 ){
         removed.push( clss );
       }
     } );
 
     _.each( states, function( clss, index ){
-      classes.push( prefix + clss );
+      classes.push( STATE_PREFIX + clss );
     } );
 
     $element.removeClass( removed.join( ' ' ) ).addClass( classes.join( ' ' ) );
   }
 
-  function getAppliedStates( $element, prefix ){
+  function getAppliedStates( $element ){
     var classes = $element.attr( 'class' ) || '',
       states = [];
 
     _.each( classes.split( ' ' ), function( item, index ){
-      if( item.indexOf( prefix ) > -1 ){
-        states.push( item.replace( prefix, '' ) );
+      if( item.indexOf( STATE_PREFIX ) > -1 ){
+        states.push( item.replace( STATE_PREFIX, '' ) );
       }
     } );
 
@@ -132,10 +132,13 @@ function stateDecorator() {
       if( typeof value === 'string' ){
         value = value.split( ',' );
       }
+      console.log( 'DOFF', _.difference( value, states ).length );
       if( _.difference( value, states ).length > 0 ){
         states = _.union( states, value );
-        applyState( $element, states, prefix );
+        applyState( $element, states );
+        console.log( instance );
         instance.trigger( STATED_EVENT, [instance] );
+        console.log( 'HEJJJJ' );
       }
       return instance;
     };
@@ -177,7 +180,8 @@ function stateDecorator() {
       return ( _.indexOf( states, value ) > -1 );
     };
 
-    instance.addState( getAppliedStates( $element, prefix ) );
+    console.log( getAppliedStates( $element ), $element );
+    instance.addState( getAppliedStates( $element ) );
 
     //Bind state event to state
     instance.on( STATE_EVENT, state );

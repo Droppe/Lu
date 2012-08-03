@@ -174,7 +174,7 @@ List = Switch.extend( function( Switch ){
 
         //return if no item was passed in.
         if( item === undefined ){
-          return this;
+          //return this;
         }
 
         //try to determine the index of the item being selected
@@ -230,23 +230,21 @@ List = Switch.extend( function( Switch ){
         //Once the item is fully instantiated, select it.
         Deferred.done( function(){
           var current = self.current();
-
           //If there is a currently selected item remove the selected state
           if( current ){
             current.removeState( SELECTED_STATE );
           }
-
-          Container = lu.getControl( $item, 'Container' );
-          if( !Container.hasState( SELECTED_STATE ) ){
-            Container.addState( SELECTED_STATE );
+          Selected = lu.getControl( $item, 'Container' );
+          if( idx === index ) {
+            return;
+          } else {
+            index = idx;
+            Selected.addState( SELECTED_STATE );
+            self.trigger( SELECTED_EVENT, [self] );
           }
-          Selected = Container;
-          index = idx;
-          self.trigger( SELECTED_EVENT, [self] );
         } );
 
         return this;
-
       }
 
       this.$items = $items;
@@ -287,7 +285,6 @@ List = Switch.extend( function( Switch ){
           $stated = Control.$element;
           self.select( $stated );
         }
-
       } );
 
       $( 'body' ).keyup( function( event ){

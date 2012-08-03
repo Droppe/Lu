@@ -269,17 +269,15 @@
           execute( $control );
           numberOfControls -= 1;
 
-          if( numberOfControls === 0 ){
-            $element.trigger( 'luReady', [$element] );
-          }
-
           // Resolve any deferred objects stored within the control's data object.
           defObj = getData( $control, 'Deferred' );
 
           if( defObj ){
-            if( defObj.state() === 'pending' ){
-              defObj.resolve();
-            }
+            defObj.resolve();
+          }
+
+          if( numberOfControls === 0 ){
+            $element.trigger( 'luReady', [$element] );
           }
         } );
       } );

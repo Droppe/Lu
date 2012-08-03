@@ -27,6 +27,7 @@ Switch = Abstract.extend( function ( base ) {
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
       this.decorate( stateDecorator );
+      console.log( this );
     }
   };
 } );

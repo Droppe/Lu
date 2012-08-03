@@ -32,21 +32,21 @@ function selectDecorator() {
       controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
     }
 
-    console.log( item );
     if( item === undefined ){
       if( controls && controls !== '' ){
         item = '#' + controls;
       } else if( __params__.length > 0 ){
-        console.log( 'HELLO' );
         item = __params__.shift();
       } else {
-        console.log( 'wwwwwww HELLO' );
-        //get Control logic needs to be rewritten
-        //$items = lu.getParent( $element ).$items;
-        $items = lu.getControl( lu.getParent( $element ) ).$items;
-        if( $items ){
-          item = $element.closest( $items );
-        }
+        //getControl logic needs to be rewritten this is crazy.....
+        $items = lu.getControl( lu.getParent( $element, function( index, item ){
+          if( lu.getControl( $( item ) ).$items ){
+            return true;
+          } else {
+            return false;
+          }
+        } ) ).$items;
+        item = $element.closest( $items );
       }
     }
 
@@ -62,17 +62,22 @@ function selectDecorator() {
         $item = item;
       }
 
-      if( Control.current().is( $item ) ){
-        instance.disable();
-      } else {
-        instance.enable();
+      if( Control.current ){
+        if( Control.current().$element.is( $item ) ){
+          instance.disable();
+        } else {
+          instance.enable();
+        }
       }
+      //console.log( Control instanceof )
     } );
 
     instance.on( on, function( event ){
       focus( $element );
       instance.trigger( 'select', [item] );
     } );
+
+    instance.enable();
   };
 }
 
