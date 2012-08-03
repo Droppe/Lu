@@ -11,6 +11,7 @@ var Switch = require( 'lu/Switch' ),
 
 Button = Switch.extend( function( Switch ){
   var DISABLED = 'disabled',
+    STATE = 'state',
     HAS_A18_ATTRS = 'button, input',
     DISABLED_STATE = DISABLED,
     STATED_EVENT = 'stated',
@@ -324,7 +325,7 @@ Button = Switch.extend( function( Switch ){
         Button.on( on, function( event ){
           focus( Button.$element );
           state();
-          Button.trigger( 'state', states[index] );
+          Button.trigger( STATE, states[index] );
         } );
       };
     }
@@ -381,37 +382,17 @@ Button = Switch.extend( function( Switch ){
 
       //Applies a decorator based on the command given
       switch( command ){
-        case 'state':
+        case STATE:
           decorators.push( commandDecorators[command]( Button, _.defaults( settings, defaults ) ) );
           break;
         case 'select':
           decorators.push( commandDecorators[command]( Button, _.defaults( settings, defaults ) ) );
           break;
         case 'first':
-          _.defaults( settings, defaults );
-          decorators.push( defaultDecorator( Button, settings ) );
-          decorators.push( commandDecorators[command]( Button, settings ) );
-          break;
         case 'last':
-          _.defaults( settings, defaults );
-          decorators.push( defaultDecorator( Button, settings ) );
-          decorators.push( commandDecorators[command]( Button, settings ) );
-          break;
         case 'previous':
-          _.defaults( settings, defaults );
-          decorators.push( defaultDecorator( Button, settings ) );
-          decorators.push( commandDecorators[command]( Button, settings ) );
-          break;
         case 'next':
-          _.defaults( settings, defaults );
-          decorators.push( defaultDecorator( Button, settings ) );
-          decorators.push( commandDecorators[command]( Button, settings ) );
-          break;
         case 'play':
-          _.defaults( settings, defaults );
-          decorators.push( defaultDecorator( Button, settings ) );
-          decorators.push( commandDecorators[command]( Button, settings ) );
-          break;
         case 'pause':
           _.defaults( settings, defaults );
           decorators.push( defaultDecorator( Button, settings ) );
