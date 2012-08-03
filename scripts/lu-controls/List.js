@@ -43,49 +43,12 @@ List = Switch.extend( function( Switch ){
  * @return {Object} Promise 
  */
   function contain( $item ){
-    return $.Deferred(function( dfd ){
+    return $.Deferred( function( dfd ){
       lu.create( $item, [CONTAINER], { CONTAINER: {} } );
-      $item.data('lu-controls').Deferred.done( function() {
-        dfd.resolve($item);
-      });
-    }).promise();
-  }
-  
-
-/**
- * findSelectTarget Determine $item from item param
- * @method findSelectTarget
- * @private
- * @param {Object|String|Number item The list item DOM node to select (JQuery object, CSS selector, or index number)
- * @param {Object} $items The JQuery collection of all the list items
- * @return {Object} A JQuery collection referencing the list item to select
- */
-  function findSelectTarget( item, $items ) {
-    var $item = $(); //empty JQuery object
-
-    if (!$items || $items.length ===0 ) {
-      return $item;
-    }
-
-    if( typeof item === 'number' ){
-      $item = $items.eq( item );
-    } else if ( typeof item === STRING ){          
-      $item = $items.filter( function ( index ) {
-        var tmp = $(item)[0];
-        // Is the selected item one of the list elements?
-        if ($items[index] === tmp )  {
-          return true;
-        }
-        // Or is the selected item contained by one of the list elements?
-        else {
-          return ( $.contains($items[index], tmp) );
-        }
+      $item.data( 'lu-controls' ).Deferred.done( function() {
+        dfd.resolve( $item );
       } );
-    } else if( item instanceof $ ){
-      $item = item;
-    }
-
-    return $item;    
+    } ).promise();
   }
 
   /**
@@ -146,10 +109,11 @@ List = Switch.extend( function( Switch ){
      * @param {Object} settings Configuration settings
      */
     init: function( $element, settings ){
-      var List = this,
+      var self = this,
         Selected,
         Previous,
-        $items;
+        $items,
+        index;
 
       if( settings.items ){
         if( typeof settings.items === STRING ){
@@ -171,8 +135,29 @@ List = Switch.extend( function( Switch ){
 
       _.defaults( settings, defaults );
 
+      index = settings.index;
+
       Switch.init.call( this, $element, settings );
 
+      /**
+       * gets the 0 based index of the selected item.
+       * @method index
+       * @public
+       * @return {Number} index
+       */
+      this.index = function(){
+        return index;
+      };
+
+      /**
+       * Returns the currently-selected Container.
+       * @method current
+       * @public
+       * @return {Object} JQuery object-reference to the selected item
+       */
+      this.current = function(){
+        return Selected;
+      };
 
       /**
        * Select an item in the list
@@ -182,129 +167,128 @@ List = Switch.extend( function( Switch ){
        * select, a css selector, or a JQuery collection containing the item.
        * @return {Object} List
        */
-      List.select = function( item ){
+      this.select = function( item ){
         var Container,
           $item,
-          $items = List.$items,
-          controls = 'lu-controls',
-          index;
+          idx;
 
-        // 1. Check for item param
-        if( item === undefined || item === null ){
-          return List;
+        //return if no item was passed in.
+        if( item === undefined ){
+          //return this;
         }
 
-        // 2. Determine $item from item param, punt if not found
-        $item = findSelectTarget( item, $items );
-        if ($item.length === 0) {
-          return List;
+        //try to determine the index of the item being selected
+        idx = ( typeof item === 'number' ) ? item : undefined;
+
+        // if we can get the index above and it is already selected - everything is already done!
+        if( idx === index ){
+          return this;
         }
 
-        // 3. Find Container for $item
-        if( $item.is( List.$items ) ){
-          // Get the Container from the node's data object
-          Container = $item.data( controls );
-          
-          if( !Container || Container.Deferred.state() === "pending" ){
-          
-            $.when(contain( $item )).then( function ($item) {
-              console.log($item[0] + " resolved, calling then");
-              List.select( $item );
-            });
-            return List;
+        //Figure out what to select based on the param passed in.
+        if( typeof item === 'number' && item <= this.size() - 1 ){
+          $item = $items.eq( item );
+        } else if( typeof item === 'string' ){
+          $item = $items.find( item );
+          $item = ( $item.size() > 0 ) ? $items.eq( 0 ) : undefined;
+        } else if( item instanceof $ && item.size() === 1 && item.is( $items ) ){
+          $item = item;
+        }
+
+        //We could not determine which item to select so...
+        if( $item === undefined ){
+          this.trigger( OUT_OF_BOUNDS_EVENT, [this] );
+          return this;
+        }
+
+        //Get the index of the item to be selected if we don't have it from above
+        if( idx === undefined ) {
+          idx = $items.index( $item );
+          //everything is already done!
+          if( idx === index ){
+            return this;
           }
+        }
 
-          Container = lu.getControl($item);
+        if( idx > this.index() ){
+          this.addState( FORWARD_STATE ).removeState( REVERSE_STATE );
+        } else if( idx < this.index() ){
+          this.addState( REVERSE_STATE ).removeState( FORWARD_STATE );
+        }
 
-          if( Container.hasState( SELECTED_STATE ) ){
-            Selected = Container;
-            List.trigger( SELECTED_EVENT, [ List, Container ] );
-            return List;
+        //Get the item's Container
+        Container = lu.getControl( $item, 'Container' );
+
+        //There is no Container so create one.
+        if( !Container ){
+          contain( $item );
+        }
+
+        //Grab the deferred object
+        Deferred = $item.data( 'luControls' ).Deferred;
+
+        //Once the item is fully instantiated, select it.
+        Deferred.done( function(){
+          var current = self.current();
+          //If there is a currently selected item remove the selected state
+          if( current ){
+            current.removeState( SELECTED_STATE );
           }
-
-          if( Selected ){
-            if( Container.$element.is( Selected.$element ) ){
-              return List;
-            }
-            Previous = Selected;
-            Previous.removeState( SELECTED_STATE );
-          }
-
-          Container.addState( SELECTED_STATE );
-          Selected = Container;
-
-          index = $items.index( $item );
-
-          if( index > List.index ){
-            List.addState( FORWARD_STATE ).removeState( REVERSE_STATE );
+          Selected = lu.getControl( $item, 'Container' );
+          if( idx === index ) {
+            return;
           } else {
-            List.addState( REVERSE_STATE ).removeState( FORWARD_STATE );
+            index = idx;
+            Selected.addState( SELECTED_STATE );
+            self.trigger( SELECTED_EVENT, [self] );
           }
+        } );
 
-          List.index = index;
-          List.trigger( SELECTED_EVENT, [ List, Container ] );
+        return this;
+      }
 
-        } else {
-          List.trigger( OUT_OF_BOUNDS_EVENT, List );
-        }
-        return List;
-      };
+      this.$items = $items;
+      this.orientation = settings.orientation;
 
-
-
-      List.index = 0;
-      List.$items = $items;
-      List.orientation = settings.orientation;
-
-
-
-      List.on( SELECT_EVENT, function( event, item ){
+      this.on( SELECT_EVENT, function( event, item ){
         event.stopPropagation();
-        List.select( item );
+        self.select( item );
       } );
 
-      List.on( NEXT_EVENT, function( event ){
+      this.on( NEXT_EVENT, function( event ){
         event.stopPropagation();
-        List.next();
+        self.next();
       } );
 
-      List.on( PREVIOUS_EVENT, function( event ){
+      this.on( PREVIOUS_EVENT, function( event ){
         event.stopPropagation();
-        List.previous();
+        self.previous();
       } );
 
-      List.on( FIRST_EVENT, function( event ){
+      this.on( FIRST_EVENT, function( event ){
         event.stopPropagation();
-        List.first();
+        self.first();
       } );
 
-      List.on( LAST_EVENT, function( event ){
+      this.on( LAST_EVENT, function( event ){
         event.stopPropagation();
-        List.last();
+        self.last();
       } );
 
-      List.on( STATED_EVENT, function( event, Control ){
-        var $stated = Control.$element;
-
-        if( $stated.is( $element ) ){
-          return;
-        }
+      this.on( STATED_EVENT, function( event, Control ){
+        var $stated,
+          current;
 
         event.stopPropagation();
 
-        if( !Selected ){
-          Selected = Control;
-          List.select( $stated );
-          return;
-        }
-
-        if( Control.hasState( SELECTED_STATE ) && !$stated.is( Selected.$element ) ){
-          List.select( $stated );
+        if( Control.hasState( SELECTED_STATE ) ){
+          $stated = Control.$element;
+          self.select( $stated );
         }
       } );
 
       $( 'body' ).keyup( function( event ){
-        handleKeyup( event, List );
+        handleKeyup( event, self );
       } );
     },
 
@@ -341,9 +325,9 @@ List = Switch.extend( function( Switch ){
      */
     next: function(){
       if( this.hasNext() ){
-        this.select( this.index + 1 );
+        this.select( this.index() + 1 );
       } else {
-        this.trigger( OUT_OF_BOUNDS_EVENT, [ this.$element, NEXT_EVENT ] );
+        this.trigger( OUT_OF_BOUNDS_EVENT, [ this ] );
       }
       return this;
     },
@@ -355,9 +339,9 @@ List = Switch.extend( function( Switch ){
      */
     previous: function(){
       if( this.hasPrevious() ){
-        this.select( this.index - 1 );
+        this.select( this.index() - 1 );
       } else {
-        this.trigger( OUT_OF_BOUNDS_EVENT, [ this.$element, PREVIOUS_EVENT ] );
+        this.trigger( OUT_OF_BOUNDS_EVENT, [ this ] );
       }
       return this;
     },
@@ -388,7 +372,7 @@ List = Switch.extend( function( Switch ){
      * @return {Boolean} true if not at the last item in the list
      */
     hasNext: function(){
-      return ( this.index < this.size() - 1 );
+      return ( this.index() < this.size() - 1 );
     },
     /**
      * Determines if there are any lower-index items in the list.
@@ -397,16 +381,7 @@ List = Switch.extend( function( Switch ){
      * @return {Boolean} true if not at the first item in the list
      */
     hasPrevious: function(){
-      return ( this.index > 0 );
-    },
-    /**
-     * Returns the currently-selected item.
-     * @method current
-     * @public
-     * @return {Object} JQuery object-reference to the selected item
-     */
-    current: function(){
-      return this.$items.eq( this.index );
+      return ( this.index() > 0 );
     },
     /**
      * Returns the number of items in the list.

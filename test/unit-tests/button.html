@@ -1,7 +1,9 @@
 <div class="buttons-galore" data-lu="Abstract">
+
   <button id="button" data-lu="Button" type="button">Button</button>
   <button id="buttonFoo" data-lu="Button:Foo" type="button">Button:Foo</button>
   <button id="buttonFirst" data-lu="Button:First" type="button">Button:First</button>
+  <!--
   <button id="buttonLast" data-lu="Button:Last" type="button">Button:Last</button>
   <button id="buttonPrevious" data-lu="Button:Previous" type="button">Button:Previous</button>
   <button id="buttonNext" data-lu="Button:Next" type="button">Button:Next</button>
@@ -10,6 +12,7 @@
   <button id="buttonLoad" data-lu="Button:Load" type="button">Button:Load</button>
   <button id="buttonState" data-lu="Button:State" type="button">Button:State</button>
   <button id="buttonSelect" data-lu="Button:Select" type="button">Button:Select</button>
+  -->
 </div>
 
 <script>
@@ -17,7 +20,7 @@
 function run(){
   var Abstract = lu.getControl( $( '.buttons-galore' ), 'Abstract' );
 
-  module( 'Button', {
+  QUnit.module( 'Button', {
     setup: function(){
       this.Button = lu.getControl( $( '#button' ), 'Button' );
     }
@@ -49,26 +52,48 @@ function run(){
 
   } );
 
-  module( 'Button:Foo', {
+  QUnit.module( 'Button:Foo', {
     setup: function(){
       this.Button = lu.getControl( $( '#buttonFoo' ), 'Button:Foo' );
     }
   } );
 
+  /*
   test( 'click', function(){
     expect( 1 );
-    Abstract.on( 'foo', function(){
+
+    console.log('two');
+
+    Abstract.on( 'click', function(){
       ok( true, 'Event broadcast correctly' );
     } );
     this.Button.$element.click();
   } );
+*/
 
-  module( 'Button:First', {
+
+  asyncTest( 'click', function(){
+    var self = this;
+    expect( 1 );
+    console.log('here FOO');
+
+    window.setTimeout( function(){
+      Abstract.on( 'foo', function(){
+        ok( true, 'Event broadcast correctly' );
+      } );
+      self.Button.$element.click();
+      start();
+    }, 1000 );
+  } );
+
+
+  QUnit.module( 'Button:First', {
     setup: function(){
       this.Button = lu.getControl( $( '#buttonFirst' ), 'Button:First' );
     }
   } );
 
+  /*
   test( 'click', function(){
     expect( 1 );
     Abstract.on( 'first', function(){
@@ -76,7 +101,22 @@ function run(){
     } );
     this.Button.$element.click();
   } );
+  */
 
+  asyncTest( 'click', function(){
+    var self = this;
+    expect( 1 );
+    window.setTimeout( function(){
+      Abstract.on( 'first', function(){
+        ok( true, 'Event broadcast correctly' );
+      } );
+      self.Button.$element.click();
+      start();
+    }, 2000 );
+  } );
+
+
+  /*
   module( 'Button:Last', {
     setup: function(){
       this.Button = lu.getControl( $( '#buttonLast' ), 'Button:Last' );
@@ -175,6 +215,7 @@ function run(){
     this.Button.$element.click();
   } );
 
+
   module( 'Button:Select', {
     setup: function(){
       this.Button = lu.getControl( $( '#buttonSelect' ), 'Button:Select' );
@@ -188,6 +229,8 @@ function run(){
     } );
     this.Button.$element.click();
   } );
+    */
+
 }
 
 </script>

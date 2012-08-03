@@ -11,7 +11,7 @@ var Abstract = require( 'lu/Abstract' ),
   stateDecorator = require( '/scripts/lu-decorators/State' ),
   Switch;
 
-Switch = Abstract.extend( function ( Abstract ) {
+Switch = Abstract.extend( function ( base ) {
   defaults = {};
 
   return {
@@ -25,9 +25,9 @@ Switch = Abstract.extend( function ( Abstract ) {
      */
     init: function( $element, settings ){
       _.defaults( settings, defaults );
-
-      Abstract.init.call( this, $element, settings );
+      base.init.call( this, $element, settings );
       this.decorate( stateDecorator );
+      console.log( this );
     }
   };
 } );

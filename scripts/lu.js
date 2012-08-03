@@ -189,7 +189,7 @@
               __params__[index] = item.toLowerCase();
           } );
 
-          if( config ){
+          if( config && typeof config === 'string' ){
             config = ( function(){ return eval( '( function(){ return ' + config + '; }() );' ); }()[key] || {} );
           } else {
             config = {};
@@ -269,17 +269,15 @@
           execute( $control );
           numberOfControls -= 1;
 
-          if( numberOfControls === 0 ){
-            $element.trigger( 'luReady', [$element] );
-          }
-
           // Resolve any deferred objects stored within the control's data object.
           defObj = getData( $control, 'Deferred' );
 
           if( defObj ){
-            if( defObj.state() === 'pending' ){
-              defObj.resolve();
-            }
+            defObj.resolve();
+          }
+
+          if( numberOfControls === 0 ){
+            $element.trigger( 'luReady', [$element] );
           }
         } );
       } );
@@ -460,14 +458,16 @@
      */
     lu.getControl = function( $element, key ){
       var data = getData( $element ),
-        instance = null;
+        instance;
 
       if( _.keys( data ).length === 0 ){
-        return null;
+        return undefined;
       }
 
       if( key ){
-        instance = data[key].instance;
+        if( data[key] ){
+          instance = data[key].instance;
+        }
       } else {
         _.each( data, function( item, index ){
           if( !instance ){
@@ -662,7 +662,6 @@
       }
 
     };
-
   }( window.jQuery ) );
 
   //Do a first pass of the HTML with the body.
@@ -688,6 +687,7 @@
 
   } );
 }( document, window ) );
+
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

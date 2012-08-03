@@ -21,7 +21,7 @@
       width: 800px;
       margin: 50px auto;
     }
-    ul {
+    #carousel ul {
       position: relative;
       list-style: none;
       display: block;
@@ -31,7 +31,7 @@
       overflow: hidden;
       padding: 0;
     }
-    li {
+    #carousel  li {
       position: absolute;
       background: #cde;
       display: block;
@@ -44,47 +44,54 @@
       margin: 0;
       left: 0;
     }
-    li:nth-child( odd ) {
+    #carousel  li:nth-child( odd ) {
       background-color: #ded;
     }
-    .lu-state-forward li {
+    #carousel  .lu-state-forward li {
       left: 0%;
     }
-    .lu-state-reverse li {
+    #carousel  .lu-state-reverse li {
       left: 0%;
     }
-    .lu-state-forward .lu-transition-out {
+    #carousel  .lu-state-forward .lu-transition-out {
       z-index: 2;
       left: -100%;
     }
-    .lu-state-reverse .lu-transition-out {
+    #carousel  .lu-state-reverse .lu-transition-out {
       z-index: 2;
       left: 100%;
     }
-    .lu-transition-in,
-    .lu-transition-out {
+    #carousel .lu-transition-in,
+    #carousel .lu-transition-out {
       -moz-transition-property: left;
       -moz-transition-duration: 1s;
       -moz-transition-delay: 0;
       left: 0;
     }
-    .lu-state-selected {
+    #carousel .lu-state-selected {
       z-index: 1;
     }
-    .lu-state-forward .lu-state-selected {
+    #carousel .lu-state-forward .lu-state-selected {
       left: 0;
     }
-    .lu-state-reverse .lu-state-selected {
+    #carousel .lu-state-reverse .lu-state-selected {
       left: 0;
+    }
+    #list li {
+      display: block;
+      height: 100px;
+      width: 100px;
+      float: left;
+    }
+    #list .lu-state-selected {
+      background: #cde;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="carousel lu-state-forward" data-lu="Tip2"></div>
-
-  <div class="carousel lu-state-forward" data-lu="Carousel">
+  <div id="carousel" data-lu="Carousel">
 
     <ul class="items">
       <li class="lu-state-selected" data-lu="Container">1</li>
@@ -109,12 +116,19 @@
       <li>20</li>
       <li>21</li>
     </ul>
-
     <button data-lu="Button:Previous" type="button">&laquo;</button>
     <button data-lu="Button:Next" type="button">&raquo;</button>
-
   </div>
 
+  <ul id="list" data-lu="List">
+    <li class="lu-state-selected" data-lu="Container"><button data-lu="Button:Select">1</button></li>
+    <li><button data-lu="Button:Select">2</button></li>
+    <li><button data-lu="Button:Select">3</button></li>
+    <li><button data-lu="Button:Select">4</button></li>
+    <li><button data-lu="Button:Select">5</button></li>
+    <li><button data-lu="Button:Select">6</button></li>
+    <li><button data-lu="Button:Select">7</button></li>
+  </ul>
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
@@ -129,9 +143,12 @@
   <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    window.lu_debug = 5;
-    localStorage.clear();
-    require.ensure( ['/scripts/lu.js'], function(){} );
+    Inject.setExpires(0);
+    Inject.clearCache();
+    Inject.setModuleRoot("http://localhost:1337/");
+    window.lu_debug = 5
+    require.ensure( ['/scripts/lu'], function() {} );
+
   </script>
 
 </body>

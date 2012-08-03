@@ -46,7 +46,12 @@
 
   <script>
     //require.clearCache();//This is broken in inject
-    localStorage.clear();
+    //localStorage.clear();
+
+    Inject.setExpires(0);
+    Inject.clearCache();
+
+    Inject.setModuleRoot("http://localhost:8001/");
 
     require.ensure( ['/scripts/lu'], function() {
 
@@ -61,10 +66,11 @@
 
             var timer;
 
-            $AQ_CONTAINER.one('luReady', function() {
+            $AQ_CONTAINER.on('luReady', function() {
                window.AQ.run();
             });
 
+            //debugger;
             window.lu.execute($AQ_CONTAINER);
           });
 

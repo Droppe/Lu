@@ -171,7 +171,7 @@ Container = Switch.extend( function ( Switch ) {
         Container.removeState( LOADED_STATE );
         Container.addState( LOADING_STATE );
 
-        if (url) {
+        if ( url ) {
           $.ajax( {
             url: url,
             success: function( data, textStatus, jXHR ){

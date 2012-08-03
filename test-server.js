@@ -1,4 +1,5 @@
 var path = require( 'path' ),
+	url = require( 'url' ),
 	http = require( 'http' ),
 	util = require( 'util' ),
 	nodeStatic = require( 'node-static' ),
@@ -9,7 +10,12 @@ var path = require( 'path' ),
 
 app = http.createServer( function( request, response ) {
 
-	fileServer.serve( request, response, function( error, result ) { } );
+	fileServer.serve( request, response, function( error, result ) {
+		if ( error && url.parse( request.url ).pathname !=='/aq/aq.js' ) {
+			response.writeHead( error.status, error.headers );
+      response.end();
+		}
+	} );
 
 } ).listen( port );
 

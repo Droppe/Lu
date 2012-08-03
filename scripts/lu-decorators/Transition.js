@@ -5,26 +5,20 @@ function transitionDecorator(){
     TRANSITIONED_EVENT,
     TRANSITION_STYLE;
 
-  ( function(){
-    var body = document.body || document.documentElement,
-      style = body.style,
-      transition;
+  /**
+  * Check for CSS <transition> support
+  */
+  ( function () {
+    var style = (document.body || document.documentElement).style,
+        props = ['transition', 'WebkitTransition', 'MozTransition', 'msTransition', 'OTransition'],
+        i;
 
-      if( style.transition !== undefined ){
-        transition = 'transition';
-      } else if( style.WebkitTransition !== undefined ){
-        transition = 'WebkitTransition';
-      } else if( style.MozTransition !== undefined ){
-        transition = 'MozTransition';
-      } else if( style.MsTransition !== undefined ){
-        transition = 'MsTransition';
-      } else if( style.OTransition ){
-        transition = 'OTransition';
-      }
-
-    if( transition !== undefined ){
-      SUPPORTS_TRANSITION = true;
-      TRANSITION_STYLE = transition;
+    for ( i in props ) {
+        if ( style[ props[i] ] !== undefined ) {
+            SUPPORTS_TRANSITION = true;
+            TRANSITION_STYLE = props[i];
+            break;
+        }
     }
   }() );
 
