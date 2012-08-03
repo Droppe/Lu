@@ -92,9 +92,7 @@ Carousel =  List.extend( function ( base ) {
      * @param {Object} settings Configuration settings
      */
     init: function ( $element, settings ){
-
        var self = this;
-
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
 
@@ -209,7 +207,6 @@ Carousel =  List.extend( function ( base ) {
      * @return {Object} Carousel
      */
     next: function(){
-      console.log( 'next' );
       if( this.index() + 1 === this.size() ){
         this.first();
       } else {

@@ -160,8 +160,6 @@
      * @return {Object} The executed element (allows chaining)
      */
     lu.execute = function( $element ){
-      console.log('executing!');
-
       var $controls,
         keys = [],
         required = [],
@@ -177,12 +175,10 @@
        * @return {Void}
        */
       function execute( $node ){
-        console.log( 'keys' );
         var config = $node.data( LU_CONFIG ),
           extraConfig = $node.data( 'luExtraConfig' ),
           keys = lu.getKeys( $node );
 
-          console.log( 'keys' );
         _.each( keys, function( key, index ){
           var Control,
             __params__ = key.split( ':' ),
@@ -207,8 +203,6 @@
 
           Control = new packages[pckg]( $node, config );
 
-          console.log( 'HELLLL' );
-
           nodeData = getData( $node, key );
 
           if( nodeData ){
@@ -231,8 +225,6 @@
 
       $controls = lu.getDescendants( $element );
 
-      console.log( 'CONTROLS', $controls );
-
       if( lu.isControl( $element ) ){
         $controls = $controls.add( $element );
       }
@@ -242,7 +234,6 @@
         return ( lu.isExecuted( $( item ) ) ? false : true );
       } );
 
-      console.log( '$CONTROLS', $controls );
       //Construct an array of required packages && init the Deferred Object
       _.each( $controls, function( node, index ){
         var $node = $( node ),
@@ -266,22 +257,15 @@
         } );
       } );
 
-      console.log( 'required', required );
-      //require.ensure( ['lu/Abstract', 'lu/Button'], function ( require, module, exports ){
-      //  console.log( 'w00t' );
-      //} );
-
       require.ensure( required, function( require, module, exports ){
-        console.log( window.lu );
         _.each( required, function( requirement, index ){
           packages[requirement] = require( requirement );
         } );
 
         $controls.each( function( index, control ){
-          try {
           var defObj,
             $control = $( control );
-          //debugger;
+
           execute( $control );
           numberOfControls -= 1;
 
@@ -296,9 +280,6 @@
             if( defObj.state() === 'pending' ){
               defObj.resolve();
             }
-          }
-          } catch (err) {
-            console.error('ERROR', err, control);
           }
         } );
       } );
@@ -479,10 +460,10 @@
      */
     lu.getControl = function( $element, key ){
       var data = getData( $element ),
-        instance = null;
+        instance;
 
       if( _.keys( data ).length === 0 ){
-        return null;
+        return undefined;
       }
 
       if( key ){

@@ -32,32 +32,37 @@ function selectDecorator() {
       controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
     }
 
+    console.log( item );
     if( item === undefined ){
       if( controls && controls !== '' ){
         item = '#' + controls;
       } else if( __params__.length > 0 ){
+        console.log( 'HELLO' );
         item = __params__.shift();
       } else {
-        $items = lu.getParent( $element ).$items;
+        console.log( 'wwwwwww HELLO' );
+        //get Control logic needs to be rewritten
+        //$items = lu.getParent( $element ).$items;
+        $items = lu.getControl( lu.getParent( $element ) ).$items;
         if( $items ){
           item = $element.closest( $items );
         }
       }
     }
 
-    instance.on( Constants.events.SELECTED, function( event, List ){
+    instance.on( Constants.events.SELECTED, function( event, Control ){
       var $item;
       event.stopPropagation();
 
       if( typeof item === 'number' ){
-        $item = List.$items.eq( item );
+        $item = Control.$items.eq( item );
       } else if( typeof item === 'string' ){
-        $item = List.$items.filter( item );
+        $item = Control.$items.filter( item );
       } else if( item instanceof $ ){
         $item = item;
       }
 
-      if( List.current().is( $item ) ){
+      if( Control.current().is( $item ) ){
         instance.disable();
       } else {
         instance.enable();

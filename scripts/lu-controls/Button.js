@@ -42,33 +42,26 @@ Button = Switch.extend( function( base ){
     } );
   }
 
-  console.log( 'STARTING' );
-
   return {
     /**
      * Class constructor
      * @method initialize
-     * @public
+     * @pulic
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */
     init: function( $element, settings ){
-
-      console.log( 'settings' )
       var Button = this,
         command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
         decorators = [],
         decorator;
 
-      console.log( 'init' );
       settings.action = command;
 
       base.init.call( this, $element, settings );
 
       //Applies a decorator based on the command given
       _.defaults( settings, defaults );
-
-      console.log( '+++++++++++', command );
 
       if( command ) {
         // Somewhat nasty right now.
@@ -77,8 +70,6 @@ Button = Switch.extend( function( base ){
         decorators = [ 'lu/Button/Default' ];
       }
 
-      console.log( '+++++++++++', command );
-
       require.ensure( decorators, function( require, module, exports ){
 
           _.each( decorators, function( path, index ){
@@ -86,7 +77,6 @@ Button = Switch.extend( function( base ){
               decorator = require( path );
             } catch (e) {
               decorator = require( 'lu/Button/Default' );
-              console.log('ERROR!', e);
             }
 
             Class.decorate( Button, decorator, settings );
@@ -128,8 +118,6 @@ Button = Switch.extend( function( base ){
     }
   };
 } );
-
-console.log( 'hello' );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

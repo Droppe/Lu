@@ -109,7 +109,6 @@ List = Switch.extend( function( Switch ){
      * @param {Object} settings Configuration settings
      */
     init: function( $element, settings ){
-      console.log( 'THIS LIST HAS INIT BITCHESS' );
       var self = this,
         Selected,
         Previous,
@@ -178,6 +177,14 @@ List = Switch.extend( function( Switch ){
           return this;
         }
 
+        //try to determine the index of the item being selected
+        idx = ( typeof item === 'number' ) ? item : undefined;
+
+        // if we can get the index above and it is already selected - everything is already done!
+        if( idx === index ){
+          return this;
+        }
+
         //Figure out what to select based on the param passed in.
         if( typeof item === 'number' && item <= this.size() - 1 ){
           $item = $items.eq( item );
@@ -194,8 +201,14 @@ List = Switch.extend( function( Switch ){
           return this;
         }
 
-        //Get the index of the item to be selected
-        idx = $items.index( $item );
+        //Get the index of the item to be selected if we don't have it from above
+        if( idx === undefined ) {
+          idx = $items.index( $item );
+          //everything is already done!
+          if( idx === index ){
+            return this;
+          }
+        }
 
         if( idx > this.index() ){
           this.addState( FORWARD_STATE ).removeState( REVERSE_STATE );
@@ -217,12 +230,6 @@ List = Switch.extend( function( Switch ){
         //Once the item is fully instantiated, select it.
         Deferred.done( function(){
           var current = self.current();
-
-          console.log( 'HELLO THAR' );
-          //everything is already done!
-          if( current.$element.is( Container.$element ) ){
-            return;
-          }
 
           //If there is a currently selected item remove the selected state
           if( current ){
@@ -277,15 +284,8 @@ List = Switch.extend( function( Switch ){
         event.stopPropagation();
 
         if( Control.hasState( SELECTED_STATE ) ){
-          current = self.current();
           $stated = Control.$element;
-
-          if( current ){
-            if( $stated.is( current.$element ) ){
-             return;
-            }
-          }
-          //self.select( $stated );
+          self.select( $stated );
         }
 
       } );

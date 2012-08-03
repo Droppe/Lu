@@ -17,7 +17,6 @@ function nextDecorator() {
 
     Class.decorate( instance, DefaultDecorator, settings );
 
-    console.log( 'NEXT' );
     instance.on( Constants.events.SELECTED, function( event, Control ){
       event.stopPropagation();
       if( Control.hasNext() ){
