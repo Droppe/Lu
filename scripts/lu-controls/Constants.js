@@ -1,22 +1,23 @@
 var Constants = {
-  HAS_A18_ATTRS : 'button, input',
+  HAS_A18_ATTRS: 'button, input',
   DISABLED: 'disabled',
 
   events: {
-    SELECTED : 'selected',
-    STATED : 'stated'
+    SELECTED: 'selected',
+    STATED: 'stated',
+    SELECT: 'select'
   },
 
   states: {
-    SELECTED : 'selected',
-    DISABLED : 'disabled',
-    LOADED : 'loaded',
-    MAXED : 'maxed',
-    FLOORED : 'floored',
-    TRANSITIONING : 'transitioning',
-    TRANSITIONED : 'transitioned',
-    PLAYING : 'playing',
-    PAUSED : 'paused'
+    SELECTED: 'selected',
+    DISABLED: 'disabled',
+    LOADED: 'loaded',
+    MAXED: 'maxed',
+    FLOORED: 'floored',
+    TRANSITIONING: 'transitioning',
+    TRANSITIONED: 'transitioned',
+    PLAYING: 'playing',
+    PAUSED: 'paused'
   }
 
 };

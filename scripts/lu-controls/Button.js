@@ -51,6 +51,7 @@ Button = Switch.extend( function( base ){
      * @param {Object} settings Configuration settings
      */
     init: function( $element, settings ){
+      //console.log( 'Button INIT' );
       var Button = this,
         command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
         decorators = [],
@@ -63,7 +64,9 @@ Button = Switch.extend( function( base ){
       //Applies a decorator based on the command given
       _.defaults( settings, defaults );
 
-      if( command ) {
+      console.log( 'COMMAND', command );
+
+      if( command ){
         // Somewhat nasty right now.
         decorators = [ 'lu/Button/' + command.charAt( 0 ).toUpperCase() + command.substr( 1 ) ];
       } else {
@@ -71,14 +74,12 @@ Button = Switch.extend( function( base ){
       }
 
       require.ensure( decorators, function( require, module, exports ){
-
           _.each( decorators, function( path, index ){
             try {
               decorator = require( path );
-            } catch (e) {
+            } catch( e ){
               decorator = require( 'lu/Button/Default' );
             }
-
             Class.decorate( Button, decorator, settings );
           } );
       } );

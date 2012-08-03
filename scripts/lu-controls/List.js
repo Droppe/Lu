@@ -189,8 +189,8 @@ List = Switch.extend( function( Switch ){
         if( typeof item === 'number' && item <= this.size() - 1 ){
           $item = $items.eq( item );
         } else if( typeof item === 'string' ){
-          $item = $items.find( item );
-          $item = ( $item.size() > 0 ) ? $items.eq( 0 ) : undefined;
+          $item = $items.filter( item );
+          $item = ( $item.size() === 1 ) ? $item.eq( 0 ) : undefined;
         } else if( item instanceof $ && item.size() === 1 && item.is( $items ) ){
           $item = item;
         }
@@ -252,6 +252,7 @@ List = Switch.extend( function( Switch ){
 
       this.on( SELECT_EVENT, function( event, item ){
         event.stopPropagation();
+        console.log( '$select', item );
         self.select( item );
       } );
 

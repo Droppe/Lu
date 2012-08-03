@@ -106,7 +106,7 @@
       <li>10</li>
       <li>11</li>
       <li>12</li>
-      <li>13</li>
+      <li id="thirteen">13</li>
       <li>14</li>
       <li>15</li>
       <li>16</li>
@@ -116,11 +116,12 @@
       <li>20</li>
       <li>21</li>
     </ul>
+    <button data-lu="Button:Select" aria-controls="thirteen" type="button">13</button>
     <button data-lu="Button:Previous" type="button">&laquo;</button>
     <button data-lu="Button:Next" type="button">&raquo;</button>
   </div>
 
-  <ul id="list" data-lu="List">
+<!--   <ul id="list" data-lu="List">
     <li class="lu-state-selected" data-lu="Container"><button data-lu="Button:Select">1</button></li>
     <li><button data-lu="Button:Select">2</button></li>
     <li><button data-lu="Button:Select">3</button></li>
@@ -128,7 +129,7 @@
     <li><button data-lu="Button:Select">5</button></li>
     <li><button data-lu="Button:Select">6</button></li>
     <li><button data-lu="Button:Select">7</button></li>
-  </ul>
+  </ul> -->
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
@@ -148,7 +149,6 @@
     Inject.setModuleRoot("http://localhost:1337/");
     window.lu_debug = 5
     require.ensure( ['/scripts/lu'], function() {} );
-
   </script>
 
 </body>

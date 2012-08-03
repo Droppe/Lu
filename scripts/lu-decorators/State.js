@@ -132,13 +132,10 @@ function stateDecorator() {
       if( typeof value === 'string' ){
         value = value.split( ',' );
       }
-      console.log( 'DOFF', _.difference( value, states ).length );
       if( _.difference( value, states ).length > 0 ){
         states = _.union( states, value );
         applyState( $element, states );
-        console.log( instance );
-        instance.trigger( STATED_EVENT, [instance] );
-        console.log( 'HEJJJJ' );
+        //instance.trigger( STATED_EVENT, [instance] );
       }
       return instance;
     };
@@ -180,7 +177,6 @@ function stateDecorator() {
       return ( _.indexOf( states, value ) > -1 );
     };
 
-    console.log( getAppliedStates( $element ), $element );
     instance.addState( getAppliedStates( $element ) );
 
     //Bind state event to state

@@ -266,7 +266,12 @@
           var defObj,
             $control = $( control );
 
-          execute( $control );
+          try {
+            execute( $control );
+          } catch( e ){
+            console.error( e );
+          }
+
           numberOfControls -= 1;
 
           // Resolve any deferred objects stored within the control's data object.

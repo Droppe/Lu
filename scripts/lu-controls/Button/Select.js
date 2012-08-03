@@ -18,6 +18,7 @@ function selectDecorator() {
   }
 
   return function( base, settings ){
+    console.log( 'select init' );
     var instance = this,
       $element = instance.$element,
       item = settings.item,
@@ -38,20 +39,20 @@ function selectDecorator() {
       } else if( __params__.length > 0 ){
         item = __params__.shift();
       } else {
-        //getControl logic needs to be rewritten this is crazy.....
-        $items = lu.getControl( lu.getParent( $element, function( index, item ){
-          if( lu.getControl( $( item ) ).$items ){
+        //get Control logic needs to be rewritten to be a bit smarter (something like)
+        $items = lu.getParent( $element, function( item, index ){
+          var Control = lu.getControl( $( item ) ); //this assumes that there is one control that is on the item :(
+          if( Control.$items ){
             return true;
-          } else {
-            return false;
           }
-        } ) ).$items;
-        item = $element.closest( $items );
+          return false;
+        } );
       }
     }
 
     instance.on( Constants.events.SELECTED, function( event, Control ){
       var $item;
+
       event.stopPropagation();
 
       if( typeof item === 'number' ){
@@ -62,22 +63,23 @@ function selectDecorator() {
         $item = item;
       }
 
+      console.log( $item );
+
       if( Control.current ){
-        if( Control.current().$element.is( $item ) ){
+          if( Control.current().is( $item ) ){
           instance.disable();
         } else {
           instance.enable();
         }
       }
-      //console.log( Control instanceof )
+
     } );
 
     instance.on( on, function( event ){
       focus( $element );
-      instance.trigger( 'select', [item] );
+      console.log( 'HELLS YEAH', item );
+      instance.trigger( Constants.events.SELECT, [item] );
     } );
-
-    instance.enable();
   };
 }
 
