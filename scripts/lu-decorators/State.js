@@ -74,7 +74,7 @@ function stateDecorator() {
      */
     function state( event, states ){
       if( instance.$element.is( event.target ) ){
-        return;
+        return instance;
       }
       event.stopPropagation();
       return instance.setState( states );
@@ -100,6 +100,7 @@ function stateDecorator() {
      * @return {Object} instance
      */
     instance.setState = function( value ){
+      console.log( 'setState', value );
       if( typeof value === 'string' ){
         value = value.split( ',' ).sort();
       }
@@ -129,13 +130,14 @@ function stateDecorator() {
      * @return {Object} instance
      */
     instance.addState = function( value ){
+      console.log( 'setState', value );
       if( typeof value === 'string' ){
         value = value.split( ',' );
       }
       if( _.difference( value, states ).length > 0 ){
         states = _.union( states, value );
         applyState( $element, states );
-        //instance.trigger( STATED_EVENT, [instance] );
+        instance.trigger( STATED_EVENT, [instance] );
       }
       return instance;
     };
@@ -162,7 +164,7 @@ function stateDecorator() {
         applyState( $element, states, prefix );
         instance.trigger( STATED_EVENT, [instance] );
       }
-
+//TODO: add reset, and clear method
       return instance;
     };
 

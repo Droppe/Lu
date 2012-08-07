@@ -45,9 +45,9 @@ List = Switch.extend( function( Switch ){
   function contain( $item ){
     return $.Deferred( function( dfd ){
       lu.create( $item, [CONTAINER], { CONTAINER: {} } );
-      $item.data( 'lu-controls' ).Deferred.done( function() {
-        dfd.resolve( $item );
-      } );
+      // $item.data( 'luControls' ).Deferred.done( function() {
+      //   dfd.resolve( $item );
+      // } );
     } ).promise();
   }
 
@@ -174,16 +174,18 @@ List = Switch.extend( function( Switch ){
 
         //return if no item was passed in.
         if( item === undefined ){
-          //return this;
+          return this;
         }
+
+        console.log( 'W))T' );
 
         //try to determine the index of the item being selected
         idx = ( typeof item === 'number' ) ? item : undefined;
 
         // if we can get the index above and it is already selected - everything is already done!
-        if( idx === index ){
-          return this;
-        }
+        // if( idx === index ){
+        //   return this;
+        // }
 
         //Figure out what to select based on the param passed in.
         if( typeof item === 'number' && item <= this.size() - 1 ){
@@ -204,10 +206,6 @@ List = Switch.extend( function( Switch ){
         //Get the index of the item to be selected if we don't have it from above
         if( idx === undefined ) {
           idx = $items.index( $item );
-          //everything is already done!
-          if( idx === index ){
-            return this;
-          }
         }
 
         if( idx > this.index() ){
@@ -216,26 +214,27 @@ List = Switch.extend( function( Switch ){
           this.addState( REVERSE_STATE ).removeState( FORWARD_STATE );
         }
 
-        //Get the item's Container
-        Container = lu.getControl( $item, 'Container' );
-
-        //There is no Container so create one.
-        if( !Container ){
-          contain( $item );
-        }
-
         //Grab the deferred object
         Deferred = $item.data( 'luControls' ).Deferred;
 
-        //Once the item is fully instantiated, select it.
+        //Get the item's Container
+        Container = lu.getControl( $item, 'Container' );
+
+        console.log( 'Container', Container, $item );
+        //There is no Container so create one.
+        // if( !Container ){
+        //   contain( $item );
+        // }
+
+        // Once the item is fully instantiated, select it.
         Deferred.done( function(){
           var current = self.current();
           //If there is a currently selected item remove the selected state
           if( current ){
             current.removeState( SELECTED_STATE );
           }
-          Selected = lu.getControl( $item, 'Container' );
-          if( idx === index ) {
+          Selected = Container;
+          if( idx === index ){
             return;
           } else {
             index = idx;
@@ -252,7 +251,6 @@ List = Switch.extend( function( Switch ){
 
       this.on( SELECT_EVENT, function( event, item ){
         event.stopPropagation();
-        console.log( '$select', item );
         self.select( item );
       } );
 
@@ -277,22 +275,21 @@ List = Switch.extend( function( Switch ){
       } );
 
       this.on( STATED_EVENT, function( event, Control ){
-        var $stated,
-          current;
-
+        console.log( 'Stated Event Received', event, Control );
         event.stopPropagation();
-
-        if( Control.hasState( SELECTED_STATE ) ){
-          $stated = Control.$element;
-          self.select( $stated );
+        if( Control.hasState ){
+          if( Control.hasState( SELECTED_STATE ) ){
+            console.log( 'we should select something' );
+            self.select( Control.$element );
+          }
         }
+
       } );
 
       $( 'body' ).keyup( function( event ){
         handleKeyup( event, self );
       } );
     },
-
 
     /**
      * adds a new item to $element

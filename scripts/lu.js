@@ -67,7 +67,7 @@
       } else if( key ){
         ret = undefined;
       } else {
-        $element.data(LU_CONTROLS, {} );
+        $element.data( LU_CONTROLS, {} );
         ret = {};
       }
 
@@ -203,16 +203,19 @@
 
           Control = new packages[pckg]( $node, config );
 
-          nodeData = getData( $node, key );
+          nodeData = getData( $node );
 
+          console.log( '*********************', nodeData );
           if( nodeData ){
-            nodeData.instance = Control;
+            nodeData.controls.push( { instance : Control } );
           } else {
             nodeData = {};
             nodeData[key] = {};
             nodeData[key].instance = Control;
             setData( $node, nodeData );
           }
+          console.info( '1' );
+          console.info( lu.getControl( $node, 'Control' ) );
         } );
 
         _.each( lu.getControls( $node ), function( item, index ){
@@ -240,17 +243,21 @@
           Deferred,
           controls;
 
-        Deferred = getData( $node, 'Deferred' );
-
-        if( !Deferred ){
-          setData( $node, {'Deferred': $.Deferred()} );
-        }
-
         controls = lu.getKeys( $node );
         numberOfControls += controls.length;
 
         _.each( controls, function( key, index ){
-          var pckg = NAMESPACE + '/' + key.split( ':' ).shift();
+          var pckg = NAMESPACE + '/' + key.split( ':' ).shift(),
+            data;
+
+          data = getData( $node );
+
+          if( !data[key] ){
+            setData( $node, {
+              Deferral: $.Deferred()
+            } );
+          }
+
           if( _.indexOf( required, pckg ) === -1 && _.indexOf( _.keys( packages, pckg ) ) === -1 ){
             required.push( pckg );
           }
@@ -263,8 +270,9 @@
         } );
 
         $controls.each( function( index, control ){
-          var defObj,
-            $control = $( control );
+          var $control = $( control ),
+            deferrals,
+            data;
 
           try {
             execute( $control );
@@ -272,15 +280,16 @@
             console.error( e );
           }
 
-          numberOfControls -= 1;
+          data = getData( $control );
 
           // Resolve any deferred objects stored within the control's data object.
-          defObj = getData( $control, 'Deferred' );
+          _.each( data, function( item, key ){
+            if( key !== '$observers' && typeof item === 'object' ){
+              console.warn( item );
+            }
+          } );
 
-          if( defObj ){
-            defObj.resolve();
-          }
-
+          numberOfControls -= 1;
           if( numberOfControls === 0 ){
             $element.trigger( 'luReady', [$element] );
           }
@@ -308,7 +317,8 @@
           var $item = $( item ),
             Deferred;
 
-          Deferred = getData( $item, 'Deferred' );
+          Deferred = getData( $item );
+
 
           if( Deferred ){
             // If the deferred object is already resolved
@@ -469,8 +479,10 @@
         return undefined;
       }
 
+      console.log( '--------------------->>>> hello', data, $element, key );
       if( key ){
         if( data[key] ){
+          console.log( '-------------->>>> good-bye', data[key].instance );
           instance = data[key].instance;
         }
       } else {
@@ -480,7 +492,7 @@
           }
         } );
       }
-
+      console.warn( instance );
       return instance;
     };
 
@@ -649,7 +661,6 @@
 
   //Bind lu to jquery as a plugin
   ( function( $ ){
-
     /**
      * Lu JQuery plugin
      * @method lu
@@ -671,7 +682,6 @@
 
   //Do a first pass of the HTML with the body.
   $( function(){
-
     function execute(){
       var $body = $( 'body' ),
         executingFlag = 'lu-executing',
@@ -685,11 +695,8 @@
       window.lu.decorate( $body, ['Abstract'] );
       window.lu.execute( $body );
       window.lu.console( $body ).info( 'executing' );
-
     }
-
     execute();
-
   } );
 }( document, window ) );
 

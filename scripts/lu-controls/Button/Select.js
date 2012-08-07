@@ -9,7 +9,7 @@ var Constants = require( 'lu/Constants' );
  * @method select
  * @private
  */
-function selectDecorator() {
+function selectDecorator(){
 
   function focus( $element ){
     if( $element.is( 'a' ) ){
@@ -18,7 +18,6 @@ function selectDecorator() {
   }
 
   return function( base, settings ){
-    console.log( 'select init' );
     var instance = this,
       $element = instance.$element,
       item = settings.item,
@@ -63,8 +62,6 @@ function selectDecorator() {
         $item = item;
       }
 
-      console.log( $item );
-
       if( Control.current ){
           if( Control.current().is( $item ) ){
           instance.disable();
@@ -77,7 +74,6 @@ function selectDecorator() {
 
     instance.on( on, function( event ){
       focus( $element );
-      console.log( 'HELLS YEAH', item );
       instance.trigger( Constants.events.SELECT, [item] );
     } );
   };

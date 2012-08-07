@@ -6,7 +6,6 @@
 * @version 0.2.4
 */
 
-//The Full path is given do to an error in inject :(
 var Switch = require( 'lu/Switch' ),
   Container;
 
