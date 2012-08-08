@@ -10,6 +10,7 @@ function stateDecorator() {
         states = states.replace( ' ', '' ).split( ',' );
       }
     }
+    
     return states;
   }
 
@@ -18,35 +19,45 @@ function stateDecorator() {
    * invalid states
    * @method applyState
    * @private
-   * @param {Object} event The jQuery Event object
+   * @param {Object} $element The jQuery collection of the specified node
    * @param {Array} states an array of states to set
-   * @return {Function} Container.setState
+   * @return {Void}
    */
-  function applyState( $element, states ){
+  function applyState( $element, states, prefix ){
     var removed = [],
       classes = [],
       classAttr = $element.attr( 'class' ) || '';
 
     _.each( classAttr.split( ' ' ), function( clss, index ){
-      if( clss.indexOf( STATE_PREFIX ) > -1 ){
+      if( clss.indexOf( prefix ) > -1 ){
         removed.push( clss );
       }
     } );
 
     _.each( states, function( clss, index ){
-      classes.push( STATE_PREFIX + clss );
+      if (clss) {
+        classes.push( prefix + clss );
+      }
     } );
 
     $element.removeClass( removed.join( ' ' ) ).addClass( classes.join( ' ' ) );
   }
 
-  function getAppliedStates( $element ){
+  /**
+   * Retrieve the current states from an element
+   * @method getAppliedStates
+   * @private
+   * @param {Object} $element [description]
+   * @param {String} prefix [description]
+   * @return {Array} An array of states
+   */
+  function getAppliedStates( $element, prefix ){
     var classes = $element.attr( 'class' ) || '',
       states = [];
 
     _.each( classes.split( ' ' ), function( item, index ){
-      if( item.indexOf( STATE_PREFIX ) > -1 ){
-        states.push( item.replace( STATE_PREFIX, '' ) );
+      if( item.indexOf( prefix ) > -1 ){
+        states.push( item.replace( prefix, '' ) );
       }
     } );
 
@@ -54,15 +65,16 @@ function stateDecorator() {
   }
 
   return function( instance ){
+
     /**
-     * An array of string representing the current state(s)
+     * An array of strings representing the current state(s)
      * @property states
      * @type Array
      * @private
      */
     var states = [],
-      $element = instance.$element,
-      prefix = STATE_PREFIX;
+        $element = instance.$element,
+        prefix = STATE_PREFIX;
 
     /**
      * Updates states on a state event
@@ -73,11 +85,11 @@ function stateDecorator() {
      * @return {Function} Container.setState
      */
     function state( event, states ){
-      if( instance.$element.is( event.target ) ){
-        return;
-      }
-      event.stopPropagation();
-      return instance.setState( states );
+        if( instance.$element.is( event.target ) ){
+      return;
+        }
+        event.stopPropagation();
+        return instance.setState( states );
     }
 
     /**
@@ -87,7 +99,7 @@ function stateDecorator() {
      * @return {Array} an Array of strings representing the state(s)
      */
     instance.getState = function(){
-      return states;
+        return states;
     };
 
     /**
@@ -118,28 +130,27 @@ function stateDecorator() {
 
       return instance;
     };
-
+    
     /**
      * Adds a state or states to the instance
      * @method addState
      * @param {Array|String} value This can be an Array of strings or comma
-     * delimeted string representing multiple states. It can also be
+     * delimited string representing multiple states. It can also be
      * a string representing a single state
      * @public
      * @return {Object} instance
      */
     instance.addState = function( value ){
-      if( typeof value === 'string' ){
+      if ( typeof value === 'string' ){
         value = value.split( ',' );
       }
-      console.log( 'DOFF', _.difference( value, states ).length );
+      
       if( _.difference( value, states ).length > 0 ){
         states = _.union( states, value );
-        applyState( $element, states );
-        console.log( instance );
+        applyState( $element, states, prefix );
         instance.trigger( STATED_EVENT, [instance] );
-        console.log( 'HEJJJJ' );
       }
+      
       return instance;
     };
 
@@ -147,20 +158,21 @@ function stateDecorator() {
      * Removes the state(s) from the instance
      * @method addState
      * @param {Array|String} value This can be an Array of strings or comma
-     * delimeted string representing multiple states. It can also be
+     * delimited string representing multiple states. It can also be
      * a string representing a single state
      * @public
      * @return {Object} instance
      */
     instance.removeState = function( value ){
       var intersection;
-      if( typeof value === 'string' ){
+      
+      if ( typeof value === 'string' ){
         value = value.split( ',' );
       }
 
       intersection = _.intersection( states, value );
 
-      if( intersection.length > 0 ){
+      if ( intersection.length > 0 ){
         states = _.without( states, value );
         applyState( $element, states, prefix );
         instance.trigger( STATED_EVENT, [instance] );
@@ -180,8 +192,7 @@ function stateDecorator() {
       return ( _.indexOf( states, value ) > -1 );
     };
 
-    console.log( getAppliedStates( $element ), $element );
-    instance.addState( getAppliedStates( $element ) );
+    instance.addState( getAppliedStates( $element, prefix ) );
 
     //Bind state event to state
     instance.on( STATE_EVENT, state );
@@ -192,7 +203,9 @@ function stateDecorator() {
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( stateDecorator() );
-  } else if( module.exports ){
-   module.exports = stateDecorator();
+  } else if ( module.exports ){
+    module.exports = stateDecorator();
   }
 }
+
+
