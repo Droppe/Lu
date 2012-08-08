@@ -16,78 +16,87 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
-// the version of inject this is
+/** @constant the version of inject this is */
 var INJECT_VERSION = "0.4.0-pre";
 
-// a test to determine if this is the IE engine (needed for source in eval commands)
+/** @constant a test to determine if this is the IE engine (needed for source in eval commands) */
 var IS_IE = eval("/*@cc_on!@*/false");
 
-// a storagetoken identifier we use (lscache)
+/** @constant a storagetoken identifier we use for the bucket (lscache) */
 var FILE_STORAGE_TOKEN = "INJECT";
 
-// the version of data storage schema for lscache
+/** @constant the version of data storage schema for lscache */
 var LSCACHE_SCHEMA_VERSION = 1;
 
-// the schema version string for validation of lscache schema
+/** @constant the schema version string for validation of lscache schema */
 var LSCACHE_SCHEMA_VERSION_STRING = "!version";
 
-// the namespace for inject() that is publicly reachable
+/** @constant the cache version string for validation of developer lscache code */
+var LSCACHE_APP_KEY_STRING = "!appCacheKey";
+
+/** @constant AMD modules that are deferred have this set as their "arg[0]" as a way to flag */
+var AMD_DEFERRED = "###DEFERRED###";
+
+/** @constant the namespace for inject() that is publicly reachable */
 var NAMESPACE = "Inject";
 
-// Regex for identifying things that end in *.js or *.txt
+/** @constant Regex for identifying things that end in *.js or *.txt */
 var FILE_SUFFIX_REGEX = /.*?\.(js|txt)(\?.*)?$/;
 
+/** @constant This is the basic suffix for JS files. When there is no extension, we add this if enabled */
 var BASIC_FILE_SUFFIX = ".js";
 
-// prefixes for URLs that begin with http/https
+/** @constant prefixes for URLs that begin with http/https */
 var HOST_PREFIX_REGEX = /^https?:\/\//;
 
-// suffix for URLs used to capture everything up to / or the end of the string
+/** @constant suffix for URLs used to capture everything up to / or the end of the string */
 var HOST_SUFFIX_REGEX = /^(.*?)(\/.*|$)/;
 
-// a regular expression for slicing a response from iframe communication into its parts
-// (1) Anything up to a space (status code)
-// (2) Anything up to a space (moduleid)
-// (3) Any text up until the end of the string (file)
+/**
+ * @constant a regular expression for slicing a response from iframe communication into its parts
+ * (1) Anything up to a space (status code)
+ * (2) Anything up to a space (moduleid)
+ * (3) Any text up until the end of the string (file)
+ **/
 var RESPONSE_SLICER_REGEX = /^(.+?)[\s]+([\w\W]+?)[\s]+([\w\W]+)$/m;
 
-// Regexes to extract function identifiers, comments, require() statements, or requirements from a define() call
-// locate the function() opener
+/** @constant a regex to locate the function() opener */
 var FUNCTION_REGEX = /^[\s\(]*function[^\(]*\(([^)]*)\)/;
 
-// locate newlines within a function body
+/** @constant a regex to locate newlines within a function body */
 var FUNCTION_NEWLINES_REGEX = /\/\/.*?[\r\n]|\/\*(?:.|[\r\n])*?\*\//g;
 
-// captures the body of a JS function
+/** @constant captures the body of a JS function */
 var FUNCTION_BODY_REGEX = /[\w\W]*?\{([\w\W]*)\}/m;
 
-// locate whitespace within a function body
+/** @constant locate whitespace within a function body */
 var WHITESPACE_REGEX = /\s+/g;
 
-// extract require() statements from within a larger string
+/** @constant extract require() statements from within a larger string */
 var REQUIRE_REGEX = /(?:^|[^\w\$_.\(])require\s*\(\s*("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*')\s*\)/g;
 
-// extract define() statements from within a larger string
-var DEFINE_REGEX = /^[\r\n\s]*define\(\s*("\S+",|'\S+',|\s*)\s*\[([^\]]*)\],\s*(function\s*\(|\{).+/;
+/** @constant extract define() statements from within a larger string */
+var DEFINE_EXTRACTION_REGEX = /(?:^|[\s]+)define[\s]*\([\s]*((?:"|')\S+(?:"|'))?,?[\s]*(?:\[([\w\W]+)\])?/g;
 
-// match all commonJS builtins in a function arg collection
+/** @constant index of all commonJS builtins in a function arg collection */
 var BUILTINS = {require: true, exports: true, module: true};
 
+/** @constant a regex for replacing builtins and quotes */
 var BUILTINS_REPLACE_REGEX = /[\s]|"|'|(require)|(exports)|(module)/g;
 
-// capture anything that involves require*, aggressive to cut down the number of lines we analyze
+/** @constant capture anything that involves require*, aggressive to cut down the number of lines we analyze */
 var GREEDY_REQUIRE_REXEX = /require.*/;
 
-// match comments in our file (so we can strip during a static analysis)
+/** @constant match comments in our file (so we can strip during a static analysis) */
 var JS_COMMENTS_REGEX = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
 
-// identifies a require() path as relative
+/** @constant identifies a path as relative */
 var RELATIVE_PATH_REGEX = /^(\.{1,2}\/).+/;
 
-// identifies a require() path as absolute fully-qualified URL
+/** @constant identifies a path as absolute fully-qualified URL */
 var ABSOLUTE_PATH_REGEX = /^([A-Za-z]+:)?\/\//;
 
-// run a test to determine if localstorage is available
+/** @constant run a test to determine if localstorage is available */
 var HAS_LOCAL_STORAGE = (function() {
   try {
     localStorage.setItem("injectLStest", "ok");
@@ -161,7 +170,7 @@ var getXhr = (function(){
           item = list[i] + ".XMLHTTP";
           var obj = new ActiveXObject(item);
           return item;
-        }
+        } 
         catch (e) {}
       }
     }());
@@ -220,7 +229,15 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
-// TODO: create a special define function in this scope
+/**
+ * Below are the "sandboxing" wrappers for our commonJS implementation
+ * we reach in to the inject namespace (default "Inject"), into the
+ * INTERNAL object, which contains methods reachable during the eval.
+ * Markers in the file for dynamic content are identified with
+ * __DOUBLE_UNDERSCORES__, while internal variables are marked with
+ * __singleUnderscores
+ * @file This file contains the commonJS header and footers
+**/
 
 var commonJSHeader = ([
 '__INJECT_NS__.INTERNAL.execute.__FUNCTION_ID__ = function() {',
@@ -775,7 +792,7 @@ var lscache = function() {
         }
       }
     },
-
+    
     /**
      * Appends CACHE_PREFIX so lscache will partition data in to different buckets.
      * @param {string} bucket
@@ -783,7 +800,7 @@ var lscache = function() {
     setBucket: function(bucket) {
       cacheBucket = bucket;
     },
-
+    
     /**
      * Resets the string being appended to CACHE_PREFIX so lscache will use the default storage behavior.
      */
@@ -875,13 +892,16 @@ var Analyzer;
           }
         }
         return strippedModuleList;
-      },
+      },    
       extractRequires: function(file) {
         var requires = [];
+        var requireMatches = null;
+        var defines = null;
         var uniques = {};
-        var match;
         var dirtyRuntimeRequires = [];
+        var dirtyStaticRequires = [];
         var staticRequires = [];
+        var inlineAMD = {};
 
         // a local require function for eval purposes
         var require = function(term) {
@@ -899,7 +919,7 @@ var Analyzer;
         }
         if (dirtyRuntimeRequires.length > 0) {
           try {
-            eval(dirtyRuntimeRequires.join(";"));
+            eval([dirtyRuntimeRequires.join(";"), "//@ sourceURL=inject-analyzer.js"].join("\n"));
           }
           catch(err) {
             throw new Error("Invalid require() syntax found in file: " + dirtyRuntimeRequires.join(";"));
@@ -908,18 +928,37 @@ var Analyzer;
 
         // handle static require statements via define() API
         // then attach to master requires[] list
-        if(DEFINE_REGEX.exec(file)) {
-          staticRequires = DEFINE_REGEX.exec(file)[2].replace(BUILTINS_REPLACE_REGEX, "").split(",");
-        }
-        for (var i = 0, len = staticRequires.length; i < len; i++) {
-          if (!staticRequires[i]) {
-            // this was a builtin
-            continue;
-          }
-          if (uniques[staticRequires[i]] !== true) {
-            requires.push(staticRequires[i]);
-          }
-          uniques[staticRequires[i]] = true;
+        // extract all define names, then all dependencies
+        defines = file.match(DEFINE_EXTRACTION_REGEX);
+        if (defines && defines.length) {
+          each(defines, function(match) {
+            var id = match.replace(DEFINE_EXTRACTION_REGEX, "$1");
+            var deps = match.replace(DEFINE_EXTRACTION_REGEX, "$2");
+
+            id = id.replace(BUILTINS_REPLACE_REGEX, "");
+            deps = deps.replace(BUILTINS_REPLACE_REGEX, "").split(",");
+
+            if (id) {
+              inlineAMD[id] = true;
+            }
+
+            if (deps && deps.length) {
+              for (var i = 0, len = deps.length; i < len; i++) {
+                if (deps[i]) {
+                  dirtyStaticRequires.push(deps[i]);
+                }
+              }
+            }
+          });
+
+          // for each possible require, make sure we aren't already
+          // running this inline
+          each(dirtyStaticRequires, function(req) {
+            if (uniques[req] !== true && inlineAMD[req] !== true) {
+              requires.push(req);
+            }
+            uniques[req] = true;
+          });
         }
 
         return requires;
@@ -958,7 +997,7 @@ var Communicator;
 
     function clearCaches() {
       socketConnectionQueue = [];
-      downloadCompleteQueue = {};
+      downloadCompleteQueue = {};      
     }
 
     function writeToCache(url, contents) {
@@ -1248,14 +1287,15 @@ var Executor;
         // eval. This means we are doing dual eval (one for parse, one for
         // runtime) when sourceMap is enabled. Some people really want their
         // debug.
-        var toExec = code.replace(/([\w\W]*})[\w\W]*?$/, "$1()");
+        var toExec = code.replace(/([\w\W]+?)=([\w\W]*})[\w\W]*?$/, "$1 = ($2)();");
         var relativeE;
         toExec = [toExec, sourceString].join("\n");
         if (!context.Inject.INTERNAL.execute[options.functionId]) {
           // there is nothing to run, so there must have been an uncaught
-          // syntax error (firefox).
+          // syntax error (firefox). 
           try {
-            try { eval("+"); } catch (ee) { relativeE = ee; } eval(toExec);
+            try { eval("+\n//@ sourceURL=inject-executor-line.js"); } catch (ee) { relativeE = ee; }
+            eval(toExec);
           }
           catch(e) {
             if (e.lineNumber && relativeE.lineNumber) {
@@ -1270,16 +1310,17 @@ var Executor;
         else {
           // again, we are creating a "relativeE" to capture the eval line
           // this allows us to get accurate line numbers in firefox
-          try { eval("+"); } catch (ee) { relativeE = ee; } eval(toExec);
+          try { eval("+\n//@ sourceURL=inject-executor-line.js"); } catch (ee) { relativeE = ee; }
+          eval(toExec);
         }
-
+        
         if (context.Inject.INTERNAL.execute[options.functionId]) {
           result = context.Inject.INTERNAL.execute[options.functionId];
           // set the error object using our standard method
           // result.error will be later overwritten with a clean and readable Error()
           if (result.error) {
             if (result.error.lineNumber && relativeE.lineNumber) {
-              result.error.lineNumber = result.error.lineNumber - relativeE.lineNumber + 1;
+              result.error.lineNumber = result.error.lineNumber - relativeE.lineNumber;
             }
             else {
               result.error.lineNumber = getLineNumberFromException(result.error);
@@ -1390,7 +1431,8 @@ var Executor;
           module.error = null;
           module.setExports = function(xobj) {
             for (var name in module.exports) {
-              throw new Error("cannot setExports when exports have already been set");
+              debugLog("cannot setExports when exports have already been set. setExports skipped");
+              return;
             }
             switch(typeof(xobj)) {
               case "object":
@@ -1479,7 +1521,7 @@ var Executor;
         // }
         // catch(e) {
         //   errorObject = e;
-        // }
+        // }       
 
         // if a global error object was created
         if (result && result.error) {
@@ -1487,10 +1529,12 @@ var Executor;
           throw result.error;
         }
 
-        // cache the result
-        this.cache[moduleId] = result;
-        this.executed[moduleId] = true;
+        // cache the result (IF NOT AMD)
+        if (!DEFINE_EXTRACTION_REGEX.test(code)) {
+          this.cache[moduleId] = result;
+        }
 
+        this.executed[moduleId] = true;
         debugLog("Executor", "executed", moduleId, path, result);
 
         // return the result
@@ -1555,6 +1599,23 @@ var InjectCore;
       },
       setExpires: function(seconds) {
         userConfig.fileExpires = seconds || 0;
+      },
+      setCacheKey: function(cacheKey) {
+        var lscacheAppCacheKey;
+        var flush = false;
+
+        if (!HAS_LOCAL_STORAGE || !lscache) {
+          return false;
+        }
+
+        lscacheAppCacheKey = lscache.get(LSCACHE_APP_KEY_STRING);
+
+        if ( (!cacheKey && lscacheAppCacheKey) ||
+             (lscacheAppCacheKey !== null && lscacheAppCacheKey != cacheKey) ||
+             (lscacheAppCacheKey === null && cacheKey) ) {
+          lscache.flush();
+          lscache.set(LSCACHE_APP_KEY_STRING, cacheKey);
+        }
       },
       reset: function() {
         this.clearCache();
@@ -1764,24 +1825,6 @@ var RequireContext = Class.extend(function() {
 
       this.log("AMD define(...) of "+ ((id) ? id : "anonymous"));
 
-      // handle anonymous modules
-      if (!id) {
-        id = Executor.getCurrentExecutingAMD().id;
-        this.log("AMD identified anonymous module as "+id);
-      }
-
-      if (Executor.isModuleDefined(id)) {
-        this.log("AMD module "+id+" has already ran once");
-        return;
-      }
-      Executor.flagModuleAsDefined(id);
-
-      if (typeof(executionFunctionOrLiteral) === "function") {
-        dependencies.concat(Analyzer.extractRequires(executionFunctionOrLiteral.toString()));
-      }
-
-      this.log("AMD define(...) of "+id+" depends on: "+dependencies.join(", "));
-
       // strip any circular dependencies that exist
       // this will prematurely create modules
       for (var i = 0, len = dependencies.length; i < len; i++) {
@@ -1800,11 +1843,30 @@ var RequireContext = Class.extend(function() {
         }
       }
 
+      // handle anonymous modules
+      if (!id) {
+        id = Executor.getCurrentExecutingAMD().id;
+        this.log("AMD identified anonymous module as "+id);
+      }
+
+      if (Executor.isModuleDefined(id)) {
+        this.log("AMD module "+id+" has already ran once");
+        return;
+      }
+      Executor.flagModuleAsDefined(id);
+
+      if (typeof(executionFunctionOrLiteral) === "function") {
+        dependencies.concat(Analyzer.extractRequires(executionFunctionOrLiteral.toString()));
+      }
+
+      this.log("AMD define(...) of "+id+" depends on: "+dependencies.join(", "));
       this.log("AMD define(...) of "+id+" will retrieve: "+remainingDependencies.join(", "));
 
       // ask only for the missed items + a require
       remainingDependencies.unshift("require");
       this.require(remainingDependencies, proxy(function(require) {
+        this.log("AMD define(...) of "+id+" all downloads required");
+
         // use require as our first arg
         var module = Executor.getModule(id);
 
@@ -1934,6 +1996,11 @@ var RulesEngine;
         // Apply our rules to the path in progress
         var result = this.applyRules(path);
         path = result.resolved;
+
+        // exit early on resolved http URL
+        if (ABSOLUTE_PATH_REGEX.test(path)) {
+          return path;
+        }
 
         // shortcut. If it starts with /, affix to module root
         if (path.indexOf("/") === 0) {
@@ -2397,9 +2464,9 @@ var TreeNode = Class.extend(function() {
           direction = null,
           output = [],
           i = 0;
-
+      
       while (currentNode) {
-
+        
         if (currentNode.getChildren().length > 0 && direction !== "up") {
           direction = "down";
           currentNode = currentNode.getChildren()[0];
@@ -2447,11 +2514,14 @@ IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
 express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
-
-// assign things to the global context
-// export the interface publicly
-// most of these should pass through to their proper objects
+/**
+ * This file defines the public interface for Inject
+ * many functions in this collection pass through via proxy
+ * to internal methods
+ * @file public interface for Inject
+ */
 var globalRequire = new RequireContext();
+
 context.Inject = {
   INTERNAL: {
     defineExecutingModuleAs: proxy(Executor.defineExecutingModuleAs, Executor),
@@ -2478,6 +2548,9 @@ context.Inject = {
   },
   setExpires: function() {
     InjectCore.setExpires.apply(this, arguments);
+  },
+  setCacheKey: function() {
+    InjectCore.setCacheKey.apply(this, arguments);
   },
   setCrossDomain: function() {
     InjectCore.setCrossDomain.apply(this, arguments);
