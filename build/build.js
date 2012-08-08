@@ -6,7 +6,7 @@ var defaultOutput = path.resolve( './bin' );
 
 // optimist
 var optimist = require( 'optimist' )
-    .usage( 'lu command tool.\nUsage: $0 [task]' )
+    .usage( 'lu command tool.\nUsage: $0 [task], where task is one of [build, test, docs]' )
     .alias( 'help', 'h' )
     .describe( 'help', 'show this message' )
 
