@@ -1,14 +1,16 @@
-var Class = require( 'class' ),
+
+var constants = require( 'lu/constants' ),
+  helpers = require( 'lu/helpers' ),
+  Fiber = require( 'Fiber' ),
   Abstract;
 
 /**
- * The base component class all other UI components inherit from.
+ * Provides an event facade for jQuery's event system as well as
+ * enabling observation.
  * @class Abstract
  * @constructor
- * @require class
- * @version 0.2.5
  */
-Abstract = Class.extend( function( Class ){
+Abstract = Fiber.extend( function( base ){
   /**
    * Default configuration values
    * @property defaults
@@ -39,8 +41,10 @@ Abstract = Class.extend( function( Class ){
    */
   function addToEventStore( event, method ){
     var eventStore = this.eventStore;
-    _.each( _.trim(event).split( /\s+/g ), function( item ){
-      eventStore[item] = { method: method };
+    _.each( _.trim( event ).split( /\s+/g ), function( item ){
+      eventStore[item] = {
+        method: method
+      };
     } );
   }
 
@@ -52,7 +56,7 @@ Abstract = Class.extend( function( Class ){
    */
   function removeFromEventStore( event ){
     var eventStore = this.eventStore;
-    _.each( _.trim(event).split( /\s+/g ), function( item ){
+    _.each( _.trim( event ).split( /\s+/g ), function( item ){
       if ( eventStore[event] ){
         delete eventStore[event];
       }
@@ -74,6 +78,9 @@ Abstract = Class.extend( function( Class ){
 
       _.defaults( settings, defaults );
 
+      this.$element = $element;
+      this.eventStore = {};
+
       $observe = $( settings.observe );
       $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
 
@@ -85,8 +92,6 @@ Abstract = Class.extend( function( Class ){
         $element.lu( 'observe', $notify );
       }
 
-      this.$element = $element;
-      this.eventStore = {};
     },
     /**
      * Creates an event listener for a type
@@ -126,7 +131,7 @@ Abstract = Class.extend( function( Class ){
     trigger: function( event, parameters ){
       var store = this.eventStore[ event ];
 
-      lu.notify( this.$element, event, parameters );
+      this.$element.lu( 'notify', event, parameters );
 
       if( store && store.method === 'one' ){
         removeFromEventStore.call( this, event );
@@ -142,7 +147,7 @@ Abstract = Class.extend( function( Class ){
      * @param {Array} $observer A jQuery collection to be observed
      */
     observe: function( $observer ){
-      lu.observe( $observer, this.$element );
+      this.$element.lu( 'observe', $observer, this.$element );
       return this;
     },
     /**
@@ -152,7 +157,7 @@ Abstract = Class.extend( function( Class ){
      * @param {Array} $observer A jQuery collection to be unobserved
      */
     unobserve: function( $observer ){
-      lu.unobserve( $observer, this.$element );
+      this.$element.lu( 'unobserve', $observer, this.$element );
       return this;
     },
     /**

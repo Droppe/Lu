@@ -25,89 +25,32 @@
       position: relative;
       list-style: none;
       display: block;
+      margin: 20px 0;
+      padding: 0;
+    }
+    #carousel li {
+      background: #dedede;
+      display: block;
       height: 60px;
       width: 200px;
-      margin: 20px 0;
-      overflow: hidden;
-      padding: 0;
-    }
-    #carousel  li {
-      position: absolute;
-      background: #cde;
-      display: block;
-      height: 100%;
-      width: 100%;
       text-align: center;
       line-height: 60px;
-      z-index: 0;
       padding: 0;
       margin: 0;
-      left: 0;
-    }
-    #carousel  li:nth-child( odd ) {
-      background-color: #ded;
-    }
-    #carousel  .lu-state-forward li {
-      left: 0%;
-    }
-    #carousel  .lu-state-reverse li {
-      left: 0%;
-    }
-    #carousel  .lu-state-forward .lu-transition-out {
-      z-index: 2;
-      left: -100%;
-    }
-    #carousel  .lu-state-reverse .lu-transition-out {
-      z-index: 2;
-      left: 100%;
-    }
-    #carousel .lu-transition-in,
-    #carousel .lu-transition-out {
-      -moz-transition-property: left;
-      -moz-transition-duration: 1s;
-      -moz-transition-delay: 0;
-      left: 0;
-    }
-    #carousel .lu-state-selected {
-      z-index: 1;
-    }
-    #carousel .lu-state-forward .lu-state-selected {
-      left: 0;
-    }
-    #carousel .lu-state-reverse .lu-state-selected {
-      left: 0;
-    }
-    #list li {
-      display: block;
-      height: 100px;
-      width: 100px;
       float: left;
     }
-    #list .lu-state-selected {
-      background: #cde;
+    #carousel .lu-state-selected {
+      background: #cde
     }
+
   </style>
 </head>
 
 <body>
 
-  <div id="carousel" data-lu="Carousel">
-    <ul class="items">
-      <li class="lu-state-selected" data-lu="Container">1</li>
-      <li>2</li>
-      <li>3</li>
-    </ul>
+  <div data-lu="Container">
+    <button data-lu="Button:State">State</button>
   </div>
-
-<!--   <ul id="list" data-lu="List">
-    <li class="lu-state-selected" data-lu="Container"><button data-lu="Button:Select">1</button></li>
-    <li><button data-lu="Button:Select">2</button></li>
-    <li><button data-lu="Button:Select">3</button></li>
-    <li><button data-lu="Button:Select">4</button></li>
-    <li><button data-lu="Button:Select">5</button></li>
-    <li><button data-lu="Button:Select">6</button></li>
-    <li><button data-lu="Button:Select">7</button></li>
-  </ul> -->
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
@@ -120,13 +63,37 @@
   <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
 
   <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu.0.3.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-    Inject.setExpires(0);
+
+    var $Container = $( '[data-lu~=Container]' ),
+      $State = $( '[data-lu~=\'Button:State\']' );
+
+    Inject.setExpires( 0 );
     Inject.clearCache();
-    Inject.setModuleRoot("http://localhost:1337/");
-    window.lu_debug = 5
-    require.ensure( ['/scripts/lu'], function() {} );
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    Lu.map( $Container, 'Container', function( $element, component ){
+      component.deferral.done( function( instance ){
+        console.info( instance );
+      } );
+    } );
+
+    Lu.map( $State, 'Button', function( $element, component ){
+      component.settings.action = 'state';
+      component.settings.sates = ['on', 'off'];
+      component.deferral.done( function( instance ){
+        console.info( instance );
+      } );
+    } );
+
+    Lu.execute( $( 'body' ) ).then( function(){
+      console.info( 'W00T' );
+    } );
+
   </script>
 
 </body>

@@ -1,7 +1,7 @@
 ( function() {
 
   var PATH_TO_LU_CONTROLS = '/scripts/lu-controls/',
-    PATH_TO_CLASS = '/scripts/libraries/class.js';
+    PATH_TO_FIBER = '/scripts/libraries/fiber.js';
 
   if( typeof window.require === 'function' ) {
 
@@ -13,8 +13,8 @@
         }
       } );
 
-      window.Inject.addRule( 'class', {
-        path: PATH_TO_CLASS
+      window.Inject.addRule( 'Fiber', {
+        path: PATH_TO_FIBER
       } );
     }
   }

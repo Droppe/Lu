@@ -1,32 +1,42 @@
-var Constants = {
+
+var constants = {
   HAS_A18_ATTRS: 'button, input',
   DISABLED: 'disabled',
-
   events: {
     SELECTED: 'selected',
+    SELECT: 'select',
     STATED: 'stated',
-    SELECT: 'select'
-  },
+    STATE: 'state',
+    UPDATED: 'updated',
+    UPDATE: 'update',
+    LOAD: 'load'
 
+  },
+  statePrefix: 'lu-state-',
   states: {
+    STATE: 'state',
+    STATED: 'stated',
     SELECTED: 'selected',
     DISABLED: 'disabled',
+    LOADING: 'loading',
     LOADED: 'loaded',
     MAXED: 'maxed',
     FLOORED: 'floored',
     TRANSITIONING: 'transitioning',
     TRANSITIONED: 'transitioned',
     PLAYING: 'playing',
-    PAUSED: 'paused'
+    PAUSED: 'paused',
+    ACTIVE: 'active',
+    INACTIVE: 'inactive',
+    ERRED: 'erred'
   }
-
 };
 
-  //Export to Common JS Loader
+//Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( Constants );
+    module.setExports( constants );
   } else if( module.exports ){
-    module.exports = Constants;
+    module.exports = constants;
   }
 }

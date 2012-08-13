@@ -3,29 +3,31 @@
 * @class Button
 * @constructor
 * @extends Switch
-* @version 0.2.4
 */
 
-var Class = require( 'class' ),
+var constants = require( 'lu/constants' ),
+  helpers = require( 'lu/helpers' ),
   Switch = require( 'lu/Switch' ),
-  Constants = require( 'lu/Constants' ),
+  Fiber = require( 'Fiber' ),
   Button;
 
 Button = Switch.extend( function( base ){
   var defaults = {
       on: 'click'
+    },
+    root = 'lu/Button/decorators/',
+    decorators = {
+      first: root + 'first',
+      last: root + 'last',
+      load: root + 'load',
+      next: root + 'next',
+      pause: root + 'pause',
+      play: root + 'play',
+      previous: root + 'previous',
+      select: root + 'select',
+      state: root + 'state',
+      def: root + 'default'
     };
-
-  /**
-   * Sets the focus on the $element
-   * @method bindSpaceBar
-   * @private
-   */
-  function focus( $element ){
-    if( $element.is( 'a' ) ){
-      $element.focus();
-    }
-  }
 
   /**
    * Used for binding the space bar to the
@@ -34,10 +36,10 @@ Button = Switch.extend( function( base ){
    * @method bindSpaceBar
    * @private
    */
-  function bindSpaceBar( Button, on ){
-    Button.$element.on( 'keyup', function( event ){
+  function bindSpaceBar( instance, on ){
+    instance.$element.on( 'keyup', function( event ){
       if( event.keyCode === 32 ){
-        Button.trigger( on );
+        instance.trigger( on );
       }
     } );
   }
@@ -51,41 +53,68 @@ Button = Switch.extend( function( base ){
      * @param {Object} settings Configuration settings
      */
     init: function( $element, settings ){
-      //console.log( 'Button INIT' );
-      var Button = this,
-        command = settings.action || ( settings.__params__ ) ? settings.__params__.shift() : undefined,
-        decorators = [],
+      var self = this,
+        action,
+        requirements = [],
         decorator;
-
-      settings.action = command;
-
-      base.init.call( this, $element, settings );
 
       //Applies a decorator based on the command given
       _.defaults( settings, defaults );
 
-      console.log( 'COMMAND', command );
+      base.init.call( this, $element, settings );
 
-      if( command ){
-        // Somewhat nasty right now.
-        decorators = [ 'lu/Button/' + command.charAt( 0 ).toUpperCase() + command.substr( 1 ) ];
+      action = settings.action;
+
+      if( action !== undefined ){
+        switch( action ){
+          case 'first':
+            requirements.push( decorators.first );
+            requirements.push( decorators.def );
+            break;
+          case 'last':
+            requirements.push( decorators.last );
+            requirements.push( decorators.def );
+            break;
+          case 'load':
+            requirements.push( decorators.load );
+            break;
+          case 'next':
+            requirements.push( decorators.next );
+            requirements.push( decorators.def );
+            break;
+          case 'pause':
+            requirements.push( decorators.pause );
+            requirements.push( decorators.def );
+            break;
+          case 'play':
+            requirements.push( decorators.play );
+            requirements.push( decorators.def );
+            break;
+          case 'previous':
+            requirements.push( decorators.previous );
+            requirements.push( decorators.def );
+            break;
+          case 'select':
+            requirements.push( decorators.select );
+            break;
+          case 'state':
+            requirements.push( decorators.state );
+            break;
+          default:
+            throw new Error( 'Button decorator "' + action + '" does not exist!' );
+        }
       } else {
-        decorators = [ 'lu/Button/Default' ];
+        requirements.push( decorators.def );
       }
 
-      require.ensure( decorators, function( require, module, exports ){
-          _.each( decorators, function( path, index ){
-            try {
-              decorator = require( path );
-            } catch( e ){
-              decorator = require( 'lu/Button/Default' );
-            }
-            Class.decorate( Button, decorator, settings );
-          } );
+      require.ensure( requirements, function( require, module, exports ){
+        _.each( requirements, function( decorator, index ){
+          Fiber.decorate( self, require( decorator )( settings ) );
+        } );
       } );
 
       //binds the spacebar to the on event
-      bindSpaceBar( Button, settings.on );
+      bindSpaceBar( this, settings.on );
     },
 
     /**
@@ -97,10 +126,10 @@ Button = Switch.extend( function( base ){
      */
     disable: function(){
       var $element = this.$element;
-      if( $element.is( Constants.HAS_A18_ATTRS ) ){
-        $element.prop( Constants.DISABLED, true );
+      if( $element.is( constants.HAS_A18_ATTRS ) ){
+        $element.prop( constants.DISABLED, true );
       }
-      this.addState( Constants.states.DISABLED );
+      this.addState( constants.states.DISABLED );
       return this;
     },
 
@@ -113,8 +142,8 @@ Button = Switch.extend( function( base ){
      */
     enable: function(){
       var $element = this.$element;
-      $element.removeProp( Constants.DISABLED );
-      this.removeState( Constants.states.DISABLED );
+      $element.removeProp( constants.DISABLED );
+      this.removeState( constants.states.DISABLED );
       return this;
     }
   };

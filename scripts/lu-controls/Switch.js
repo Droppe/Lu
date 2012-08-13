@@ -3,16 +3,16 @@
 * @class Switch
 * @constructor
 * @extends Abstract
-* @version 0.2.4
 */
-
-//The Full path is given do to an error in inject :(
-var Abstract = require( 'lu/Abstract' ),
-  stateDecorator = require( '/scripts/lu-decorators/State' ),
+var constants = require( 'lu/constants' ),
+  helpers = require( 'lu/helpers' ),
+  Abstract = require( 'lu/Abstract' ),
+  StateDecorator = require( 'lu/decorators/state' ),
+  Fiber = require( 'Fiber' ),
   Switch;
 
 Switch = Abstract.extend( function ( base ) {
-  defaults = {};
+  var defaults = {};
 
   return {
     /**
@@ -26,8 +26,7 @@ Switch = Abstract.extend( function ( base ) {
     init: function( $element, settings ){
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
-      this.decorate( stateDecorator );
-      //console.log( this );
+      Fiber.decorate( this, StateDecorator() );
     }
   };
 } );

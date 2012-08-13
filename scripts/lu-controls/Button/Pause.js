@@ -1,6 +1,6 @@
 var Constants = require( 'lu/Constants' ),
   Class = require( 'class' ),
-  DefaultDecorator = require( 'lu/Button/Default' );
+  DefaultDecorator = require( 'lu/Button/decorators/default' );
 
 /**
  * Decorates the Button to listen for the 'stated' event and
