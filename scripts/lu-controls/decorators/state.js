@@ -34,7 +34,9 @@ function stateDecorator() {
     } );
 
     _.each( states, function( clss, index ){
-      classes.push( constants.statePrefix + clss );
+      if( clss ){
+        classes.push( constants.statePrefix + clss );
+      }
     } );
 
     $element.removeClass( removed.join( ' ' ) ).addClass( classes.join( ' ' ) );

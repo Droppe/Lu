@@ -21,28 +21,6 @@
       width: 800px;
       margin: 50px auto;
     }
-    #carousel ul {
-      position: relative;
-      list-style: none;
-      display: block;
-      margin: 20px 0;
-      padding: 0;
-    }
-    #carousel li {
-      background: #dedede;
-      display: block;
-      height: 60px;
-      width: 200px;
-      text-align: center;
-      line-height: 60px;
-      padding: 0;
-      margin: 0;
-      float: left;
-    }
-    #carousel .lu-state-selected {
-      background: #cde
-    }
-
   </style>
 </head>
 
@@ -64,31 +42,15 @@
 
   <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
   <script src="/scripts/lu.0.3.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
-
-    var $Container = $( '[data-lu~=Container]' ),
-      $State = $( '[data-lu~=\'Button:State\']' );
 
     Inject.setExpires( 0 );
     Inject.clearCache();
     Inject.setModuleRoot( 'http://localhost:1337/' );
 
     window.LU_DEBUG = 5;
-
-    Lu.map( $Container, 'Container', function( $element, component ){
-      component.deferral.done( function( instance ){
-        console.info( instance );
-      } );
-    } );
-
-    Lu.map( $State, 'Button', function( $element, component ){
-      component.settings.action = 'state';
-      component.settings.sates = ['on', 'off'];
-      component.deferral.done( function( instance ){
-        console.info( instance );
-      } );
-    } );
 
     Lu.execute( $( 'body' ) ).then( function(){
       console.info( 'W00T' );

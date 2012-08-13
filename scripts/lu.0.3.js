@@ -1,37 +1,46 @@
 var Lu;
 
 function getComponents( $element ){
+
   var components = 'components';
   if( $element.length > 0 ){
     return $element.data( components ) || $element.data( components, {} ).data( components );
   } else {
-    throw new Error( '$element is empty.' );
+    return {};
   }
 }
 
 window.Lu = new function(){
+  var self = this;
   this.$mapped = $( [] );
   this.map = function( $element, component, callback ){
-    var componentData = getComponents( $element );
 
-    this.$mapped = this.$mapped.add( $element.not( this.$mapped ) );
+    _.each( $element, function( item, index ){
 
-    if( !componentData[component] ){
-      componentData[component] = {
-        deferral: $.Deferred(),
-        instance: null,
-        settings: {}
-      };
-      callback.call( this, $element, componentData[component] );
-    } else {
-      throw new Error( 'Component already exists!' );
-    }
+      var $element = $( item ),
+        componentData = getComponents( $element ),
+        settings;
 
-    return this;
+      self.$mapped = self.$mapped.add( $element.not( self.$mapped ) );
+
+      if( !componentData[component] ){
+        componentData[component] = {
+          deferral: $.Deferred(),
+          instance: null,
+          settings: {}
+        };
+      } else {
+        _.extend( componentData[component].settings, {} );
+      }
+
+      callback.call( self, $element, componentData[component] );
+
+    } );
   };
   this.execute = function( $element ){
     var $nodes = $element.find( this.$mapped ),
       deferral = $.Deferred(),
+      requirements = [],
       count;
 
     if( $element.is( this.$mapped ) ){
@@ -46,23 +55,27 @@ window.Lu = new function(){
         var requirement = 'lu/' + key,
           settings = component.settings;
 
-        require.ensure( [requirement], function( required, module, exports ){
+        requirements.push( requirement );
+
+        count -= 1;
+
+        deferral.then( function( required, module, exports ){
+
           var Component = require( requirement );
 
           try {
             component.instance = new Component( $element, settings );
             component.deferral.resolve( component.instance );
           } catch( error ){
-            throw new Error( error );
+            throw new Error( 'Component could not be instantiated' );
           }
-
-          count -= 1;
-
-          if( count === 0 ){
-            deferral.resolve();
-          }
-
         } );
+
+        if( count === 0 ){
+          require.ensure( requirements, function( required, module, exports ){
+            deferral.resolve( required, module, exports );
+          } );
+        }
       } );
     }
 
