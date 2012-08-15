@@ -26,7 +26,7 @@ Switch = Abstract.extend( function ( base ) {
     init: function( $element, settings ){
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
-      Fiber.decorate( this, StateDecorator() );
+      Fiber.decorate( this, StateDecorator( settings ) );
     }
   };
 } );

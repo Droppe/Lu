@@ -109,7 +109,8 @@ Button = Switch.extend( function( base ){
 
       require.ensure( requirements, function( require, module, exports ){
         _.each( requirements, function( decorator, index ){
-          Fiber.decorate( self, require( decorator )( settings ) );
+          decorator = require( decorator )( settings );
+          Fiber.decorate( self, decorator );
         } );
       } );
 

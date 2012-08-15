@@ -12,7 +12,7 @@ function playDecorator( settings ) {
   return function( base ){
     var self = this;
 
-    self.on( constants.events.STATED, function( event, Component ){
+    this.on( constants.events.STATED, function( event, Component ){
       event.stopPropagation();
       if( Component.hasState( constants.states.PLAYING ) ){
         self.disable();

@@ -14,27 +14,37 @@ window.Lu = new function(){
   var self = this;
   this.$mapped = $( [] );
   this.map = function( $element, component, callback ){
-
     _.each( $element, function( item, index ){
-
       var $element = $( item ),
         componentData = getComponents( $element ),
-        settings;
+        settings,
+        configuration,
+        key;
 
       self.$mapped = self.$mapped.add( $element.not( self.$mapped ) );
 
       if( !componentData[component] ){
+
         componentData[component] = {
           deferral: $.Deferred(),
-          instance: null,
           settings: {}
         };
+
       } else {
         _.extend( componentData[component].settings, {} );
       }
 
       callback.call( self, $element, componentData[component] );
 
+      key = componentData[component].key || component;
+
+      try {
+        configuration = ( function(){ return eval( '( function(){ return ' + $element.data( 'luConfig' ) + '; }() );' ); }()[key] || {} );
+      } catch( error ){
+        configuration = {};
+      }
+
+      componentData[component].settings = _.extend( componentData[component].settings, configuration );
     } );
   };
   this.execute = function( $element ){
@@ -67,7 +77,7 @@ window.Lu = new function(){
             component.instance = new Component( $element, settings );
             component.deferral.resolve( component.instance );
           } catch( error ){
-            throw new Error( 'Component could not be instantiated' );
+            throw new Error( 'Component could not be instantiated.' );
           }
         } );
 

@@ -2,6 +2,7 @@ var constants = require( 'lu/constants' );
 
 function stateDecorator( settings ){
 
+  //Normalize states into an array.
   function normalize( states ){
     if( states ){
       if( typeof states === 'string' ){
@@ -11,6 +12,7 @@ function stateDecorator( settings ){
     return states;
   }
 
+  //Correct the index
   function state( states, index ){
     if( index === undefined ){
       index = 0;
@@ -26,7 +28,7 @@ function stateDecorator( settings ){
 
   return function( base ){
     var self = this,
-      states = normalize( settings.states ) || [ constants.states.ACTIVE, constants.states.INACTIVE ],
+      states = normalize( settings.states ) || [constants.states.ACTIVE, constants.states.INACTIVE],
       index = settings.index || 0;
 
     this.on( settings.on, function( event ){
@@ -34,10 +36,9 @@ function stateDecorator( settings ){
         self.$element.focus();
       }
       index = state( states, index );
-      self.trigger( constants.events.STATE, states[index] )
+      self.trigger( constants.events.STATE, [states[index], settings.method] )
     } );
-  }
-
+  };
 }
 
 //Export to Common JS Loader

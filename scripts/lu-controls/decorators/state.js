@@ -2,7 +2,7 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' );
 
-function stateDecorator() {
+function stateDecorator( settings ){
 
   function normalizeStates( states ){
     if( states ){
@@ -63,7 +63,8 @@ function stateDecorator() {
      * @private
      */
     var self = this,
-      states = [];
+      states = [],
+      history = [getAppliedStates( this.$element )];
 
     /**
      * Updates states on a state event
@@ -73,12 +74,31 @@ function stateDecorator() {
      * @param {Array} states an array of states to set
      * @return {Function} Container.setState
      */
-    function state( event, states ){
+    function state( event, states, method ){
       if( self.$element.is( event.target ) ){
         return self;
       }
       event.stopPropagation();
-      return self.setState( states );
+
+      switch( method ){
+        case 'add':
+          self.addState( states );
+          break;
+        case 'remove':
+          self.removeState( states );
+          break;
+        case 'reset':
+          self.reset();
+        case 'clear':
+          self.clear();
+        case 'toggle':
+          self.toggle( states );
+        default:
+          self.setState( states );
+      }
+
+      return self;
+
     }
 
     /**
@@ -91,15 +111,16 @@ function stateDecorator() {
       return states;
     };
 
-    /**
+    /*
      * Sets the state(s) of the instance replacing other states
      * @method setState
      * @param {Array|String} value This can be an Array of strings or comma
-     * delimeted string representing multiple states. It can also be
+     * delimited string representing multiple states. It can also be
      * a string representing a single state
      * @public
      * @return {Object} instance
      */
+     
     this.setState = function( value ){
       if( typeof value === 'string' ){
         value = value.split( ',' ).sort();
@@ -122,9 +143,9 @@ function stateDecorator() {
 
     /**
      * Adds a state or states to the instance
-     * @method addState
+     * @method addStates
      * @param {Array|String} value This can be an Array of strings or comma
-     * delimeted string representing multiple states. It can also be
+     * delimited string representing multiple states. It can also be
      * a string representing a single state
      * @public
      * @return {Object} instance
@@ -143,9 +164,9 @@ function stateDecorator() {
 
     /**
      * Removes the state(s) from the instance
-     * @method addState
+     * @method removeState
      * @param {Array|String} value This can be an Array of strings or comma
-     * delimeted string representing multiple states. It can also be
+     * delimited string representing multiple states. It can also be
      * a string representing a single state
      * @public
      * @return {Object} instance
@@ -163,7 +184,55 @@ function stateDecorator() {
         applyState( this.$element, states, constants.statePrefix );
         this.trigger( constants.events.STATED, [this] );
       }
-      //TODO: add reset, and clear method
+      return this;
+    };
+
+    /**
+     * Removes all states from the instance
+     * @method clear
+     * @public
+     * @return {Object} instance
+     */
+    this.clear = function(){
+      this.removeState( states );
+      return this;
+    };
+
+    /**
+     * Sets states to those originally defined on the node
+     * @method reset
+     * @public
+     * @return {Object} instance
+     */
+    this.reset = function(){
+      this.setState( states );
+      return this;
+    };
+
+    /**
+     * Removes the state(s) from the instance that exist and add the states that don't
+     * @method toggle
+     * @param {Array|String} value This can be an Array of strings or comma
+     * delimited string representing multiple states. It can also be
+     * a string representing a single state
+     * @public
+     * @return {Object} instance
+     */
+    this.toggle = function( value ){
+      var intersection;
+      if( typeof value === 'string' ){
+        value = value.split( ',' );
+      }
+
+      intersection = _.intersection( states, value );
+
+      console.log( intersection );
+
+      if( intersection.length > 0 ){
+        states = _.without( states, value );
+        applyState( this.$element, states, constants.statePrefix );
+        this.trigger( constants.events.STATED, [this] );
+      }
       return this;
     };
 
@@ -178,7 +247,7 @@ function stateDecorator() {
       return ( _.indexOf( states, value ) > -1 );
     };
 
-    this.addState( getAppliedStates( this.$element ) );
+    this.addState( history[0] );
     this.on( constants.events.STATE, state );
   };
 }

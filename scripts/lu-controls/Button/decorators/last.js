@@ -8,7 +8,6 @@ var constants = require( 'lu/constants' );
  * @method last
  * @private
  */
-
 function lastDecorator( settings ) {
 
   return function( base ){
