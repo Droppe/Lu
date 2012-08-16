@@ -74,7 +74,9 @@ window.Lu = new function(){
           var Component = require( requirement );
 
           try {
+            console.log( 'IN', requirement );
             component.instance = new Component( $element, settings );
+            console.log( 'OUT', requirement );
             component.deferral.resolve( component.instance );
           } catch( error ){
             throw new Error( 'Component could not be instantiated.' );

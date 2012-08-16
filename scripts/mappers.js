@@ -28,7 +28,11 @@
     $List = $( '[data-lu~=List]' );
 
   //Buttons
-  Lu.map( $DefaultButton, 'Button', function( $element, component ){} );
+  Lu.map( $DefaultButton, 'Button', function( $element, component ){
+    component.deferral.done( function(){
+      console.log( 'YEAH' );
+    } );
+  } );
 
   Lu.map( $FirstButton, 'Button', function( $element, component ){
     component.settings.action = 'first';
@@ -93,7 +97,12 @@
   } );
 
   //Switch
-  Lu.map( $Switch, 'Switch', function( $element, component ){} );
+  Lu.map( $Switch, 'Switch', function( $element, component ){
+    console.log( 'SWITCH' );
+    component.deferral.done( function(){
+      console.log( 'YEAH' );
+    } );
+  } );
 
   //Container
   Lu.map( $Container, 'Container', function( $element, component ){} );

@@ -51,20 +51,19 @@ function stateDecorator( settings ){
         states.push( item.replace( constants.statePrefix, '' ) );
       }
     } );
-
     return states;
   }
 
   return function( base ){
-    /**
-     * An array of string representing the current state(s)
-     * @property states
-     * @type Array
-     * @private
-     */
     var self = this,
+      /**
+       * An array of string representing the current state(s)
+       * @property states
+       * @type Array
+       * @private
+       */
       states = [],
-      history = [getAppliedStates( this.$element )];
+      cache = [getAppliedStates( this.$element )];
 
     /**
      * Updates states on a state event
@@ -122,7 +121,6 @@ function stateDecorator( settings ){
      * @public
      * @return {Object} instance
      */
-     
     this.setState = function( value ){
       if( typeof value === 'string' ){
         value = value.split( ',' ).sort();
@@ -143,7 +141,7 @@ function stateDecorator( settings ){
       return this;
     };
 
-    /**
+    /*
      * Adds a state or states to the instance
      * @method addStates
      * @param {Array|String} value This can be an Array of strings or comma
