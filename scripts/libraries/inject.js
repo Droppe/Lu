@@ -132,11 +132,11 @@ var userConfig = {
   fileExpires: 300,
   useSuffix: true,
   xd: {
-    relayFile: null,
-    relaySwf: null
+  	relayFile: null,
+  	relaySwf: null
   },
   debug: {
-    sourceMap: false,
+  	sourceMap: false,
     logging: false
   }
 };
@@ -2047,7 +2047,6 @@ var RulesEngine;
           }
           else if (piece === "..") {
             // up one directory
-            console.log( resolved );
             if (resolved.length === 0) {
               throw new Error("could not traverse higher than highest path");
             }

@@ -30,6 +30,9 @@
     .lu-state-blue {
       background-color: #00f;
     }
+    .lu-state-red {
+      background-color: #f00;
+    }
     .lu-state-tall {
       height: 400px;
     }
@@ -41,40 +44,39 @@
 
 <body>
 
-  <div data-lu="Switch" class="lu-state-blue">
-      <button data-lu="Button:State" data-lu-config="{
-        'Button:State': {
-          states: 'blue'
-        }
-      }">Blue</button>
-<!--       <button data-lu="Button:State" data-lu-config="{
-        'Button:State': {
-          states: 'tall'
-        }
-      }">Tall</button>
-      <button data-lu="Button:State" data-lu-config="{
-        'Button:State': {
-          states: 'wide'
-        }
-      }">Wide</button>
-      <button data-lu="Button:State:Add" data-lu-config="{
-        'Button:State:Add': {
-          states: 'blue'
-        }
-      }">Blue Additive</button>
-      <button data-lu="Button:State:Add" data-lu-config="{
-        'Button:State:Add': {
-          states: 'tall'
-        }
-      }">Tall Additive</button>
-      <button data-lu="Button:State:Add" data-lu-config="{
-        'Button:State:Add': {
-          states: 'wide'
-        }
-      }">Wide Additive</button>
-      <button data-lu="Button:State:Clear">Clear</button>
-      <button data-lu="Button:State:Reset">Reset</button> -->
-
+  <div data-lu="Switch" class="lu-state-red">
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        states: 'blue'
+      }
+    }">Blue</button>
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        states: 'tall'
+      }
+    }">Tall</button>
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        states: 'wide'
+      }
+    }">Wide</button>
+    <button data-lu="Button:State:Add" data-lu-config="{
+      'Button:State:Add': {
+        states: 'blue'
+      }
+    }">Blue Additive</button>
+    <button data-lu="Button:State:Add" data-lu-config="{
+      'Button:State:Add': {
+        states: 'tall'
+      }
+    }">Tall Additive</button>
+    <button data-lu="Button:State:Add" data-lu-config="{
+      'Button:State:Add': {
+        states: 'wide'
+      }
+    }">Wide Additive</button>
+    <button data-lu="Button:State:Clear">Clear</button>
+    <button data-lu="Button:State:Reset">Reset</button>
   </div>
 
   <!-- Bootstrap:Util -->

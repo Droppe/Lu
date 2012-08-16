@@ -1,7 +1,32 @@
+/**
+ * Lu Control Framework
+ * @module Lu
+ * @license
+ * @author Robert Martone
+ * 
+ * Lu Control Framework v0.3.0
+ *
+ * Please thank the contributors: https://github.com/linkedin/Lu/graphs/contributors
+ *
+ * Copyright (c) 2011,2012 LinkedIn
+ * All Rights Reserved. Apache Software License 2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 var Lu;
 
 function getComponents( $element ){
-
   var components = 'components';
   if( $element.length > 0 ){
     return $element.data( components ) || $element.data( components, {} ).data( components );
@@ -74,9 +99,7 @@ window.Lu = new function(){
           var Component = require( requirement );
 
           try {
-            console.log( 'IN', requirement );
             component.instance = new Component( $element, settings );
-            console.log( 'OUT', requirement );
             component.deferral.resolve( component.instance );
           } catch( error ){
             throw new Error( 'Component could not be instantiated.' );
@@ -88,6 +111,7 @@ window.Lu = new function(){
             deferral.resolve( required, module, exports );
           } );
         }
+
       } );
     }
 
@@ -146,15 +170,17 @@ function notify( $element, event, parameters ){
         deferrals = [];
 
       _.each( components, function( component, key ){
-        var instance = component.instance,
-          deferral = component.deferral;
-
+        var deferral = component.deferral;
         deferral.done( function(){
+          var instance = component.instance;
+          console.log( instance.events() );
           if( _.indexOf( instance.events(), event ) > -1 ){
             instance.trigger.call( instance, new $.Event( event, { target: $element } ), parameters );
           }
         } );
+
       } );
+
     } );
   }
   return $element;
@@ -208,3 +234,5 @@ if( typeof module !== 'undefined' ){
     module.exports = Lu;
   }
 }
+
+//Don't do Gilligan's Island if you want to be a serious actress!

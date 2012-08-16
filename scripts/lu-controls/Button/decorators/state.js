@@ -48,7 +48,11 @@ function stateDecorator( settings ){
       if( self.$element.is( Component.$element ) ){
         return;
       }
-      console.log( 'hello' );
+      if( Component.hasState( states[index] ) && states.length === 1 ){
+        self.disable();
+      } else {
+        self.enable();
+      }
     } );
   };
 }

@@ -218,7 +218,9 @@ function stateDecorator( settings ){
      * @public
      * @return {Object} instance
      */
-    this.toggle = function( value ){};
+    this.toggle = function( add, remove ){
+
+    };
 
     /**
      * Checks to see if the state has been applied
@@ -232,7 +234,7 @@ function stateDecorator( settings ){
     };
 
     //Add the initial state
-    this.addState( history[0] );
+    this.addState( cache[0] );
     //Bind to 'state' events
     this.on( constants.events.STATE, state );
   };
