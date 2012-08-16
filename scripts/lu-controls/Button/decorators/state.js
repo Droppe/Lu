@@ -28,15 +28,27 @@ function stateDecorator( settings ){
 
   return function( base ){
     var self = this,
-      states = normalize( settings.states ) || [constants.states.ACTIVE, constants.states.INACTIVE],
+      states = [],
+      method = settings.method,
       index = settings.index || 0;
+
+      if( method !== 'reset' || method !== 'clear' ){
+        states = normalize( settings.states ) || [constants.states.ACTIVE, constants.states.INACTIVE];
+      }
 
     this.on( settings.on, function( event ){
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }
       index = state( states, index );
-      self.trigger( constants.events.STATE, [states[index], settings.method] )
+      self.trigger( constants.events.STATE, [states[index], method] );
+    } );
+
+    this.on( constants.events.STATED, function( event, Component ){
+      if( self.$element.is( Component.$element ) ){
+        return;
+      }
+      console.log( 'hello' );
     } );
   };
 }

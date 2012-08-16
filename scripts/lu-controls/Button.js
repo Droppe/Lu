@@ -58,7 +58,6 @@ Button = Switch.extend( function( base ){
         requirements = [],
         decorator;
 
-      //Applies a decorator based on the command given
       _.defaults( settings, defaults );
 
       base.init.call( this, $element, settings );
@@ -114,7 +113,7 @@ Button = Switch.extend( function( base ){
         } );
       } );
 
-      //binds the spacebar to the on event
+      //binds the space-bar to the on event
       bindSpaceBar( this, settings.on );
     },
 

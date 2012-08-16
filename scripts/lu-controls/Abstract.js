@@ -73,24 +73,24 @@ Abstract = Fiber.extend( function( base ){
      */
     init: function( $element, settings ){
       //Set up observers and notifiers
-      var $observe,
-        $notify;
+      // var $observe,
+      //   $notify;
 
-      _.defaults( settings, defaults );
+      // _.defaults( settings, defaults );
 
-      this.$element = $element;
-      this.eventStore = {};
+      // this.$element = $element;
+      // this.eventStore = {};
 
-      $observe = $( settings.observe );
-      $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
+      // $observe = $( settings.observe );
+      // $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
 
-      if( $observe.length ){
-        this.observe( $observe );
-      }
+      // if( $observe.length > 0 ){
+      //   this.observe( $observe );
+      // }
 
-      if( $notify.length ){
-        $element.lu( 'observe', $notify );
-      }
+      // if( $notify.length > 0 ){
+      //   $element.lu( 'observe', $notify );
+      // }
 
     },
     /**

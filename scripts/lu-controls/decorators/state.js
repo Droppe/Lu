@@ -89,16 +89,18 @@ function stateDecorator( settings ){
           break;
         case 'reset':
           self.reset();
+          break;
         case 'clear':
           self.clear();
+          break;
         case 'toggle':
           self.toggle( states );
+          break;
         default:
           self.setState( states );
       }
 
       return self;
-
     }
 
     /**
@@ -205,7 +207,7 @@ function stateDecorator( settings ){
      * @return {Object} instance
      */
     this.reset = function(){
-      this.setState( states );
+      this.setState( history[0] );
       return this;
     };
 
@@ -218,23 +220,7 @@ function stateDecorator( settings ){
      * @public
      * @return {Object} instance
      */
-    this.toggle = function( value ){
-      var intersection;
-      if( typeof value === 'string' ){
-        value = value.split( ',' );
-      }
-
-      intersection = _.intersection( states, value );
-
-      console.log( intersection );
-
-      if( intersection.length > 0 ){
-        states = _.without( states, value );
-        applyState( this.$element, states, constants.statePrefix );
-        this.trigger( constants.events.STATED, [this] );
-      }
-      return this;
-    };
+    this.toggle = function( value ){};
 
     /**
      * Checks to see if the state has been applied
@@ -247,7 +233,9 @@ function stateDecorator( settings ){
       return ( _.indexOf( states, value ) > -1 );
     };
 
+    //Add the initial state
     this.addState( history[0] );
+    //Bind to 'state' events
     this.on( constants.events.STATE, state );
   };
 }

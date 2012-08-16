@@ -162,35 +162,38 @@ function notify( $element, event, parameters ){
   $.fn.lu = function(){
     var $this = $( this ),
       parameters = Array.prototype.slice.call( arguments ),
-      method = parameters[0];
+      method = parameters[0],
+      retrn;
 
     parameters[0] = $this;
 
     switch( method ){
       case 'observe':
-        observe.apply( $this, parameters );
+        retrn = observe.apply( $this, parameters );
         break;
       case 'unobserve':
-        unobserve.apply( $this, parameters );
+        retrn = unobserve.apply( $this, parameters );
         break;
       case 'notify':
-        notify.apply( $this, parameters );
+        retrn = notify.apply( $this, parameters );
         break;
       case 'getComponents':
-        getComponents.apply( $this, parameters );
+        retrn = getComponents.apply( $this, parameters );
         break;
       case 'getParents':
-        getParents.apply( $this, parameters );
+        retrn = getParents.apply( $this, parameters );
         break;
       case 'getDescendants':
-        getDescendants.apply( $this, parameters );
+        retrn = getDescendants.apply( $this, parameters );
         break;
       case 'getChildren':
-        getChildren.apply( $this, parameters );
+        retrn = getChildren.apply( $this, parameters );
         break;
       default:
         throw new Error( 'No such method.' );
     }
+
+    return retrn;
   };
 }( window.jQuery ) );
 

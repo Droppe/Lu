@@ -10,7 +10,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Accordion</title>
+  <title>Switch</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -41,15 +41,13 @@
 
 <body>
 
-  <div data-lu="Container">
-    <p>
-      <span>Singular</span>
+  <div data-lu="Switch" class="lu-state-blue">
       <button data-lu="Button:State" data-lu-config="{
         'Button:State': {
           states: 'blue'
         }
       }">Blue</button>
-      <button data-lu="Button:State" data-lu-config="{
+<!--       <button data-lu="Button:State" data-lu-config="{
         'Button:State': {
           states: 'tall'
         }
@@ -59,29 +57,23 @@
           states: 'wide'
         }
       }">Wide</button>
-    </p>
-    <p>
-      <span>Additive</span>
-      <button data-lu="Button:State" data-lu-config="{
-        'Button:State': {
-          states: 'blue',
-          method: 'add'
+      <button data-lu="Button:State:Add" data-lu-config="{
+        'Button:State:Add': {
+          states: 'blue'
         }
-      }">Blue</button>
-      <button data-lu="Button:State" data-lu-config="{
-        'Button:State': {
-          states: 'tall',
-          method: 'add'
+      }">Blue Additive</button>
+      <button data-lu="Button:State:Add" data-lu-config="{
+        'Button:State:Add': {
+          states: 'tall'
         }
-      }">Tall</button>
-      <button data-lu="Button:State" data-lu-config="{
-        'Button:State': {
-          states: 'wide',
-          method: 'add'
+      }">Tall Additive</button>
+      <button data-lu="Button:State:Add" data-lu-config="{
+        'Button:State:Add': {
+          states: 'wide'
         }
-      }">Wide</button>
-    </p>
-
+      }">Wide Additive</button>
+      <button data-lu="Button:State:Clear">Clear</button>
+      <button data-lu="Button:State:Reset">Reset</button> -->
 
   </div>
 
