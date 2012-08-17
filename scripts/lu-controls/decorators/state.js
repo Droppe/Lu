@@ -218,9 +218,9 @@ function stateDecorator( settings ){
      * @public
      * @return {Object} instance
      */
-    this.toggle = function( add, remove ){
+    // this.toggle = function( values ){
 
-    };
+    // };
 
     /**
      * Checks to see if the state has been applied

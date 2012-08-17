@@ -100,7 +100,14 @@ window.Lu = new function(){
 
           try {
             component.instance = new Component( $element, settings );
-            component.deferral.resolve( component.instance );
+            if( component.hasDependencies ){
+              component.instance.one( 'dependencies-resolved', function( event, instance ){
+                event.stopPropagation();
+                component.deferral.resolve( component.instance );
+              } );
+            } else {
+              component.deferral.resolve( component.instance );
+            }
           } catch( error ){
             throw new Error( 'Component could not be instantiated.' );
           }
@@ -173,7 +180,6 @@ function notify( $element, event, parameters ){
         var deferral = component.deferral;
         deferral.done( function(){
           var instance = component.instance;
-          console.log( instance.events() );
           if( _.indexOf( instance.events(), event ) > -1 ){
             instance.trigger.call( instance, new $.Event( event, { target: $element } ), parameters );
           }

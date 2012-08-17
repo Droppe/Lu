@@ -111,6 +111,7 @@ Button = Switch.extend( function( base ){
           decorator = require( decorator )( settings );
           Fiber.decorate( self, decorator );
         } );
+        self.trigger( 'dependencies-resolved' );
       } );
 
       //binds the space-bar to the on event

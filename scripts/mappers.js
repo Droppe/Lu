@@ -1,7 +1,8 @@
 //This file contains default mappings for Lu.
 ( function(){
 
-  console.time( 'Mappers Execution Timer' );
+  // console.time( 'Mappers Execution Timer' );
+
   var
     //Buttons
     $DefaultButton = $( '[data-lu~=Button]' ),
@@ -33,63 +34,77 @@
   Lu.map( $FirstButton, 'Button', function( $element, component ){
     component.settings.action = 'first';
     component.key = 'Button:First';
+    component.hasDependencies = true;
   } );
   Lu.map( $LastButton, 'Button', function( $element, component ){
     component.settings.action = 'last';
     component.key = 'Button:Last';
+    component.hasDependencies = true;
   } );
   Lu.map( $LoadButton, 'Button', function( $element, component ){
     component.settings.action = 'load';
     component.key = 'Button:Load';
+    component.hasDependencies = true;
   } );
   Lu.map( $NextButton, 'Button', function( $element, component ){
     component.settings.action = 'next';
     component.key = 'Button:Next';
+    component.hasDependencies = true;
   } );
   Lu.map( $PauseButton, 'Button', function( $element, component ){
     component.settings.action = 'pause';
     component.key = 'Button:Pause';
+    component.hasDependencies = true;
   } );
   Lu.map( $PlayButton, 'Button', function( $element, component ){
     component.settings.action = 'play';
     component.key = 'Button:Play';
+    component.hasDependencies = true;
   } );
   Lu.map( $PreviousButton, 'Button', function( $element, component ){
     component.settings.action = 'previous';
     component.key = 'Button:Previous';
+    component.hasDependencies = true;
   } );
   Lu.map( $SelectButton, 'Button', function( $element, component ){
     component.settings.action = 'select';
     component.key = 'Button:Select';
+    component.hasDependencies = true;
   } );
   Lu.map( $StateButton, 'Button', function( $element, component ){
     component.settings.action = 'state';
     component.key = 'Button:State';
+    component.hasDependencies = true;
   } );
   Lu.map( $StateButtonAdd, 'Button', function( $element, component ){
     component.settings.action = 'state';
     component.settings.method = 'add';
     component.key = 'Button:State:Add';
+    component.hasDependencies = true;
   } );
   Lu.map( $StateButtonRemove, 'Button', function( $element, component ){
     component.settings.action = 'state';
     component.settings.method = 'remove';
     component.key = 'Button:State:Remove';
+    component.hasDependencies = true;
   } );
   Lu.map( $StateButtonToggle, 'Button', function( $element, component ){
     component.settings.action = 'state';
     component.settings.method = 'toggle';
     component.key = 'Button:State:Toggle';
+    component.hasDependencies = true;
   } );
   Lu.map( $StateButtonReset, 'Button', function( $element, component ){
     component.settings.action = 'state';
     component.settings.method = 'reset';
     component.key = 'Button:State:Reset';
+    component.hasDependencies = true;
   } );
   Lu.map( $StateButtonClear, 'Button', function( $element, component ){
     component.settings.action = 'state';
     component.settings.method = 'clear';
     component.key = 'Button:State:Clear';
+    component.hasDependencies = true;
   } );
 
   //Switch
@@ -101,6 +116,6 @@
   //List
   Lu.map( $List, 'List', function( $element, component ){} );
 
-  console.timeEnd( 'Mappers Execution Timer' );
+  // console.timeEnd( 'Mappers Execution Timer' );
 
 }() );
