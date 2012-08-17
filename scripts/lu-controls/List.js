@@ -14,26 +14,9 @@ var constants = require( 'lu/constants' ),
 
 List = Switch.extend( function( Switch ){
 
-  var NEXT_EVENT = 'next',
-    LAST_EVENT = 'last',
-    FIRST_EVENT = 'first',
-    PREVIOUS_EVENT = 'previous',
-    SELECT_EVENT = 'select',
-    KEYUP_EVENT = 'keyup',
-    SELECTED_EVENT = 'selected',
-    OUT_OF_BOUNDS_EVENT = 'out-of-bounds',
-    STATED_EVENT = 'stated',
-    PLAYING_STATE = 'playing',
-    FLOORED_STATE = 'floored',
-    MAXED_STATE = 'maxed',
-    SELECTED_STATE = 'selected',
-    FORWARD_STATE = 'forward',
-    REVERSE_STATE = 'reverse',
-    VERTICAL = 'vertical',
+  var VERTICAL = 'vertical',
     HORIZONTAL = 'horizontal',
     LIST_TAGS = 'ul, ol, dl',
-    STRING = 'string',
-    CONTAINER = 'Container',
     defaults = {
       orientation: HORIZONTAL
     };
@@ -125,7 +108,7 @@ List = Switch.extend( function( Switch ){
         var $items;
 
         if( settings.items ){
-          if( typeof settings.items === STRING ){
+          if( typeof settings.items === 'string' ){
             $items = $element.children( settings.items );
           } else {
             $items = settings.items;
