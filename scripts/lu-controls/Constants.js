@@ -9,8 +9,12 @@ var constants = {
     STATE: 'state',
     UPDATED: 'updated',
     UPDATE: 'update',
-    LOAD: 'load'
-
+    LOAD: 'load',
+    OUT_OF_BOUNDS: 'out_of_bounds',
+    NEXT: 'next',
+    PREVIOUS: 'previous',
+    FIRST: 'first',
+    LAST: 'last'
   },
   statePrefix: 'lu-state-',
   states: {
@@ -28,7 +32,9 @@ var constants = {
     PAUSED: 'paused',
     ACTIVE: 'active',
     INACTIVE: 'inactive',
-    ERRED: 'erred'
+    ERRED: 'erred',
+    REVERSE: 'reverse',
+    FOWARD: 'FOWARD'
   }
 };
 

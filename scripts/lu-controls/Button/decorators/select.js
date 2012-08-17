@@ -12,56 +12,27 @@ var constants = require( 'lu/constants' );
 function selectDecorator( settings ){
 
   return function( base ){
-    var self = this,
-      $items;
+    var self = this;
 
-    controls = $element.attr( 'aria-controls' );
-
-    if( $element.is( 'a' ) && !controls ){
-      controls = _.explodeURL( $element.attr( 'href' ) ).fragment;
-    }
-
-    if( item === undefined ){
-      if( controls && controls !== '' ){
-        item = '#' + controls;
-      } else {
-        //get Control logic needs to be rewritten to be a bit smarter (something like)
-        $items = lu.getParent( $element, function( item, index ){
-          var Control = lu.getControl( $( item ) ); //this assumes that there is one control that is on the item :(
-          if( Control.$items ){
-            return true;
-          }
-          return false;
-        } );
-      }
-    }
-
-    self.on( Constants.events.SELECTED, function( event, Component ){
-      var $item;
-
+    this.on( constants.events.SELECTED, function( event, Component ){
       event.stopPropagation();
-
-      if( typeof item === 'number' ){
-        $item = Component.$items.eq( item );
-      } else if( typeof item === 'string' ){
-        $item = Component.$items.filter( item );
-      } else if( item instanceof $ ){
-        $item = item;
-      }
-
-      if( Component.current ){
-        if( Component.current().is( $item ) ){
+      if( Component.$items && Component.current ){
+        if( self.$element.closest( Component.$items ).is( Component.current().$element ) ){
           self.disable();
         } else {
           self.enable();
         }
+      } else {
+        self.enable();
       }
     } );
 
+
     this.on( settings.on, function( event ){
       if( self.$element.is( 'a' ) ){
-        self.trigger( constants.events.SELECT, [item] );
+        self.$element.focus();
       }
+      self.trigger( constants.events.SELECT, [self] );
     } );
   };
 }

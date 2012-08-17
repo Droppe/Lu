@@ -3,7 +3,7 @@
  * @module Lu
  * @license
  *
- * Lu Control Framework v0.2.5
+ * Lu Control Framework v0.3.0
  *
  * Copyright (c) 2011,2012 LinkedIn
  * All Rights Reserved. Apache Software License 2.0

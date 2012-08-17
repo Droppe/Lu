@@ -6,8 +6,10 @@
  * @version 0.2.4
  */
 
-var Switch = require( 'lu/Switch' ),
-  Container = require( 'lu/Container' ),
+var constants = require( 'lu/constants' ),
+  helpers = require( 'lu/helpers' ),
+  Switch = require( 'lu/Switch' ),
+  Fiber = require( 'Fiber' ),
   List;
 
 List = Switch.extend( function( Switch ){
@@ -33,23 +35,8 @@ List = Switch.extend( function( Switch ){
     STRING = 'string',
     CONTAINER = 'Container',
     defaults = {
-      orientation: HORIZONTAL,
-      index: 0
+      orientation: HORIZONTAL
     };
-
-/**
- * Instantiates Container objects on list items.
- * @param  {Object} $item  A JQuery collection referencing a list item to create a Container on
- * @return {Object} Promise 
- */
-  function contain( $item ){
-    return $.Deferred( function( dfd ){
-      lu.create( $item, [CONTAINER], { CONTAINER: {} } );
-      // $item.data( 'luControls' ).Deferred.done( function() {
-      //   dfd.resolve( $item );
-      // } );
-    } ).promise();
-  }
 
   /**
    * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
@@ -74,15 +61,15 @@ List = Switch.extend( function( Switch ){
           List.next();
           break;
         default:
-          // no op
+          // noop
       }
     } else {
       // By default, list orientation is "horizontal" and left and right arrows work
       switch( keyCode ){
-        case 37: // Left arrow
+        case 37: //Left arrow
           List.previous();
           break;
-        case 39: // Right arrow
+        case 39: //Right arrow
           List.next();
           break;
         default:
@@ -90,10 +77,10 @@ List = Switch.extend( function( Switch ){
     }
 
     switch( keyCode ){
-      case 36: // Home key
+      case 36: //Home key
         List.first();
         break;
-      case 35: // Last key
+      case 35: //Last key
         List.last();
         break;
       default:
@@ -115,27 +102,7 @@ List = Switch.extend( function( Switch ){
         $items,
         index;
 
-      if( settings.items ){
-        if( typeof settings.items === STRING ){
-          $items = $element.children( settings.items );
-        } else {
-          $items = settings.items;
-        }
-      } else {
-        if( $element.is( LIST_TAGS ) ){
-          $items = $element.children();
-        } else {
-          $items = $element.children( LIST_TAGS ).first().children();
-        }
-      }
-
-      if( !$items ){
-        $items = $element.children();
-      }
-
       _.defaults( settings, defaults );
-
-      index = settings.index;
 
       Switch.init.call( this, $element, settings );
 
@@ -147,6 +114,35 @@ List = Switch.extend( function( Switch ){
        */
       this.index = function(){
         return index;
+      };
+
+      /**
+       * Gets the selectable items
+       * @public
+       * @return {Object} a JQuery object-reference to the items
+       */
+      this.items = function(){
+        var $items;
+
+        if( settings.items ){
+          if( typeof settings.items === STRING ){
+            $items = $element.children( settings.items );
+          } else {
+            $items = settings.items;
+          }
+        } else {
+          if( $element.is( LIST_TAGS ) ){
+            $items = $element.children();
+          } else {
+            $items = $element.children( LIST_TAGS ).first().children();
+          }
+        }
+
+        if( !$items ){
+          $items = $element.children();
+        }
+
+        return $items;
       };
 
       /**
@@ -168,7 +164,7 @@ List = Switch.extend( function( Switch ){
        * @return {Object} List
        */
       this.select = function( item ){
-        var Container,
+        var componentData,
           $item,
           idx;
 
@@ -177,15 +173,8 @@ List = Switch.extend( function( Switch ){
           return this;
         }
 
-        console.log( 'W))T' );
-
         //try to determine the index of the item being selected
         idx = ( typeof item === 'number' ) ? item : undefined;
-
-        // if we can get the index above and it is already selected - everything is already done!
-        // if( idx === index ){
-        //   return this;
-        // }
 
         //Figure out what to select based on the param passed in.
         if( typeof item === 'number' && item <= this.size() - 1 ){
@@ -193,102 +182,120 @@ List = Switch.extend( function( Switch ){
         } else if( typeof item === 'string' ){
           $item = $items.filter( item );
           $item = ( $item.size() === 1 ) ? $item.eq( 0 ) : undefined;
-        } else if( item instanceof $ && item.size() === 1 && item.is( $items ) ){
-          $item = item;
+        } else if( item instanceof $ && item.size() === 1 ){
+          if( item.is( this.$items ) ){
+            $item = item;
+          }
         }
 
         //We could not determine which item to select so...
         if( $item === undefined ){
-          this.trigger( OUT_OF_BOUNDS_EVENT, [this] );
+          this.trigger( constants.events.OUT_OF_BOUNDS, [this] );
           return this;
         }
 
         //Get the index of the item to be selected if we don't have it from above
         if( idx === undefined ) {
-          idx = $items.index( $item );
+          idx = this.$items.index( $item );
         }
 
         if( idx > this.index() ){
-          this.addState( FORWARD_STATE ).removeState( REVERSE_STATE );
+          this.addState( constants.states.FORWARD ).removeState( constants.states.REVERSE );
         } else if( idx < this.index() ){
-          this.addState( REVERSE_STATE ).removeState( FORWARD_STATE );
+          this.addState( constants.states.REVERSE ).removeState( constants.states.FORWARD );
         }
 
-        //Grab the deferred object
-        Deferred = $item.data( 'luControls' ).Deferred;
+        componentData = $item.lu( 'getComponents' ).Container;
 
-        //Get the item's Container
-        Container = lu.getControl( $item, 'Container' );
-
-        console.log( 'Container', Container, $item );
         //There is no Container so create one.
-        // if( !Container ){
-        //   contain( $item );
-        // }
+        if( !componentData ){
+          Lu.map( $item, 'Container', function(){} );
+          Lu.execute( $item );
+          componentData = $item.lu( 'getComponents' ).Container;
+        }
 
-        // Once the item is fully instantiated, select it.
-        Deferred.done( function(){
+        //Once the item is fully instantiated, select it.
+        componentData.deferral.then( function(){
           var current = self.current();
+
+          if( idx === index ){
+            return;
+          }
+
           //If there is a currently selected item remove the selected state
           if( current ){
-            current.removeState( SELECTED_STATE );
+            current.removeState( constants.states.SELECTED );
           }
-          Selected = Container;
+
+          Selected = componentData.instance;
           if( idx === index ){
             return;
           } else {
             index = idx;
-            Selected.addState( SELECTED_STATE );
-            self.trigger( SELECTED_EVENT, [self] );
+            Selected.addState( constants.states.SELECTED );
+            self.trigger( constants.events.SELECTED, [self] );
           }
         } );
 
         return this;
-      }
+      };
 
-      this.$items = $items;
+      this.$items = this.items();
       this.orientation = settings.orientation;
 
-      this.on( SELECT_EVENT, function( event, item ){
+      this.on( constants.events.SELECT, function( event, component ){
         event.stopPropagation();
-        self.select( item );
+        self.select( component.$element.closest( self.$items ) );
       } );
 
-      this.on( NEXT_EVENT, function( event ){
+      this.on( constants.events.NEXT, function( event ){
         event.stopPropagation();
         self.next();
       } );
 
-      this.on( PREVIOUS_EVENT, function( event ){
+      this.on( constants.events.PREVIOUS, function( event ){
         event.stopPropagation();
         self.previous();
       } );
 
-      this.on( FIRST_EVENT, function( event ){
+      this.on( constants.events.FIRST, function( event ){
         event.stopPropagation();
         self.first();
       } );
 
-      this.on( LAST_EVENT, function( event ){
+      this.on( constants.events.LAST, function( event ){
         event.stopPropagation();
         self.last();
       } );
 
-      this.on( STATED_EVENT, function( event, Control ){
-        console.log( 'Stated Event Received', event, Control );
+      this.on( constants.events.STATED, function( event, component ){
         event.stopPropagation();
-        if( Control.hasState ){
-          if( Control.hasState( SELECTED_STATE ) ){
-            console.log( 'we should select something' );
-            self.select( Control.$element );
+        var current;
+
+        if( !component.$element.is( self.$items ) ){
+          return;
+        }
+
+        current = self.current();
+
+        if( current ){
+          if( component.$element.is( current.$element ) ){
+            return;
+          }
+        }
+
+        if( component.hasState ){
+          if( component.hasState( constants.states.SELECTED ) ){
+            self.select( component.$element );
           }
         }
 
       } );
 
-      $( 'body' ).keyup( function( event ){
-        handleKeyup( event, self );
-      } );
+      //TODO: How should we do this? What happens with multiple lists?
+      // $( 'body' ).keyup( function( event ){
+      //   handleKeyup( event, self );
+      // } );
     },
 
     /**
@@ -325,7 +332,7 @@ List = Switch.extend( function( Switch ){
       if( this.hasNext() ){
         this.select( this.index() + 1 );
       } else {
-        this.trigger( OUT_OF_BOUNDS_EVENT, [ this ] );
+        this.trigger( constants.events.OUT_OF_BOUNDS, [ this ] );
       }
       return this;
     },
@@ -339,7 +346,7 @@ List = Switch.extend( function( Switch ){
       if( this.hasPrevious() ){
         this.select( this.index() - 1 );
       } else {
-        this.trigger( OUT_OF_BOUNDS_EVENT, [ this ] );
+        this.trigger( constants.events.OUT_OF_BOUNDS, [ this ] );
       }
       return this;
     },

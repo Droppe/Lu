@@ -178,7 +178,7 @@ function notify( $element, event, parameters ){
 
       _.each( components, function( component, key ){
         var deferral = component.deferral;
-        deferral.done( function(){
+        deferral.then( function(){
           var instance = component.instance;
           if( _.indexOf( instance.events(), event ) > -1 ){
             instance.trigger.call( instance, new $.Event( event, { target: $element } ), parameters );
