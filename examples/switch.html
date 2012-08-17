@@ -52,6 +52,16 @@
     }">Blue</button>
     <button data-lu="Button:State" data-lu-config="{
       'Button:State': {
+        states: 'red'
+      }
+    }">Red</button>
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        states: 'red, blue'
+      }
+    }">Blue/Red</button>
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
         states: 'tall'
       }
     }">Tall</button>
@@ -62,11 +72,6 @@
     }">Wide</button>
     <button data-lu="Button:State:Add" data-lu-config="{
       'Button:State:Add': {
-        states: 'blue'
-      }
-    }">Blue Additive</button>
-    <button data-lu="Button:State:Add" data-lu-config="{
-      'Button:State:Add': {
         states: 'tall'
       }
     }">Tall Additive</button>
@@ -75,6 +80,16 @@
         states: 'wide'
       }
     }">Wide Additive</button>
+    <button data-lu="Button:State:Remove" data-lu-config="{
+      'Button:State:Remove': {
+        states: 'tall'
+      }
+    }">Tall Remove</button>
+    <button data-lu="Button:State:Remove" data-lu-config="{
+      'Button:State:Remove': {
+        states: 'wide'
+      }
+    }">Wide Remove</button>
     <button data-lu="Button:State:Clear">Clear</button>
     <button data-lu="Button:State:Reset">Reset</button>
   </div>

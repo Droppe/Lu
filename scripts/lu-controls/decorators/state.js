@@ -205,22 +205,9 @@ function stateDecorator( settings ){
      * @return {Object} instance
      */
     this.reset = function(){
-      this.setState( history[0] );
+      this.setState( cache[0] );
       return this;
     };
-
-    /**
-     * Removes the state(s) from the instance that exist and add the states that don't
-     * @method toggle
-     * @param {Array|String} value This can be an Array of strings or comma
-     * delimited string representing multiple states. It can also be
-     * a string representing a single state
-     * @public
-     * @return {Object} instance
-     */
-    // this.toggle = function( values ){
-
-    // };
 
     /**
      * Checks to see if the state has been applied

@@ -1,8 +1,6 @@
 //This file contains default mappings for Lu.
 ( function(){
 
-  // console.time( 'Mappers Execution Timer' );
-
   var
     //Buttons
     $DefaultButton = $( '[data-lu~=Button]' ),
@@ -17,7 +15,6 @@
     $StateButton = $( '[data-lu~=\'Button:State\']' ),
     $StateButtonAdd = $( '[data-lu~=\'Button:State:Add\']' ),
     $StateButtonRemove = $( '[data-lu~=\'Button:State:Remove\']' ),
-    $StateButtonToggle = $( '[data-lu~=\'Button:State:Toggle\']' ),
     $StateButtonClear = $( '[data-lu~=\'Button:State:Clear\']' ),
     $StateButtonReset = $( '[data-lu~=\'Button:State:Reset\']' ),
     $StateButtonRemove = $( '[data-lu~=\'Button:State:Remove\']' ),
@@ -29,7 +26,9 @@
     $List = $( '[data-lu~=List]' );
 
   //Buttons
-  Lu.map( $DefaultButton, 'Button', function( $element, component ){} );
+  Lu.map( $DefaultButton, 'Button', function( $element, component ){
+    component.hasDependencies = true;
+  } );
 
   Lu.map( $FirstButton, 'Button', function( $element, component ){
     component.settings.action = 'first';
@@ -88,12 +87,6 @@
     component.key = 'Button:State:Remove';
     component.hasDependencies = true;
   } );
-  Lu.map( $StateButtonToggle, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'toggle';
-    component.key = 'Button:State:Toggle';
-    component.hasDependencies = true;
-  } );
   Lu.map( $StateButtonReset, 'Button', function( $element, component ){
     component.settings.action = 'state';
     component.settings.method = 'reset';
@@ -115,7 +108,5 @@
 
   //List
   Lu.map( $List, 'List', function( $element, component ){} );
-
-  // console.timeEnd( 'Mappers Execution Timer' );
 
 }() );

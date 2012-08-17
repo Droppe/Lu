@@ -30,7 +30,8 @@ function stateDecorator( settings ){
     var self = this,
       states = [],
       method = settings.method,
-      index = settings.index || 0;
+      index = settings.index || 0,
+      initialState = [];
 
       if( method !== 'reset' || method !== 'clear' ){
         states = normalize( settings.states ) || [constants.states.ACTIVE, constants.states.INACTIVE];
@@ -44,15 +45,68 @@ function stateDecorator( settings ){
       self.trigger( constants.events.STATE, [states[index], method] );
     } );
 
+    this.one( constants.events.STATED, function( event, Component ){
+      initialState = Component.getState();
+    } );
+
     this.on( constants.events.STATED, function( event, Component ){
+      var intersection;
       if( self.$element.is( Component.$element ) ){
         return;
       }
-      if( Component.hasState( states[index] ) && states.length === 1 ){
-        self.disable();
-      } else {
-        self.enable();
+
+      switch( method ){
+        case 'add':
+          if( Component.hasState( states[index] ) && states.length === 1 ){
+            self.disable();
+          } else {
+            self.enable();
+          }
+          break;
+        case 'remove':
+          if( !Component.hasState( states[index] ) && states.length === 1 ){
+            self.disable();
+          } else {
+            self.enable();
+          }
+          break;
+        case 'clear':
+          if( Component.getState().length === 0 ){
+            self.disable();
+          } else {
+            self.enable();
+          }
+          break;
+        case 'reset':
+          if( _.difference( initialState, Component.getState() ).length === 0 ){
+            self.disable();
+          } else {
+            self.enable();
+          }
+          break;
+        default:
+          intersection = _.intersection( states, Component.getState() );
+          if( states.length === 1 ) {
+            if( Component.hasState( states[index] ) && states.length === 1 ){
+              self.disable();
+            } else {
+              self.enable();
+            }
+          } else if( states.length > 1 ){
+            if( intersection.length === states.length ){
+              self.disable();
+            } else {
+              self.enable();
+            }
+            if( intersection.length === 1 ){
+              index = _.indexOf( states, intersection[0] );
+            }
+
+          } else {
+            self.enable();
+          }
       }
+
     } );
   };
 }
