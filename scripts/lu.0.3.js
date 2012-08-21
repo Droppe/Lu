@@ -149,7 +149,7 @@ function observe( $element, $observer ){
     return $element.data( '$observers', $observer );
   }
 
-  $observers.add( $observer.not( $observers ) );
+  $observers = $observers.add( $observer.not( $observers ) );
   $element.data( '$observers', $observers );
 
   return $element;

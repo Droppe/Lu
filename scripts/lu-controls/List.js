@@ -228,7 +228,30 @@ List = Switch.extend( function( Switch ){
 
       this.on( constants.events.SELECT, function( event, component ){
         event.stopPropagation();
-        self.select( component.$element.closest( self.$items ) );
+        var $element = component.$element,
+          controls = $element.attr( 'aria-controls' ),
+          href,
+          $item;
+
+
+        if( !controls ){
+          href = $element.attr( 'href' );
+          if( href ){
+            controls = helpers.parseUri( href ).anchor;
+          }
+        }
+
+        if( controls ){
+          $item = $( '#' + controls );
+          if( $item.is( self.$items ) ){
+            self.select( $item );
+          } else {
+            self.select( component.$element.closest( self.$items ) );
+          }
+        } else {
+          self.select( component.$element.closest( self.$items ) );
+        }
+
       } );
 
       this.on( constants.events.NEXT, function( event ){

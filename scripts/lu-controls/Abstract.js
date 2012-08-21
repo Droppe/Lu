@@ -146,7 +146,7 @@ Abstract = Fiber.extend( function( base ){
      * @param {Array} $observer A jQuery collection to be observed
      */
     observe: function( $observer ){
-      this.$element.lu( 'observe', $observer, this.$element );
+      this.$element.lu( 'observe', $observer );
       return this;
     },
     /**
