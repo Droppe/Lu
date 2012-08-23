@@ -12,13 +12,15 @@ var constants = require( 'lu/constants' ),
   Fiber = require( 'Fiber' ),
   List;
 
-List = Switch.extend( function( Switch ){
+List = Switch.extend( function( base ){
 
   var VERTICAL = 'vertical',
     HORIZONTAL = 'horizontal',
+    SELECTED = constants.statePrefix + constants.states.SELECTED,
     LIST_TAGS = 'ul, ol, dl',
     defaults = {
-      orientation: HORIZONTAL
+      orientation: HORIZONTAL,
+      index: undefined
     };
 
   /**
@@ -87,7 +89,7 @@ List = Switch.extend( function( Switch ){
 
       _.defaults( settings, defaults );
 
-      Switch.init.call( this, $element, settings );
+      base.init.call( this, $element, settings );
 
       /**
        * gets the 0 based index of the selected item.
@@ -146,6 +148,7 @@ List = Switch.extend( function( Switch ){
        * select, a css selector, or a JQuery collection containing the item.
        * @return {Object} List
        */
+
       this.select = function( item ){
         var componentData,
           $item,
@@ -161,7 +164,7 @@ List = Switch.extend( function( Switch ){
 
         //Figure out what to select based on the param passed in.
         if( typeof item === 'number' && item <= this.size() - 1 ){
-          $item = $items.eq( item );
+          $item = this.$items.eq( item );
         } else if( typeof item === 'string' ){
           $item = $items.filter( item );
           $item = ( $item.size() === 1 ) ? $item.eq( 0 ) : undefined;
@@ -198,26 +201,25 @@ List = Switch.extend( function( Switch ){
         }
 
         //Once the item is fully instantiated, select it.
-        componentData.deferral.then( function(){
+        componentData.deferral.then( function( Component ){
           var current = self.current();
 
-          if( idx === index ){
+          if( idx === index && Selected ){
             return;
           }
 
           //If there is a currently selected item remove the selected state
           if( current ){
             current.removeState( constants.states.SELECTED );
+          } else {
+            self.$items.filter( '.' + SELECTED ).not( Component.$element ).removeClass( SELECTED );
           }
 
-          Selected = componentData.instance;
-          if( idx === index ){
-            return;
-          } else {
-            index = idx;
-            Selected.addState( constants.states.SELECTED );
-            self.trigger( constants.events.SELECTED, [self] );
-          }
+          Selected = Component;
+          index = idx;
+          Selected.addState( constants.states.SELECTED );
+          self.trigger( constants.events.SELECTED, [self] );
+
         } );
 
         return this;
@@ -226,13 +228,24 @@ List = Switch.extend( function( Switch ){
       this.$items = this.items();
       this.orientation = settings.orientation;
 
+      index = settings.index;
+      if( index === undefined ){
+        index = this.$items.filter( '.' + SELECTED ).index( this.$items );
+        index = 0;
+        if( index === -1 ){
+          index = 0;
+        }
+      }
+
+      //Automatically select an item during if the starting index
+      self.select( index );
+
       this.on( constants.events.SELECT, function( event, component ){
         event.stopPropagation();
         var $element = component.$element,
           controls = $element.attr( 'aria-controls' ),
           href,
           $item;
-
 
         if( !controls ){
           href = $element.attr( 'href' );
@@ -251,7 +264,6 @@ List = Switch.extend( function( Switch ){
         } else {
           self.select( component.$element.closest( self.$items ) );
         }
-
       } );
 
       this.on( constants.events.NEXT, function( event ){
@@ -295,7 +307,6 @@ List = Switch.extend( function( Switch ){
             self.select( component.$element );
           }
         }
-
       } );
 
       //TODO: How should we do this? What happens with multiple lists?

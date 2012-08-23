@@ -11,11 +11,12 @@ function DefaultDecorator( settings ){
     var self = this;
 
     this.on( settings.on, function( event ){
+      console.log( 'on' );
       if( !self.$element.is( 'button' ) ){
         self.$element.focus();
       }
-      if( settings.command !== undefined ){
-        self.trigger( settings.command );
+      if( settings.action !== undefined ){
+        self.trigger( settings.action );
       }
     } );
 

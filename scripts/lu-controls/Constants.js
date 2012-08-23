@@ -14,7 +14,9 @@ var constants = {
     NEXT: 'next',
     PREVIOUS: 'previous',
     FIRST: 'first',
-    LAST: 'last'
+    LAST: 'last',
+    PLAY: 'play',
+    PAUSED: 'paused'
   },
   statePrefix: 'lu-state-',
   states: {

@@ -3,7 +3,10 @@
  * @extends List
  */
 
-var List = require( 'lu/List' ),
+var constants = require( 'lu/constants' ),
+  helpers = require( 'lu/helpers' ),
+  List = require( 'lu/List' ),
+  Fiber = require( 'Fiber' ),
   Carousel;
 
 Carousel =  List.extend( function ( base ) {
@@ -103,29 +106,30 @@ Carousel =  List.extend( function ( base ) {
        * @return {Object} Carousel
        */
       this.play = function(){
-        if( !this.hasState( PLAYING_STATE ) ){
+        if( !this.hasState( constants.states.PLAYING ) ){
           ( function recurse( ){
             playTimer = window.setTimeout( function(){
-              if( !self.hasState( PLAYING_STATE ) ){
+              if( !self.hasState( constants.states.PLAYING ) ){
                 self.next();
                 recurse();
               }
             }, settings.delay );
           }() );
-          this.setState( PLAYING_STATE );
+          this.setState( constants.states.PLAYING );
         }
         return this;
       };
 
-      this.on( PLAY_EVENT, function( event ){
+      this.on( constants.events.PLAY, function( event ){
         event.stopPropagation();
         self.play();
       } );
 
-      this.on( [PAUSE_EVENT, NEXT_EVENT, PREVIOUS_EVENT, FIRST_EVENT, LAST_EVENT, SELECT_EVENT].join( ' ' ), function( event, item ){
+      this.on( [constants.events.PLAY, constants.events.NEXT, constants.events.PREVIOUS, constants.events.FIRST, constants.events.LAST, constants.events.SELECT].join( ' ' ), function( event, item ){
         event.stopPropagation();
         self.pause();
       } );
+
 
       // this.on( OUT_OF_BOUNDS_EVENT + '.' + NEXT_EVENT, function( event ){
       //   var controls;
@@ -173,9 +177,9 @@ Carousel =  List.extend( function ( base ) {
      * @return {Object} Carousel
      */
     pause: function(){
-      if( !this.hasState( PAUSED_STATE ) ){
+      if( !this.hasState( constants.states.PAUSED ) ){
         window.clearTimeout( playTimer );
-        this.setState( PAUSED_STATE );
+        this.setState( constants.states.PAUSED );
       }
       return this;
     },

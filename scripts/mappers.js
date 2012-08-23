@@ -23,7 +23,10 @@
     //Container
     $Container = $( '[data-lu~=Container]' ),
     //List
-    $List = $( '[data-lu~=List]' );
+    $List = $( '[data-lu~=List]' ),
+    //Carousel
+    $Carousel = $( '[data-lu~=Carousel]' );
+
 
   //Buttons
   Lu.map( $DefaultButton, 'Button', function( $element, component ){
@@ -108,5 +111,8 @@
 
   //List
   Lu.map( $List, 'List', function( $element, component ){} );
+
+  //Carousel
+  Lu.map( $Carousel, 'Carousel', function( $element, component ){} );
 
 }() );

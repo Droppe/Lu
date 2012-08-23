@@ -13,7 +13,7 @@ function previousDecorator( settings ){
   return function( base ){
     var self = this;
 
-    this.on( constants.events.SELECTED, function( Component ){
+    this.on( constants.events.SELECTED, function( event, Component ){
       event.stopPropagation();
       if( Component.hasPrevious() ){
         self.enable();
@@ -28,8 +28,8 @@ function previousDecorator( settings ){
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( previousDecorator() );
+    module.setExports( previousDecorator );
   } else if( module.exports ){
-    module.exports = previousDecorator();
+    module.exports = previousDecorator;
   }
 }

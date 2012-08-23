@@ -76,8 +76,8 @@
 
     window.LU_DEBUG = 5;
 
-    Lu.map( $( '#menu' ).find( 'a' ), 'Button', function( $element, component ){
-      component.settings.notify = '#content';
+    Lu.map( $( '#content' ), 'List', function( $element, component ){
+      component.settings.observe = '#menu [data-lu="Button:Select"]';
     } );
 
     Lu.execute( $( 'body' ) ).then( function(){

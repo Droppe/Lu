@@ -13,9 +13,9 @@ function firstDecorator( settings ) {
   return function( base ){
     var self = this;
 
-    self.on( constants.events.SELECTED, function( event, Control ){
+    self.on( constants.events.SELECTED, function( event, Component ){
       event.stopPropagation();
-      if( Control.index === 0 ){
+      if( Component.index() === 0 ){
         self.disable();
       } else {
         self.enable();
@@ -28,8 +28,8 @@ function firstDecorator( settings ) {
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( firstDecorator() );
+    module.setExports( firstDecorator );
   } else if( module.exports ){
-    module.exports = firstDecorator();
+    module.exports = firstDecorator;
   }
 }

@@ -13,12 +13,12 @@ function lastDecorator( settings ) {
   return function( base ){
     var self = this;
 
-    self.on( constants.events.SELECTED, function( event, Control ){
+    self.on( constants.events.SELECTED, function( event, Component ){
       event.stopPropagation();
-      if( Control.index === Control.size() - 1 ){
-        instance.disable();
+      if( Component.index() === Component.size() - 1 ){
+        self.disable();
       } else {
-        instance.enable();
+        self.enable();
       }
     } );
   };

@@ -84,7 +84,7 @@ Abstract = Fiber.extend( function( base ){
       $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
 
       if( $observe.length > 0 ){
-        this.observe( $observe );
+        $observe.lu( 'observe', $element );
       }
 
       if( $notify.length > 0 ){

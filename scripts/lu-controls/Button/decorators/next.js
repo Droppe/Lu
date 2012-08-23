@@ -13,12 +13,12 @@ function nextDecorator( settings ){
   return function( base ){
     var self = this;
 
-    instance.on( Constants.events.SELECTED, function( event, Control ){
+    this.on( constants.events.SELECTED, function( event, Component ){
       event.stopPropagation();
-      if( Control.hasNext() ){
-        instance.enable();
+      if( Component.hasNext() ){
+        self.enable();
       } else {
-        instance.disable();
+        self.disable();
       }
     } );
   };
