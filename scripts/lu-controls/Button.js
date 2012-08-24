@@ -53,6 +53,7 @@ Button = Switch.extend( function( base ){
      * @param {Object} settings Configuration settings
      */
     init: function( $element, settings ){
+
       var self = this,
         action,
         requirements = [],

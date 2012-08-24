@@ -1,6 +1,6 @@
 /**
  * Manages a list of Containers.
- * @class List
+ * @class self
  * @extends Switch
  * @require Container
  * @version 0.2.4
@@ -18,6 +18,7 @@ List = Switch.extend( function( base ){
     HORIZONTAL = 'horizontal',
     SELECTED = constants.statePrefix + constants.states.SELECTED,
     LIST_TAGS = 'ul, ol, dl',
+
     defaults = {
       orientation: HORIZONTAL,
       index: undefined
@@ -29,21 +30,21 @@ List = Switch.extend( function( base ){
    * @method handleKeyup
    * @private
    * @param {Event} event An event object
-   * @param {Object} List the list control to handle
+   * @param {Object} self the list control to handle
    * @return {Void}
    */
-  function handleKeyup( event, List ){
+  function handleKeyup( event, self ){
     var keyCode = event.keyCode,
       item = $( event.target );
 
     // A "vertical" list orentation means that the up and down arrow keys work
-    if( List.orientation === VERTICAL ){
+    if( self.orientation === VERTICAL ){
       switch ( keyCode ){
         case 38: // Up arrow
-          List.previous();
+          self.previous();
           break;
         case 40: // Down arrow
-          List.next();
+          self.next();
           break;
         default:
           // noop
@@ -52,10 +53,10 @@ List = Switch.extend( function( base ){
       // By default, list orientation is "horizontal" and left and right arrows work
       switch( keyCode ){
         case 37: //Left arrow
-          List.previous();
+          self.previous();
           break;
         case 39: //Right arrow
-          List.next();
+          self.next();
           break;
         default:
       }
@@ -63,10 +64,10 @@ List = Switch.extend( function( base ){
 
     switch( keyCode ){
       case 36: //Home key
-        List.first();
+        self.first();
         break;
       case 35: //Last key
-        List.last();
+        self.last();
         break;
       default:
     }
@@ -146,9 +147,8 @@ List = Switch.extend( function( base ){
        * @public
        * @param {Integer|String|Object} item The index of the item to 
        * select, a css selector, or a JQuery collection containing the item.
-       * @return {Object} List
+       * @return {Object} self
        */
-
       this.select = function( item ){
         var componentData,
           $item,
@@ -198,6 +198,7 @@ List = Switch.extend( function( base ){
           Lu.map( $item, 'Container', function(){} );
           Lu.execute( $item );
           componentData = $item.lu( 'getComponents' ).Container;
+
         }
 
         //Once the item is fully instantiated, select it.
@@ -219,7 +220,6 @@ List = Switch.extend( function( base ){
           index = idx;
           Selected.addState( constants.states.SELECTED );
           self.trigger( constants.events.SELECTED, [self] );
-
         } );
 
         return this;
@@ -314,13 +314,12 @@ List = Switch.extend( function( base ){
       //   handleKeyup( event, self );
       // } );
     },
-
     /**
      * adds a new item to $element
      * @method append
      * @public
      * @param {Array} A jQuery Collection of $items to append
-     * @return {Object} List
+     * @return {Object} self
      */
     add: function( $item ){
       this.$items = this.$items.add( $item );
@@ -332,7 +331,7 @@ List = Switch.extend( function( base ){
      * @method remove
      * @public
      * @param {Array} A jQuery Collection of $items to remove
-     * @return {Object} List
+     * @return {Object} self
      */
     remove: function( $item ){
       $( $( $item ), this.$items ).remove();
@@ -343,13 +342,13 @@ List = Switch.extend( function( base ){
      * Selects the next item in the list.
      * @method next
      * @public
-     * @return {Object} List
+     * @return {Object} self
      */
     next: function(){
       if( this.hasNext() ){
-        this.select( this.index() + 1 );
+        this.select( this.index + 1 );
       } else {
-        this.trigger( constants.events.OUT_OF_BOUNDS, [ this ] );
+        this.trigger( constants.events.OUT_OF_BOUNDS, [this] );
       }
       return this;
     },
@@ -357,13 +356,13 @@ List = Switch.extend( function( base ){
      * Selects the previous item in the list.
      * @method previous
      * @public
-     * @return {Object} List
+     * @return {Object} self
      */
     previous: function(){
       if( this.hasPrevious() ){
-        this.select( this.index() - 1 );
+        this.select( this.index - 1 );
       } else {
-        this.trigger( constants.events.OUT_OF_BOUNDS, [ this ] );
+        this.trigger( constants.events.OUT_OF_BOUNDS, [this] );
       }
       return this;
     },
@@ -371,7 +370,7 @@ List = Switch.extend( function( base ){
      * Selects the last item in the list.
      * @method last
      * @public
-     * @return {Object} List
+     * @return {Object} self
      */
     last: function(){
       this.select( this.$items.eq( this.size() - 1 ) );
@@ -381,7 +380,7 @@ List = Switch.extend( function( base ){
      * Selects the first item in the list.
      * @method first
      * @public
-     * @return {Object} List
+     * @return {Object} self
      */
     first: function(){
       this.select( 0 );
@@ -394,7 +393,7 @@ List = Switch.extend( function( base ){
      * @return {Boolean} true if not at the last item in the list
      */
     hasNext: function(){
-      return ( this.index() < this.size() - 1 );
+      return ( this.index < this.size() - 1 );
     },
     /**
      * Determines if there are any lower-index items in the list.
@@ -403,7 +402,16 @@ List = Switch.extend( function( base ){
      * @return {Boolean} true if not at the first item in the list
      */
     hasPrevious: function(){
-      return ( this.index() > 0 );
+      return ( this.index > 0 );
+    },
+    /**
+     * Returns the currently-selected item.
+     * @method current
+     * @public
+     * @return {Object} JQuery object-reference to the selected item
+     */
+    current: function(){
+      return this.$items.eq( this.index );
     },
     /**
      * Returns the number of items in the list.

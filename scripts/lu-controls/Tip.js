@@ -12,14 +12,14 @@ var Abstract = require( 'lu/Abstract' ),
 
 Tip = Abstract.extend( function (Abstract){
 
-  //Observed events
+  // OBSERVED EVENTS
   var HIDE_EVENT = 'hide',
       SHOW_EVENT = 'show',
       //Stateful published events
       HIDDEN_EVENT = 'hidden',
       SHOWN_EVENT = 'shown',
   
-  // OTHER CONSTANTS
+  // OTHER CONSTANTS
       CLASS = 'class',
       TRUE = true,
       FALSE = false,
@@ -35,7 +35,7 @@ Tip = Abstract.extend( function (Abstract){
       defaults = {
 
         /**
-         * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
+         * The time i n milliseconds before before the Tip hides after the user has stopped interacting with it.
          * @property delay
          * @type Number
          * @private
@@ -200,6 +200,7 @@ Tip = Abstract.extend( function (Abstract){
          * Array of decorators to apply to a Tip instance
          * @property decorators
          * @type Array
+         * @private
          */
         decorators = [];
 

@@ -24,7 +24,7 @@
                                      
 ```
 
-Lu is developed using [nodejs](http://nodejs.org/) and [compass](http://compass-style.org/). To start contributing:
+To start contributing to Lu:
 
 1. Fork Lu
 2. Install <a href="http://nodejs.org/" target="_blank">Node</a>

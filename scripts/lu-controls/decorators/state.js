@@ -75,10 +75,10 @@ function stateDecorator( settings ){
      */
     function state( event, states, method ){
       if( self.$element.is( event.target ) ){
+        //return early to prevent recursion
         return self;
       }
       event.stopPropagation();
-
       switch( method ){
         case 'add':
           self.addState( states );
@@ -98,7 +98,6 @@ function stateDecorator( settings ){
         default:
           self.setState( states );
       }
-
       return self;
     }
 
