@@ -97,6 +97,7 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     on: function(){
+      arguments[0] = constants.eventPrefix + arguments[0];
       addToEventStore.call( this, arguments[0], 'on' );
       this.$element.on.apply( this.$element, arguments );
       return this;
@@ -107,6 +108,7 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     one: function(){
+      arguments[0] = constants.eventPrefix + arguments[0];
       addToEventStore.call( this, arguments[0], 'one' );
       this.$element.one.apply( this.$element, arguments );
       return this;
@@ -117,6 +119,7 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     off: function() {
+      arguments[0] = constants.eventPrefix + arguments[0];
       removeFromEventStore.call( this, arguments[0] );
       this.$element.off.apply( this.$element, arguments );
       return this;
@@ -127,7 +130,13 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     trigger: function( event, parameters ){
-      var store = this.eventStore[ event ];
+      var store;
+
+      if( typeof event === 'string' ){
+        event = constants.eventPrefix + event;
+      }
+
+      store = this.eventStore[ event ];
 
       this.$element.lu( 'notify', event, parameters );
 

@@ -28,7 +28,7 @@ function selectDecorator( settings ){
     } );
 
 
-    this.on( settings.on, function( event ){
+    this.$element.on( settings.on, function( event ){
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }

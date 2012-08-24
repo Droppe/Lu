@@ -172,17 +172,23 @@ function stateDecorator( settings ){
      * @return {Object} instance
      */
     this.removeState = function( value ){
-      var intersection;
+      var intersection,
+        args = [];
+
       if( typeof value === 'string' ){
         value = value.split( ',' );
       }
 
       intersection = _.intersection( states, value );
-
       if( intersection.length > 0 ){
-        states = _.without( states, value );
+        args.push( states );
+        _.each( value, function( item, index ){
+          args.push( item );
+        } );
+        states = _.without.apply( this, args );
         applyState( this.$element, states, constants.statePrefix );
         this.trigger( constants.events.STATED, [this] );
+
       }
       return this;
     };

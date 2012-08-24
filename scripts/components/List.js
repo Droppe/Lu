@@ -198,7 +198,6 @@ List = Switch.extend( function( base ){
           Lu.map( $item, 'Container', function(){} );
           Lu.execute( $item );
           componentData = $item.lu( 'getComponents' ).Container;
-
         }
 
         //Once the item is fully instantiated, select it.

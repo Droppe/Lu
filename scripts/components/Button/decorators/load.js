@@ -15,21 +15,21 @@ function loadDecorator( settings ){
     var self = this,
       url = settings.url || $element.attr( 'href' );
 
-    this.on( Constants.events.STATED, function( event, Commponent ){
+    this.on( constants.events.STATED, function( event, Commponent ){
       event.stopPropagation();
       if( _.indexOf( states, constants.states.LOADED ) > -1 ){
         self.disable();
       }
     } );
 
-    self.on( settings.on, function( event ){
-      if( this.$element.is( 'a' ) ){
-        this.$element.focus();
+    this.$element.on( settings.on, function( event ){
+      if( self.$element.is( 'a' ) ){
+        self.$element.focus();
         if( !settings.url ){
           event.preventDefault();
         }
       }
-      self.trigger( constants.events.LOAD, [url] );
+      self.trigger( constants.events.LOAD, [self] );
     } );
 
   };
@@ -38,8 +38,8 @@ function loadDecorator( settings ){
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( loadDecorator() );
+    module.setExports( loadDecorator );
   } else if( module.exports ){
-    module.exports = loadDecorator();
+    module.exports = loadDecorator;
   }
 }

@@ -37,7 +37,7 @@ function stateDecorator( settings ){
         states = normalize( settings.states ) || [constants.states.ACTIVE, constants.states.INACTIVE];
       }
 
-    this.on( settings.on, function( event ){
+    this.$element.on( settings.on, function( event ){
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }

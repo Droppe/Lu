@@ -2,6 +2,7 @@
 var constants = {
   HAS_A18_ATTRS: 'button, input',
   DISABLED: 'disabled',
+  eventPrefix: 'lu:',
   events: {
     SELECTED: 'selected',
     SELECT: 'select',
