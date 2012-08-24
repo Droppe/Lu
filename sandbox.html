@@ -26,22 +26,21 @@
 
 <body>
 
-  <div data-lu="Container">
-    <button data-lu="Button">State</button>
+  <div data-lu="">
+    <button data-lu="Switch">State</button>
   </div>
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
-  <script src="/scripts/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
 
   <!-- Bootstrap:CommonJS Loader -->
-  <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
+  <script type="text/javascript" src="/scripts/libraries/inject/inject.js"></script>
 
   <!-- Bootstrap:UI -->
   <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
 
-  <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
-  <script src="/scripts/lu.0.3.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
   <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
 
   <script type="text/javascript" charset="utf-8">
@@ -53,7 +52,7 @@
     window.LU_DEBUG = 5;
 
     Lu.execute( $( 'body' ) ).then( function(){
-      console.info( 'W00T' );
+      console.info( 'Done!' );
     } );
 
   </script>

@@ -64,7 +64,7 @@ window.Lu = new function(){
   };
 
   /**
-   * Parses the $element for Lu controls, loads, and instatiates them.
+   * Parses the $element for Lu controls, loads, and instantiates them.
    * @public
    * @static
    * @method execute
@@ -107,7 +107,9 @@ window.Lu = new function(){
           var Component = require( requirement );
 
           try {
+            console.warn( 'Trap', $element, settings );
             component.instance = new Component( $element, settings );
+            console.warn( 'Trap' );
             if( component.hasDependencies ){
               component.instance.one( 'dependencies-resolved', function( event, instance ){
                 event.stopPropagation();
@@ -139,7 +141,7 @@ window.Lu = new function(){
 }();
 
 /**
- * Gets the mapped parents of the passed in $element
+ * Gets the mapped parents of the passed in $element. Available through $.lu jQuery plug-in.
  * @method getParents
  * @public
  * @static
@@ -151,7 +153,7 @@ function getParents( $element ){
 }
 
 /**
- * Gets the mapped descendants of the passed in $element
+ * Gets the mapped descendants of the passed in $element. Available through $.lu jQuery plug-in.
  * @method getDescendants
  * @public
  * @static
@@ -163,7 +165,7 @@ function getDescendants( $element ){
 }
 
 /**
- * Gets the mapped children of the passed in $element
+ * Gets the mapped children of the passed in $element. Available through $.lu jQuery plug-in.
  * @method getChildren
  * @public
  * @static
@@ -175,7 +177,7 @@ function getChildren( $element ){
 }
 
 /**
- * Add an $observer to an $element
+ * Add an $observer to an $element. Available through $.lu jQuery plug-in.
  * @public
  * @static
  * @method observe
@@ -197,7 +199,7 @@ function observe( $element, $observer ){
 }
 
 /**
- * Remove an observer from an $element
+ * Remove an observer from an $element. Available through $.lu jQuery plug-in.
  * @public
  * @static
  * @method unobserve
@@ -218,7 +220,7 @@ function unobserve( $element, $observer ){
 }
 
 /**
- * Notifies observers of events
+ * Notifies observers of events. Available through $.lu jQuery plug-in.
  * @public
  * @static
  * @method notify

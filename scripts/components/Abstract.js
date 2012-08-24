@@ -90,7 +90,6 @@ Abstract = Fiber.extend( function( base ){
       if( $notify.length > 0 ){
         $element.lu( 'observe', $notify );
       }
-
     },
     /**
      * Creates an event listener for a type

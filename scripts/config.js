@@ -1,6 +1,6 @@
 ( function() {
 
-  var PATH_TO_LU_CONTROLS = '/scripts/components/',
+  var PATH_TO_LU_COMPONENTS = '/scripts/components/',
     PATH_TO_FIBER = '/scripts/libraries/fiber.js';
 
   if( typeof window.require === 'function' ) {
@@ -9,7 +9,7 @@
       window.Inject.addRule( /^lu\//, {
         path: function( module ) {
           module = module.replace( 'lu/', '' );
-          return PATH_TO_LU_CONTROLS + module + '.js';
+          return PATH_TO_LU_COMPONENTS + module + '.js';
         }
       } );
 
