@@ -10,7 +10,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Lu</title>
+  <title>Carousel</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -21,12 +21,25 @@
       width: 800px;
       margin: 50px auto;
     }
+    .lu-state-selected {
+      background-color: #00f;
+    }
   </style>
 </head>
 
 <body>
 
-  <div></div>
+  <div data-lu="Carousel">
+    <ul>
+      <li data-lu="Container" class="lu-state-selected">Sherlock</li>
+      <li>Watson</li>
+      <li>Moriarty</li>
+    </ul>
+    <button data-lu="Button:First">First</button>
+    <button data-lu="Button:Previous">Previous</button>
+    <button data-lu="Button:Next">Next</button>
+    <button data-lu="Button:Last">Last</button>
+  </div>
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
@@ -50,7 +63,7 @@
     window.LU_DEBUG = 5;
 
     Lu.execute( $( 'body' ) ).then( function(){
-      console.info( 'Done!' );
+      console.info( 'DONE!' );
     } );
 
   </script>
