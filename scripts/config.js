@@ -1,6 +1,6 @@
 ( function() {
 
-  var PATH_TO_LU_CONTROLS = '/scripts/lu-controls/',
+  var PATH_TO_LU_CONTROLS = '/scripts/components/',
     PATH_TO_FIBER = '/scripts/libraries/fiber.js';
 
   if( typeof window.require === 'function' ) {

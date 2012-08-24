@@ -2,8 +2,12 @@
  * Lu Control Framework
  * @module Lu
  * @license
+ * @author Robert Martone
+ * 
+ * Lu Control Framework v0.3.0
  *
- * Lu Control Framework v0.2.4
+ * Please thank the contributors: 
+ * https://github.com/linkedin/Lu/graphs/contributors
  *
  * Copyright (c) 2011,2012 LinkedIn
  * All Rights Reserved. Apache Software License 2.0
