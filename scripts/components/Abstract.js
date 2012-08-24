@@ -41,7 +41,7 @@ Abstract = Fiber.extend( function( base ){
    */
   function addToEventStore( event, method ){
     var eventStore = this.eventStore;
-    _.each( _.trim( event ).split( /\s+/g ), function( item ){
+    _.each( helpers.trim( event ).split( /\s+/g ), function( item ){
       eventStore[item] = {
         method: method
       };
@@ -56,7 +56,7 @@ Abstract = Fiber.extend( function( base ){
    */
   function removeFromEventStore( event ){
     var eventStore = this.eventStore;
-    _.each( _.trim( event ).split( /\s+/g ), function( item ){
+    _.each( helpers.trim( event ).split( /\s+/g ), function( item ){
       if ( eventStore[event] ){
         delete eventStore[event];
       }

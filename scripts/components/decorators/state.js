@@ -55,6 +55,7 @@ function stateDecorator( settings ){
   }
 
   return function( base ){
+
     var self = this,
       /**
        * An array of string representing the current state(s)
@@ -223,6 +224,7 @@ function stateDecorator( settings ){
     this.addState( cache[0] );
     //Bind to 'state' events
     this.on( constants.events.STATE, state );
+
   };
 }
 

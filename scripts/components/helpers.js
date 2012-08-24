@@ -5,7 +5,6 @@ var helpers = {},
 
 //Facade for the browser's developer console
 //Does not break if no developer console exists
-
 helpers.console = ( function(){
   var slice = Array.prototype.slice,
     windowConsole = window.console;
@@ -100,7 +99,18 @@ parseUri.options = {
 };
 helpers.parseUri = parseUri;
 
-
+//Trim
+helpers.trim = ( function () {
+  if( typeof String.prototype.trim === 'function' ) {
+    return function( input ){
+      return input.trim();
+    };
+  } else {
+    return function( input ) {
+      return input.replace( /^\s+|\s+$/g, '' );
+    };
+  }
+}() );
 
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){

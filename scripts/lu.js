@@ -103,13 +103,10 @@ window.Lu = new function(){
         count -= 1;
 
         deferral.then( function( required, module, exports ){
-
           var Component = require( requirement );
 
           try {
-            console.warn( 'Trap', $element, settings );
             component.instance = new Component( $element, settings );
-            console.warn( 'Trap' );
             if( component.hasDependencies ){
               component.instance.one( 'dependencies-resolved', function( event, instance ){
                 event.stopPropagation();
@@ -128,14 +125,11 @@ window.Lu = new function(){
             deferral.resolve( required, module, exports );
           } );
         }
-
       } );
     }
-
     _.each( $nodes, function( item, index ){
       execute( $( item ) );
     } );
-
     return deferral;
   };
 }();

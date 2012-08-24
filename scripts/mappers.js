@@ -27,7 +27,6 @@
     //Carousel
     $Carousel = $( '[data-lu~=Carousel]' );
 
-
   //Buttons
   Lu.map( $DefaultButton, 'Button', function( $element, component ){
     component.hasDependencies = true;
