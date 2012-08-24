@@ -8,4 +8,3 @@ bin/
 sandbox.html
 build/compass_cache
 !build/bin/
-examples/

@@ -10,7 +10,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Lu</title>
+  <title>Buttons</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -26,7 +26,18 @@
 
 <body>
 
-  <div></div>
+  <div>
+    <button data-lu="Button">Default</button>
+    <button data-lu="Button:First">First</button>
+    <button data-lu="Button:Last">Last</button>
+    <button data-lu="Button:Load">Load</button>
+    <button data-lu="Button:Next">Next</button>
+    <button data-lu="Button:Pause">Pause</button>
+    <button data-lu="Button:Play">Play</button>
+    <button data-lu="Button:Previous">Previous</button>
+    <button data-lu="Button:Select">Select</button>
+    <button data-lu="Button:State">State</button>
+  </div>
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
@@ -50,7 +61,7 @@
     window.LU_DEBUG = 5;
 
     Lu.execute( $( 'body' ) ).then( function(){
-      console.info( 'Done!' );
+      console.info( 'DONE' );
     } );
 
   </script>
