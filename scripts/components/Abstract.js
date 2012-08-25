@@ -11,6 +11,8 @@ var constants = require( 'lu/constants' ),
  * @constructor
  */
 Abstract = Fiber.extend( function( base ){
+  var slice = Array.prototype.slice;
+
   /**
    * Default configuration values
    * @property defaults
@@ -40,8 +42,9 @@ Abstract = Fiber.extend( function( base ){
    * @param {String} method The method (ex: 'on', 'one')
    */
   function addToEventStore( event, method ){
-    var eventStore = this.eventStore;
-    _.each( helpers.trim( event ).split( /\s+/g ), function( item ){
+    var eventStore = this.eventStore,
+      pattern = /\s+/g;
+    _.each( helpers.trim( event ).split( pattern ), function( item ){
       eventStore[item] = {
         method: method
       };
@@ -97,9 +100,13 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     on: function(){
-      arguments[0] = constants.eventPrefix + arguments[0];
-      addToEventStore.call( this, arguments[0], 'on' );
-      this.$element.on.apply( this.$element, arguments );
+      var args = slice.call( arguments ),
+        event = constants.eventPrefix + arguments[0];
+
+      args.splice( 0, 1, event );
+
+      addToEventStore.call( this, event, 'on' );
+      this.$element.on.apply( this.$element, args );
       return this;
     },
     /**
@@ -108,9 +115,13 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     one: function(){
-      arguments[0] = constants.eventPrefix + arguments[0];
-      addToEventStore.call( this, arguments[0], 'one' );
-      this.$element.one.apply( this.$element, arguments );
+      var args = slice.call( arguments ),
+        event = constants.eventPrefix + arguments[0];
+
+      args.splice( 0, 1, event );
+
+      addToEventStore.call( this, event, 'one' );
+      this.$element.one.apply( this.$element, args );
       return this;
     },
     /**
@@ -119,9 +130,13 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     off: function() {
-      arguments[0] = constants.eventPrefix + arguments[0];
-      removeFromEventStore.call( this, arguments[0] );
-      this.$element.off.apply( this.$element, arguments );
+      var args = slice.call( arguments ),
+        event = constants.eventPrefix + arguments[0];
+
+      args.splice( 0, 1, event );
+
+      removeFromEventStore.call( this, event );
+      this.$element.off.apply( this.$element, args );
       return this;
     },
     /**

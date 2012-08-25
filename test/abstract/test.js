@@ -1,8 +1,4 @@
-<a id="abstract-test" data-lu="Abstract"></a>
-<a id="funk-and-waggle" data-lu="Abstract"></a>
-<script>
-
-function run(){
+function execute(){
   var abstract,
     observer,
     $abstract = $( '#abstract-test' ),
@@ -12,8 +8,6 @@ function run(){
   abstract = lu.getControl( $abstract );
   observer = lu.getControl( $observer );
 
-  console.log('data', abstract, observer);
-
   module( 'API Tests', {} );
 
   test( 'trigger', function(){
@@ -22,7 +16,6 @@ function run(){
     abstract.one( hongKong, function(){
       ok( true , 'Event is successfully triggered.' );
     } ).trigger( hongKong );
-
   } );
 
   test( 'on', function(){
@@ -37,7 +30,6 @@ function run(){
 
 
     ok( success , 'Event is successfully bound.' );
-
   } );
 
   test( 'one', function(){
@@ -49,7 +41,6 @@ function run(){
       success = ( _.indexOf( abstract.events(), hongKong ) === -1 );
       ok( success , 'Event is successfully unbound.' );
     } ).trigger( hongKong );
-
   } );
 
   test( 'off', function(){
@@ -64,7 +55,6 @@ function run(){
       success = ( _.indexOf( abstract.events(), hongKong ) === -1 );
       ok( success , 'Event is successfully unbound.' );
     } ).trigger( hongKong );
-
   } );
 
   test( 'observe', function(){
@@ -99,7 +89,4 @@ function run(){
 
     ok( !success, 'unobservation successful' );
   } );
-
 }
-
-</script>

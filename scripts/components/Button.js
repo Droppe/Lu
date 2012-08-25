@@ -77,6 +77,7 @@ Button = Switch.extend( function( base ){
             break;
           case 'load':
             requirements.push( decorators.load );
+            requirements.push( decorators.def );
             break;
           case 'next':
             requirements.push( decorators.next );

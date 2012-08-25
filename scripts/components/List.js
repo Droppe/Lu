@@ -145,7 +145,7 @@ List = Switch.extend( function( base ){
        * Select an item in the list
        * @method select
        * @public
-       * @param {Integer|String|Object} item The index of the item to 
+       * @param {Integer|String|Object} item The index of the item to
        * select, a css selector, or a JQuery collection containing the item.
        * @return {Object} self
        */

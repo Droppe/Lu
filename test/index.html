@@ -1,86 +1,34 @@
-<!DOCTYPE html>
-
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
-  <title>Lu</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="../styles/css/screen.css">
-  <link rel="stylesheet" href="qunit/qunit.css">
-
+  <title>Running Lu Test</title>
 </head>
 
 <body>
-  <h1 id="qunit-header"></h1>
-  <h2 id="qunit-banner"></h2>
-  <div id="qunit-testrunner-toolbar"></div>
-  <h2 id="qunit-userAgent"></h2>
-  <ol id="qunit-tests"></ol>
-  <div id="qunit-fixture"></div>
 
-  <div id="aq-container">
-  </div>
+  <div id="test-container"></div>
 
-  <!-- Bootstrap:Util -->
-  <script src="../scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
-  <script src="../scripts/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" src="/scripts/libraries/inject/inject.js"></script>
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+  <script src="/scripts/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
 
-  <!-- Bootstrap:CommonJS Loader -->
-  <script type="text/javascript" src="../scripts/libraries/inject.js"></script>
+  <script type="text/javascript" charset="utf-8">
 
-  <!-- Bootstrap:UI -->
-  <script src="../scripts/libraries/jquery-1.7.1.min.js"></script>
-  <script>window.jQuery || document.write( '<script src="http://scripts/libraries/jquery-1.7.1.min.js"><\/script>' )</script>
-
-  <script src="../scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
-  <script src="qunit/qunit-v1.4.0pre.js" type="text/javascript" charset="utf-8"></script>
-
-  <!-- Bootstrap:AQ/Socket.io -->
-  <script src="../socket.io/socket.io.js"></script>
-  <script src="../aq/aq.js"></script>
-
-  <script>
-    //require.clearCache();//This is broken in inject
-    //localStorage.clear();
-
-    Inject.setExpires(0);
+    Inject.setExpires( 0 );
     Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
 
-    Inject.setModuleRoot("http://localhost:8001/");
+    window.LU_DEBUG = 5;
 
-    require.ensure( ['/scripts/lu'], function() {
-
-      window.AQ.start();
-
-      $(function() {
-
-        $AQ_CONTAINER = $('#aq-container');
-
-        $(window.AQ)
-          .on('beforeTestRun', function() {
-
-            var timer;
-
-            $AQ_CONTAINER.on('luReady', function() {
-               window.AQ.run();
-            });
-
-            //debugger;
-            window.lu.execute($AQ_CONTAINER);
-          });
-
-      });
-
-    });
-
+    Lu.execute( $( 'body' ) ).then( function(){
+      execute();
+    } );
 
   </script>
-
 
 </body>
 

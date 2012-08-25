@@ -1,15 +1,5 @@
-
 /**
- * Lu's main class
- * @class Lu
- * @constructor
- * @require inject
- * @param {Object} settings Configuration properties for this instance
- */
-var Lu;
-
-/**
- * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in. 
+ * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in.
  * @method getComponents
  * @private
  * @static
@@ -25,7 +15,14 @@ function getComponents( $element ){
   }
 }
 
-window.Lu = new function(){
+/**
+ * Lu's main class
+ * @class Lu
+ * @constructor
+ * @require inject
+ * @param {Object} settings Configuration properties for this instance
+ */
+var Lu = ( function(){
   var self = this;
   this.$mapped = $( [] );
   this.map = function( $element, component, callback ){
@@ -132,7 +129,9 @@ window.Lu = new function(){
     } );
     return deferral;
   };
-}();
+}() );
+
+Lu = window.Lu = new Lu();
 
 /**
  * Gets the mapped parents of the passed in $element. Available through $.lu jQuery plug-in.
