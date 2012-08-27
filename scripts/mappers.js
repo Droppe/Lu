@@ -1,32 +1,34 @@
 //This file contains default mappings for Lu.
 ( function(){
 
-  var
-    $scope = $( window.LU_CONFIG.scope ),
+  var $scope = $( window.LU_CONFIG.scope ),
+    $lu = $scope.find( '[data-lu]' ).add( $scope.filter( '[data-lu]' ) ),
     //Buttons
-    $buttons = $scope.find( '[data-lu*=Button]' ),
-    $defaultButton = $buttons.find( '[data-lu~=Button]' ),
-    $firstButton = $buttons.find( '[data-lu~=\'Button:First\']' ),
-    $lastButton = $buttons.find( '[data-lu~=\'Button:Last\']' ),
-    $loadButton = $buttons.find( '[data-lu~=\'Button:Load\']' ),
-    $nextButton = $buttons.find( '[data-lu~=\'Button:Next\']' ),
-    $pauseButton = $buttons.find( '[data-lu~=\'Button:Pause\']' ),
-    $playButton = $buttons.find( '[data-lu~=\'Button:Play\']' ),
-    $previousButton = $buttons.find( '[data-lu~=\'Button:Previous\']' ),
-    $selectButton = $buttons.find( '[data-lu~=\'Button:Select\']' ),
-    $stateButton = $buttons.find( '[data-lu~=\'Button:State\']' ),
-    $stateButtonAdd = $buttons.find( '[data-lu~=\'Button:State:Add\']' ),
-    $stateButtonRemove = $buttons.find( '[data-lu~=\'Button:State:Remove\']' ),
-    $stateButtonClear = $buttons.find( '[data-lu~=\'Button:State:Clear\']' ),
-    $stateButtonReset = $buttons.find( '[data-lu~=\'Button:State:Reset\']' ),
+    $buttons = $scope.find( 'a, button, input' ).filter( '[data-lu*=Button]' ),
+    $defaultButton = $buttons.filter( '[data-lu~=Button]' ),
+    $firstButton = $buttons.filter( '[data-lu~=\'Button:First\']' ),
+    $lastButton = $buttons.filter( '[data-lu~=\'Button:Last\']' ),
+    $loadButton = $buttons.filter( '[data-lu~=\'Button:Load\']' ),
+    $nextButton = $buttons.filter( '[data-lu~=\'Button:Next\']' ),
+    $pauseButton = $buttons.filter( '[data-lu~=\'Button:Pause\']' ),
+    $playButton = $buttons.filter( '[data-lu~=\'Button:Play\']' ),
+    $previousButton = $buttons.filter( '[data-lu~=\'Button:Previous\']' ),
+    $selectButton = $buttons.filter( '[data-lu~=\'Button:Select\']' ),
+    $stateButton = $buttons.filter( '[data-lu~=\'Button:State\']' ),
+    $stateButtonAdd = $buttons.filter( '[data-lu~=\'Button:State:Add\']' ),
+    $stateButtonRemove = $buttons.filter( '[data-lu~=\'Button:State:Remove\']' ),
+    $stateButtonClear = $buttons.filter( '[data-lu~=\'Button:State:Clear\']' ),
+    $stateButtonReset = $buttons.filter( '[data-lu~=\'Button:State:Reset\']' ),
     //Switch
-    $switch = $scope.find( '[data-lu~=Switch]' ),
+    $switch = $scope.filter( '[data-lu~=Switch]' ),
     //Container
-    $container = $scope.find( '[data-lu~=Container]' ),
+    $container = $scope.filter( '[data-lu~=Container]' ),
     //List
-    $list = $scope.find( '[data-lu~=List]' ),
+    $list = $scope.filter( '[data-lu~=List]' ),
     //Carousel
-    $carousel = $scope.find( '[data-lu~=Carousel]' );
+    $carousel = $scope.filter( '[data-lu~=Carousel]' );
+
+    console.info( 'Number of Lu nodes:', $lu.length );
 
   //Buttons
   Lu.map( $defaultButton, 'Button', function( $element, component ){

@@ -22,7 +22,7 @@ function getComponents( $element ){
  * @require inject
  * @param {Object} settings Configuration properties for this instance
  */
-var Lu = ( function(){
+var Lu = function(){
   var self = this;
   this.$mapped = $( [] );
   this.map = function( $element, component, callback ){
@@ -118,18 +118,23 @@ var Lu = ( function(){
         } );
 
         if( count === 0 ){
+          console.time( 'Component Instantiation and Dependency Resolution Timer' );
           require.ensure( requirements, function( required, module, exports ){
+            console.time( 'Component Instantiation Timer' );
             deferral.resolve( required, module, exports );
+            console.timeEnd( 'Component Instantiation Timer' );
+            console.timeEnd( 'Component Instantiation and Dependency Resolution Timer' );
           } );
         }
       } );
     }
+
     _.each( $nodes, function( item, index ){
       execute( $( item ) );
     } );
     return deferral;
   };
-}() );
+};
 
 Lu = window.Lu = new Lu();
 
