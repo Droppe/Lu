@@ -4,7 +4,7 @@
   var $scope = $( window.LU_CONFIG.scope ),
     $lu = $scope.find( '[data-lu]' ).add( $scope.filter( '[data-lu]' ) ),
     //Buttons
-    $buttons = $scope.find( 'a, button, input' ).filter( '[data-lu*=Button]' ),
+    $buttons = $lu.find( 'a, button, input' ).filter( '[data-lu*=Button]' ),
     $defaultButton = $buttons.filter( '[data-lu~=Button]' ),
     $firstButton = $buttons.filter( '[data-lu~=\'Button:First\']' ),
     $lastButton = $buttons.filter( '[data-lu~=\'Button:Last\']' ),
@@ -20,15 +20,16 @@
     $stateButtonClear = $buttons.filter( '[data-lu~=\'Button:State:Clear\']' ),
     $stateButtonReset = $buttons.filter( '[data-lu~=\'Button:State:Reset\']' ),
     //Switch
-    $switch = $scope.filter( '[data-lu~=Switch]' ),
+    $switch = $lu.filter( '[data-lu~=Switch]' ),
     //Container
-    $container = $scope.filter( '[data-lu~=Container]' ),
+    $container = $lu.filter( '[data-lu~=Container]' ),
     //List
-    $list = $scope.filter( '[data-lu~=List]' ),
+    $list = $lu.filter( '[data-lu~=List]' ),
     //Carousel
-    $carousel = $scope.filter( '[data-lu~=Carousel]' );
+    $carousel = $lu.filter( '[data-lu~=Carousel]' );
 
-    console.info( 'Number of Lu nodes:', $lu.length );
+    //console.info( 'Scope:', $scope );
+    //console.info( 'Number of Lu nodes:', $lu.length );
 
   //Buttons
   Lu.map( $defaultButton, 'Button', function( $element, component ){

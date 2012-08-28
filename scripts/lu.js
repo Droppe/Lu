@@ -1,3 +1,4 @@
+
 /**
  * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in.
  * @method getComponents
@@ -95,35 +96,32 @@ var Lu = function(){
         var requirement = 'lu/' + key,
           settings = component.settings;
 
-        requirements.push( requirement );
+        if( _.indexOf( requirements, requirement ) === -1 ){
+          requirements.push( requirement );
+        }
 
         count -= 1;
 
         deferral.then( function( required, module, exports ){
           var Component = require( requirement );
-
-          try {
-            component.instance = new Component( $element, settings );
-            if( component.hasDependencies ){
-              component.instance.one( 'dependencies-resolved', function( event, instance ){
-                event.stopPropagation();
-                component.deferral.resolve( component.instance );
-              } );
-            } else {
+          component.instance = new Component( $element, settings );
+          if( component.hasDependencies ){
+            component.instance.one( 'dependencies-resolved', function( event, instance ){
+              event.stopPropagation();
               component.deferral.resolve( component.instance );
-            }
-          } catch( error ){
-            throw new Error( 'Component could not be instantiated.' );
+            } );
+          } else {
+            component.deferral.resolve( component.instance );
           }
         } );
 
         if( count === 0 ){
-          console.time( 'Component Instantiation and Dependency Resolution Timer' );
+          //console.time( 'Component Instantiation and Dependency Resolution Timer' );
           require.ensure( requirements, function( required, module, exports ){
-            console.time( 'Component Instantiation Timer' );
+            //console.time( 'Component Instantiation Timer' );
             deferral.resolve( required, module, exports );
-            console.timeEnd( 'Component Instantiation Timer' );
-            console.timeEnd( 'Component Instantiation and Dependency Resolution Timer' );
+            //console.timeEnd( 'Component Instantiation Timer' );
+            //console.timeEnd( 'Component Instantiation and Dependency Resolution Timer' );
           } );
         }
       } );

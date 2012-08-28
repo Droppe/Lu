@@ -14,64 +14,12 @@ var constants = require( 'lu/constants' ),
 
 List = Switch.extend( function( base ){
 
-  var VERTICAL = 'vertical',
-    HORIZONTAL = 'horizontal',
-    SELECTED = constants.statePrefix + constants.states.SELECTED,
+  var SELECTED = constants.statePrefix + constants.states.SELECTED,
     LIST_TAGS = 'ul, ol, dl',
 
     defaults = {
-      orientation: HORIZONTAL,
       index: undefined
     };
-
-  /**
-   * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
-   * arrows.  Left and up correspond to action "previous" and right and next correspond to "next".
-   * @method handleKeyup
-   * @private
-   * @param {Event} event An event object
-   * @param {Object} self the list control to handle
-   * @return {Void}
-   */
-  function handleKeyup( event, self ){
-    var keyCode = event.keyCode,
-      item = $( event.target );
-
-    // A "vertical" list orentation means that the up and down arrow keys work
-    if( self.orientation === VERTICAL ){
-      switch ( keyCode ){
-        case 38: // Up arrow
-          self.previous();
-          break;
-        case 40: // Down arrow
-          self.next();
-          break;
-        default:
-          // noop
-      }
-    } else {
-      // By default, list orientation is "horizontal" and left and right arrows work
-      switch( keyCode ){
-        case 37: //Left arrow
-          self.previous();
-          break;
-        case 39: //Right arrow
-          self.next();
-          break;
-        default:
-      }
-    }
-
-    switch( keyCode ){
-      case 36: //Home key
-        self.first();
-        break;
-      case 35: //Last key
-        self.last();
-        break;
-      default:
-    }
-  }
 
   return {
     /**
@@ -166,8 +114,8 @@ List = Switch.extend( function( base ){
         if( typeof item === 'number' && item <= this.size() - 1 ){
           $item = this.$items.eq( item );
         } else if( typeof item === 'string' ){
-          $item = $items.filter( item );
-          $item = ( $item.size() === 1 ) ? $item.eq( 0 ) : undefined;
+          $item = this.$items.filter( item );
+          $item = ( $item.size() === 1 ) ? $item : undefined;
         } else if( item instanceof $ && item.size() === 1 ){
           if( item.is( this.$items ) ){
             $item = item;
@@ -236,7 +184,7 @@ List = Switch.extend( function( base ){
         }
       }
 
-      //Automatically select an item during if the starting index
+      //Automatically select an item during init
       self.select( index );
 
       this.on( constants.events.SELECT, function( event, component ){
@@ -308,10 +256,6 @@ List = Switch.extend( function( base ){
         }
       } );
 
-      //TODO: How should we do this? What happens with multiple lists?
-      // $( 'body' ).keyup( function( event ){
-      //   handleKeyup( event, self );
-      // } );
     },
     /**
      * adds a new item to $element

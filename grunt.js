@@ -15,7 +15,7 @@ module.exports = function(grunt) {
       files: ['grunt.js', 'scripts/components/**/*.js', 'scripts/*.js']
     },
     qunit: {
-      files: ['test/abstract/index.html']
+      files: ['http://localhost:1337/test/abstract/index.html']
     },
     concat: {
       dist: {
