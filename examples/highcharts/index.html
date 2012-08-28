@@ -175,20 +175,20 @@
       Abstract.deferral.then( function( Chart ){
         Chart.on( 'selected', function( event, Legend ){
           var id = Legend.current().$element.attr( 'id' ),
-            // selected = Donut.getSelectedPoints(),
+            selected = Donut.getSelectedPoints(),
             slice;
 
-            // if( !selected[0] ){
-            //   return;
-            // }
+            if( !selected[0] ){
+              return;
+            }
 
-            // if( selected[0].id === id ){
-            //   return;
-            // }
+            if( selected[0].id === id ){
+              return;
+            }
 
             slice = Donut.get( id );
 
-            if( !slice.selected){
+            if( slice.select ){
               slice.select();
             }
         } );
@@ -197,7 +197,6 @@
       List.settings.observe = chart;
 
       List.deferral.then( function( Legend ){
-        // var $legend = Legend.$element;
         Legend.on( 'slice-selected', function( event, Chart, Slice ){
           var slice = '#' + Slice.id;
           if( Legend.current().$element.is( slice ) ){
