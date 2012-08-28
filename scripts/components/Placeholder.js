@@ -6,6 +6,9 @@
 */
 
 var FormElement = require( 'lu/FormElement' ),
+    helpers = require( 'lu/helpers' ),
+    StateDecorator = require( 'lu/decorators/state' ),
+    Fiber = require( 'Fiber' ),
     Placeholder;
 
 Placeholder = FormElement.extend( function ( base ) {
@@ -20,7 +23,7 @@ Placeholder = FormElement.extend( function ( base ) {
     init: function ( $element, settings ) {
       var Placeholder = this,
           form = $element[0].form,
-          PLACEHOLDER_CLASS,
+          PLACEHOLDER_STATE,
           placeholderText = $element.attr( 'placeholder' );
 
       // Exit early if placeholder is supported natively.
@@ -30,29 +33,30 @@ Placeholder = FormElement.extend( function ( base ) {
 
       _.defaults( settings, defaults );
       base.init.call( Placeholder, $element, settings );
-      PLACEHOLDER_CLASS = settings.placeholderClass;
-      $element.addClass( PLACEHOLDER_CLASS );
+      Fiber.decorate( Placeholder, StateDecorator( settings ) );
+      PLACEHOLDER_STATE = settings.placeholderClass;
+      Placeholder.addState( PLACEHOLDER_STATE );
       $element.val( placeholderText );
 
       function clear () {
-        if ( $element.hasClass( PLACEHOLDER_CLASS ) ) {
+        if ( Placeholder.hasState( PLACEHOLDER_STATE ) ) {
           $element.val('');
-          $element.removeClass( PLACEHOLDER_CLASS );
+          Placeholder.clear();
         }
       }
 
       function show () {
         if ( $element.val() === '' ) {
-          $element.addClass( PLACEHOLDER_CLASS );
           $element.val( placeholderText );
+          Placeholder.setState( PLACEHOLDER_STATE );
         }
       }
 
-      Placeholder.on( 'focus', function ( evt ) {
+      $element.on( 'focus', function ( evt ) {
         clear();
       } );
 
-      Placeholder.on( 'blur', function ( evt ) {
+      $element.on( 'blur', function ( evt ) {
         show();
       } );
 
