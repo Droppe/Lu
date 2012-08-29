@@ -34,4 +34,5 @@
 5. Point a browser to <a href="http://localhost:1337/examples/index.html" target="_blank">http://localhost:1337/examples/index.html</a>
 
 Before making pull requests you should make sure your code is tested and linted. See our test directory for test examples. Run ```$grunt lint``` and ```$grunt qunit```.
+
 To build Lu run: ```$grunt build``` while server.js is running.
