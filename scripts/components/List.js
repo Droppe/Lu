@@ -2,8 +2,6 @@
  * Manages a list of Containers.
  * @class self
  * @extends Switch
- * @require Container
- * @version 0.2.4
  */
 
 var constants = require( 'lu/constants' ),
@@ -99,6 +97,7 @@ List = Switch.extend( function( base ){
        */
       this.select = function( item ){
         var component,
+          componentData,
           $item,
           idx;
 
@@ -139,10 +138,25 @@ List = Switch.extend( function( base ){
           this.addState( constants.states.REVERSE ).removeState( constants.states.FORWARD );
         }
 
-        //There is no Container so create one.
-        Lu.map( $item, 'Switch', function(){} );
-        Lu.execute( $item );
-        component = $item.lu( 'getComponents' ).Switch;
+        _.each( $item.lu( 'getComponents' ), function( comp, key ){
+          var instance;
+          if( !component ){
+            instance = comp.instance;
+            if( instance ){
+              if( typeof instance.removeState === 'function' && typeof instance.addState === 'function' ){
+                component = comp;
+              }
+            }
+          }
+        } );
+
+        //an acceptable component was not found.
+        if( !component ){
+          Lu.map( $item, 'Switch', function(){} );
+          Lu.execute( $item );
+          component = $item.lu( 'getComponents' ).Switch;
+        }
+
 
         //Once the item is fully instantiated, select it.
         component.deferral.then( function( Switch ){
@@ -169,7 +183,6 @@ List = Switch.extend( function( base ){
       };
 
       this.$items = this.items();
-      this.orientation = settings.orientation;
 
       index = settings.index;
       if( index === undefined ){

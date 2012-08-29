@@ -96,9 +96,7 @@ var Lu = function(){
       //no components were found so there is nothing to do
       if( components.length === 0 ){
         deferral.resolve();
-        return deferral;
       }
-
       _.each( components, function( component, key ){
         var requirement = 'lu/' + key,
           settings = component.settings;
@@ -121,7 +119,6 @@ var Lu = function(){
             component.deferral.resolve( component.instance );
           }
         } );
-
         if( count === 0 ){
           require.ensure( requirements, function( required, module, exports ){
             deferral.resolve( required, module, exports );
@@ -129,11 +126,9 @@ var Lu = function(){
         }
       } );
     }
-
     _.each( $nodes, function( item, index ){
       execute( $( item ) );
     } );
-
     return deferral;
   };
 };

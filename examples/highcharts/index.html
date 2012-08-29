@@ -73,142 +73,143 @@
 
   <script type="text/javascript" charset="utf-8">
 
-    var info = {
-      data: [{
-        id: 'job-function-sales',
-        name: 'Sales',
-        y: 29
-      }, {
-        id: 'job-function-engineering',
-        name: 'Engineering',
-        y: 10
-      }, {
-        id: 'job-function-marketing',
-        name: 'Marketing',
-        y: 6
-      }, {
-        id: 'job-function-accounting',
-        name: 'Accounting/Auditing',
-        y: 4
-      }, {
-        id: 'job-function-it',
-        name: 'Information Technology',
-        y: 1
-      }, {
-        id: 'job-function-other',
-        name: 'Other',
-        y: 65
-      }],
-      sliceHighlightColor: '#3399CC'
-    };
-
     Inject.setExpires( 0 );
     Inject.clearCache();
     Inject.setModuleRoot( 'http://localhost:1337/' );
 
     window.LU_DEBUG = 5;
 
-    Lu.map( $( '#chart' ), 'Abstract', function( $element, Abstract ){
-      var legend = '#legend',
-        chart = '#chart',
-        List = $( legend ).lu( 'getComponents' ).List,
-        Donut = new Highcharts.Chart( {
-          chart: {
-            renderTo: 'chart',
-            type: 'pie'
-          },
-          colors: ['#808080', '#999999', '#C7C7C7', '#DFDFDF', '#ECECEC', '#EFEFEF'],
-          credits: {
-            enabled: false
-          },
-          plotOptions: {
-            pie: {
-              allowPointSelect: true,
-              borderWidth: 0,
-              size: '75%',
-              innerSize: '35%',
-              shadow: false,
-              dataLabels: {
-                enabled: false
-              },
-              point: {
-                events: {
-                  select: function(event) {
-                    var Abstract = $( '#chart' ).lu( 'getComponents' ).Abstract;
-                    Abstract.deferral.done( function( Chart ){
-                      Chart.trigger( 'slice-selected', [Chart, event.target] );
-                    } );
+    $( function(){
+      var info = {
+        data: [{
+          id: 'job-function-sales',
+          name: 'Sales',
+          y: 29
+        }, {
+          id: 'job-function-engineering',
+          name: 'Engineering',
+          y: 10
+        }, {
+          id: 'job-function-marketing',
+          name: 'Marketing',
+          y: 6
+        }, {
+          id: 'job-function-accounting',
+          name: 'Accounting/Auditing',
+          y: 4
+        }, {
+          id: 'job-function-it',
+          name: 'Information Technology',
+          y: 1
+        }, {
+          id: 'job-function-other',
+          name: 'Other',
+          y: 65
+        }],
+        sliceHighlightColor: '#3399CC'
+      };
+
+      Lu.map( $( '#chart' ), 'Abstract', function( $element ){
+        var legend = '#legend',
+          chart = '#chart',
+          List = $( legend ).lu( 'getComponents' ).List,
+          Donut = new Highcharts.Chart( {
+            chart: {
+              renderTo: 'chart',
+              type: 'pie'
+            },
+            colors: ['#808080', '#999999', '#C7C7C7', '#DFDFDF', '#ECECEC', '#EFEFEF'],
+            credits: {
+              enabled: false
+            },
+            plotOptions: {
+              pie: {
+                allowPointSelect: true,
+                borderWidth: 0,
+                size: '75%',
+                innerSize: '35%',
+                shadow: false,
+                dataLabels: {
+                  enabled: false
+                },
+                point: {
+                  events: {
+                    select: function(event) {
+                      var Abstract = $( '#chart' ).lu( 'getComponents' ).Abstract;
+                      Abstract.deferral.done( function( Chart ){
+                        Chart.trigger( 'slice-selected', [Chart, event.target] );
+                      } );
+                    }
+                  }
+                },
+                slicedOffset: 0,
+                states: {
+                  select: {
+                    color: info.sliceHighlightColor
                   }
                 }
-              },
-              slicedOffset: 0,
-              states: {
-                select: {
-                  color: info.sliceHighlightColor
-                }
               }
-            }
-          },
-          point: {
-            sliced: false
-          },
-          series: [{
-            id: 'job-function',
-            name: 'Job Functions',
-            data: info.data
-          }],
-          title: {
-            text: 'Job Functions'
-          },
-          tooltip: {
-            enabled: false
-          },
-          yAxis: {
+            },
+            point: {
+              sliced: false
+            },
+            series: [{
+              id: 'job-function',
+              name: 'Job Functions',
+              data: info.data
+            }],
             title: {
               text: 'Job Functions'
+            },
+            tooltip: {
+              enabled: false
+            },
+            yAxis: {
+              title: {
+                text: 'Job Functions'
+              }
             }
-          }
+          } );
+
+        this.settings.observe = legend;
+
+        this.deferral.then( function( Chart ){
+          Chart.on( 'selected', function( event, Legend ){
+            var id = Legend.current().$element.attr( 'id' ),
+              selected = Donut.getSelectedPoints(),
+              slice;
+
+              if( !selected[0] ){
+                return;
+              }
+
+              if( selected[0].id === id ){
+                return;
+              }
+
+              slice = Donut.get( id );
+
+              if( slice.select ){
+                slice.select();
+              }
+          } );
         } );
 
-      Abstract.settings.observe = legend;
+        List.settings.observe = chart;
 
-      Abstract.deferral.then( function( Chart ){
-        Chart.on( 'selected', function( event, Legend ){
-          var id = Legend.current().$element.attr( 'id' ),
-            selected = Donut.getSelectedPoints(),
-            slice;
-
-            if( !selected[0] ){
+        List.deferral.then( function( Legend ){
+          Legend.on( 'slice-selected', function( event, Chart, Slice ){
+            var slice = '#' + Slice.id;
+            if( Legend.current().$element.is( slice ) ){
               return;
             }
-
-            if( selected[0].id === id ){
-              return;
-            }
-
-            slice = Donut.get( id );
-
-            if( slice.select ){
-              slice.select();
-            }
+            Legend.select( slice );
+          } );
         } );
       } );
-
-      List.settings.observe = chart;
-
-      List.deferral.then( function( Legend ){
-        Legend.on( 'slice-selected', function( event, Chart, Slice ){
-          var slice = '#' + Slice.id;
-          if( Legend.current().$element.is( slice ) ){
-            return;
-          }
-          Legend.select( slice );
-        } );
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
       } );
-    } );
-
-    Lu.execute( $('body') ).then( function(){
-      console.info( 'DONE!' );
     } );
 
   </script>
