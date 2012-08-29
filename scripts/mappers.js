@@ -1,5 +1,5 @@
 //This file contains default mappings for Lu.
-( function(){
+$( function(){
 
   var $scope = $( window.LU_CONFIG.scope ),
     $lu = $scope.find( '[data-lu]' ).add( $scope.filter( '[data-lu]' ) ),
@@ -28,94 +28,91 @@
     //Carousel
     $carousel = $lu.filter( '[data-lu~=Carousel]' );
 
-    //console.info( 'Scope:', $scope );
-    //console.info( 'Number of Lu nodes:', $lu.length );
-
   //Buttons
-  Lu.map( $defaultButton, 'Button', function( $element, component ){
-    component.hasDependencies = true;
+  Lu.map( $defaultButton, 'Button', function( $element ){
+    this.hasDependencies = true;
   } );
 
-  Lu.map( $firstButton, 'Button', function( $element, component ){
-    component.settings.action = 'first';
-    component.key = 'Button:First';
-    component.hasDependencies = true;
+  Lu.map( $firstButton, 'Button', function( $element ){
+    this.settings.action = 'first';
+    this.key = 'Button:First';
+    this.hasDependencies = true;
   } );
-  Lu.map( $lastButton, 'Button', function( $element, component ){
-    component.settings.action = 'last';
-    component.key = 'Button:Last';
-    component.hasDependencies = true;
+  Lu.map( $lastButton, 'Button', function( $element ){
+    this.settings.action = 'last';
+    this.key = 'Button:Last';
+    this.hasDependencies = true;
   } );
-  Lu.map( $loadButton, 'Button', function( $element, component ){
-    component.settings.action = 'load';
-    component.key = 'Button:Load';
-    component.hasDependencies = true;
+  Lu.map( $loadButton, 'Button', function( $element ){
+    this.settings.action = 'load';
+    this.key = 'Button:Load';
+    this.hasDependencies = true;
   } );
-  Lu.map( $nextButton, 'Button', function( $element, component ){
-    component.settings.action = 'next';
-    component.key = 'Button:Next';
-    component.hasDependencies = true;
+  Lu.map( $nextButton, 'Button', function( $element ){
+    this.settings.action = 'next';
+    this.key = 'Button:Next';
+    this.hasDependencies = true;
   } );
-  Lu.map( $pauseButton, 'Button', function( $element, component ){
-    component.settings.action = 'pause';
-    component.key = 'Button:Pause';
-    component.hasDependencies = true;
+  Lu.map( $pauseButton, 'Button', function( $element ){
+    this.settings.action = 'pause';
+    this.key = 'Button:Pause';
+    this.hasDependencies = true;
   } );
-  Lu.map( $playButton, 'Button', function( $element, component ){
-    component.settings.action = 'play';
-    component.key = 'Button:Play';
-    component.hasDependencies = true;
+  Lu.map( $playButton, 'Button', function( $element ){
+    this.settings.action = 'play';
+    this.key = 'Button:Play';
+    this.hasDependencies = true;
   } );
-  Lu.map( $previousButton, 'Button', function( $element, component ){
-    component.settings.action = 'previous';
-    component.key = 'Button:Previous';
-    component.hasDependencies = true;
+  Lu.map( $previousButton, 'Button', function( $element ){
+    this.settings.action = 'previous';
+    this.key = 'Button:Previous';
+    this.hasDependencies = true;
   } );
-  Lu.map( $selectButton, 'Button', function( $element, component ){
-    component.settings.action = 'select';
-    component.key = 'Button:Select';
-    component.hasDependencies = true;
+  Lu.map( $selectButton, 'Button', function( $element ){
+    this.settings.action = 'select';
+    this.key = 'Button:Select';
+    this.hasDependencies = true;
   } );
-  Lu.map( $stateButton, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.key = 'Button:State';
-    component.hasDependencies = true;
+  Lu.map( $stateButton, 'Button', function( $element ){
+    this.settings.action = 'state';
+    this.key = 'Button:State';
+    this.hasDependencies = true;
   } );
-  Lu.map( $stateButtonAdd, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'add';
-    component.key = 'Button:State:Add';
-    component.hasDependencies = true;
+  Lu.map( $stateButtonAdd, 'Button', function( $element ){
+    this.settings.action = 'state';
+    this.settings.method = 'add';
+    this.key = 'Button:State:Add';
+    this.hasDependencies = true;
   } );
-  Lu.map( $stateButtonRemove, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'remove';
-    component.key = 'Button:State:Remove';
-    component.hasDependencies = true;
+  Lu.map( $stateButtonRemove, 'Button', function( $element ){
+    this.settings.action = 'state';
+    this.settings.method = 'remove';
+    this.key = 'Button:State:Remove';
+    this.hasDependencies = true;
   } );
-  Lu.map( $stateButtonReset, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'reset';
-    component.key = 'Button:State:Reset';
-    component.hasDependencies = true;
+  Lu.map( $stateButtonReset, 'Button', function( $element ){
+    this.settings.action = 'state';
+    this.settings.method = 'reset';
+    this.key = 'Button:State:Reset';
+    this.hasDependencies = true;
   } );
-  Lu.map( $stateButtonClear, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'clear';
-    component.key = 'Button:State:Clear';
-    component.hasDependencies = true;
+  Lu.map( $stateButtonClear, 'Button', function( $element ){
+    this.settings.action = 'state';
+    this.settings.method = 'clear';
+    this.key = 'Button:State:Clear';
+    this.hasDependencies = true;
   } );
 
   //Switch
-  Lu.map( $switch, 'Switch', function( $element, component ){} );
+  Lu.map( $switch, 'Switch', function( $element ){} );
 
   //Container
-  Lu.map( $container, 'Container', function( $element, component ){} );
+  Lu.map( $container, 'Container', function( $element ){} );
 
   //List
-  Lu.map( $list, 'List', function( $element, component ){} );
+  Lu.map( $list, 'List', function( $element ){} );
 
   //Carousel
-  Lu.map( $carousel, 'Carousel', function( $element, component ){} );
+  Lu.map( $carousel, 'Carousel', function( $element ){} );
 
-}() );
+} );

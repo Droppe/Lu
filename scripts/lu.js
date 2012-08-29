@@ -47,7 +47,7 @@ var Lu = function(){
         _.extend( componentData[component].settings, {} );
       }
 
-      callback.call( self, $element, componentData[component] );
+      callback.call( componentData[component], $element );
 
       key = componentData[component].key || component;
 
@@ -92,6 +92,13 @@ var Lu = function(){
      */
     function execute( $element ){
       var components = getComponents( $element );
+
+      //no components were found so there is nothing to do
+      if( components.length === 0 ){
+        deferral.resolve();
+        return deferral;
+      }
+
       _.each( components, function( component, key ){
         var requirement = 'lu/' + key,
           settings = component.settings;
@@ -116,12 +123,8 @@ var Lu = function(){
         } );
 
         if( count === 0 ){
-          //console.time( 'Component Instantiation and Dependency Resolution Timer' );
           require.ensure( requirements, function( required, module, exports ){
-            //console.time( 'Component Instantiation Timer' );
             deferral.resolve( required, module, exports );
-            //console.timeEnd( 'Component Instantiation Timer' );
-            //console.timeEnd( 'Component Instantiation and Dependency Resolution Timer' );
           } );
         }
       } );
@@ -130,6 +133,7 @@ var Lu = function(){
     _.each( $nodes, function( item, index ){
       execute( $( item ) );
     } );
+
     return deferral;
   };
 };

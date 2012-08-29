@@ -98,7 +98,7 @@ List = Switch.extend( function( base ){
        * @return {Object} self
        */
       this.select = function( item ){
-        var componentData,
+        var component,
           $item,
           idx;
 
@@ -139,17 +139,13 @@ List = Switch.extend( function( base ){
           this.addState( constants.states.REVERSE ).removeState( constants.states.FORWARD );
         }
 
-        componentData = $item.lu( 'getComponents' ).Container;
-
         //There is no Container so create one.
-        if( !componentData ){
-          Lu.map( $item, 'Container', function(){} );
-          Lu.execute( $item );
-          componentData = $item.lu( 'getComponents' ).Container;
-        }
+        Lu.map( $item, 'Switch', function(){} );
+        Lu.execute( $item );
+        component = $item.lu( 'getComponents' ).Switch;
 
         //Once the item is fully instantiated, select it.
-        componentData.deferral.then( function( Component ){
+        component.deferral.then( function( Switch ){
           var current = self.current();
 
           if( idx === index && Selected ){
@@ -160,10 +156,10 @@ List = Switch.extend( function( base ){
           if( current ){
             current.removeState( constants.states.SELECTED );
           } else {
-            self.$items.filter( '.' + SELECTED ).not( Component.$element ).removeClass( SELECTED );
+            self.$items.filter( '.' + SELECTED ).not( Switch.$element ).removeClass( SELECTED );
           }
 
-          Selected = Component;
+          Selected = Switch;
           index = idx;
           Selected.addState( constants.states.SELECTED );
           self.trigger( constants.events.SELECTED, [self] );
