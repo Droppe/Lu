@@ -32,7 +32,7 @@
   <div>
     <ul id="menu" data-lu="List">
       <li class="lu-state-selected">
-        <a href="#sherlock" data-lu="Button:Select" class="lu-state-disabled">Sherlock</a>
+        <a href="#sherlock" data-lu="Button:Select" disabled="disabled" class="lu-state-disabled">Sherlock</a>
       </li>
       <li>
         <a href="#watson" data-lu="Button:Select">Watson</a>
@@ -75,12 +75,14 @@
 
     window.LU_DEBUG = 5;
 
-    Lu.map( $( '#menu' ).find( 'a' ), 'Button', function( $element, component ){
-      component.settings.notify = '#content';
+    Lu.map( $( '#menu' ).find( 'a' ), 'Button', function( $element ){
+      this.settings.notify = '#content';
     } );
 
-    Lu.execute( $( 'body' ) ).then( function(){
-      console.info( 'DONE!' );
+    $( function(){
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
     } );
 
   </script>

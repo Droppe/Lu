@@ -157,16 +157,16 @@ Container = Switch.extend( function ( base ) {
 
         if( url.indexOf( '#' ) === 0 ){
           content = $( url ).html();
-          return this.trigger( UPDATE_EVENT, self );
+          return this.trigger( constants.events.UPDATED, [self] );
         }
 
         if( settings.frame === true ){
           content = '<iframe src="' + url + '"></iframe>';
-          return this.trigger( UPDATE_EVENT, self );
+          return this.trigger( constants.events.UPDATED, [self] );
         }
 
-        this.removeState( LOADED_STATE );
-        this.addState( LOADING_STATE );
+        this.removeState( constants.states.LOADED );
+        this.addState( constants.states.LOADING );
 
         $.ajax( {
           url: url,
@@ -182,12 +182,12 @@ Container = Switch.extend( function ( base ) {
               content = data;
             }
 
-            self.removeState( LOADING_STATE );
-            self.addState( LOADED_STATE );
-            self.trigger( UPDATE_EVENT, self );
+            self.removeState( constants.states.LOADING );
+            self.addState( constants.states.LOADED );
+            self.trigger( constants.events.UPDATED, [self] );
           },
           failure: function(){
-           self.removeState( LOADING_STATE ).addState( ERRED_STATE );
+           self.removeState( constants.states.LOADING ).addState( constants.states.ERRED );
           }
         } );
 

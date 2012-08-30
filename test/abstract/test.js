@@ -1,28 +1,20 @@
-<a id="abstract-test" data-lu="Abstract"></a>
-<a id="funk-and-waggle" data-lu="Abstract"></a>
-<script>
+Lu.map( $( '[data-lu~=Abstract]' ), 'Abstract', function(){} );
 
-function run(){
-  var abstract,
-    observer,
+function execute(){
+  var Abstract,
+    Observer,
     $abstract = $( '#abstract-test' ),
     $observer = $( '#funk-and-waggle' ),
     hongKong = 'phooey';
 
-  abstract = lu.getControl( $abstract );
-  observer = lu.getControl( $observer );
-
-  console.log('data', abstract, observer);
-
-  module( 'API Tests', {} );
+  Abstract = $abstract.lu( 'getComponents' ).Abstract.instance;
+  Observer = $observer.lu( 'getComponents' ).Abstract.instance;
 
   test( 'trigger', function(){
     expect( 1 );
-
-    abstract.one( hongKong, function(){
+    Abstract.one( hongKong, function(){
       ok( true , 'Event is successfully triggered.' );
     } ).trigger( hongKong );
-
   } );
 
   test( 'on', function(){
@@ -30,14 +22,12 @@ function run(){
 
     expect( 1 );
 
-    abstract.on( hongKong, function(){
-      success = ( _.indexOf( abstract.events(), hongKong ) > -1 );
-      abstract.off( hongKong );
+    Abstract.on( hongKong, function(){
+      success = ( _.indexOf( Abstract.events(), 'lu:' + hongKong ) > -1 );
+      Abstract.off( hongKong );
     } ).trigger( hongKong );
 
-
     ok( success , 'Event is successfully bound.' );
-
   } );
 
   test( 'one', function(){
@@ -45,11 +35,10 @@ function run(){
 
     expect( 1 );
 
-    abstract.one( hongKong, function(){
-      success = ( _.indexOf( abstract.events(), hongKong ) === -1 );
+    Abstract.one( hongKong, function(){
+      success = ( _.indexOf( Abstract.events(), 'lu:' + hongKong ) === -1 );
       ok( success , 'Event is successfully unbound.' );
     } ).trigger( hongKong );
-
   } );
 
   test( 'off', function(){
@@ -57,49 +46,44 @@ function run(){
 
     expect( 2 );
 
-    abstract.on( hongKong, function(){
-      success = ( _.indexOf( abstract.events(), hongKong ) > -1 );
+    Abstract.on( hongKong, function(){
+      success = ( _.indexOf( Abstract.events(), 'lu:' + hongKong ) > -1 );
       ok( success , 'Event is successfully bound.' );
-      abstract.off( hongKong );
-      success = ( _.indexOf( abstract.events(), hongKong ) === -1 );
+      Abstract.off( hongKong );
+      success = ( _.indexOf( Abstract.events(), 'lu:' + hongKong ) === -1 );
       ok( success , 'Event is successfully unbound.' );
     } ).trigger( hongKong );
-
   } );
 
   test( 'observe', function(){
     var success;
     expect( 1 );
-    abstract.one( hongKong, function(){
+    Abstract.one( hongKong, function(){
       success = true;
       ok( success, 'observation successful' );
     } );
-
-    abstract.observe( $observer );
-    observer.trigger( hongKong );
-    abstract.unobserve( $observer );
+    Abstract.observe( $observer );
+    Observer.trigger( 'lu:' + hongKong );
+    Abstract.unobserve( $observer );
   } );
 
   test( 'unobserve', function(){
     var success = false;
     expect( 2 );
-    abstract.on( hongKong, function(){
+    Abstract.on( hongKong, function(){
       success = true;
       ok( success, 'observation successful' );
     } );
 
-    abstract.observe( $observer );
-    observer.trigger( hongKong );
+    Abstract.observe( $observer );
+    Observer.trigger( hongKong );
 
-    abstract.unobserve( $observer );
+    Abstract.unobserve( $observer );
 
     success = false;
-    observer.trigger( hongKong );
-    abstract.off( hongKong );
+    Observer.trigger( hongKong );
+    Abstract.off( hongKong );
 
     ok( !success, 'unobservation successful' );
   } );
-
 }
-
-</script>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sanity Check for Build</title>
+</head>
+
+<body>
+
+  <p>This file is used to check the minimum functional components within build files. A hard coded version is used. Please update this if the Lu version has changed. If everything is successful, you will see a 'SUCCESS' statement in the browser's console.</p>
+  <div id="container" data-lu="Container"></div>
+
+  <script src="/scripts/libraries/underscore.js"></script>
+  <script src="/scripts/libraries/inject/inject.js"></script>
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="config.js"></script>
+  <script src="lu.0.3.0.min.js"></script>
+  <script src="mappers.js"></script>
+
+  <script>
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    Lu.execute( $( 'body' ) ).done( function(){
+      console.info( 'SUCCESS' )
+    } );
+
+  </script>
+
+</body>
+
+</html>
