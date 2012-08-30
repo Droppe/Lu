@@ -1,15 +1,6 @@
 
 /**
- * Lu's main class
- * @class Lu
- * @constructor
- * @require inject
- * @param {Object} settings Configuration properties for this instance
- */
-var Lu;
-
-/**
- * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in. 
+ * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in.
  * @method getComponents
  * @private
  * @static
@@ -25,7 +16,14 @@ function getComponents( $element ){
   }
 }
 
-window.Lu = new function(){
+/**
+ * Lu's main class
+ * @class Lu
+ * @constructor
+ * @require inject
+ * @param {Object} settings Configuration properties for this instance
+ */
+var Lu = function(){
   var self = this;
   this.$mapped = $( [] );
   this.map = function( $element, component, callback ){
@@ -49,7 +47,7 @@ window.Lu = new function(){
         _.extend( componentData[component].settings, {} );
       }
 
-      callback.call( self, $element, componentData[component] );
+      callback.call( componentData[component], $element );
 
       key = componentData[component].key || component;
 
@@ -94,32 +92,33 @@ window.Lu = new function(){
      */
     function execute( $element ){
       var components = getComponents( $element );
+
+      //no components were found so there is nothing to do
+      if( components.length === 0 ){
+        deferral.resolve();
+      }
       _.each( components, function( component, key ){
         var requirement = 'lu/' + key,
           settings = component.settings;
 
-        requirements.push( requirement );
+        if( _.indexOf( requirements, requirement ) === -1 ){
+          requirements.push( requirement );
+        }
 
         count -= 1;
 
         deferral.then( function( required, module, exports ){
           var Component = require( requirement );
-
-          try {
-            component.instance = new Component( $element, settings );
-            if( component.hasDependencies ){
-              component.instance.one( 'dependencies-resolved', function( event, instance ){
-                event.stopPropagation();
-                component.deferral.resolve( component.instance );
-              } );
-            } else {
+          component.instance = new Component( $element, settings );
+          if( component.hasDependencies ){
+            component.instance.one( 'dependencies-resolved', function( event, instance ){
+              event.stopPropagation();
               component.deferral.resolve( component.instance );
-            }
-          } catch( error ){
-            throw new Error( 'Component could not be instantiated.' );
+            } );
+          } else {
+            component.deferral.resolve( component.instance );
           }
         } );
-
         if( count === 0 ){
           require.ensure( requirements, function( required, module, exports ){
             deferral.resolve( required, module, exports );
@@ -132,7 +131,9 @@ window.Lu = new function(){
     } );
     return deferral;
   };
-}();
+};
+
+Lu = window.Lu = new Lu();
 
 /**
  * Gets the mapped parents of the passed in $element. Available through $.lu jQuery plug-in.

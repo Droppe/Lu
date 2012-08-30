@@ -7,7 +7,7 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Abstract = require( 'lu/Abstract' ),
-  StateDecorator = require( 'lu/decorators/state' ),
+  stateDecorator = require( 'lu/decorators/state' ),
   Fiber = require( 'Fiber' ),
   Switch;
 
@@ -26,7 +26,7 @@ Switch = Abstract.extend( function ( base ) {
     init: function( $element, settings ){
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
-      Fiber.decorate( this, StateDecorator( settings ) );
+      Fiber.decorate( this, stateDecorator( settings ) );
     }
   };
 } );

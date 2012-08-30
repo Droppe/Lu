@@ -1,27 +1,28 @@
 var helpers = {},
   //thanks to Gruber: http://daringfireball.net/2010/07/improved_regex_for_matching_urls
-  urlRegExp = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
+  urlRegExp = /\b((?:[a-z][\w\-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
 
 
 //Facade for the browser's developer console
 //Does not break if no developer console exists
 helpers.console = ( function(){
   var slice = Array.prototype.slice,
-    windowConsole = window.console;
+    windowConsole = window.console,
+    debug = window.LU_CONFIG.debug;
 
   function consolas( method, args ){
     if( windowConsole ){
       if( typeof windowConsole[method] === 'function' ){
         return windowConsole[method].apply( windowConsole, slice.call( args ) );
       } else if ( typeof windowConsole[method] === 'object' ){
-        return Function.prototype.call.call( windowConsole[method], windowConsole, Array.prototype.slice.call( args ) );
+        return Function.prototype.call.call( windowConsole[method], windowConsole, slice.call( args ) );
       }
     }
   }
 
   function emptyFunction(){}
 
-  if( window.LU_DEBUG === false ){
+  if( debug === false ){
 
     return {
       error: emptyFunction,
@@ -34,27 +35,27 @@ helpers.console = ( function(){
 
   return {
     error: function(){
-      if( window.LU_DEBUG >= 1 ){
+      if( debug >= 1 ){
         return _.error( arguments );
       }
     },
     warn: function(){
-      if( window.LU_DEBUG >= 2 ){
+      if( debug >= 2 ){
         return consolas( 'warn', arguments );
       }
     },
     info: function(){
-      if( window.LU_DEBUG >= 3 ){
+      if( debug >= 3 ){
         return consolas( 'info', arguments );
       }
     },
     debug: function(){
-      if( window.LU_DEBUG >= 4 ){
+      if( debug >= 4 ){
         return consolas( 'debug', arguments );
       }
     },
     log: function(){
-      if( window.LU_DEBUG >= 5 ){
+      if( debug >= 5 ){
         return consolas( 'log', arguments );
       }
     }
@@ -66,30 +67,35 @@ helpers.isUrl = function( url ){
   return urlRegExp.test( url );
 };
 
-// parseUri 1.2.2
+// Based on parseUri 1.2.2
 // (c) Steven Levithan <stevenlevithan.com>
 // MIT License
-function parseUri (str) {
-  var o   = parseUri.options,
-    m   = o.parser[o.strictMode ? "strict" : "loose"].exec(str),
+function parseUri( str ){
+  var o = parseUri.options,
+    m = o.parser[o.strictMode ? 'strict' : 'loose'].exec( str ),
     uri = {},
-    i   = 14;
+    i = 14;
 
-  while (i--) uri[o.key[i]] = m[i] || "";
+  while( i > 0 ){
+    i -= 1;
+    uri[o.key[i]] = m[i] || '';
+  }
 
   uri[o.q.name] = {};
-  uri[o.key[12]].replace(o.q.parser, function ($0, $1, $2) {
-    if ($1) uri[o.q.name][$1] = $2;
-  });
+  uri[o.key[12]].replace( o.q.parser, function( $0, $1, $2 ){
+    if( $1 ){
+      uri[o.q.name][$1] = $2;
+    }
+  } );
 
   return uri;
-};
+}
 
 parseUri.options = {
   strictMode: false,
-  key: ["source","protocol","authority","userInfo","user","password","host","port","relative","path","directory","file","query","anchor"],
-  q:   {
-    name:   "queryKey",
+  key: [ 'source', 'protocol', 'authority', 'userInfo', 'user', 'password', 'host', 'port', 'relative', 'path', 'directory', 'file', 'query', 'anchor'],
+  q: {
+    name: 'queryKey',
     parser: /(?:^|&)([^&=]*)=?([^&]*)/g
   },
   parser: {
@@ -97,6 +103,7 @@ parseUri.options = {
     loose:  /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
   }
 };
+
 helpers.parseUri = parseUri;
 
 //Trim

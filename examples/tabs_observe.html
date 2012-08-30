@@ -75,12 +75,13 @@
 
     window.LU_DEBUG = 5;
 
-    Lu.map( $( '#content' ), 'List', function( $element, component ){
-      component.settings.observe = '#menu [data-lu="Button:Select"]';
-    } );
-
-    Lu.execute( $( 'body' ) ).then( function(){
-      console.info( 'DONE!' );
+    $( function(){
+      Lu.map( $( '#content' ), 'List', function( $element ){
+        this.settings.observe = '#menu [data-lu="Button:Select"]';
+      } );
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
     } );
 
   </script>

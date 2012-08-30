@@ -6,5 +6,6 @@ styles/css/*.css
 styles/css/controls/
 bin/
 sandbox.html
-build/compass_cache
-!build/bin/
+dist/*
+dist/*.*
+!dist/sanity.html
