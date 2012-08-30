@@ -1,13 +1,13 @@
 //This file contains default mappings for Lu.
 $( function(){
 
+  console.time( 'Selectors Execution Timer' );
   var $scope = $( window.LU_CONFIG.scope ),
     $lu = $scope.find( '[data-lu]' ).add( $scope.filter( '[data-lu]' ) ),
     //Buttons
     $buttons = $lu.find( 'a, button, input' ).filter( '[data-lu*=Button]' ),
-    $defaultButton = $buttons.filter( '[data-lu~=Button]' ),
-    $firstButton = $buttons.filter( '[data-lu~=\'Button:First\']' ),
-    $lastButton = $buttons.filter( '[data-lu~=\'Button:Last\']' ),
+    //$firstButton = $buttons.filter( '[data-lu~=\'Button:First']' ),
+    // $lastButton = $buttons.filter( '[data-lu~=Button:Last]' ),
     $loadButton = $buttons.filter( '[data-lu~=\'Button:Load\']' ),
     $nextButton = $buttons.filter( '[data-lu~=\'Button:Next\']' ),
     $pauseButton = $buttons.filter( '[data-lu~=\'Button:Pause\']' ),
@@ -28,21 +28,21 @@ $( function(){
     //Carousel
     $carousel = $lu.filter( '[data-lu~=Carousel]' );
 
-  //Buttons
-  Lu.map( $defaultButton, 'Button', function( $element ){
-    this.hasDependencies = true;
-  } );
+  console.timeEnd( 'Selectors Execution Timer' );
 
-  Lu.map( $firstButton, 'Button', function( $element ){
-    this.settings.action = 'first';
-    this.key = 'Button:First';
-    this.hasDependencies = true;
-  } );
-  Lu.map( $lastButton, 'Button', function( $element ){
-    this.settings.action = 'last';
-    this.key = 'Button:Last';
-    this.hasDependencies = true;
-  } );
+  console.time( 'Mappers Execution Timer' );
+  console.profile();
+  //Buttons
+  // Lu.map( $firstButton, 'Button', function( $element ){
+  //   this.settings.action = 'first';
+  //   this.key = 'Button:First';
+  //   this.hasDependencies = true;
+  // } );
+  // Lu.map( $lastButton, 'Button', function( $element ){
+  //   this.settings.action = 'last';
+  //   this.key = 'Button:Last';
+  //   this.hasDependencies = true;
+  // } );
   Lu.map( $loadButton, 'Button', function( $element ){
     this.settings.action = 'load';
     this.key = 'Button:Load';
@@ -114,5 +114,6 @@ $( function(){
 
   //Carousel
   Lu.map( $carousel, 'Carousel', function( $element ){} );
-
+  console.profileEnd();
+  console.timeEnd( 'Mappers Execution Timer' );
 } );
