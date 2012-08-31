@@ -31,7 +31,7 @@
 
   <div>
     <ul data-lu="List">
-      <li data-lu="Container" class="lu-state-selected">
+      <li data-lu="Switch" class="lu-state-selected">
         <button data-lu="Button:Select">Sherlock</button>
       </li>
       <li>
@@ -64,8 +64,10 @@
 
     window.LU_DEBUG = 5;
 
-    Lu.execute( $( 'body' ) ).then( function(){
-      console.info( 'DONE!' );
+    $( function(){
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
     } );
 
   </script>
