@@ -26,6 +26,8 @@
     $List = $( '[data-lu~=List]' ),
     //Carousel
     $Carousel = $( '[data-lu~=Carousel]' );
+    //Placeholder
+    $Placeholder = $( 'input[placeholder][type=text][data-lu~=Placeholder], textarea[placeholder][data-lu~=Placeholder]' );
 
   //Buttons
   Lu.map( $DefaultButton, 'Button', function( $element, component ){
@@ -113,5 +115,8 @@
 
   //Carousel
   Lu.map( $Carousel, 'Carousel', function( $element, component ){} );
+
+  //Placeholder
+  Lu.map ( $Placeholder, 'Placeholder', function ( $element, component ){} );
 
 }() );
