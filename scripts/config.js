@@ -3,6 +3,11 @@
   var PATH_TO_LU_COMPONENTS = '/scripts/components/',
     PATH_TO_FIBER = '/scripts/libraries/fiber.js';
 
+    window.LU_CONFIG = {
+      debug: 5,
+      scope: 'body'
+    };
+
   if( typeof window.require === 'function' ) {
 
     if( typeof window.Inject.addRule === 'function' ) {
@@ -16,6 +21,7 @@
       window.Inject.addRule( 'Fiber', {
         path: PATH_TO_FIBER
       } );
+
     }
   }
 
