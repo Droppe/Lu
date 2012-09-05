@@ -6,8 +6,7 @@
  * @param {Object} settings Configuration properties for this instance
  */
 var Lu = function(){
-  var self = this,
-    maps = [];
+  var self = this;
 
   this.$mapped = $( [] );
   this.map = function( $element, component, callback ){
@@ -59,7 +58,7 @@ var Lu = function(){
   };
 
   /**
-   * Parses the $element for Lu controls, loads, and instantiates them.
+   * Loads and instantiates components.
    * @public
    * @static
    * @method execute
