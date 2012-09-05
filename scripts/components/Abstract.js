@@ -83,8 +83,19 @@ Abstract = Fiber.extend( function( base ){
       this.$element = $element;
       this.eventStore = {};
 
-      $observe = $( settings.observe );
-      $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
+      if( settings.observe instanceof $ ){
+        $observe = settings.observe;
+      } else if( typeof settings.observe === 'string' ){
+        $observe = $( settings.observe );
+      }
+
+      if( settings.notify instanceof $ ){
+        $notify = settings.notify;
+      } else if( typeof settings.notify === 'string' ){
+        $notify = $( settings.notify );
+      }
+
+      $notify = $notify.add( $element.lu( 'getDescendants' ) );
 
       if( $observe.length > 0 ){
         $observe.lu( 'observe', $element );
