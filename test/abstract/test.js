@@ -10,14 +10,15 @@ function execute(){
   Abstract = $abstract.lu( 'getComponents' ).Abstract.instance;
   Observer = $observer.lu( 'getComponents' ).Abstract.instance;
 
-  test( 'trigger', function(){
+  asyncTest( 'trigger', function(){
     expect( 1 );
     Abstract.one( hongKong, function(){
       ok( true , 'Event is successfully triggered.' );
     } ).trigger( hongKong );
+    start();
   } );
 
-  test( 'on', function(){
+  asyncTest( 'on', function(){
     var success = false;
 
     expect( 1 );
@@ -28,9 +29,10 @@ function execute(){
     } ).trigger( hongKong );
 
     ok( success , 'Event is successfully bound.' );
+    start();
   } );
 
-  test( 'one', function(){
+  asyncTest( 'one', function(){
     var success = false;
 
     expect( 1 );
@@ -39,9 +41,10 @@ function execute(){
       success = ( _.indexOf( Abstract.events(), 'lu:' + hongKong ) === -1 );
       ok( success , 'Event is successfully unbound.' );
     } ).trigger( hongKong );
+    start();
   } );
 
-  test( 'off', function(){
+  asyncTest( 'off', function(){
     var success = false;
 
     expect( 2 );
@@ -53,37 +56,39 @@ function execute(){
       success = ( _.indexOf( Abstract.events(), 'lu:' + hongKong ) === -1 );
       ok( success , 'Event is successfully unbound.' );
     } ).trigger( hongKong );
+    start();
   } );
 
-  test( 'observe', function(){
+  asyncTest( 'observe', function(){
     var success;
     expect( 1 );
-    Abstract.one( hongKong, function(){
+    Observer.one( hongKong, function(){
       success = true;
       ok( success, 'observation successful' );
     } );
-    Abstract.observe( $observer );
-    Observer.trigger( 'lu:' + hongKong );
-    Abstract.unobserve( $observer );
+    Observer.observe( $abstract );
+    Abstract.trigger( hongKong );
+    Observer.unobserve( $observer );
+    start();
   } );
 
-  test( 'unobserve', function(){
+  asyncTest( 'unobserve', function(){
     var success = false;
     expect( 2 );
-    Abstract.on( hongKong, function(){
+    Observer.on( hongKong, function(){
       success = true;
       ok( success, 'observation successful' );
     } );
 
-    Abstract.observe( $observer );
-    Observer.trigger( hongKong );
-
-    Abstract.unobserve( $observer );
+    Observer.observe( $abstract );
+    Abstract.trigger( hongKong );
+    Observer.unobserve( $abstract );
 
     success = false;
-    Observer.trigger( hongKong );
+    Abstract.trigger( hongKong );
     Abstract.off( hongKong );
 
     ok( !success, 'unobservation successful' );
+    start();
   } );
 }

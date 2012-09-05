@@ -199,7 +199,9 @@
     } );
   } );
 
+  console.time( 'Mappers Execution Timer' );
   //Execute Default Mappers
   Mapper.execute();
+  console.timeEnd( 'Mappers Execution Timer' );
 
 }() );
