@@ -1,21 +1,3 @@
-
-/**
- * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in.
- * @method getComponents
- * @private
- * @static
- * @param {Object} $element a jQuery collection
- * @return {Object} The Lu components associated with the given element
- */
-function getComponents( $element ){
-  var components = 'components';
-  if( $element.length > 0 ){
-    return $element.data( components ) || $element.data( components, {} ).data( components );
-  } else {
-    return {};
-  }
-}
-
 /**
  * Lu's main class
  * @class Lu
@@ -24,25 +6,32 @@ function getComponents( $element ){
  * @param {Object} settings Configuration properties for this instance
  */
 var Lu = function(){
-  var self = this;
+  var self = this,
+    maps = [];
+
   this.$mapped = $( [] );
   this.map = function( $element, component, callback ){
+    var mapped = [];
+
     _.each( $element, function( item, index ){
       var $element = $( item ),
-        componentData = getComponents( $element ),
+        componentData,
         settings,
-        configuration,
+        configuration = item.getAttribute( 'data-lu-config' ),
         key;
 
-      self.$mapped = self.$mapped.add( $element.not( self.$mapped ) );
+      componentData = $element.lu( 'getComponents' );
+
+      if( !$element.data( 'mapped' ) ){
+        $element.data( 'mapped', true );
+        mapped.push( item );
+      } 
 
       if( !componentData[component] ){
-
         componentData[component] = {
           deferral: $.Deferred(),
           settings: {}
         };
-
       } else {
         _.extend( componentData[component].settings, {} );
       }
@@ -51,14 +40,20 @@ var Lu = function(){
 
       key = componentData[component].key || component;
 
-      try {
-        configuration = ( function(){ return eval( '( function(){ return ' + $element.data( 'luConfig' ) + '; }() );' ); }()[key] || {} );
-      } catch( error ){
+      if( configuration ){
+        try {
+          configuration = ( function(){ return eval( '( function(){ return ' + configuration + '; }() );' ); }()[key] || {} );
+        } catch( e ){
+          configuration = {};
+        }
+      } else {
         configuration = {};
       }
 
       componentData[component].settings = _.extend( componentData[component].settings, configuration );
     } );
+
+    this.$mapped = this.$mapped.add( mapped );
   };
 
   /**
@@ -75,7 +70,7 @@ var Lu = function(){
       requirements = [],
       count;
 
-    if( $element.is( this.$mapped ) ){
+    if( $element.data( 'mapped' ) ){
       $nodes = $nodes.add( $element );
     }
 
@@ -91,7 +86,7 @@ var Lu = function(){
      * @return {Void}
      */
     function execute( $element ){
-      var components = getComponents( $element );
+      var components = $element.lu( 'getComponents' );
 
       //no components were found so there is nothing to do
       if( components.length === 0 ){
@@ -119,22 +114,41 @@ var Lu = function(){
             component.deferral.resolve( component.instance );
           }
         } );
+
         if( count === 0 ){
           require.ensure( requirements, function( required, module, exports ){
             deferral.resolve( required, module, exports );
           } );
         }
+
       } );
     }
     _.each( $nodes, function( item, index ){
       execute( $( item ) );
     } );
+
     return deferral;
   };
 };
 
 Lu = window.Lu = new Lu();
 
+/**
+ * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in.
+ * @method getComponents
+ * @private
+ * @static
+ * @param {Object} $element a jQuery collection
+ * @return {Object} The Lu components associated with the given element
+ */
+function getComponents( $element ){
+  var components = 'components';
+  if( $element.length > 0 ){
+    return $element.data( components ) || $element.data( components, {} ).data( components );
+  } else {
+    return {};
+  }
+}
 /**
  * Gets the mapped parents of the passed in $element. Available through $.lu jQuery plug-in.
  * @method getParents
