@@ -36,7 +36,9 @@ var Lu = function(){
         _.extend( componentData[component].settings, {} );
       }
 
-      callback.call( componentData[component], $element );
+      if( callback ){
+        callback.call( componentData[component], $element );
+      }
 
       key = componentData[component].key || component;
 

@@ -1,6 +1,6 @@
 ( function() {
 
-  var PATH_TO_LU_COMPONENTS = '/dist/components/',
+  var PATH_TO_LU_COMPONENTS = '/scripts/components/',
     PATH_TO_FIBER = '/scripts/libraries/fiber.js';
 
     window.LU_CONFIG = {
