@@ -4,8 +4,7 @@
     PATH_TO_FIBER = '/scripts/libraries/fiber.js';
 
     window.LU_CONFIG = {
-      debug: 5,
-      scope: 'body'
+      debug: 5
     };
 
   if( typeof window.require === 'function' ) {
