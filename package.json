@@ -6,5 +6,8 @@
     "grunt": ">=0.3.12",
     "node-static": ">=0.6.0"
   },
-  "engine":      "node >= 0.5.11"
+  "engine":      "node >= 0.5.11",
+  "scripts": {
+    "test": "grunt qunit"
+  }
 }
