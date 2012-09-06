@@ -26,7 +26,8 @@ $( function(){
     //List
     $list = $lu.filter( '[data-lu~=List]' ),
     //Carousel
-    $carousel = $lu.filter( '[data-lu~=Carousel]' );
+    $carousel = $lu.filter( '[data-lu~=Carousel]' ),
+    $windowCarousel = $lu.filter( '[data-lu~=\'Carousel:Window\']' );
 
   // console.timeEnd( 'Selectors Execution Timer' );
 
@@ -113,7 +114,14 @@ $( function(){
   Lu.map( $list, 'List', function( $element ){} );
 
   //Carousel
-  Lu.map( $carousel, 'Carousel', function( $element ){} );
+  Lu.map( $carousel, 'Carousel', function( $element ){ console.log('Carousel works')} );
   // console.profileEnd();
   // console.timeEnd( 'Mappers Execution Timer' );
+
+  Lu.map( $windowCarousel, 'Carousel', function( $element ){
+    console.log('MAPPER EXECUTED');
+    this.settings.action = 'window';
+    this.key = 'Carousel:Window';
+    this.hasDependencies = true;
+  } );
 } );

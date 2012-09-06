@@ -22,6 +22,11 @@ Carousel =  List.extend( function ( base ) {
     PLAYING_STATE = 'playing',
     PAUSED_STATE = 'paused',
 
+    root = 'lu/Carousel/decorators/',
+    decorators = {
+      window: root + 'window'
+    },
+
     /**
      * Default configuration values
      * @property defaults
@@ -99,6 +104,28 @@ Carousel =  List.extend( function ( base ) {
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
 
+      console.log('INIT ACTION: ' + settings.action);
+      var requirements = [];
+      action = settings.action;
+
+      if( action !== undefined ){
+        switch( action ){
+          case 'window':
+            requirements.push( decorators.window );
+            break;
+          default:
+            throw new Error( 'Carousel decorator "' + action + '" does not exist!' );
+        }
+
+        require.ensure( requirements, function( require, module, exports ){
+          _.each( requirements, function( decorator, index ){
+            decorator = require( decorator )( settings );
+            Fiber.decorate( self, decorator );
+          } );
+          self.trigger( 'dependencies-resolved' );
+        } );
+      }
+     
      /**
        * Plays the Carousel
        * @method play
