@@ -7,6 +7,6 @@ before_script:
 script: grunt qunit
 notifications:
   email:
-    - iheartweb@gmail.com
     - kirollos@gmail.com
     - jgourgoutis@linkedin.com
+    - iheartweb@gmail.com
