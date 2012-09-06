@@ -4,4 +4,4 @@ node_js:
 before_script:
   - node server.js & # start a Web server
   - sleep 3 # give Web server some time to bind to sockets, etc
-script: grunt lint; grunt qunit
+script: grunt qunit
