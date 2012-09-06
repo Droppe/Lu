@@ -26,7 +26,7 @@ $( function(){
     //List
     $list = $lu.filter( '[data-lu~=List]' ),
     //Carousel
-    $carousel = $lu.filter( '[data-lu~=Carousel]' );
+    $carousel = $lu.filter( '[data-lu~=Carousel]' ),
     //Placeholder
     $placeholder = $lu.filter( 'input[placeholder][type=text][data-lu~=Placeholder], textarea[placeholder][data-lu~=Placeholder]' );
 
@@ -114,13 +114,12 @@ $( function(){
   //List
   Lu.map( $list, 'List', function( $element ){} );
 
+  //Placeholder
+  Lu.map ( $placeholder, 'Placeholder', function ( $element, component ){} );
+
   //Carousel
   Lu.map( $carousel, 'Carousel', function( $element ){} );
     // console.profileEnd();
     // console.timeEnd( 'Mappers Execution Timer' );
-  } );
-
-  //Placeholder
-  Lu.map ( $placeholder, 'Placeholder', function ( $element, component ){} );
 
 }() );
