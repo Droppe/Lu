@@ -37,7 +37,8 @@ var constants = {
     INACTIVE: 'inactive',
     ERRED: 'erred',
     REVERSE: 'reverse',
-    FOWARD: 'forward'
+    FOWARD: 'forward',
+    PLACEHOLDER: 'placeholder'
   }
 };
 
