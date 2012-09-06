@@ -245,9 +245,8 @@ function notify( $element, event, parameters ){
   if( $observers ){
     _.each( $observers, function( observer, index ){
       var $observer = $( observer ),
-        components = getComponents( $observer ),
+        components = $observer.lu( 'getComponents' ),
         deferrals = [];
-
       _.each( components, function( component, key ){
         var deferral = component.deferral;
         deferral.then( function(){

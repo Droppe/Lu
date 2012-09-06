@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Lu Tests</title>
+  <title>Abstract Tests</title>
   <link rel="stylesheet" type="text/css" href="../qunit.css">
 </head>
 
@@ -10,7 +10,8 @@
 
   <div id="qunit"></div>
   <div id="test-container">
-    <div id="container"></div>
+    <a id="abstract-test" data-lu="Abstract"></a>
+    <a id="funk-and-waggle" data-lu="Abstract"></a>
   </div>
 
   <script src="/scripts/libraries/underscore.js"></script>
@@ -33,7 +34,6 @@
     window.LU_DEBUG = 5;
 
     Lu.execute( $( 'body' ) ).done( function(){
-      console.info( 'Lu executed!' )
       execute();
     } );
 
