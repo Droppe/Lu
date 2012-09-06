@@ -34,7 +34,7 @@ module.exports = function(grunt) {
       files: ['grunt.js', 'scripts/components/**/*.js', 'scripts/*.js']
     },
     qunit: {
-      files: ['http://localhost:1337/test/abstract/index.html']
+      files: ['http://localhost:1337/test/abstract/index.html', 'http://localhost:1337/test/placeholder/placeholder.html']
     },
     concat: {
       config: {
@@ -127,6 +127,10 @@ module.exports = function(grunt) {
       s: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Switch.js'],
         dest: 'dist/<%= componentPath %>/Switch.js'
+      },
+      t: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/Placeholder.js'],
+        dest: 'dist/<%= componentPath %>/Placeholder.js'
       }
     },
     jshint: {

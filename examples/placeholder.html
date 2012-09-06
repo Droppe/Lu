@@ -21,7 +21,7 @@
       width: 800px;
       margin: 50px auto;
     }
-    .lu-state-placeholder-visible {
+    .lu-state-placeholder {
       color: #CCC;
     }
     input {
@@ -58,8 +58,6 @@
     Inject.setModuleRoot( 'http://localhost:1337/' );
 
     window.LU_DEBUG = 5;
-
-    Lu.map( $( 'form' ).find( 'input[type=text], textarea' ), 'Placeholder', function( $element, component ){} );
 
     Lu.execute( $( 'body' ) ).then( function(){
       console.info( 'DONE!' );
