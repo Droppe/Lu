@@ -1,13 +1,28 @@
 {
   "name": "Lu",
   "version": "0.3.0",
-  "author": "Robert Martone",
+  "author": {
+    "name": "Robert Martone",
+    "email": "iheartweb@gmail.com",
+    "url": "http://www.robertmartone.com/"
+  },
   "dependencies": {
     "grunt": ">=0.3.12",
     "node-static": ">=0.6.0"
   },
-  "engine":      "node >= 0.5.11",
+  "engine": "node >= 0.5.11",
   "scripts": {
-    "test": "grunt qunit"
-  }
+    "test": "grunt qunit",
+    "start": "node server.js"
+  },
+  "main": "./scripts",
+  "contributors": [{
+    "name": "Dom DeLuise",
+    "email": "domdomdom@gmail.com"
+  }],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linked/lu.git"
+  },
+  "license": "Apache"
 }

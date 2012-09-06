@@ -6,6 +6,4 @@ before_script:
   - "export DISPLAY=:1337"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 10 # give xvfb some time to start
-  - node server.js # start a Web server
-  - sleep 10 # give Web server some time to bind to sockets, etc
 script: grunt qunit

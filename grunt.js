@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     meta: {
       banner: '/**' +
       '\n * <%= pkg.name %> version <%= pkg.version %>' +
-      '\n * @author <%= pkg.author %>' +
+      '\n * @author <%= pkg.author.name %> <<%= pkg.author.email %>>' +
       '\n * @license' +
       '\n *' +
       '\n * Please thank the contributors:' +
