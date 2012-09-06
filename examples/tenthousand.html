@@ -28297,9 +28297,12 @@
   <script type="text/javascript" src="/scripts/libraries/inject/inject.js"></script>
 
   <!-- Bootstrap:UI -->
-  <script src="/scripts/libraries/jquery-1.8.1_qsad.js"></script>
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
 
-  <!--script>console.info( 'Number of nodes:', $( '*' ).length )</script-->
+  <script>
+    console.info( 'Number of nodes:', document.getElementsByTagName( '*' ).length );
+    console.info( 'Number of Lu nodes:', $( '[data-lu]' ).length );
+  </script>
 
   <script src="/scripts/config.js" type="text/javascript" charset="utf-8"></script>
   <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
@@ -28307,15 +28310,14 @@
   <script>
     // ( function(){
     //   var ids = [];
-    //   $( '[data-lu]' ).filter( '[id]' ).each( function(){
+    //   $( '[data-lu="Switch"]' ).each( function(){
     //       ids.push( '#' + this.id );
     //   } );
     //   window.LU_CONFIG.scope = ids.join( ', ' );
     // }() );
   </script>
 
-  <!--script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script-->
-  <script type="text/javascript" src="/scripts/tree.js"></script>
+  <script src="/scripts/mappers.js" type="text/javascript"></script>
   <script charset="utf-8">
 
     Inject.setExpires( 0 );
@@ -28325,9 +28327,9 @@
     window.LU_DEBUG = 5;
 
     $( function(){
-      Lu.execute( $( 'body' ) ).then( function(){
-        console.info( 'DONE!' );
-      } );
+      // Lu.execute( $( 'body' ) ).then( function(){
+      //   console.info( 'DONE!' );
+      // } );
     } );
 
   </script>

@@ -170,7 +170,6 @@ Abstract = Fiber.extend( function( base ){
       if( store && store.method === 'one' ){
         removeFromEventStore.call( this, event );
       }
-
       this.$element.trigger.call( this.$element, event, parameters );
       return this;
     },
@@ -181,7 +180,7 @@ Abstract = Fiber.extend( function( base ){
      * @param {Array} $observer A jQuery collection to be observed
      */
     observe: function( $observer ){
-      this.$element.lu( 'observe', $observer );
+      $observer.lu( 'observe', this.$element );
       return this;
     },
     /**
@@ -191,7 +190,7 @@ Abstract = Fiber.extend( function( base ){
      * @param {Array} $observer A jQuery collection to be unobserved
      */
     unobserve: function( $observer ){
-      this.$element.lu( 'unobserve', $observer, this.$element );
+      $observer.lu( 'unobserve', this.$element );
       return this;
     },
     /**
