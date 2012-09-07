@@ -1,6 +1,6 @@
 {
   "name": "Lu",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": {
     "name": "Robert Martone",
     "email": "iheartweb@gmail.com",
@@ -19,10 +19,15 @@
   "contributors": [{
     "name": "Dom DeLuise",
     "email": "domdomdom@gmail.com"
-  },
-  {
+  }, {
+    "name": "Matt Edwards",
+    "email": "matt.m.edwards@gmail.com"
+  }, {
     "name": "Steven Foote",
     "email": "smfoote@gmail.com"
+  }, {
+    "name": "Nate Eborn",
+    "email": "rockthemic12@gmail.com"
   }],
   "repository": {
     "type": "git",

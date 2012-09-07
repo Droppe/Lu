@@ -187,7 +187,8 @@ function getChildren( $element ){
 }
 
 /**
- * Add an $observer to an $element. Available through $.lu jQuery plug-in.
+ * Add an $observer to an $element. Observers are added in $.data as $observers.
+ * Available through $.lu jQuery plug-in.
  * @public
  * @static
  * @method observe
