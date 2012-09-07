@@ -162,10 +162,6 @@ List = Switch.extend( function( base ){
         component.deferral.then( function( Switch ){
           var current = self.current();
 
-          if( idx === index && Selected ){
-            return;
-          }
-
           //If there is a currently selected item remove the selected state
           if( current ){
             current.removeState( constants.states.SELECTED );
