@@ -13,7 +13,7 @@ function execute(){
   asyncTest( 'trigger', function(){
     expect( 1 );
     Abstract.one( hongKong, function(){
-      ok( true , 'Event is successfully triggered.' );
+      ok( true, 'Event is successfully triggered.' );
     } ).trigger( hongKong );
     start();
   } );

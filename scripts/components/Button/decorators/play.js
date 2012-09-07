@@ -11,7 +11,6 @@ function playDecorator( settings ) {
 
   return function( base ){
     var self = this;
-
     this.on( constants.events.STATED, function( event, Component ){
       event.stopPropagation();
       if( Component.hasState( constants.states.PLAYING ) ){
@@ -21,7 +20,6 @@ function playDecorator( settings ) {
         self.enable();
       }
     } );
-
   };
 }
 
@@ -29,8 +27,8 @@ function playDecorator( settings ) {
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( playDecorator() );
+    module.setExports( playDecorator );
   } else if( module.exports ){
-    module.exports = playDecorator();
+    module.exports = playDecorator;
   }
 }

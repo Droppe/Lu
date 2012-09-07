@@ -8,7 +8,6 @@ var constants = require( 'lu/constants' );
  * @private
  */
 function pauseDecorator( settings ) {
-
   return function( base ){
     var self = this;
 
