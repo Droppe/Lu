@@ -37,6 +37,7 @@ module.exports = function(grunt) {
       files: [
         'http://localhost:1337/test/abstract/abstract.html',
         'http://localhost:1337/test/lu/lu.html',
+        //'http://localhost:1337/test/placeholder/placeholder.html',
         'http://localhost:1337/test/$/$.html'
       ]
     },
@@ -130,6 +131,10 @@ module.exports = function(grunt) {
       s: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Switch.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Switch.js'
+      },
+      t: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/Placeholder.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Placeholder.js'
       }
     },
     jshint: {
@@ -157,7 +162,8 @@ module.exports = function(grunt) {
         module: true,
         require: true,
         Inject: true,
-        _: true
+        _: true,
+        console: true
       }
     }
   } );

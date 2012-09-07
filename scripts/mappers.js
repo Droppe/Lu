@@ -11,13 +11,13 @@
     this.$scope = undefined;
     this.maps = [];
     this.setScope( scope );
-  }
+  };
 
   /**
    * Sets the scope to use when mapping components to nodes
    * @public
    * @method setScoped
-   * @param {*} scope This can be an HTML Element, 
+   * @param {*} scope This can be an HTML Element,
    * an array of elements, a selector string or a jquery object
    * @return this
    */
@@ -76,7 +76,6 @@
     } );
   };
 
-
   //Create a new Mapper to contain default mappings for Lu.
   var Mapper = new Lu.Mapper();
 
@@ -89,126 +88,30 @@
     } );
   } );
 
-  //Select Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:Select' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'select';
-      this.key = 'Button:Select';
-      this.hasDependencies = true;
+  // Coalesce the buttons into one mapper function, because we care about performance,
+  // saving bytes, and abhor redundancy.
+  _.each( ['select', 'first', 'last', 'next', 'previous', 'load', 'pause', 'state'], function( action ) {
+    Mapper.register( function(){
+      var key = 'Button:' + action.charAt( 0 ).toUpperCase() + action.substring( 1 );
+      Lu.map( _.filter( Mapper.$scope, function( item ){
+        return ( item.getAttribute( 'data-lu' ).indexOf( key ) > -1 );
+      } ), 'Button', function(){
+        this.settings.action = action;
+        this.key = key;
+        this.hasDependencies = true;
+      } );
     } );
   } );
 
-  //First Button
+  //Placeholder
   Mapper.register( function(){
     Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:First' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'first';
-      this.key = 'Button:First';
-      this.hasDependencies = true;
-    } );
+      return ( item.getAttribute( 'data-lu' ).indexOf( 'Placeholder' ) > -1 &&
+             ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
+             item.getAttribute( 'placeholder' ) );
+    } ), 'Placeholder' );
   } );
 
-  //Last Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:Last' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'last';
-      this.key = 'Button:Last';
-      this.hasDependencies = true;
-    } );
-  } );
-
-  //Load Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:Load' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'load';
-      this.key = 'Button:Load';
-      this.hasDependencies = true;
-    } );
-  } );
-
-  //First Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:First' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'first';
-      this.key = 'Button:First';
-      this.hasDependencies = true;
-    } );
-  } );
-
-  //Next Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:Next' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'next';
-      this.key = 'Button:Next';
-      this.hasDependencies = true;
-    } );
-  } );
-
-  //Pause Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:Pause' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'pause';
-      this.key = 'Button:Pause';
-      this.hasDependencies = true;
-    } );
-  } );
-
-  //Play Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:Play' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'play';
-      this.key = 'Button:Play';
-      this.hasDependencies = true;
-    } );
-  } );
-
-  //Previous Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:Previous' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'previous';
-      this.key = 'Button:Previous';
-      this.hasDependencies = true;
-    } );
-  } );
-
-  //State Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:State' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'state';
-      this.key = 'Button:State';
-      this.hasDependencies = true;
-    } );
-  } );
-
-  //State Button
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:State' ) > -1 );
-    } ), 'Button', function(){
-      this.settings.action = 'state';
-      this.key = 'Button:State';
-      this.hasDependencies = true;
-    } );
-  } );
   //console.time( 'Mappers Execution Timer' );
   //Execute Default Mappers
   Mapper.execute();
