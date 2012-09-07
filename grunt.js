@@ -129,11 +129,11 @@ module.exports = function(grunt) {
       },
       s: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Switch.js'],
-        dest: 'dist/<%= componentPath %>/Switch.js'
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Switch.js'
       },
       t: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Placeholder.js'],
-        dest: 'dist/<%= componentPath %>/Placeholder.js'
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Placeholder.js'
       }
     },
     jshint: {
@@ -161,7 +161,8 @@ module.exports = function(grunt) {
         module: true,
         require: true,
         Inject: true,
-        _: true
+        _: true,
+        console: true
       }
     }
   } );

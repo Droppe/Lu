@@ -11,13 +11,13 @@
     this.$scope = undefined;
     this.maps = [];
     this.setScope( scope );
-  }
+  };
 
   /**
    * Sets the scope to use when mapping components to nodes
    * @public
    * @method setScoped
-   * @param {*} scope This can be an HTML Element, 
+   * @param {*} scope This can be an HTML Element,
    * an array of elements, a selector string or a jquery object
    * @return this
    */
@@ -92,9 +92,9 @@
   //Placeholder
   Mapper.register( function(){
     Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Placeholder' ) > -1
-               && ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' )
-               && item.getAttribute( 'placeholder' ) );
+      return ( item.getAttribute( 'data-lu' ).indexOf( 'Placeholder' ) > -1 &&
+             ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
+             item.getAttribute( 'placeholder' ) );
     } ), 'Placeholder' );
   });
 
