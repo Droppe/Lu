@@ -13,7 +13,7 @@ function firstDecorator( settings ) {
   return function( base ){
     var self = this;
 
-    self.on( constants.events.SELECTED, function( event, Component ){
+    this.on( constants.events.SELECTED, function( event, Component ){
       event.stopPropagation();
       if( Component.index() === 0 ){
         self.disable();

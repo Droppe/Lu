@@ -16,29 +16,79 @@
 
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/base.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/layout.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/skeleton.css">
+
   <style type="text/css">
     body {
-      width: 800px;
+      background: #e8e8e8;
+    }
+    #carousel {
+      width: 612px;
       margin: 50px auto;
     }
+    #carousel ul {
+      position: relative;
+      display: block;
+      height: 612px;
+      width: 100%;
+    }
+    #carousel .controls {
+      text-align: center;
+      padding: 20px;
+    }
+    #carousel .controls .lu-state-disabled {
+      opacity: .5;
+    }
+    .item {
+      position: absolute;
+      opacity: 0;
+      display: block;
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      transition: opacity .7s;
+      -moz-transition: opacity .7s;
+      -webkit-transition: opacity .7s;
+      -o-transition: opacity .7s;
+    }
     .lu-state-selected {
-      background-color: #00f;
+      opacity: 1;
     }
   </style>
 </head>
 
 <body>
 
-  <div data-lu="Carousel">
+  <div id="carousel" data-lu="Carousel" data-lu-config="{
+    Carousel: {
+      autoplay: false,
+      delay: 1000
+    }
+  }">
     <ul>
-      <li class="lu-state-selected">Sherlock</li>
-      <li>Watson</li>
-      <li>Moriarty</li>
+      <li id="sherlock" class="lu-state-selected item" data-lu="Switch">
+        <img src="http://content.photojojo.com/wp-content/uploads/2010/10/instagram-lg.jpg"/>
+      </li>
+      <li id="watson" class="item" data-lu="Switch">
+        <img src="http://content.photojojo.com/wp-content/uploads/2010/10/instagram-3.jpg"/>
+      </li>
+      <li id="moriarty" class="item" data-lu="Switch">
+        <img src="http://24.media.tumblr.com/tumblr_m79sg4gaTI1r1thfzo1_1280.jpg"/>
+      </li>
     </ul>
-    <button data-lu="Button:First">First</button>
-    <button data-lu="Button:Previous">Previous</button>
-    <button data-lu="Button:Next">Next</button>
-    <button data-lu="Button:Last">Last</button>
+    <div class="controls">
+      <button data-lu="Button:Play">Play</button>
+      <button data-lu="Button:Pause">Pause</button>
+      <button data-lu="Button:Previous">Previous</button>
+      <button data-lu="Button:First">First</button>
+      <button data-lu="Button:Select" aria-controls="sherlock">1</button>
+      <button data-lu="Button:Select" aria-controls="watson">2</button>
+      <button data-lu="Button:Select" aria-controls="moriarty">3</button>
+      <button data-lu="Button:Last">Last</button>
+      <button data-lu="Button:Next">Next</button>
+    </div>
   </div>
 
   <!-- Bootstrap:Util -->
