@@ -8,5 +8,6 @@ script: grunt qunit
 notifications:
   email:
     - kirollos@gmail.com
-    - iheartweb@gmail.com
     - jgourgoutis@linkedin.com
+    - iheartweb@gmail.com
+    - rockthemic12@gmail.com
