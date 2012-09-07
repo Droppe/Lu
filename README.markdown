@@ -31,6 +31,7 @@
 4. In a terminal from the Lu directory:```$npm install```
 5. In a new terminal from the Lu directory:```$npm start```
 
-Before making pull requests test and lint your code! See our test directory for test examples. Run ```$grunt lint``` and ```$grunt qunit```.
+Before making pull requests test and lint your code!
+See our test directory for test examples. Run ```$grunt lint``` and ```$grunt qunit```.
 
 To build Lu run: ```$grunt build``` while the Lu server is is running.
