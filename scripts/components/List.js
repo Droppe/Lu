@@ -186,8 +186,8 @@ List = Switch.extend( function( base ){
 
       index = settings.index;
       if( index === undefined ){
-        index = this.$items.filter( '.' + SELECTED ).index( this.$items );
-        index = 0;
+        var $selected = this.$items.filter('.' + SELECTED);
+        index = this.$items.index( $selected );
         if( index === -1 ){
           index = 0;
         }
