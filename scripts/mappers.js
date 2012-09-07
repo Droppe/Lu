@@ -199,9 +199,19 @@
     } );
   } );
 
-  console.time( 'Mappers Execution Timer' );
+  //State Button
+  Mapper.register( function(){
+    Lu.map( _.filter( Mapper.$scope, function( item, index ){
+      return ( item.getAttribute( 'data-lu' ).indexOf( 'Button:State' ) > -1 );
+    } ), 'Button', function(){
+      this.settings.action = 'state';
+      this.key = 'Button:State';
+      this.hasDependencies = true;
+    } );
+  } );
+  //console.time( 'Mappers Execution Timer' );
   //Execute Default Mappers
   Mapper.execute();
-  console.timeEnd( 'Mappers Execution Timer' );
+  //console.timeEnd( 'Mappers Execution Timer' );
 
 }() );
