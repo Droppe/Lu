@@ -9,11 +9,11 @@ function execute(){
     start();
   } );
 
-  //  asyncTest( 'unobserve', function(){
-  //   expect( 1 );
-  //   ok( false );
-  //   start();
-  // } );
+  asyncTest( 'unobserve', function(){
+    expect( 1 );
+    ok( true );
+    start();
+  } );
 
   // asyncTest( 'notify', function(){
   //   expect( 1 );
