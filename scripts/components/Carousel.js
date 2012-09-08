@@ -33,7 +33,7 @@ Carousel =  List.extend( function ( base ) {
        * @private
        * @final
        */
-      autoplay: false,
+      autoplay: true,
       /**
        * The time in milliseconds to remain on an item while playing
        * @property delay
@@ -138,16 +138,11 @@ Carousel =  List.extend( function ( base ) {
         self.play();
       } );
 
-      _.each([constants.events.PAUSE, constants.events.NEXT, constants.events.PREVIOUS, constants.events.FIRST, constants.events.LAST, constants.events.SELECT], function( event ){ 
+      _.each( [constants.events.PAUSE, constants.events.NEXT, constants.events.PREVIOUS, constants.events.FIRST, constants.events.LAST, constants.events.SELECT], function( event ){ 
         self.on( event, function( event, item ){
           event.stopPropagation();
           self.pause();
         } );
-      } );
-
-      this.on( [constants.events.PAUSE, constants.events.NEXT, constants.events.PREVIOUS, constants.events.FIRST, constants.events.LAST, constants.events.SELECT].join( ' ' ), function( event, item ){
-        event.stopPropagation();
-        self.pause();
       } );
 
       // Play if autoplay is true in settings

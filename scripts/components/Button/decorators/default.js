@@ -9,7 +9,6 @@
 function DefaultDecorator( settings ){
   return function( base ){
     var self = this;
-
     this.$element.on( settings.on, function( event ){
       if( !self.$element.is( 'button' ) ){
         self.$element.focus();

@@ -10,8 +10,12 @@
 
   <div id="qunit"></div>
   <div id="test-container">
-    <div id="lu" data-lu="Switch"></div>
-    <div id="observer" data-lu="Switch"></div>
+    <div id="parent" data-lu="List">
+      <div id="lu" data-lu="Switch">
+        <div id="deep" data-lu="Carousel"></div>
+      </div>
+      <div id="observer" data-lu="Switch"></div>
+    </div>
   </div>
 
   <script src="/scripts/libraries/underscore.js"></script>
