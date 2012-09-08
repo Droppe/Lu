@@ -131,14 +131,16 @@ Carousel =  List.extend( function ( base ) {
           this.setState( constants.states.PAUSED );
         }
         return this;
-      },
+      };
 
       this.on( constants.events.PLAY, function( event ){
         event.stopPropagation();
         self.play();
       } );
 
-      _.each( [constants.events.PAUSE, constants.events.NEXT, constants.events.PREVIOUS, constants.events.FIRST, constants.events.LAST, constants.events.SELECT], function( event ){ 
+      _.each( [constants.events.PAUSE, constants.events.NEXT, constants.events.PREVIOUS,
+            constants.events.FIRST, constants.events.LAST,
+            constants.events.SELECT], function( event ){
         self.on( event, function( event, item ){
           event.stopPropagation();
           self.pause();
