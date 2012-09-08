@@ -34,8 +34,6 @@ Placeholder = FormElement.extend( function ( base ) {
       base.init.call( Placeholder, $element, settings );
       Fiber.decorate( Placeholder, StateDecorator( settings ) );
       PLACEHOLDER_STATE = constants.states.PLACEHOLDER;
-      Placeholder.addState( PLACEHOLDER_STATE );
-      $element.val( placeholderText );
 
       function clear () {
         if ( Placeholder.hasState( PLACEHOLDER_STATE ) ) {
@@ -47,13 +45,34 @@ Placeholder = FormElement.extend( function ( base ) {
       function show () {
         if ( $element.val() === '' ) {
           $element.val( placeholderText );
-          Placeholder.setState( PLACEHOLDER_STATE );
+          Placeholder.addState( PLACEHOLDER_STATE );
         }
       }
 
-      $element.on( 'focus', function ( evt ) {
+      // Preserve text on reload and back
+      if ( $element.val() === placeholderText ) {
+        $element.val( '' );
+      }
+      show();
+
+      $element.on( 'keydown', function ( evt ) {
         clear();
       } );
+
+      $element.on( 'focus click', function ( evt ) {
+        var range;
+        if ( Placeholder.hasState( PLACEHOLDER_STATE ) ) {
+          // Prevent default prevents the placeholder text from being highlighted on tab focus
+          evt.preventDefault();
+          if ( $element[0].createTextRange ) {
+            range = $element[0].createTextRange();
+            range.moveat( 'character', 0 );
+            range.movend( 'character', 0 );
+          } else if ( $element[0].setSelectionRange ) {
+            $element[0].setSelectionRange( 0, 0 );
+          }
+        }
+      });
 
       $element.on( 'blur', function ( evt ) {
         show();
