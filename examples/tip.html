@@ -42,7 +42,16 @@
 
     <div id="container" class="container">
       <h1>Tip Example</h1>
-      
+
+
+      <a href="#content" data-lu="Tip" data-lu-config="{'Tip': {
+          placement: 'above'
+      }}">Tip ABOVE with local DOM content</a>
+
+      <div id="content" class="lu-hidden">
+        Tip content ONE!
+      </div>
+
       <a href="#content" data-lu="Tip" data-lu-config="{
         'Tip': {
           placement: 'above'
@@ -103,7 +112,7 @@
         Tip ABOVE with XHR content
       </a>
 
-
+ 
     </div>
 
   <!-- Bootstrap:Util -->

@@ -6,11 +6,15 @@
  * @require Container
  * @version 0.1.4
  */
-var Abstract = require( 'lu/Abstract' ),
+var constants = require( 'lu/constants' ),
+  helpers = require( 'lu/helpers' ),
+  Fiber = require( 'Fiber' ),
+  Abstract = require( 'lu/Abstract' ),
   Container = require( 'lu/Container' ),
   Tip;
 
-Tip = Abstract.extend( function (Abstract){
+
+Tip = Abstract.extend( function ( base ){
 
   // OBSERVED EVENTS
   var HIDE_EVENT = 'hide',
@@ -122,7 +126,7 @@ Tip = Abstract.extend( function (Abstract){
        * @type Object
        * @private
        */
-      var Tip = this,
+      var self = this,
 
         /**
          * An indicator of whether or not the tip has been rendered.
@@ -204,26 +208,22 @@ Tip = Abstract.extend( function (Abstract){
          */
         decorators = [];
 
+<<<<<<< Updated upstream
       if (settings['__params__']) {
         settings.placement = settings['__params__'][0] || settings.placement;
+=======
+      if (settings.__params__) {
+        settings.placement = settings.__params__[0] || settings.placement;       
+>>>>>>> Stashed changes
       }
 
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
-      Abstract.init.call( this, $element, settings );
-
-      href = settings.url || $element.attr( 'href' );
-
-      $tip = renderTip();
-      styleTip();
-      TipContainer = new Container( $tip, {
-        target: '.lu-content',
-        frame: settings.frame,
-        notify: $element
-      });
+      base.init.call( self, $element, settings );
 
       /**
+<<<<<<< Updated upstream
        * Appends the Tip to the document 
        * @method append
        * @private
@@ -234,6 +234,8 @@ Tip = Abstract.extend( function (Abstract){
       }
 
       /**
+=======
+>>>>>>> Stashed changes
        * Renders the content and the template to create the tip 
        * @method renderTip
        * @private
@@ -243,7 +245,7 @@ Tip = Abstract.extend( function (Abstract){
       function renderTip(content) {
         return $(settings.template);
       }
-      
+
       /**
        * Transfer the styles from the target to the tip if style is not specified
        * @method styleTip
@@ -265,24 +267,48 @@ Tip = Abstract.extend( function (Abstract){
         }
       }
 
+
+      href = settings.url || $element.attr( 'href' );
+
+      $tip = renderTip();
+      styleTip();
+      TipContainer = new Container( $tip, {
+        target: '.lu-content',
+        frame: settings.frame,
+        notify: $element
+      });
+
+
+      /**
+       * Appends the Tip to the document 
+       * @method append
+       * @private
+       * @return {Void}
+       */
+      function append() {
+        $( 'body' ).append( $tip );        
+      }
+          
+      
+
       /**
        * Show the tip
        * @method show
        * @return {Void}
        */
-      Tip.show = function(){
+      self.show = function(){
 
-        TipContainer.one( 'mouseenter.lu.tip', function( event ){
+        TipContainer.$element.one( 'mouseenter.lu.tip', function( event ){
           stuck = TRUE;
         } );
 
-        TipContainer.one( 'mouseleave.lu.tip', function( event ){
+        TipContainer.$element.one( 'mouseleave.lu.tip', function( event ){
           stuck = FALSE;
-          Tip.hide();
+          self.hide();
         } );
         
-        if( rendered === FALSE ){
-          TipContainer.trigger("load", href);
+        if( !rendered ){
+          TipContainer.trigger(constants.events.LOAD, href);
         }
         else {
           $tip.show();
@@ -295,14 +321,14 @@ Tip = Abstract.extend( function (Abstract){
        * @method hide
        * @return {Void}
        */
-      Tip.hide = function(){
+      self.hide = function(){
         var timeout;
         if( rendered === TRUE ){
           timeout = window.setTimeout( function(){
             if( !stuck || !settings.interactive ){
               $tip.hide();
               window.clearTimeout( timeout );
-              Tip.trigger( HIDDEN_EVENT, [Tip, TipContainer] );
+              self.trigger( HIDDEN_EVENT, [self, TipContainer] );
             }
           }, settings.delay );
         }
@@ -321,7 +347,7 @@ Tip = Abstract.extend( function (Abstract){
           elWidth = $element.outerWidth();
 
         if( typeof position === 'undefined' || cache === false ){
-          position = Tip.calcPosition(elOffset, elHeight, elWidth, settings);
+          position = self.calcPosition(elOffset, elHeight, elWidth, settings);
         }
         return position;
       }
@@ -368,51 +394,59 @@ Tip = Abstract.extend( function (Abstract){
           if( !isMouseInside() ){
             $document.off( 'mouseenter', mouseenterEvent );
             $document.off( 'mousemove.lu.tip' );
-            Tip.hide();
+            self.hide();
           }
 
         } );
 
-        Tip.show();
+        self.show();
       }
 
       // === Event Listeners ===
-      Tip.on( 'mouseenter', mouseenterEvent);
+      //self.on( 'mouseenter', mouseenterEvent);
+      self.$element.on( 'mouseenter', mouseenterEvent);
       
-      Tip.on( 'focus', function( event ){
+      self.on( 'focus', function( event ){
         event.stopPropagation();
-        Tip.on( 'blur.lu.tip', function( event ){
+        self.on( 'blur.lu.tip', function( event ){
           event.stopPropagation();
-          Tip.off( 'blur.lu.tip' );
-          Tip.hide();
+          self.off( 'blur.lu.tip' );
+          self.hide();
         } );
+<<<<<<< Updated upstream
 
         Tip.show();
 
+=======
+      
+        self.show();
+      
+>>>>>>> Stashed changes
       } );
 
       // === APPEND TIP TO DOM FOLLOWING UPDATE EVENT ===
-      Tip.on('updated', function(event) {
+      self.on('lu-updated', function(event) {
         event.stopPropagation();
         append();
         $tip.css( getPosition(false, settings) );
         rendered = TRUE;
-        Tip.trigger( SHOWN_EVENT, [Tip, TipContainer] );
+        self.trigger( SHOWN_EVENT, [self, TipContainer] );
       });
 
       //Listen to these events from other controls
-      Tip.on( HIDE_EVENT, function( event ){
+      self.on( HIDE_EVENT, function( event ){
         event.stopPropagation();
-        Tip.hide();
+        self.hide();
       } );
-      Tip.on( SHOW_EVENT, function( event ){
+
+      self.on( SHOW_EVENT, function( event ){
         event.stopPropagation();
-        Tip.show();
+        self.show();
       } );
 
       // PUBLIC ACCESS
-      Tip.$tip = $tip;
-      Tip.position = position;
+      self.$tip = $tip;
+      self.position = position;
       
       // Decorate based on placement option
       switch (settings.placement) {
@@ -434,7 +468,9 @@ Tip = Abstract.extend( function (Abstract){
       
       require.ensure( decorators, function ( require, module, exports ) {
         _.each( decorators, function ( decorator, index ) {
-          Tip.decorate(require( decorator ) );
+          decorator = require( decorator )( settings );
+          Fiber.decorate( self, decorator );
+
         });
       });
       
