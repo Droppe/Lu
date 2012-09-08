@@ -9,3 +9,4 @@ sandbox.html
 dist/*
 dist/*.*
 !dist/sanity.html
+.travis.yml
