@@ -15,6 +15,7 @@ var Lu = function(){
     _.each( $element, function( item, index ){
       var $element = $( item ),
         componentData,
+        deferral,
         settings,
         configuration = item.getAttribute( 'data-lu-config' ),
         key;
@@ -27,8 +28,10 @@ var Lu = function(){
       } 
 
       if( !componentData[component] ){
+        deferral = $.Deferred();
         componentData[component] = {
-          deferral: $.Deferred(),
+          deferral: deferral,
+          ready: deferral.then,
           settings: {}
         };
       } else {
@@ -135,7 +138,8 @@ var Lu = function(){
 Lu = window.Lu = new Lu();
 
 /**
- * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in.
+ * Returns a components object containing all components mapped to a node.
+ * Available through $.lu jQuery plug-in.
  * @method getComponents
  * @private
  * @static
@@ -150,8 +154,25 @@ function getComponents( $element ){
     return {};
   }
 }
+
 /**
- * Gets the mapped parents of the passed in $element. Available through $.lu jQuery plug-in.
+ * Returns a component.
+ * Available through $.lu jQuery plug-in.
+ * @method getComponents
+ * @private
+ * @static
+ * @param {Object} $element a jQuery collection
+ * @param {String} $element the components key
+ * @return {Object} The Lu component associated with the given element
+ */
+function getComponent( $element, key ){
+  var components = $element.lu( 'getComponents' );
+  return components[key];
+}
+
+/**
+ * Gets the mapped parents of the passed in $element.
+ * Available through $.lu jQuery plug-in.
  * @method getParents
  * @public
  * @static
@@ -159,7 +180,7 @@ function getComponents( $element ){
  * @return {Object} A jQuery collection representing the parents
  */
 function getParents( $element ){
-  return $element.parents( Lu.$mapped );
+  return $element.parents().filter( Lu.$mapped );
 }
 
 /**
@@ -286,6 +307,9 @@ function notify( $element, event, parameters ){
         break;
       case 'getComponents':
         retrn = getComponents.apply( $this, parameters );
+        break;
+     case 'getComponent':
+        retrn = getComponent.apply( $this, parameters );
         break;
       case 'getParents':
         retrn = getParents.apply( $this, parameters );
