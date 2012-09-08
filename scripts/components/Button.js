@@ -77,6 +77,7 @@ Button = Switch.extend( function( base ){
             break;
           case 'load':
             requirements.push( decorators.load );
+            requirements.push( decorators.def );
             break;
           case 'next':
             requirements.push( decorators.next );
@@ -129,7 +130,7 @@ Button = Switch.extend( function( base ){
     disable: function(){
       var $element = this.$element;
       if( $element.is( constants.HAS_A18_ATTRS ) ){
-        $element.prop( constants.DISABLED, true );
+        $element.attr( constants.DISABLED, 'disabled' );
       }
       this.addState( constants.states.DISABLED );
       return this;
@@ -144,7 +145,9 @@ Button = Switch.extend( function( base ){
      */
     enable: function(){
       var $element = this.$element;
-      $element.removeProp( constants.DISABLED );
+      if( $element.is( constants.HAS_A18_ATTRS ) ){
+        $element.attr( constants.DISABLED, null );
+      }
       this.removeState( constants.states.DISABLED );
       return this;
     }

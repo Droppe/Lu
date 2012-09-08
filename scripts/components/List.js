@@ -2,8 +2,6 @@
  * Manages a list of Containers.
  * @class self
  * @extends Switch
- * @require Container
- * @version 0.2.4
  */
 
 var constants = require( 'lu/constants' ),
@@ -14,64 +12,12 @@ var constants = require( 'lu/constants' ),
 
 List = Switch.extend( function( base ){
 
-  var VERTICAL = 'vertical',
-    HORIZONTAL = 'horizontal',
-    SELECTED = constants.statePrefix + constants.states.SELECTED,
+  var SELECTED = constants.statePrefix + constants.states.SELECTED,
     LIST_TAGS = 'ul, ol, dl',
 
     defaults = {
-      orientation: HORIZONTAL,
       index: undefined
     };
-
-  /**
-   * Handles the keyup event and looks for keycodes 37, 38, 39 and 40.  These correspond to left, up, right and down
-   * arrows.  Left and up correspond to action "previous" and right and next correspond to "next".
-   * @method handleKeyup
-   * @private
-   * @param {Event} event An event object
-   * @param {Object} self the list control to handle
-   * @return {Void}
-   */
-  function handleKeyup( event, self ){
-    var keyCode = event.keyCode,
-      item = $( event.target );
-
-    // A "vertical" list orentation means that the up and down arrow keys work
-    if( self.orientation === VERTICAL ){
-      switch ( keyCode ){
-        case 38: // Up arrow
-          self.previous();
-          break;
-        case 40: // Down arrow
-          self.next();
-          break;
-        default:
-          // noop
-      }
-    } else {
-      // By default, list orientation is "horizontal" and left and right arrows work
-      switch( keyCode ){
-        case 37: //Left arrow
-          self.previous();
-          break;
-        case 39: //Right arrow
-          self.next();
-          break;
-        default:
-      }
-    }
-
-    switch( keyCode ){
-      case 36: //Home key
-        self.first();
-        break;
-      case 35: //Last key
-        self.last();
-        break;
-      default:
-    }
-  }
 
   return {
     /**
@@ -145,12 +91,13 @@ List = Switch.extend( function( base ){
        * Select an item in the list
        * @method select
        * @public
-       * @param {Integer|String|Object} item The index of the item to 
+       * @param {Integer|String|Object} item The index of the item to
        * select, a css selector, or a JQuery collection containing the item.
        * @return {Object} self
        */
       this.select = function( item ){
-        var componentData,
+        var component,
+          componentData,
           $item,
           idx;
 
@@ -166,8 +113,8 @@ List = Switch.extend( function( base ){
         if( typeof item === 'number' && item <= this.size() - 1 ){
           $item = this.$items.eq( item );
         } else if( typeof item === 'string' ){
-          $item = $items.filter( item );
-          $item = ( $item.size() === 1 ) ? $item.eq( 0 ) : undefined;
+          $item = this.$items.filter( item );
+          $item = ( $item.size() === 1 ) ? $item : undefined;
         } else if( item instanceof $ && item.size() === 1 ){
           if( item.is( this.$items ) ){
             $item = item;
@@ -191,31 +138,38 @@ List = Switch.extend( function( base ){
           this.addState( constants.states.REVERSE ).removeState( constants.states.FORWARD );
         }
 
-        componentData = $item.lu( 'getComponents' ).Container;
+        _.each( $item.lu( 'getComponents' ), function( comp, key ){
+          var instance;
+          if( !component ){
+            instance = comp.instance;
+            if( instance ){
+              if( typeof instance.removeState === 'function' && typeof instance.addState === 'function' ){
+                component = comp;
+              }
+            }
+          }
+        } );
 
-        //There is no Container so create one.
-        if( !componentData ){
-          Lu.map( $item, 'Container', function(){} );
+        //an acceptable component was not found.
+        if( !component ){
+          Lu.map( $item, 'Switch', function(){} );
           Lu.execute( $item );
-          componentData = $item.lu( 'getComponents' ).Container;
+          component = $item.lu( 'getComponents' ).Switch;
         }
 
-        //Once the item is fully instantiated, select it.
-        componentData.deferral.then( function( Component ){
-          var current = self.current();
 
-          if( idx === index && Selected ){
-            return;
-          }
+        //Once the item is fully instantiated, select it.
+        component.deferral.then( function( Switch ){
+          var current = self.current();
 
           //If there is a currently selected item remove the selected state
           if( current ){
             current.removeState( constants.states.SELECTED );
           } else {
-            self.$items.filter( '.' + SELECTED ).not( Component.$element ).removeClass( SELECTED );
+            self.$items.filter( '.' + SELECTED ).not( Switch.$element ).removeClass( SELECTED );
           }
 
-          Selected = Component;
+          Selected = Switch;
           index = idx;
           Selected.addState( constants.states.SELECTED );
           self.trigger( constants.events.SELECTED, [self] );
@@ -225,18 +179,17 @@ List = Switch.extend( function( base ){
       };
 
       this.$items = this.items();
-      this.orientation = settings.orientation;
 
       index = settings.index;
       if( index === undefined ){
-        index = this.$items.filter( '.' + SELECTED ).index( this.$items );
-        index = 0;
+        var $selected = this.$items.filter('.' + SELECTED);
+        index = this.$items.index( $selected );
         if( index === -1 ){
           index = 0;
         }
       }
 
-      //Automatically select an item during if the starting index
+      //Automatically select an item during init
       self.select( index );
 
       this.on( constants.events.SELECT, function( event, component ){
@@ -308,10 +261,6 @@ List = Switch.extend( function( base ){
         }
       } );
 
-      //TODO: How should we do this? What happens with multiple lists?
-      // $( 'body' ).keyup( function( event ){
-      //   handleKeyup( event, self );
-      // } );
     },
     /**
      * adds a new item to $element

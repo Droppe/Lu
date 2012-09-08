@@ -70,28 +70,40 @@
         states: 'wide'
       }
     }">Wide</button>
-    <button data-lu="Button:State:Add" data-lu-config="{
-      'Button:State:Add': {
-        states: 'tall'
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        states: 'tall',
+        method: 'add'
       }
     }">Tall Additive</button>
-    <button data-lu="Button:State:Add" data-lu-config="{
-      'Button:State:Add': {
-        states: 'wide'
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        states: 'wide',
+        method: 'add'
       }
     }">Wide Additive</button>
-    <button data-lu="Button:State:Remove" data-lu-config="{
-      'Button:State:Remove': {
-        states: 'tall'
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        states: 'tall',
+        method: 'remove'
       }
     }">Tall Remove</button>
-    <button data-lu="Button:State:Remove" data-lu-config="{
-      'Button:State:Remove': {
-        states: 'wide'
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        states: 'wide',
+        method: 'remove'
       }
     }">Wide Remove</button>
-    <button data-lu="Button:State:Clear">Clear</button>
-    <button data-lu="Button:State:Reset">Reset</button>
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        method: 'clear'
+      }
+    }">Clear</button>
+    <button data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        method: 'reset'
+      }
+    }">Reset</button>
   </div>
 
   <!-- Bootstrap:Util -->
@@ -115,8 +127,10 @@
 
     window.LU_DEBUG = 5;
 
-    Lu.execute( $( 'body' ) ).then( function(){
-      console.info( 'DONE!' );
+    $( function(){
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
     } );
 
   </script>

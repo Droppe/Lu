@@ -7,6 +7,7 @@
 
 var FormElement = require( 'lu/FormElement' ),
     helpers = require( 'lu/helpers' ),
+    constants = require( 'lu/constants' ),
     StateDecorator = require( 'lu/decorators/state' ),
     Fiber = require( 'Fiber' ),
     Placeholder;
@@ -14,9 +15,7 @@ var FormElement = require( 'lu/FormElement' ),
 Placeholder = FormElement.extend( function ( base ) {
   var hasPlaceholder = !!( 'placeholder' in document.createElement( 'input' ) && 'placeholder' in document.createElement( 'textarea' ) ),
 
-      defaults = {
-        placeholderClass: 'placeholder-visible'
-      };
+      defaults = {};
 
 
   return {
@@ -34,14 +33,14 @@ Placeholder = FormElement.extend( function ( base ) {
       _.defaults( settings, defaults );
       base.init.call( Placeholder, $element, settings );
       Fiber.decorate( Placeholder, StateDecorator( settings ) );
-      PLACEHOLDER_STATE = settings.placeholderClass;
+      PLACEHOLDER_STATE = constants.states.PLACEHOLDER;
       Placeholder.addState( PLACEHOLDER_STATE );
       $element.val( placeholderText );
 
       function clear () {
         if ( Placeholder.hasState( PLACEHOLDER_STATE ) ) {
           $element.val('');
-          Placeholder.clear();
+          Placeholder.removeState( PLACEHOLDER_STATE );
         }
       }
 

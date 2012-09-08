@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Abstract Tests</title>
+  <link rel="stylesheet" type="text/css" href="../qunit.css">
+</head>
+
+<body>
+
+  <div id="qunit"></div>
+  <div id="test-container">
+    <a id="abstract-test" data-lu="Abstract"></a>
+    <a id="funk-and-waggle" data-lu="Abstract"></a>
+  </div>
+
+  <script src="/scripts/libraries/underscore.js"></script>
+  <script src="/scripts/libraries/inject/inject.js"></script>
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="/scripts/config.js"></script>
+  <script src="/scripts/lu.js" ></script>
+  <script src="/scripts/mappers.js"></script>
+
+  <script src="../qunit.js"></script>
+  <script src="test.js"></script>
+
+  <script>
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    Lu.execute( $( 'body' ) ).done( function(){
+      execute();
+    } );
+
+  </script>
+
+</body>
+
+</html>

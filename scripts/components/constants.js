@@ -17,7 +17,7 @@ var constants = {
     FIRST: 'first',
     LAST: 'last',
     PLAY: 'play',
-    PAUSED: 'paused'
+    PAUSE: 'pause'
   },
   statePrefix: 'lu-state-',
   states: {
@@ -37,7 +37,8 @@ var constants = {
     INACTIVE: 'inactive',
     ERRED: 'erred',
     REVERSE: 'reverse',
-    FOWARD: 'FOWARD'
+    FOWARD: 'forward',
+    PLACEHOLDER: 'placeholder'
   }
 };
 

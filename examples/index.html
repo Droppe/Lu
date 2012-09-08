@@ -1,62 +1,66 @@
 <!doctype html>
 
-  <!--[if lt IE 7]><html class="no-js ie6" lang="en"><![endif]-->
-  <!--[if IE 7]><html class="no-js ie7" lang="en"><![endif]-->
-  <!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->
-  <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<!--[if lt IE 7]><html class="no-js ie6" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 
-  <head>
-    <meta charset="utf-8">
+<head>
+  <meta charset="utf-8">
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title>Lu - Examples</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <title>Examples</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="/styles/css/screen.css" media="screen">
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <div>
-      <h1>LuExamples</h1>
+  <div>
+    <ul>
+      <li><a href="accordion.html">Accordion</a></li>
+      <li><a href="buttons.html">Buttons</a></li>
+      <li><a href="carousel.html">Carousel</a></li>
+      <li><a href="list.html">List</a></li>
+      <li><a href="switch.html">Switch</a></li>
+      <li><a href="tabs.html">Tabs w/ notify</a></li>
+      <li><a href="tabs.html">Tabs w/ observe</a></li>
+    </ul>
+  </div>
 
-      <ul>
-	<li><a href="abstract.html">abstract</a></li>
-	<li><a href="button.html">button</a></li>
-	<li><a href="list.html">list</a></li>
-	<li><a href="sticky.html">sticky</a></li>
-	<li><a href="accordion.html">accordion</a></li>
-	<li><a href="checkbox.html">checkbox</a></li>
-	<li><a href="tip.html">tip</a></li>
-	<li><a href="container.html">container</a></li>
-	<li><a href="loader.html">loader</a></li>
-      </ul>
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
 
-    </div>
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject/inject.js"></script>
 
-    <!-- Bootstrap:Util -->
-    <script src="/scripts/libraries/underscore-min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/scripts/lu-underscore-mixins.js" type="text/javascript" charset="utf-8"></script>
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
 
-    <!-- Bootstrap:CommonJS Loader -->
-    <script type="text/javascript" src="/scripts/libraries/inject.js"></script>
+  <script src="/scripts/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
 
-    <!-- Bootstrap:UI -->
-    <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
-    <script>window.jQuery || document.write( '<script src="http://scripts/libraries/jquery-1.7.1.min.js"><\/script>' );</script>
+  <script type="text/javascript" charset="utf-8">
 
-    <script src="/scripts/lu-config.js" type="text/javascript" charset="utf-8"></script>
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
 
-    <script type="text/javascript" charset="utf-8">
-      require.ensure( ['lu'], function() {} );
-      window.lu_debug = 10;
-      require.clearCache();      
-    </script>
+    window.LU_DEBUG = 5;
 
-  </body>
+    $( function(){
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
+    } );
+
+  </script>
+
+</body>
 
 </html>

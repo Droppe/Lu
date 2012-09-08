@@ -32,7 +32,6 @@
 </head>
 
 <body>
-
   <div>
     <ul id="accordion">
       <li id="one" data-lu="Container" class="lu-state-collapsed">
@@ -103,12 +102,13 @@
 
     window.LU_DEBUG = 5;
 
-    Lu.map( $( '#accordion' ).find( '.trigger' ), 'Button', function( $element, component ){
-      component.settings.states = ['collapsed', ''];
-    } );
-
-    Lu.execute( $( 'body' ) ).then( function(){
-      console.info( 'DONE!' );
+    $( function(){
+      Lu.map( $( '#accordion' ).find( '.trigger' ), 'Button', function( $element ){
+        this.settings.states = ['collapsed', ''];
+      } );
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
     } );
 
   </script>

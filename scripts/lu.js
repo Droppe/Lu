@@ -1,4 +1,3 @@
-
 /**
  * Lu's main class
  * @class Lu
@@ -6,65 +5,60 @@
  * @require inject
  * @param {Object} settings Configuration properties for this instance
  */
-var Lu;
-
-/**
- * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in. 
- * @method getComponents
- * @private
- * @static
- * @param {Object} $element a jQuery collection
- * @return {Object} The Lu components associated with the given element
- */
-function getComponents( $element ){
-  var components = 'components';
-  if( $element.length > 0 ){
-    return $element.data( components ) || $element.data( components, {} ).data( components );
-  } else {
-    return {};
-  }
-}
-
-window.Lu = new function(){
+var Lu = function(){
   var self = this;
+
   this.$mapped = $( [] );
   this.map = function( $element, component, callback ){
+    var mapped = [];
+
     _.each( $element, function( item, index ){
       var $element = $( item ),
-        componentData = getComponents( $element ),
+        componentData,
         settings,
-        configuration,
+        configuration = item.getAttribute( 'data-lu-config' ),
         key;
 
-      self.$mapped = self.$mapped.add( $element.not( self.$mapped ) );
+      componentData = $element.lu( 'getComponents' );
+
+      if( !$element.data( 'mapped' ) ){
+        $element.data( 'mapped', true );
+        mapped.push( item );
+      } 
 
       if( !componentData[component] ){
-
         componentData[component] = {
           deferral: $.Deferred(),
           settings: {}
         };
-
       } else {
         _.extend( componentData[component].settings, {} );
       }
 
-      callback.call( self, $element, componentData[component] );
+      if( callback ){
+        callback.call( componentData[component], $element );
+      }
 
       key = componentData[component].key || component;
 
-      try {
-        configuration = ( function(){ return eval( '( function(){ return ' + $element.data( 'luConfig' ) + '; }() );' ); }()[key] || {} );
-      } catch( error ){
+      if( configuration ){
+        try {
+          configuration = ( function(){ return eval( '( function(){ return ' + configuration + '; }() );' ); }()[key] || {} );
+        } catch( e ){
+          configuration = {};
+        }
+      } else {
         configuration = {};
       }
 
       componentData[component].settings = _.extend( componentData[component].settings, configuration );
     } );
+
+    this.$mapped = this.$mapped.add( mapped );
   };
 
   /**
-   * Parses the $element for Lu controls, loads, and instantiates them.
+   * Loads and instantiates components.
    * @public
    * @static
    * @method execute
@@ -77,7 +71,7 @@ window.Lu = new function(){
       requirements = [],
       count;
 
-    if( $element.is( this.$mapped ) ){
+    if( $element.data( 'mapped' ) ){
       $nodes = $nodes.add( $element );
     }
 
@@ -93,30 +87,32 @@ window.Lu = new function(){
      * @return {Void}
      */
     function execute( $element ){
-      var components = getComponents( $element );
+      var components = $element.lu( 'getComponents' );
+
+      //no components were found so there is nothing to do
+      if( components.length === 0 ){
+        deferral.resolve();
+      }
       _.each( components, function( component, key ){
         var requirement = 'lu/' + key,
           settings = component.settings;
 
-        requirements.push( requirement );
+        if( _.indexOf( requirements, requirement ) === -1 ){
+          requirements.push( requirement );
+        }
 
         count -= 1;
 
         deferral.then( function( required, module, exports ){
           var Component = require( requirement );
-
-          try {
-            component.instance = new Component( $element, settings );
-            if( component.hasDependencies ){
-              component.instance.one( 'dependencies-resolved', function( event, instance ){
-                event.stopPropagation();
-                component.deferral.resolve( component.instance );
-              } );
-            } else {
+          component.instance = new Component( $element, settings );
+          if( component.hasDependencies ){
+            component.instance.one( 'dependencies-resolved', function( event, instance ){
+              event.stopPropagation();
               component.deferral.resolve( component.instance );
-            }
-          } catch( error ){
-            throw new Error( 'Component could not be instantiated.' );
+            } );
+          } else {
+            component.deferral.resolve( component.instance );
           }
         } );
 
@@ -125,15 +121,35 @@ window.Lu = new function(){
             deferral.resolve( required, module, exports );
           } );
         }
+
       } );
     }
     _.each( $nodes, function( item, index ){
       execute( $( item ) );
     } );
+
     return deferral;
   };
-}();
+};
 
+Lu = window.Lu = new Lu();
+
+/**
+ * Returns a components object containing all components mapped to a node. Available through $.lu jQuery plug-in.
+ * @method getComponents
+ * @private
+ * @static
+ * @param {Object} $element a jQuery collection
+ * @return {Object} The Lu components associated with the given element
+ */
+function getComponents( $element ){
+  var components = 'components';
+  if( $element.length > 0 ){
+    return $element.data( components ) || $element.data( components, {} ).data( components );
+  } else {
+    return {};
+  }
+}
 /**
  * Gets the mapped parents of the passed in $element. Available through $.lu jQuery plug-in.
  * @method getParents
@@ -171,7 +187,8 @@ function getChildren( $element ){
 }
 
 /**
- * Add an $observer to an $element. Available through $.lu jQuery plug-in.
+ * Add an $observer to an $element. Observers are added in $.data as $observers.
+ * Available through $.lu jQuery plug-in.
  * @public
  * @static
  * @method observe
@@ -229,9 +246,8 @@ function notify( $element, event, parameters ){
   if( $observers ){
     _.each( $observers, function( observer, index ){
       var $observer = $( observer ),
-        components = getComponents( $observer ),
+        components = $observer.lu( 'getComponents' ),
         deferrals = [];
-
       _.each( components, function( component, key ){
         var deferral = component.deferral;
         deferral.then( function(){

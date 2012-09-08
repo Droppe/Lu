@@ -1,117 +1,120 @@
-//This file contains default mappings for Lu.
 ( function(){
 
-  var
-    //Buttons
-    $DefaultButton = $( '[data-lu~=Button]' ),
-    $FirstButton = $( '[data-lu~=\'Button:First\']' ),
-    $LastButton = $( '[data-lu~=\'Button:Last\']' ),
-    $LoadButton = $( '[data-lu~=\'Button:Load\']' ),
-    $NextButton = $( '[data-lu~=\'Button:Next\']' ),
-    $PauseButton = $( '[data-lu~=\'Button:Pause\']' ),
-    $PlayButton = $( '[data-lu~=\'Button:Play\']' ),
-    $PreviousButton = $( '[data-lu~=\'Button:Previous\']' ),
-    $SelectButton = $( '[data-lu~=\'Button:Select\']' ),
-    $StateButton = $( '[data-lu~=\'Button:State\']' ),
-    $StateButtonAdd = $( '[data-lu~=\'Button:State:Add\']' ),
-    $StateButtonRemove = $( '[data-lu~=\'Button:State:Remove\']' ),
-    $StateButtonClear = $( '[data-lu~=\'Button:State:Clear\']' ),
-    $StateButtonReset = $( '[data-lu~=\'Button:State:Reset\']' ),
-    $StateButtonRemove = $( '[data-lu~=\'Button:State:Remove\']' ),
-    //Switch
-    $Switch = $( '[data-lu~=Switch]' ),
-    //Container
-    $Container = $( '[data-lu~=Container]' ),
-    //List
-    $List = $( '[data-lu~=List]' ),
-    //Carousel
-    $Carousel = $( '[data-lu~=Carousel]' );
+  /**
+   * Mappers are used to store a scope of a DOM tree
+   * to map and a registry of mappers to execute
+   * @class Mapper
+   * @constructor
+   */
+  Lu.Mapper = function(){
+    var scope = window.LU_CONFIG.scope || document;
+    this.$scope = undefined;
+    this.maps = [];
+    this.setScope( scope );
+  };
 
-  //Buttons
-  Lu.map( $DefaultButton, 'Button', function( $element, component ){
-    component.hasDependencies = true;
-  } );
+  /**
+   * Sets the scope to use when mapping components to nodes
+   * @public
+   * @method setScoped
+   * @param {*} scope This can be an HTML Element,
+   * an array of elements, a selector string or a jquery object
+   * @return this
+   */
+  Lu.Mapper.prototype.setScope = function( scope ){
+    var $scope;
 
-  Lu.map( $FirstButton, 'Button', function( $element, component ){
-    component.settings.action = 'first';
-    component.key = 'Button:First';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $LastButton, 'Button', function( $element, component ){
-    component.settings.action = 'last';
-    component.key = 'Button:Last';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $LoadButton, 'Button', function( $element, component ){
-    component.settings.action = 'load';
-    component.key = 'Button:Load';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $NextButton, 'Button', function( $element, component ){
-    component.settings.action = 'next';
-    component.key = 'Button:Next';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $PauseButton, 'Button', function( $element, component ){
-    component.settings.action = 'pause';
-    component.key = 'Button:Pause';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $PlayButton, 'Button', function( $element, component ){
-    component.settings.action = 'play';
-    component.key = 'Button:Play';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $PreviousButton, 'Button', function( $element, component ){
-    component.settings.action = 'previous';
-    component.key = 'Button:Previous';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $SelectButton, 'Button', function( $element, component ){
-    component.settings.action = 'select';
-    component.key = 'Button:Select';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $StateButton, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.key = 'Button:State';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $StateButtonAdd, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'add';
-    component.key = 'Button:State:Add';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $StateButtonRemove, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'remove';
-    component.key = 'Button:State:Remove';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $StateButtonReset, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'reset';
-    component.key = 'Button:State:Reset';
-    component.hasDependencies = true;
-  } );
-  Lu.map( $StateButtonClear, 'Button', function( $element, component ){
-    component.settings.action = 'state';
-    component.settings.method = 'clear';
-    component.key = 'Button:State:Clear';
-    component.hasDependencies = true;
+    function filter( item, index ){
+      var lu = item.getAttribute( 'data-lu' );
+      return ( lu !== null && lu !== '' );
+    }
+
+    if( scope instanceof $ ){
+      $scope = scope.find( '[data-lu]' ).add( _.filter( scope, filter ) );
+    } else if( scope.getElementsByTagName ){
+      $scope = $( _.filter( scope.getElementsByTagName( '*' ), filter ) );
+    } else {
+      $scope = $( scope );
+      $scope = $scope.find( '[data-lu]' ).add( _.filter( $scope, filter ) );
+    }
+
+    this.$scope = $scope;
+    return this;
+  };
+
+  /**
+   * Gets a jquery object containing all Lu decorated nodes
+   * @public
+   * @method setScoped
+   * @return a jquery object
+   */
+  Lu.Mapper.prototype.getScope = function(){
+    return this.$scope;
+  };
+
+  /**
+   * Registers a mapper to be executed later
+   * @public
+   * @method register
+   * @param {Function} map A function mapper to be called
+   * @return this
+   */
+  Lu.Mapper.prototype.register = function( map ){
+    this.maps.unshift( map );
+    return this;
+  };
+
+  /**
+   * Executes all registered maps
+   * @public
+   * @method execute
+   * @return this
+   */
+  Lu.Mapper.prototype.execute = function(){
+    _.each( this.maps, function( item, index ){
+      item.call();
+    } );
+  };
+
+  //Create a new Mapper to contain default mappings for Lu.
+  var Mapper = new Lu.Mapper();
+
+  //Generic Mappers
+  _.each( ['Switch', 'List', 'Carousel', 'Container'], function( id, index ){
+    Mapper.register( function(){
+      Lu.map( _.filter( Mapper.$scope, function( item, index ){
+        return ( item.getAttribute( 'data-lu' ).indexOf( id ) > -1 );
+      } ), id );
+    } );
   } );
 
-  //Switch
-  Lu.map( $Switch, 'Switch', function( $element, component ){} );
+  // Coalesce the buttons into one mapper function, because we care about performance,
+  // saving bytes, and abhor redundancy.
+  _.each( ['select', 'first', 'last', 'next', 'previous', 'load', 'pause', 'state'], function( action ) {
+    Mapper.register( function(){
+      var key = 'Button:' + action.charAt( 0 ).toUpperCase() + action.substring( 1 );
+      Lu.map( _.filter( Mapper.$scope, function( item ){
+        return ( item.getAttribute( 'data-lu' ).indexOf( key ) > -1 );
+      } ), 'Button', function(){
+        this.settings.action = action;
+        this.key = key;
+        this.hasDependencies = true;
+      } );
+    } );
+  } );
 
-  //Container
-  Lu.map( $Container, 'Container', function( $element, component ){} );
+  //Placeholder
+  Mapper.register( function(){
+    Lu.map( _.filter( Mapper.$scope, function( item, index ){
+      return ( item.getAttribute( 'data-lu' ).indexOf( 'Placeholder' ) > -1 &&
+             ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
+             item.getAttribute( 'placeholder' ) );
+    } ), 'Placeholder' );
+  } );
 
-  //List
-  Lu.map( $List, 'List', function( $element, component ){} );
-
-  //Carousel
-  Lu.map( $Carousel, 'Carousel', function( $element, component ){} );
+  //console.time( 'Mappers Execution Timer' );
+  //Execute Default Mappers
+  Mapper.execute();
+  //console.timeEnd( 'Mappers Execution Timer' );
 
 }() );

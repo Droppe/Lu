@@ -205,10 +205,9 @@ Tip = Abstract.extend( function (Abstract){
         decorators = [];
 
       if (settings['__params__']) {
-        settings.placement = settings['__params__'][0] || settings.placement;       
+        settings.placement = settings['__params__'][0] || settings.placement;
       }
-      
-    
+
       //MIX THE DEFAULTS INTO THE SETTINGS VALUES
       _.defaults( settings, defaults );
 
@@ -224,7 +223,6 @@ Tip = Abstract.extend( function (Abstract){
         notify: $element
       });
 
-
       /**
        * Appends the Tip to the document 
        * @method append
@@ -232,9 +230,9 @@ Tip = Abstract.extend( function (Abstract){
        * @return {Void}
        */
       function append() {
-        $( 'body' ).append( $tip );        
+        $( 'body' ).append( $tip );
       }
-          
+
       /**
        * Renders the content and the template to create the tip 
        * @method renderTip
@@ -338,7 +336,7 @@ Tip = Abstract.extend( function (Abstract){
       function mouseenterEvent ( event ){
         //set up a listener on the document to be used in determing if the user has moused out of the threshold
         event.stopPropagation();
-                
+
         $document.on( 'mousemove.lu.tip', function( event ){
           event.stopPropagation();
           var pageX = event.pageX,
@@ -388,9 +386,9 @@ Tip = Abstract.extend( function (Abstract){
           Tip.off( 'blur.lu.tip' );
           Tip.hide();
         } );
-      
+
         Tip.show();
-      
+
       } );
 
       // === APPEND TIP TO DOM FOLLOWING UPDATE EVENT ===
@@ -418,19 +416,18 @@ Tip = Abstract.extend( function (Abstract){
       
       // Decorate based on placement option
       switch (settings.placement) {
-        case "top":
-        case "above":
+        case 'above':
           decorators.push(DECORATORS_PATH + 'Above');
           break;
-        case "bottom":  
-        case "below":
+        case 'below':
           decorators.push(DECORATORS_PATH + 'Below');
           break;
-        case "left":
+        case 'left':
           decorators.push(DECORATORS_PATH + 'Left');
           break;
-        case "right":
-          // same as default
+        case 'right':
+          decorators.push(DECORATORS_PATH + 'Right');
+          break;
         default:
           decorators.push(DECORATORS_PATH + 'Right');
       }
