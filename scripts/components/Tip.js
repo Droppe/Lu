@@ -209,8 +209,13 @@ Tip = Abstract.extend( function ( base ){
         decorators = [];
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       if (settings['__params__']) {
         settings.placement = settings['__params__'][0] || settings.placement;
+=======
+      if (settings.__params__) {
+        settings.placement = settings.__params__[0] || settings.placement;       
+>>>>>>> Stashed changes
 =======
       if (settings.__params__) {
         settings.placement = settings.__params__[0] || settings.placement;       
@@ -221,6 +226,7 @@ Tip = Abstract.extend( function ( base ){
       _.defaults( settings, defaults );
 
       base.init.call( self, $element, settings );
+<<<<<<< Updated upstream
 
       /**
 <<<<<<< Updated upstream
@@ -235,6 +241,11 @@ Tip = Abstract.extend( function ( base ){
 
       /**
 =======
+>>>>>>> Stashed changes
+=======
+
+
+      /**
 >>>>>>> Stashed changes
        * Renders the content and the template to create the tip 
        * @method renderTip
@@ -414,10 +425,15 @@ Tip = Abstract.extend( function ( base ){
           self.hide();
         } );
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
         Tip.show();
 
 =======
+=======
+      
+        self.show();
+>>>>>>> Stashed changes
       
         self.show();
       

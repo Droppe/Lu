@@ -157,12 +157,20 @@ Container = Switch.extend( function ( base ) {
 
         if( url.indexOf( '#' ) === 0 ){
           content = $( url ).html();
+<<<<<<< Updated upstream
           return this.trigger( constants.events.UPDATED, [self] );
+=======
+          return this.trigger( constants.events.UPDATE, self );
+>>>>>>> Stashed changes
         }
 
         if( settings.frame === true ){
           content = '<iframe src="' + url + '"></iframe>';
+<<<<<<< Updated upstream
           return this.trigger( constants.events.UPDATED, [self] );
+=======
+          return this.trigger( constants.events.UPDATE, self );
+>>>>>>> Stashed changes
         }
 
         this.removeState( constants.states.LOADED );
@@ -184,7 +192,11 @@ Container = Switch.extend( function ( base ) {
 
             self.removeState( constants.states.LOADING );
             self.addState( constants.states.LOADED );
+<<<<<<< Updated upstream
             self.trigger( constants.events.UPDATED, [self] );
+=======
+            self.trigger( constants.events.UPDATE, self );
+>>>>>>> Stashed changes
           },
           failure: function(){
            self.removeState( constants.states.LOADING ).addState( constants.states.ERRED );
