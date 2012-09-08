@@ -80,7 +80,7 @@
   var Mapper = new Lu.Mapper();
 
   //Generic Mappers
-  _.each( ['Switch', 'List', 'Carousel', 'Container'], function( id, index ){
+  _.each( ['Switch', 'List', 'Carousel', 'Container', 'Tip'], function( id, index ){
     Mapper.register( function(){
       Lu.map( _.filter( Mapper.$scope, function( item, index ){
         return ( item.getAttribute( 'data-lu' ).indexOf( id ) > -1 );
