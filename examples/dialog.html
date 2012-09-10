@@ -25,18 +25,17 @@
     }
     #dialog {
       position: absolute;
-      width: 550px;
+      width: 600px;
       height: auto;
       left: 50%;
       top: 100px;
       margin-left: -225px;
-      border: 1px #333 solid;
       background: #fff;
       z-index: 2;
       font-family: Arial;
-      -moz-box-shadow: 0 0 20px 0 #333;
-      -webkit-box-shadow: 0 0 20px 0 #333;
-      box-shadow: 0 0 20px 0 #333;
+      -moz-box-shadow: 0 0 3px 0 #333;
+      -webkit-box-shadow: 0 0 3px 0 #333;
+      box-shadow: 0 0 3px 0 #333;
     }
     #dialog .header {
       height: 40px;
@@ -60,7 +59,7 @@
       font-size: 12px;
     }
     #dialog .content {
-      padding: 20px;
+      height: 600px;
     }
     #dialog.lu-state-active,
     #mask.lu-state-active {
@@ -74,7 +73,7 @@
       top: 0;
       left: 0;
       background: #000;
-      opacity: .5;
+      opacity: .25;
     }
     #mask a {
       display: block;
@@ -99,18 +98,10 @@
     }
   }">
     <div class="header">
-      <h2>Dialog</h2>
+      <h2>Some Random Photo</h2>
       <a href="#" class="close" data-lu="Button:State">Close</a>
     </div>
-    <div class="content">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <button class="close" data-lu="Button:State">Close</button>
-    </div>
+    <div class="content"><img src="http://goincase.com/blog/wp-content/uploads/instagram-feet.jpg"/></div>
   </div>
   <div id="mask" data-lu="Switch" class="lu-state-inactive" data-lu-config="{
     'Switch': {
