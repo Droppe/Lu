@@ -33,17 +33,17 @@ function stateDecorator( settings ){
       index = settings.index || 0,
       initialState = [];
 
-      if( method !== 'reset' || method !== 'clear' ){
-        states = normalize( settings.states ) || [constants.states.ACTIVE, constants.states.INACTIVE];
-      }
+    if( method !== 'reset' || method !== 'clear' ){
+      states = normalize( settings.states ) || [constants.states.ACTIVE, constants.states.INACTIVE];
+    }
 
-    this.$element.on( settings.on, function( event ){
+    this.$element.on( settings.on, _.throttle( function( event ){
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }
       index = state( states, index );
       self.trigger( constants.events.STATE, [states[index], method] );
-    } );
+    }, settings.throttle ) );
 
     this.one( constants.events.STATED, function( event, Component ){
       initialState = Component.getState();

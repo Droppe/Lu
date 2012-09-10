@@ -157,6 +157,7 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     trigger: function( event, parameters ){
+
       var store;
 
       if( typeof event === 'string' ){
@@ -171,6 +172,7 @@ Abstract = Fiber.extend( function( base ){
         removeFromEventStore.call( this, event );
       }
       this.$element.trigger.call( this.$element, event, parameters );
+
       return this;
     },
     /**

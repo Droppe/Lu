@@ -1,0 +1,112 @@
+<!doctype html>
+
+<!--[if lt IE 7]><html class="no-js ie6" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Container</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+  <style type="text/css">
+    body {
+      background: #e8e8e8;
+      height: 2000px;
+    }
+    #dialog {
+      display: none;
+    }
+    #dialog {
+      position: absolute;
+      width: 550px;
+      height: 400px;
+      left: 50%;
+      top: 100px;
+      margin-left: -225px;
+      padding: 20px;
+      border: 3px #ddd solid;
+      background: #fff;
+    }
+    #dialog.lu-state-open {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <a href="#container" id="open" data-lu="Button:State" data-lu-config="{
+    'Button:State': {
+      states:'open'
+    }
+  }">Open</a>
+
+  <div id="dialog" class="lu-state-closed" data-lu="Container" data-lu-config="{
+    'Container': {
+      observe: '#open, #mask a',
+      content: '.content'
+    }
+  }">
+    <div class="header">
+      <h2>Dialog</h2>
+      <button data-lu="Button:State" data-lu-config="{
+        'Button:State': {
+          states:'closed',
+        }
+      }">X</button>
+    </div>
+    <div class="content">
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <button data-lu="Button:State" data-lu-config="{
+        'Button:State': {
+          states:'closed'
+        }
+      }">Close</button>
+    </div>
+  </div>
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="/scripts/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    $( function(){
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
+    } );
+
+  </script>
+
+</body>
+
+</html>

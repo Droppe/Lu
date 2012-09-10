@@ -37,13 +37,12 @@ function selectDecorator( settings ){
       }
     } );
 
-
-    this.$element.on( settings.on, function( event ){
+    this.$element.on( settings.on, _.throttle( function( event ){
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }
       self.trigger( constants.events.SELECT, [self] );
-    } );
+    }, settings.throttle ) );
   };
 }
 
