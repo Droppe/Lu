@@ -10,7 +10,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Container</title>
+  <title>Dialog</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -19,24 +19,67 @@
   <style type="text/css">
     body {
       background: #e8e8e8;
-      height: 2000px;
     }
-    #dialog {
+    #dialog, #mask {
       display: none;
     }
     #dialog {
       position: absolute;
       width: 550px;
-      height: 400px;
+      height: auto;
       left: 50%;
       top: 100px;
       margin-left: -225px;
-      padding: 20px;
-      border: 3px #ddd solid;
+      border: 1px #333 solid;
       background: #fff;
+      z-index: 2;
+      font-family: Arial;
+      -moz-box-shadow: 0 0 20px 0 #333;
+      -webkit-box-shadow: 0 0 20px 0 #333;
+      box-shadow: 0 0 20px 0 #333;
     }
-    #dialog.lu-state-open {
+    #dialog .header {
+      height: 40px;
+      background: #333;
+    }
+    #dialog .header h2 {
+      font-size: 18px;
+      line-height: 40px;
+      margin: 0;
+      margin-left: 20px;
+      color: #ddd;
+      font-weight: normal;
+      float: left;
+    }
+    #dialog .header .close {
+      line-height: 40px;
+      float: right;
+      margin: 0px 20px;
+      text-align: center;
+      color: #ddd;
+      font-size: 12px;
+    }
+    #dialog .content {
+      padding: 20px;
+    }
+    #dialog.lu-state-active,
+    #mask.lu-state-active {
       display: block;
+    }
+    #mask {
+      position: absolute;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: #000;
+      opacity: .5;
+    }
+    #mask a {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
@@ -44,24 +87,20 @@
 <body>
 
   <a href="#container" id="open" data-lu="Button:State" data-lu-config="{
-    'Button:State': {
-      states:'open'
+    'Button:State':{
+      states: 'active'
     }
   }">Open</a>
 
-  <div id="dialog" class="lu-state-closed" data-lu="Container" data-lu-config="{
+  <div id="dialog" class="lu-state-inactive" data-lu="Container" data-lu-config="{
     'Container': {
-      observe: '#open, #mask a',
+      observe: '#open, #mask .close',
       content: '.content'
     }
   }">
     <div class="header">
       <h2>Dialog</h2>
-      <button data-lu="Button:State" data-lu-config="{
-        'Button:State': {
-          states:'closed',
-        }
-      }">X</button>
+      <a href="#" class="close" data-lu="Button:State">Close</a>
     </div>
     <div class="content">
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -70,14 +109,16 @@
       consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <button data-lu="Button:State" data-lu-config="{
-        'Button:State': {
-          states:'closed'
-        }
-      }">Close</button>
+      <button class="close" data-lu="Button:State">Close</button>
     </div>
   </div>
-
+  <div id="mask" data-lu="Switch" class="lu-state-inactive" data-lu-config="{
+    'Switch': {
+      observe: '#open, #dialog .close'
+    }
+  }">
+    <a class="close" data-lu="Button:State"></a>
+  </div>
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
 
