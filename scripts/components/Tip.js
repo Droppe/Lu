@@ -6,25 +6,25 @@
  * @require Container
  * @version 0.1.4
  */
-var Abstract = require( 'lu/Abstract' ),
+var constants = require( 'lu/constants' ),
+  Abstract = require( 'lu/Abstract' ),
   Container = require( 'lu/Container' ),
+  Fiber = require( 'Fiber' ),
   Tip;
 
 Tip = Abstract.extend( function (Abstract){
 
-  // OBSERVED EVENTS
-  var HIDE_EVENT = 'hide',
-      SHOW_EVENT = 'show',
-      //Stateful published events
-      HIDDEN_EVENT = 'hidden',
-      SHOWN_EVENT = 'shown',
-  
-  // OTHER CONSTANTS
-      CLASS = 'class',
+  // === STATIC VARIABLES ===
+  var CLASS = 'class',
       TRUE = true,
       FALSE = false,
-      DECORATORS_PATH = 'lu/Tip/position',
-      
+      root = 'lu/Tip/decorators/',
+      decorators = {
+        above: root + 'above',
+        below: root + 'below',
+        left: root + 'left',
+        right: root + 'right'
+      },
       /**
        * Default configuration values for all Tip instances
        * @property defaults
@@ -35,7 +35,7 @@ Tip = Abstract.extend( function (Abstract){
       defaults = {
 
         /**
-         * The time i n milliseconds before before the Tip hides after the user has stopped interacting with it.
+         * The time in milliseconds before before the Tip hides after the user has stopped interacting with it.
          * @property delay
          * @type Number
          * @private
@@ -44,7 +44,6 @@ Tip = Abstract.extend( function (Abstract){
 
         /**
          * The placement of the tip. Valid options are "above"/"below"/"right/"left"
-         * Can also be passed in via Lu's auto-param ("__param__") as "Tip:Above", etc.
          * @property placement
          * @type String
          * @private
@@ -74,8 +73,16 @@ Tip = Abstract.extend( function (Abstract){
          * @type String
          * @private
          */
-        template: '<div class="lu-tip" role="tooltip"><div class="lu-arrow"></div><div class="lu-content"><!-- CONTENT PLACEHOLDER --></div></div>',
-        
+        template: _.template('<div class="<%= className %>" role="tooltip"><!-- CONTENT PLACEHOLDER --></div>'),
+
+        /**
+         * Class name to be applied to tooltips outermost div
+         * @property className
+         * @type String
+         * @private
+         */
+        className: 'tooltip',
+
         /**
          * CSS styles for the Tip
          * @property style
@@ -103,26 +110,13 @@ Tip = Abstract.extend( function (Abstract){
          */
         threshold: 10
       };
-      
 
   return {
 
-    /**
-     * Tip constructor 
-     * @method init
-     * @public
-     * @param {Object} $element JQuery collection containing the related element.
-     * @param {Object} settings Configuration settings
-     */
     init: function ( $element, settings ){
 
-      /**
-       * Instance of Tip
-       * @property Tip
-       * @type Object
-       * @private
-       */
-      var Tip = this,
+      // === INSTANCE VARIABLES ===
+      var self = this,
 
         /**
          * An indicator of whether or not the tip has been rendered.
@@ -135,7 +129,7 @@ Tip = Abstract.extend( function (Abstract){
         /**
          * A jQuery collection that references the document.
          * @property $document
-         * @type Object
+         * @type jQuery Object
          * @private
          */
         $document = $( document ),
@@ -143,7 +137,7 @@ Tip = Abstract.extend( function (Abstract){
         /**
          * A jQuery collection that references the tip node.
          * @property $tip
-         * @type Object
+         * @type jQuery Object
          * @private
          */
         $tip,
@@ -157,22 +151,6 @@ Tip = Abstract.extend( function (Abstract){
         TipContainer,
 
         /**
-         * A jQuery collection that references the tip's content.
-         * @property $content
-         * @type Object
-         * @private
-         */
-        $content,
-
-        /**
-         * The cached position of the tip
-         * @property position
-         * @type Object
-         * @private
-         */
-        position,
-
-        /**
          * A URL from the Tip's anchor tag
          * @property href
          * @type String
@@ -181,50 +159,44 @@ Tip = Abstract.extend( function (Abstract){
         href,
 
         /**
-         * The derived content used in the tip
-         * @property content
-         * @type Object
-         * @private
-         */
-        content,
-
-        /**
          * An indicator of whether or not the tip should remain open
          * @property stuck
-         * @type Object
+         * @type Boolean
          * @private
          */
         stuck,
-        
+
+        /**
+         * Whether the element is an input or not
+         * @property isInput
+         * @type Boolean
+         * @private
+         */
+        isInput = ($element[0].tagName.toLowerCase() === 'input'),
+
         /**
          * Array of decorators to apply to a Tip instance
-         * @property decorators
+         * @property requirements
          * @type Array
          * @private
          */
-        decorators = [];
+        requirements = [],
+        decorator;
 
-      if (settings['__params__']) {
-        settings.placement = settings['__params__'][0] || settings.placement;
-      }
-
-      //MIX THE DEFAULTS INTO THE SETTINGS VALUES
+      // === INITIALIZE ===
       _.defaults( settings, defaults );
-
-      Abstract.init.call( this, $element, settings );
-
+      Abstract.init.call( self, $element, settings );
       href = settings.url || $element.attr( 'href' );
-
-      $tip = renderTip();
+      $tip = $(settings.template({ className: settings.className }));
       styleTip();
       TipContainer = new Container( $tip, {
-        target: '.lu-content',
         frame: settings.frame,
         notify: $element
       });
 
+      // === PRIVATE ===
       /**
-       * Appends the Tip to the document 
+       * Appends the Tip to the body 
        * @method append
        * @private
        * @return {Void}
@@ -233,17 +205,6 @@ Tip = Abstract.extend( function (Abstract){
         $( 'body' ).append( $tip );
       }
 
-      /**
-       * Renders the content and the template to create the tip 
-       * @method renderTip
-       * @private
-       * @param {String} content The content to inject into the tip
-       * @return {Object} A JQuery collection that references the tip
-       */
-      function renderTip(content) {
-        return $(settings.template);
-      }
-      
       /**
        * Transfer the styles from the target to the tip if style is not specified
        * @method styleTip
@@ -266,184 +227,195 @@ Tip = Abstract.extend( function (Abstract){
       }
 
       /**
+       * Function to run on mouseenter. Must be named so we can pass it specifically to jQuery's off.
+       * @private
+       * @method handleMouseEnter
+       * @param {Objct} event jQuery event object
+       * @return {Void}
+       */
+      function handleMouseEnter ( event ){
+        event.stopPropagation();
+
+        //set up a listener on the document to be used in determing if the user has moused out of the threshold
+        $document.on( 'mousemove.lu.tip', handleMouseMove );
+        self.show();
+      }
+
+      /**
+       * Function to run on mousemove.
+       * @private
+       * @method handleMouseMove
+       * @param {Objct} event jQuery event object
+       * @return {Void}
+       */
+      function handleMouseMove ( event ){
+        event.stopPropagation();
+        var pageX = event.pageX,
+          pageY = event.pageY,
+          elLeft = $element.offset().left,
+          elTop = $element.offset().top,
+          elWidth = $element.outerWidth(),
+          elHeight = $element.outerHeight(),
+          tipLeft = $tip.offset().left,
+          tipTop = $tip.offset().top,
+          tipWidth = $tip.outerWidth(),
+          tipHeight = $tip.outerHeight();
+
+        /**
+         * Returns true if the mouse is outside the threshold area
+         * @private
+         * @method isMouseOutside
+         */
+        function isMouseOutside(){
+          var outLeft  = (pageX < (elLeft - settings.threshold - settings.offsetLeft)) && (pageX < (tipLeft - settings.threshold - settings.offsetLeft)),
+              outRight = (pageX > (elLeft + elWidth + settings.threshold + settings.offsetLeft)) && (pageX > (tipLeft + tipWidth + settings.threshold + settings.offsetLeft)),
+              outAbove = (pageY < (elTop - settings.threshold - settings.offsetTop)) && (pageY < (tipTop - settings.threshold - settings.offsetTop)),
+              outBelow = (pageY > (elTop + elHeight + settings.threshold + settings.offsetTop)) && (pageY > (tipTop + tipHeight + settings.threshold + settings.offsetTop));
+
+          return ( ( outLeft || outRight ) || ( outAbove || outBelow ) );
+        }
+
+        if( isMouseOutside() ){
+          $document.off( 'mouseenter', handleMouseEnter );
+          $document.off( 'mousemove.lu.tip', handleMouseMove );
+          self.hide();
+        }
+      }
+
+      /**
+       * Function to run on focus.
+       * @private
+       * @method handleFocus
+       * @param {Objct} event jQuery event object
+       * @return {Void}
+       */
+      function handleFocus( event ){
+        event.stopPropagation();
+
+        $element.on( 'blur.lu.tip', function( event ){
+          event.stopPropagation();
+          $element.off( 'blur.lu.tip' );
+          self.hide();
+        } );
+
+        self.show();
+      }
+
+      // === LU EVENT LISTENERS ===
+      this.on( constants.events.SHOW, function( event ){
+        event.stopPropagation();
+        self.show();
+      } );
+
+      this.on( constants.events.HIDE, function( event ){
+        event.stopPropagation();
+        self.hide();
+      } );
+
+      // Append tip to DOM after container is updated (loaded)
+      TipContainer.on( constants.events.UPDATED, function(event) {
+        event.stopPropagation();
+        append();
+        rendered = TRUE;
+        self.trigger( constants.events.SHOW, [self, TipContainer] );
+      } );
+
+      // === DOM EVENT LISTENERS ===
+      if( !isInput ) {
+        $element.on( 'mouseenter', handleMouseEnter );
+      } else {
+        $element.on( 'focus', handleFocus );
+      }
+
+      // === PUBLIC ===
+      this.$tip = $tip;
+
+      /**
        * Show the tip
        * @method show
        * @return {Void}
        */
-      Tip.show = function(){
-
+      this.show = function(){
         TipContainer.one( 'mouseenter.lu.tip', function( event ){
           stuck = TRUE;
         } );
 
         TipContainer.one( 'mouseleave.lu.tip', function( event ){
           stuck = FALSE;
-          Tip.hide();
+          self.hide();
         } );
-        
+
         if( rendered === FALSE ){
-          TipContainer.trigger("load", href);
-        }
-        else {
+          TipContainer.trigger('load', href);
+        } else {
+          $tip.css( self.getPosition() );
           $tip.show();
         }
       };
-      
-      
+
       /**
        * Hide the tip
        * @method hide
        * @return {Void}
        */
-      Tip.hide = function(){
+      this.hide = function(){
         var timeout;
         if( rendered === TRUE ){
           timeout = window.setTimeout( function(){
             if( !stuck || !settings.interactive ){
               $tip.hide();
               window.clearTimeout( timeout );
-              Tip.trigger( HIDDEN_EVENT, [Tip, TipContainer] );
             }
           }, settings.delay );
         }
       };
-      
+
       /**
        * Gets the position of the tip
        * @method getPosition
-       * @param {Boolean} cache Uses the cached position by default or if set to true.
        * @return {Object} position And object containing a top and left
        * @private
        */
-      function getPosition( cache, settings ){
+      this.getPosition = function(){
         var elOffset = $element.offset(),
           elHeight = $element.outerHeight(),
           elWidth = $element.outerWidth();
 
-        if( typeof position === 'undefined' || cache === false ){
-          position = Tip.calcPosition(elOffset, elHeight, elWidth, settings);
-        }
-        return position;
+        return self.calcPosition( elOffset, elHeight, elWidth, settings );
       }
 
-      /**
-       * Function to run on mouseenter. Must be named so we can pass it specifically to jQuery's off.
-       * @private
-       * @method mouseenterEvent
-       * @param {Objct} event jQuery event object
-       * @return {Void}
-       */
-      function mouseenterEvent ( event ){
-        //set up a listener on the document to be used in determing if the user has moused out of the threshold
-        event.stopPropagation();
-
-        $document.on( 'mousemove.lu.tip', function( event ){
-          event.stopPropagation();
-          var pageX = event.pageX,
-            pageY = event.pageY,
-            left = $element.offset().left,
-            top = $element.offset().top,
-            width = $element.outerWidth(),
-            height = $element.outerHeight();
-
-          /**
-           * Returns true if the mouse is within the threshold area
-           * @private
-           * @method isMouseInside
-           */
-          function isMouseInside(){
-            var result = TRUE;
-            if( pageX < left - settings.threshold - settings.offsetLeft ){
-              result = FALSE;
-            } else if( pageY < top - settings.threshold - settings.offsetTop ){
-              result = FALSE;
-            } else if ( pageX > left + width + settings.threshold + settings.offsetLeft ){
-              result = FALSE;
-            } else if ( pageY > top + height + settings.threshold + settings.offsetTop ){
-              result = FALSE;
-            }
-            return result;
-          }
-
-          if( !isMouseInside() ){
-            $document.off( 'mouseenter', mouseenterEvent );
-            $document.off( 'mousemove.lu.tip' );
-            Tip.hide();
-          }
-
-        } );
-
-        Tip.show();
-      }
-
-      // === Event Listeners ===
-      Tip.on( 'mouseenter', mouseenterEvent);
-      
-      Tip.on( 'focus', function( event ){
-        event.stopPropagation();
-        Tip.on( 'blur.lu.tip', function( event ){
-          event.stopPropagation();
-          Tip.off( 'blur.lu.tip' );
-          Tip.hide();
-        } );
-
-        Tip.show();
-
-      } );
-
-      // === APPEND TIP TO DOM FOLLOWING UPDATE EVENT ===
-      Tip.on('updated', function(event) {
-        event.stopPropagation();
-        append();
-        $tip.css( getPosition(false, settings) );
-        rendered = TRUE;
-        Tip.trigger( SHOWN_EVENT, [Tip, TipContainer] );
-      });
-
-      //Listen to these events from other controls
-      Tip.on( HIDE_EVENT, function( event ){
-        event.stopPropagation();
-        Tip.hide();
-      } );
-      Tip.on( SHOW_EVENT, function( event ){
-        event.stopPropagation();
-        Tip.show();
-      } );
-
-      // PUBLIC ACCESS
-      Tip.$tip = $tip;
-      Tip.position = position;
-      
-      // Decorate based on placement option
-      switch (settings.placement) {
-        case 'above':
-          decorators.push(DECORATORS_PATH + 'Above');
+      // === DECORATION ===
+      switch( settings.placement ){
+        case 'Above':
+          requirements.push( decorators.above );
           break;
-        case 'below':
-          decorators.push(DECORATORS_PATH + 'Below');
+        case 'Below':
+          requirements.push( decorators.below );
           break;
-        case 'left':
-          decorators.push(DECORATORS_PATH + 'Left');
+        case 'Left':
+          requirements.push( decorators.left );
           break;
-        case 'right':
-          decorators.push(DECORATORS_PATH + 'Right');
+        case 'Right':
+          requirements.push( decorators.right );
           break;
         default:
-          decorators.push(DECORATORS_PATH + 'Right');
+          requirements.push( decorators.right );
       }
-      
-      require.ensure( decorators, function ( require, module, exports ) {
-        _.each( decorators, function ( decorator, index ) {
-          Tip.decorate(require( decorator ) );
-        });
-      });
-      
+
+      require.ensure( requirements, function( require, module, exports ){
+        _.each( requirements, function( decorator, index ){
+          decorator = require( decorator )( settings );
+          Fiber.decorate( self, decorator );
+        } );
+        self.trigger( 'dependencies-resolved' );
+      } );
+
     }
   };
 
 });
 
-//Export to Common JS Loader
+// Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Tip );

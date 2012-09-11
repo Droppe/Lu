@@ -80,7 +80,7 @@
   var Mapper = new Lu.Mapper();
 
   //Generic Mappers
-  _.each( ['Switch', 'List', 'Carousel', 'Container'], function( id, index ){
+  _.each( ['Switch', 'List', 'Carousel', 'Container', 'Tip'], function( id, index ){
     Mapper.register( function(){
       Lu.map( _.filter( Mapper.$scope, function( item, index ){
         return ( item.getAttribute( 'data-lu' ).indexOf( id ) > -1 );
@@ -103,6 +103,25 @@
         return ( item.getAttribute( 'data-lu' ).indexOf( key ) > -1 );
       } ), 'Button', function(){
         this.settings.action = action;
+        this.key = key;
+        this.hasDependencies = true;
+      } );
+    } );
+  } );
+
+  // Tip (tooltip)
+  _.each( ['Above', 'Below', 'Left', 'Right'], function( placement ) {
+    var scope = _.filter( Mapper.$scope, function( item ){
+      var nodeName = item.nodeName;
+      return ( nodeName === 'BUTTON' || nodeName === 'A' || nodeName === 'INPUT' );
+    } );
+
+    Mapper.register( function(){
+      var key = 'Tip:' + placement;
+      Lu.map( _.filter( scope, function( item ){
+        return ( item.getAttribute( 'data-lu' ).indexOf( key ) > -1 );
+      } ), 'Tip', function(){
+        this.settings.placement = placement;
         this.key = key;
         this.hasDependencies = true;
       } );
