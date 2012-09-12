@@ -21,14 +21,34 @@
       background: #e8e8e8;
     }
     #carousel {
-      width: 612px;
+      width: 642px;
       margin: 50px auto;
+      overflow: hidden;
+    }
+    #carousel .item {
+      opacity: 0;
+      z-index: 0;
+      position: absolute;
+      display: block;
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      top: 0;
+      transition: opacity 600ms;
+      -moz-transition: opacity 600ms;
+      -webkit-transition: opacity 600ms;
+      -o-transition: opacity 600ms;
+    }
+    #carousel .lu-state-selected {
+      opacity: 1;
+      z-index: 1;
     }
     #carousel ul {
       position: relative;
       display: block;
       height: 612px;
       width: 100%;
+      padding: 0px;
     }
     #carousel .controls {
       text-align: center;
@@ -37,33 +57,23 @@
     #carousel .controls .lu-state-disabled {
       opacity: .5;
     }
-    .item {
-      position: absolute;
-      opacity: 0;
-      display: block;
-      height: 100%;
-      width: 100%;
-      padding: 0;
-      transition: opacity 600ms;
-      -moz-transition: opacity 600ms;
-      -webkit-transition: opacity 600ms;
-      -o-transition: opacity 600ms;
-    }
-    .lu-state-selected {
-      opacity: 1;
-    }
+
   </style>
 </head>
 
 <body>
 
-  <div id="carousel" data-lu="Carousel">
+  <div id="carousel" data-lu="Carousel" data-lu="{
+    Carousel: {
+      autoplay: true
+    }
+   }">
     <ul>
       <li id="sherlock" class="lu-state-selected item" data-lu="Switch">
-        <img src="http://content.photojojo.com/wp-content/uploads/2010/10/instagram-lg.jpg"/>
+        <img src="http://2.bp.blogspot.com/-MvL5sZYQyds/T69BexmEW2I/AAAAAAAAAFg/m5D4nu2Z__E/s1600/kyle-steed_instagram-23.jpg"/>
       </li>
       <li id="watson" class="item" data-lu="Switch">
-        <img src="http://content.photojojo.com/wp-content/uploads/2010/10/instagram-3.jpg"/>
+        <img src="http://www.nightandday.gr/wp-content/uploads/2011/04/20110412-131400.jpg"/>
       </li>
       <li id="moriarty" class="item" data-lu="Switch">
         <img src="http://24.media.tumblr.com/tumblr_m79sg4gaTI1r1thfzo1_1280.jpg"/>
