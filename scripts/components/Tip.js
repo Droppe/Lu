@@ -185,7 +185,7 @@ Tip = Abstract.extend( function (Abstract){
 
       // === INITIALIZE ===
       _.defaults( settings, defaults );
-      Abstract.init.call( self, $element, settings );
+      Abstract.init.call( this, $element, settings );
       href = settings.url || $element.attr( 'href' );
       $tip = $(settings.template({ className: settings.className }));
       styleTip();
@@ -317,7 +317,7 @@ Tip = Abstract.extend( function (Abstract){
         event.stopPropagation();
         append();
         rendered = TRUE;
-        self.trigger( constants.events.SHOW, [self, TipContainer] );
+        self.trigger( constants.events.SHOW, [self] );
       } );
 
       // === DOM EVENT LISTENERS ===
