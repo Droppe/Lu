@@ -250,8 +250,8 @@ Tip = Abstract.extend( function (Abstract){
        */
       function handleMouseMove ( event ){
         event.stopPropagation();
-        var pageX = event.pageX,
-          pageY = event.pageY,
+        var pageX = event.pageX || 0,
+          pageY = event.pageY || 0,
           elLeft = $element.offset().left,
           elTop = $element.offset().top,
           elWidth = $element.outerWidth(),
@@ -336,17 +336,8 @@ Tip = Abstract.extend( function (Abstract){
        * @return {Void}
        */
       this.show = function(){
-        TipContainer.one( 'mouseenter.lu.tip', function( event ){
-          stuck = TRUE;
-        } );
-
-        TipContainer.one( 'mouseleave.lu.tip', function( event ){
-          stuck = FALSE;
-          self.hide();
-        } );
-
         if( rendered === FALSE ){
-          TipContainer.trigger('load', href);
+          TipContainer.trigger( 'load', href );
         } else {
           $tip.css( self.getPosition() );
           $tip.show();

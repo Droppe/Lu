@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tip Tests</title>
+  <link rel="stylesheet" type="text/css" href="../qunit.css">
+</head>
+
+<body>
+
+  <div id="qunit"></div>
+  <div id="test-container">
+    <ul>
+      <li>
+        <a id="mouse-tip" href="#mouse-example" data-lu="Tip" data-lu-config="{ 'Tip' : { 'className' : 'tooltip mouse-tip' } }">Mouse Tip.</a>
+        <div id="mouse-example" class="tip-contents">
+          Fatback pork belly flank salami cow t-bone ground round pancetta short ribs jerky pig pork sausage.
+        </div>
+      </li>
+      <li>
+        <input id="input-tip" href="#input-example" data-lu="Tip:Right" value="" placeholder="Click for tip." data-lu-config="{ 'Tip:Right' : { 'className' : 'tooltip input-tip' } }"/>
+        <div id="input-example" class="tip-contents">
+          Pastrami boudin pig, swine filet mignon venison flank chuck.
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <script src="/scripts/libraries/underscore.js"></script>
+  <script src="/scripts/libraries/inject/inject.js"></script>
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="/scripts/config.js"></script>
+  <script src="/scripts/lu.js" ></script>
+  <script src="/scripts/mappers.js"></script>
+
+  <script src="../qunit.js"></script>
+  <script src="test.js"></script>
+
+  <script>
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    Lu.execute( $( 'body' ) ).done( function(){
+      console.info( 'Lu executed!' )
+      execute();
+    } );
+
+  </script>
+
+</body>
+
+</html>
