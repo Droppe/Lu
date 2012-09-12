@@ -13,7 +13,15 @@ var constants = require( 'lu/constants' ),
 
 Button = Switch.extend( function( base ){
   var defaults = {
-      on: 'click'
+      on: 'click',
+      /**
+       * The time in milliseconds in which to throttle events.
+       * Events will only be triggred once per throttle time.
+       * This is useful when timing complex css transitions.
+       * @property notify
+       * @type {String}
+       */
+      throttle: 300
     },
     root = 'lu/Button/decorators/',
     decorators = {

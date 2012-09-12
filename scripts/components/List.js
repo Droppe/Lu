@@ -181,7 +181,7 @@ List = Switch.extend( function( base ){
 
       index = settings.index;
       if( index === undefined ){
-        var $selected = this.$items.filter('.' + SELECTED);
+        var $selected = this.$items.filter('.' + SELECTED );
         index = this.$items.index( $selected );
         if( index === -1 ){
           index = 0;
@@ -261,6 +261,7 @@ List = Switch.extend( function( base ){
       } );
 
     },
+
     /**
      * adds a new item to $element
      * @method append
@@ -269,10 +270,11 @@ List = Switch.extend( function( base ){
      * @return {Object} self
      */
     add: function( $item ){
-      this.$items = this.$items.add( $item );
       this.$items.parent().append( $item );
+      this.$items = this.items();
       return this;
     },
+
     /**
      * Removes an item from $element
      * @method remove
@@ -282,7 +284,7 @@ List = Switch.extend( function( base ){
      */
     remove: function( $item ){
       $( $( $item ), this.$items ).remove();
-      this.$items = this.$items.not( $item );
+      this.$items = this.items();
       return this;
     },
     /**
@@ -293,7 +295,7 @@ List = Switch.extend( function( base ){
      */
     next: function(){
       if( this.hasNext() ){
-        this.select( this.index + 1 );
+        this.select( this.index() + 1 );
       } else {
         this.trigger( constants.events.OUT_OF_BOUNDS, [this] );
       }
@@ -307,7 +309,7 @@ List = Switch.extend( function( base ){
      */
     previous: function(){
       if( this.hasPrevious() ){
-        this.select( this.index - 1 );
+        this.select( this.index() - 1 );
       } else {
         this.trigger( constants.events.OUT_OF_BOUNDS, [this] );
       }
@@ -340,7 +342,7 @@ List = Switch.extend( function( base ){
      * @return {Boolean} true if not at the last item in the list
      */
     hasNext: function(){
-      return ( this.index < this.size() - 1 );
+      return ( this.index() < this.size() - 1 );
     },
     /**
      * Determines if there are any lower-index items in the list.
@@ -349,16 +351,7 @@ List = Switch.extend( function( base ){
      * @return {Boolean} true if not at the first item in the list
      */
     hasPrevious: function(){
-      return ( this.index > 0 );
-    },
-    /**
-     * Returns the currently-selected item.
-     * @method current
-     * @public
-     * @return {Object} JQuery object-reference to the selected item
-     */
-    current: function(){
-      return this.$items.eq( this.index );
+      return ( this.index() > 0 );
     },
     /**
      * Returns the number of items in the list.

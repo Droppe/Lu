@@ -91,9 +91,15 @@
   // Coalesce the buttons into one mapper function, because we care about performance,
   // saving bytes, and abhor redundancy.
   _.each( ['select', 'first', 'last', 'next', 'previous', 'load', 'play', 'pause', 'state'], function( action ) {
+
+    var scope = _.filter( Mapper.$scope, function( item ){
+      var nodeName = item.nodeName;
+      return ( nodeName === 'BUTTON' || nodeName === 'A' || nodeName === 'INPUT' );
+    } );
+
     Mapper.register( function(){
       var key = 'Button:' + action.charAt( 0 ).toUpperCase() + action.substring( 1 );
-      Lu.map( _.filter( Mapper.$scope, function( item ){
+      Lu.map( _.filter( scope, function( item ){
         return ( item.getAttribute( 'data-lu' ).indexOf( key ) > -1 );
       } ), 'Button', function(){
         this.settings.action = action;
@@ -112,9 +118,7 @@
     } ), 'Placeholder' );
   } );
 
-  console.time( 'Mappers Execution Timer' );
   //Execute Default Mappers
   Mapper.execute();
-  console.timeEnd( 'Mappers Execution Timer' );
 
 }() );

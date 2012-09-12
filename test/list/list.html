@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>List</title>
+  <link rel="stylesheet" type="text/css" href="../qunit.css">
+</head>
+
+<body>
+
+  <div id="qunit"></div>
+
+  <div id="test-container">
+    <div id="watcher" data-lu="Abstract">
+      <ul id="A" data-lu="List">
+        <li class="larry lu-state-selected">Larry</li>
+        <li class="moe">Moe</li>
+        <li class="curly">Curly</li>
+      </ul>
+      <ul id="B" data-lu="List">
+        <li class="larry">Larry</li>
+        <li class="moe lu-state-selected">Moe</li>
+        <li class="curly">Curly</li>
+      </ul>
+      <ul id="C" data-lu="List">
+        <li class="larry">Larry</li>
+        <li class="moe">Moe</li>
+        <li class="curly lu-state-selected">Curly</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="/scripts/libraries/underscore.js"></script>
+  <script src="/scripts/libraries/inject/inject.js"></script>
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="/scripts/config.js"></script>
+  <script src="/scripts/lu.js" ></script>
+  <script src="/scripts/mappers.js"></script>
+
+  <script src="../qunit.js"></script>
+  <script src="test.js"></script>
+
+  <script>
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    Lu.map( $( '[data-lu~=Abstract]' ), 'Abstract', function(){} );
+
+    Lu.execute( $( 'body' ) ).done( function(){
+      console.info( 'Executed' );
+      execute();
+    } );
+
+  </script>
+
+</body>
+
+</html>
