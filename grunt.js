@@ -172,7 +172,7 @@ module.exports = function(grunt) {
   } );
 
   // Build task.
-  grunt.registerTask( 'build', 'lint concat min' );
+  grunt.registerTask( 'build', 'lint qunit concat min' );
 
   // Default task.
   grunt.registerTask( 'default', '' );
