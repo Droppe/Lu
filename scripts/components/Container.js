@@ -157,7 +157,7 @@ Container = Switch.extend( function ( base ) {
 
         if( url.indexOf( '#' ) === 0 ){
           content = $( url ).html();
-          return this.trigger( constants.events.UPDATED, [self] );
+          return self.trigger( constants.events.UPDATE, [content] );
         }
 
         if( settings.frame === true ){
@@ -209,13 +209,13 @@ Container = Switch.extend( function ( base ) {
         event.stopPropagation();
         switch( method ){
           case 'append':
-            this.appendContent( content );
+            self.appendContent( content );
             break;
           case 'prepend':
-            this.prependContent( content );
+            self.prependContent( content );
             break;
           default:
-            this.setContent( content );
+            self.setContent( content );
             break;
         }
       }
