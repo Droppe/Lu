@@ -25,7 +25,7 @@ var Lu = function(){
       if( !$element.data( 'mapped' ) ){
         $element.data( 'mapped', true );
         mapped.push( item );
-      } 
+      }
 
       if( !componentData[component] ){
         deferral = $.Deferred();

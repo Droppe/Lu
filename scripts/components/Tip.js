@@ -101,7 +101,7 @@ Tip = Abstract.extend( function (Abstract){
         interactive: TRUE,
 
         /**
-         * The buffer in pixels around the element to be used in determing if the user has stopped 
+         * The buffer in pixels around the element to be used in determing if the user has stopped
          * interacting with the tip
          * @property threshold
          * @type Number
@@ -183,27 +183,12 @@ Tip = Abstract.extend( function (Abstract){
         requirements = [],
         decorator;
 
+
       // === INITIALIZE ===
       _.defaults( settings, defaults );
       Abstract.init.call( this, $element, settings );
       href = settings.url || $element.attr( 'href' );
       $tip = $(settings.template({ className: settings.className }));
-      styleTip();
-      TipContainer = new Container( $tip, {
-        frame: settings.frame,
-        notify: $element
-      });
-
-      // === PRIVATE ===
-      /**
-       * Appends the Tip to the body 
-       * @method append
-       * @private
-       * @return {Void}
-       */
-      function append() {
-        $( 'body' ).append( $tip );
-      }
 
       /**
        * Transfer the styles from the target to the tip if style is not specified
@@ -224,6 +209,24 @@ Tip = Abstract.extend( function (Abstract){
             $tip.addClass( placement );
           }
         }
+      }
+
+      styleTip();
+
+      TipContainer = new Container( $tip, {
+        frame: settings.frame,
+        notify: $element
+      });
+
+      // === PRIVATE ===
+      /**
+       * Appends the Tip to the body
+       * @method append
+       * @private
+       * @return {Void}
+       */
+      function append() {
+        $( 'body' ).append( $tip );
       }
 
       /**
@@ -373,7 +376,7 @@ Tip = Abstract.extend( function (Abstract){
           elWidth = $element.outerWidth();
 
         return self.calcPosition( elOffset, elHeight, elWidth, settings );
-      }
+      };
 
       // === DECORATION ===
       switch( settings.placement ){
@@ -411,6 +414,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( Tip );
   } else if( module.exports ){
-   module.exports = Tip; 
+   module.exports = Tip;
   }
 }
