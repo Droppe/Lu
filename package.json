@@ -17,9 +17,6 @@
   },
   "main": "./scripts",
   "contributors": [{
-    "name": "Dom DeLuise",
-    "email": "domdomdom@gmail.com"
-  }, {
     "name": "Matt Edwards",
     "email": "matt.m.edwards@gmail.com"
   }, {
@@ -31,7 +28,9 @@
   }, {
     "name": "Kiro Risk",
     "email": "kirollos@gmail.com"
-  }],
+  }, {
+    "name": "James Gourgoutis",
+    "email": "jimg@yojimg.net"],
   "repository": {
     "type": "git",
     "url": "https://github.com/linkedin/Lu.git"

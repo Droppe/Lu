@@ -73,6 +73,8 @@ Button = Switch.extend( function( base ){
 
       action = settings.action;
 
+console.log($element, action);
+
       if( action !== undefined ){
         switch( action ){
           case 'first':

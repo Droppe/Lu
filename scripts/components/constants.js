@@ -1,5 +1,7 @@
 
 var constants = {
+  TRUE: true,
+  FALSE: false,
   HAS_A18_ATTRS: 'button, input',
   DISABLED: 'disabled',
   eventPrefix: 'lu:',

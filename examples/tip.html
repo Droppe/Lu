@@ -10,7 +10,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Carousel</title>
+  <title>Tip</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -43,14 +43,6 @@
     <div id="container" class="container">
       <h1>Tip Example</h1>
 
-
-      <a href="#content" data-lu="Tip" data-lu-config="{'Tip': {
-          placement: 'above'
-      }}">Tip ABOVE with local DOM content</a>
-
-      <div id="content" class="lu-hidden">
-        Tip content ONE!
-      </div>
 
       <a href="#content" data-lu="Tip" data-lu-config="{
         'Tip': {
@@ -127,11 +119,15 @@
   <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
   <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
 
+
+
   <script type="text/javascript" charset="utf-8">
 
     Inject.setExpires( 0 );
     Inject.clearCache();
-    Inject.setModuleRoot( 'http://localhost:1337/' );
+    Inject.enableDebug("sourceMap");
+    Inject.setModuleRoot( "http://localhost:1337/" );
+
 
     window.LU_DEBUG = 5;
 

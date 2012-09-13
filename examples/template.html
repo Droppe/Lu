@@ -10,11 +10,16 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>List</title>
+  <title>Tip</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/base.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/layout.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/skeleton.css">
+
 
   <style type="text/css">
     body {
@@ -30,21 +35,10 @@
 <body>
 
   <div>
-    <ul data-lu="List">
-      <li data-lu="Switch" class="lu-state-selected">
-        <button data-lu="Button" data-lu-config="{
-          'Button' : {
-            action: 'select'
-          }
-        }">Sherlock</button>
-      </li>
-      <li>
-        <button data-lu="Button:Select">Watson</button>
-      </li>
-      <li>
-        <button data-lu="Button:Select">Moriarty</button>
-      </li>
-    </ul>
+
+    <!-- YOUR CODE HERE -->
+
+
   </div>
 
   <!-- Bootstrap:Util -->
@@ -67,6 +61,8 @@
     Inject.enableDebug("sourceMap");
     Inject.setModuleRoot( 'http://localhost:1337/' );
 
+
+
     window.LU_DEBUG = 5;
 
     $( function(){
@@ -78,5 +74,4 @@
   </script>
 
 </body>
-
 </html>
