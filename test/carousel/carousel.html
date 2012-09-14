@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Lu Tests</title>
+  <title>Carousel</title>
   <link rel="stylesheet" type="text/css" href="../qunit.css">
 </head>
 
 <body>
 
   <div id="qunit"></div>
+
   <div id="test-container">
-    <div id="container"></div>
+    <div id="watcher" data-lu="Abstract">
+      <ul id="A" data-lu="Carousel">
+        <li class="larry lu-state-selected">Larry</li>
+        <li class="moe">Moe</li>
+        <li class="curly">Curly</li>
+      </ul>
+    </div>
   </div>
 
   <script src="/scripts/libraries/underscore.js"></script>
@@ -32,8 +39,9 @@
 
     window.LU_DEBUG = 5;
 
+    Lu.map( $( '[data-lu~=Abstract]' ), 'Abstract', function(){} );
+
     Lu.execute( $( 'body' ) ).done( function(){
-      console.info( 'Lu executed!' )
       execute();
     } );
 

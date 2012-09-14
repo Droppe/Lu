@@ -13,7 +13,15 @@ var constants = require( 'lu/constants' ),
 
 Button = Switch.extend( function( base ){
   var defaults = {
-      on: 'click'
+      on: 'click',
+      /**
+       * The time in milliseconds in which to throttle events.
+       * Events will only be triggred once per throttle time.
+       * This is useful when timing complex css transitions.
+       * @property notify
+       * @type {String}
+       */
+      throttle: 300
     },
     root = 'lu/Button/decorators/',
     decorators = {
@@ -130,7 +138,7 @@ Button = Switch.extend( function( base ){
     disable: function(){
       var $element = this.$element;
       if( $element.is( constants.HAS_A18_ATTRS ) ){
-        $element.prop( constants.DISABLED, true );
+        $element.attr( constants.DISABLED, 'disabled' );
       }
       this.addState( constants.states.DISABLED );
       return this;
@@ -145,7 +153,9 @@ Button = Switch.extend( function( base ){
      */
     enable: function(){
       var $element = this.$element;
-      $element.removeProp( constants.DISABLED );
+      if( $element.is( constants.HAS_A18_ATTRS ) ){
+        $element.attr( constants.DISABLED, null );
+      }
       this.removeState( constants.states.DISABLED );
       return this;
     }

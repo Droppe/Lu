@@ -83,8 +83,19 @@ Abstract = Fiber.extend( function( base ){
       this.$element = $element;
       this.eventStore = {};
 
-      $observe = $( settings.observe );
-      $notify = $( settings.notify ).add( $element.lu( 'getDescendants' ) );
+      if( settings.observe instanceof $ ){
+        $observe = settings.observe;
+      } else if( typeof settings.observe === 'string' ){
+        $observe = $( settings.observe );
+      }
+
+      if( settings.notify instanceof $ ){
+        $notify = settings.notify;
+      } else if( typeof settings.notify === 'string' ){
+        $notify = $( settings.notify );
+      }
+
+      $notify = $notify.add( $element.lu( 'getDescendants' ) );
 
       if( $observe.length > 0 ){
         $observe.lu( 'observe', $element );
@@ -146,6 +157,7 @@ Abstract = Fiber.extend( function( base ){
      * @public
      */
     trigger: function( event, parameters ){
+
       var store;
 
       if( typeof event === 'string' ){
@@ -159,8 +171,8 @@ Abstract = Fiber.extend( function( base ){
       if( store && store.method === 'one' ){
         removeFromEventStore.call( this, event );
       }
-
       this.$element.trigger.call( this.$element, event, parameters );
+
       return this;
     },
     /**
@@ -170,7 +182,7 @@ Abstract = Fiber.extend( function( base ){
      * @param {Array} $observer A jQuery collection to be observed
      */
     observe: function( $observer ){
-      this.$element.lu( 'observe', $observer );
+      $observer.lu( 'observe', this.$element );
       return this;
     },
     /**
@@ -180,7 +192,7 @@ Abstract = Fiber.extend( function( base ){
      * @param {Array} $observer A jQuery collection to be unobserved
      */
     unobserve: function( $observer ){
-      this.$element.lu( 'unobserve', $observer, this.$element );
+      $observer.lu( 'unobserve', this.$element );
       return this;
     },
     /**

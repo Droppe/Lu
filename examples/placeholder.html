@@ -10,29 +10,33 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Examples</title>
+  <title>Placeholder</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: 50px auto;
+    }
+    .lu-state-placeholder {
+      color: #CCC;
+    }
+    input {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
 
-  <div>
-    <ul>
-      <li><a href="accordion.html">Accordion</a></li>
-      <li><a href="buttons.html">Buttons</a></li>
-      <li><a href="carousel.html">Carousel</a></li>
-      <li><a href="list.html">List</a></li>
-      <li><a href="switch.html">Switch</a></li>
-      <li><a href="tabs.html">Tabs w/ notify</a></li>
-      <li><a href="tabs.html">Tabs w/ observe</a></li>
-      <li><a href="dialog.html">Dialog</a></li>
-      <li><a href="placeholder.html">Placeholder</a></li>
-    </ul>
-  </div>
+  <form id="example-form" method="get" action="switch.html">
+    <input type="text" data-lu="Placeholder" name="sample-text" placeholder="Sample Text Input"/>
+    <textarea name="sample-text-area" data-lu="Placeholder" placeholder="Sample Textarea"></textarea>
+    <input type="submit" value="Submit"/>
+  </form>
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
@@ -55,10 +59,8 @@
 
     window.LU_DEBUG = 5;
 
-    $( function(){
-      Lu.execute( $( 'body' ) ).then( function(){
-        console.info( 'DONE!' );
-      } );
+    Lu.execute( $( 'body' ) ).then( function(){
+      console.info( 'DONE!' );
     } );
 
   </script>

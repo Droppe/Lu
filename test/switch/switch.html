@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Abstract Tests</title>
+  <title>Switch Tests</title>
   <link rel="stylesheet" type="text/css" href="../qunit.css">
 </head>
 
@@ -10,8 +10,7 @@
 
   <div id="qunit"></div>
   <div id="test-container">
-    <a id="abstract-test" data-lu="Abstract"></a>
-    <a id="funk-and-waggle" data-lu="Abstract"></a>
+    <div id="switch" data-lu="Switch" class="lu-state-funky"></div>
   </div>
 
   <script src="/scripts/libraries/underscore.js"></script>
@@ -33,8 +32,9 @@
 
     window.LU_DEBUG = 5;
 
+    Lu.map( $( '[data-lu~=Switch]' ), 'Switch', function(){} );
+
     Lu.execute( $( 'body' ) ).done( function(){
-      console.info( 'Lu executed!' )
       execute();
     } );
 

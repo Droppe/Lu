@@ -19,21 +19,30 @@ function selectDecorator( settings ){
       if( Component.$items && Component.current ){
         if( self.$element.closest( Component.$items ).is( Component.current().$element ) ){
           self.disable();
-        } else {
-          self.enable();
+        } else if( self.$element.is( 'button' ) ) {
+          if( $( '#' + self.$element.attr( 'aria-controls' ) ).is( Component.current().$element ) ){
+            self.disable();
+          } else {
+            self.enable();
+          }
+        } else if( self.$element.is( 'a' ) ) {
+          if( $( self.$element.attr( 'href' ) ).is( Component.current().$element ) ){
+            self.disable();
+          } else {
+            self.enable();
+          }
         }
       } else {
         self.enable();
       }
     } );
 
-
-    this.$element.on( settings.on, function( event ){
+    this.$element.on( settings.on, _.throttle( function( event ){
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }
       self.trigger( constants.events.SELECT, [self] );
-    } );
+    }, settings.throttle ) );
   };
 }
 

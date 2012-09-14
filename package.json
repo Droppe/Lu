@@ -1,11 +1,43 @@
 {
   "name": "Lu",
-  "version": "0.3.0",
-  "description": "Development Server for Lu",
-  "author": "Robert Martone",
+  "version": "0.3.1",
+  "author": {
+    "name": "Robert Martone",
+    "email": "iheartweb@gmail.com",
+    "url": "http://www.robertmartone.com/"
+  },
   "dependencies": {
     "grunt": ">=0.3.12",
     "node-static": ">=0.6.0"
   },
-  "engine":      "node >= 0.5.11"
+  "engine": "node >= 0.5.11",
+  "scripts": {
+    "test": "grunt qunit",
+    "start": "node server.js"
+  },
+  "main": "./scripts",
+  "contributors": [{
+    "name": "Dom DeLuise",
+    "email": "domdomdom@gmail.com"
+  }, {
+    "name": "Matt Edwards",
+    "email": "matt.m.edwards@gmail.com"
+  }, {
+    "name": "Steven Foote",
+    "email": "smfoote@gmail.com"
+  }, {
+    "name": "Nate Eborn",
+    "email": "rockthemic12@gmail.com"
+  }, {
+    "name": "Kiro Risk",
+    "email": "kirollos@gmail.com"
+  }, {
+    "name": "Brendan Dean",
+    "email": "brendean@gmail.com"
+  }],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/linkedin/Lu.git"
+  },
+  "license": "Apache"
 }
