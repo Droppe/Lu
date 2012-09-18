@@ -109,6 +109,36 @@
     } );
   } );
 
+  // Tip (tooltip)
+  var tips = _.filter( Mapper.$scope, function( item ){
+    return ( item.getAttribute( 'data-lu' ).indexOf( 'Tip' ) > -1 );
+  } );
+
+  Mapper.register( function(){
+    var key = 'Tip';
+    Lu.map( _.filter( tips, function( item ){
+      return ( _.indexOf( item.getAttribute( 'data-lu' ).split( ' ' ), key ) > -1 );
+    } ), 'Tip', function(){
+      this.settings.placement = 'Right';
+      this.key = key;
+      this.hasDependencies = true;
+    } );
+  } );
+
+  _.each( ['Above', 'Below', 'Left', 'Right'], function( placement ) {
+
+    Mapper.register( function(){
+      var key = 'Tip:' + placement;
+      Lu.map( _.filter( tips, function( item ){
+        return ( item.getAttribute( 'data-lu' ).indexOf( key ) > -1 );
+      } ), 'Tip', function(){
+        this.settings.placement = placement;
+        this.key = key;
+        this.hasDependencies = true;
+      } );
+    } );
+  } );
+
   //Placeholder
   Mapper.register( function(){
     Lu.map( _.filter( Mapper.$scope, function( item, index ){

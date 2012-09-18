@@ -8,7 +8,7 @@
 var FormElement = require( 'lu/FormElement' ),
     helpers = require( 'lu/helpers' ),
     constants = require( 'lu/constants' ),
-    StateDecorator = require( 'lu/decorators/state' ),
+    stateDecorator = require( 'lu/decorators/state' ),
     Fiber = require( 'Fiber' ),
     Placeholder;
 
@@ -32,7 +32,7 @@ Placeholder = FormElement.extend( function ( base ) {
 
       _.defaults( settings, defaults );
       base.init.call( Placeholder, $element, settings );
-      Fiber.decorate( Placeholder, StateDecorator( settings ) );
+      Fiber.decorate( Placeholder, stateDecorator( settings ) );
       PLACEHOLDER_STATE = constants.states.PLACEHOLDER;
 
       function clear () {

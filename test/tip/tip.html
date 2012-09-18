@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Placeholder Tests</title>
+  <title>Tip Tests</title>
   <link rel="stylesheet" type="text/css" href="../qunit.css">
 </head>
 
@@ -10,10 +10,20 @@
 
   <div id="qunit"></div>
   <div id="test-container">
-    <form method="get">
-      <input id="inputTest" type="text" placeholder="input placeholder" data-lu="Placeholder" name="inputTest"/>
-      <textarea id="textareaTest" placeholder="textarea placeholder" data-lu="Placeholder" name="textareaTest"></textarea>
-    </form>
+    <ul>
+      <li>
+        <a id="mouse-tip" href="#mouse-example" data-lu="Tip" data-lu-config="{ 'Tip' : { 'className' : 'tooltip mouse-tip' } }">Mouse Tip.</a>
+        <div id="mouse-example" class="tip-contents">
+          Fatback pork belly flank salami cow t-bone ground round pancetta short ribs jerky pig pork sausage.
+        </div>
+      </li>
+      <li>
+        <input id="input-tip" href="#input-example" data-lu="Tip:Right" value="" placeholder="Click for tip." data-lu-config="{ 'Tip:Right' : { 'className' : 'tooltip input-tip' } }"/>
+        <div id="input-example" class="tip-contents">
+          Pastrami boudin pig, swine filet mignon venison flank chuck.
+        </div>
+      </li>
+    </ul>
   </div>
 
   <script src="/scripts/libraries/underscore.js"></script>

@@ -6,105 +6,75 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 
 <head>
-  <meta charset="utf-8">
-
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
   <title>Tip</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="description" content="">
   <meta name="author" content="">
-
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
-  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/base.css">
-  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/layout.css">
-  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/skeleton.css">
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: 50px auto;
+    }
+    ul {
+      list-style: none;
+    }
+    li {
+      padding: 10px 0;
+    }
+    .tip-contents {
+      display: none;
+    }
+    .tooltip {
+      background-color: #CCCCCC;
+      position: absolute;
+      width: 200px;
+    }
+  </style>
+</head>
 
+<body>
 
-    <style>
-      .lu-hidden { 
-        display: none; 
-      }
-      #container {
-        padding: 2em;
-      }
-      .container a {
-        background-color: yellow;
-        display: inline-block;
-        margin: 1em;
-        padding: 1em;
-      }
-    </style>
-
-  </head>
-
-  <body>
-
-    <div id="container" class="container">
-      <h1>Tip Example</h1>
-
-
-      <a href="#content" data-lu="Tip" data-lu-config="{
-        'Tip': {
-          placement: 'above'
-        }
-      }">
-        Tip ABOVE with local DOM content
-      </a>
-      
-      <div id="content" class="lu-hidden">
-        Tip content ONE!
+  <ul>
+    <li>
+      <a id="default-tip" href="#default-example" data-lu="Tip" data-lu-config="{ 'Tip' : { 'className' : 'tooltip default-tip' } }">Default Tip.</a>
+      <div id="default-example" class="tip-contents">
+        Fatback pork belly flank salami cow t-bone ground round pancetta short ribs jerky pig pork sausage.
       </div>
-
-      <a href="#content2" 
-        data-lu="Tip">
-        Tip RIGHT with local DOM content
-      </a>
-
-      <div id="content2" class="lu-hidden">
-        Tip content TWO!
+    </li>
+    <li>
+      <a href="#above-example" data-lu="Tip:Above">Tip Above.</a>
+      <div id="above-example" class="tip-contents">
+        Fatback pork belly flank salami cow t-bone ground round pancetta short ribs jerky pig pork sausage.
       </div>
-
-      <a href="#content3" data-lu="Tip" data-lu-config="{
-        'Tip': {
-          placement: 'below'
-        }
-      }">
-        Tip BELOW with local DOM content
-      </a>
-      <div id="content3" class="lu-hidden">
-        Tip content THREE!
+    </li>
+    <li>
+      <a href="#left-example" data-lu="Tip:Left">Tip Left.</a>
+      <div id="left-example" class="tip-contents">
+        Chuck short ribs pig t-bone pork shank fatback capicola jerky spare ribs hamburger meatball bacon.
       </div>
-
-      <a href="#content4" data-lu="Tip:Left" data-lu-config="{
-        /*'Tip': {
-          placement: 'left'
-        }*/
-      }">
-        Tip LEFT with local DOM content
-      </a>
-      <div id="content4" class="lu-hidden">
-        Tip content FOUR with auto-param!
+    </li>
+    <li>
+      <a href="#right-example" data-lu="Tip:Right">Tip Right.</a>
+      <div id="right-example" class="tip-contents">
+        Bresaola salami short loin tongue t-bone venison turkey fatback pancetta frankfurter swine hamburger.
       </div>
-
-      <a href="http://yojimg.net" data-lu="Tip" data-lu-config="{
-        'Tip': {
-          placement: 'above',
-          frame: true
-        }
-      }">
-        Tip ABOVE with cross-domain content
-      </a>
-
-      <a href="ajax.txt" data-lu="Tip" data-lu-config="{
-        'Tip': {
-          placement: 'above'
-        }
-      }">
-        Tip ABOVE with XHR content
-      </a>
-
-    </div>
+    </li>
+    <li>
+      <a href="#below-example" data-lu="Tip:Below">Tip Below.</a>
+      <div id="below-example" class="tip-contents">
+        Swine beef brisket t-bone, boudin rump hamburger.
+      </div>
+    </li>
+    <li>
+      <input id="input-tip" href="#input-example" data-lu="Tip:Right" value="" placeholder="Click for tip." data-lu-config="{ 'Tip:Right' : { 'className' : 'tooltip input-tip' } }"/>
+      <div id="input-example" class="tip-contents">
+        Pastrami boudin pig, swine filet mignon venison flank chuck.
+      </div>
+    </li>
+  </ul>
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
@@ -119,15 +89,12 @@
   <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
   <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
 
-
-
   <script type="text/javascript" charset="utf-8">
 
     Inject.setExpires( 0 );
     Inject.clearCache();
-    Inject.enableDebug("sourceMap");
+    Inject.enableDebug( "sourceMap" );
     Inject.setModuleRoot( "http://localhost:1337/" );
-
 
     window.LU_DEBUG = 5;
 

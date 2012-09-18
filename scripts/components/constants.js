@@ -19,7 +19,9 @@ var constants = {
     FIRST: 'first',
     LAST: 'last',
     PLAY: 'play',
-    PAUSE: 'pause'
+    PAUSE: 'pause',
+    HIDE: 'hide',
+    SHOW: 'show'
   },
   statePrefix: 'lu-state-',
   states: {

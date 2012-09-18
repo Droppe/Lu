@@ -147,6 +147,16 @@ function execute(){
 
   QUnit.module( 'Event Tests' );
 
+  QUnit.asyncTest( 'selected', function(){
+    expect( 1 );
+    ListA.select( 1 );
+    Watcher.one( 'selected', function(){
+      ok( true, 'event triggered when calling .select' );
+    } );
+    ListA.select( 0 );
+    start();
+  } );
+
   QUnit.asyncTest( 'outofbounds', function(){
     var index = ListA.$items.index( ListA.current().$element );
     expect( 5 );
@@ -195,6 +205,24 @@ function execute(){
   QUnit.asyncTest( 'last', function(){
     expect( 1 );
     ok( ListA.first().trigger( 'last' ).index() === 2, 'event handled correctly' );
+    start();
+  } );
+
+  QUnit.asyncTest( 'select', function(){
+    var $buttonA = $( '#moe-select' );
+      $buttonB = $( '#larry-select_button' ),
+      $buttonC = $( '#larry-select_anchor' );
+
+    expect( 3 );
+    ListA.select( 2 );
+    $buttonA.click();
+    ok( ListA.index() === 1, 'event handled correctly.' );
+    ListA.select( 2 );
+    $buttonB.click();
+    ok( ListA.index() === 0, 'event handled correctly.' );
+    ListA.select( 2 );
+    $buttonC.click();
+    ok( ListA.index() === 0, 'event handled correctly.' );
     start();
   } );
 

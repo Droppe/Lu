@@ -134,16 +134,21 @@ Container = Switch.extend( function ( base ) {
        * @method load
        * @private
        * @param {Object} $target Jquery object for the target node
-       * @param {String} url The URL to load
+       * @param {String|Object} source The source to load or obtain a URL from
        * @param {String} method the method to be used when inserting content
        * @return {Object} Container
        */
-      function load( $target, url, method ){
-        var isUrl = helpers.isUrl( url ),
-          content;
+      function load( $target, source, method ){
+        var isUrl = helpers.isUrl( source ),
+          loadedContent,
+          tmpData,
+          url;
 
         if( !isUrl ){
-          if( $target.is( 'a' ) ){
+          if (typeof source === "object" && source.getUrl) {
+            url = source.getUrl();
+          }
+          else if ( $target.is( 'a' ) ){
             url = $target.attr( 'href' );
           }
 
@@ -153,13 +158,15 @@ Container = Switch.extend( function ( base ) {
         }
 
         if( url.indexOf( '#' ) === 0 ){
-          content = $( url ).html();
-          return self.trigger( constants.events.UPDATED, [self] );
+          loadedContent = $( url ).html();
+          self.trigger( constants.events.UPDATE, [loadedContent, method] );
+          return self;
         }
 
         if( settings.frame === true ){
-          content = '<iframe src="' + url + '"></iframe>';
-          return self.trigger( constants.events.UPDATED, [self] );
+          loadedContent = '<iframe src="' + url + '"></iframe>';
+          self.trigger( constants.events.UPDATE, [loadedContent, method] );
+          return self;
         }
 
         self.removeState( constants.states.LOADED );
@@ -168,20 +175,20 @@ Container = Switch.extend( function ( base ) {
         $.ajax( {
           url: url,
           success: function( data, textStatus, jXHR ){
-            var content,
+            var newContent,
               anchor = helpers.parseUri( url ).anchor;
 
             if( settings.selector ){
-              content = $( data ).find( settings.selector ).html();
+              newContent = $( data ).find( settings.selector ).html();
             } else if( anchor ){
-              content = $( data ).find( '#' + anchor ).html() || data;
+              newContent = $( data ).find( '#' + anchor ).html() || data;
             } else {
-              content = data;
+              newContent = data;
             }
 
             self.removeState( constants.states.LOADING );
             self.addState( constants.states.LOADED );
-            self.trigger( constants.events.UPDATED, [self] );
+            self.trigger( constants.events.UPDATE, [newContent, method] );
           },
           failure: function(){
            self.removeState( constants.states.LOADING ).addState( constants.states.ERRED );
@@ -195,22 +202,23 @@ Container = Switch.extend( function ( base ) {
        * Updates content on an update event
        * @method update
        * @private
-       * @param {String} content The content to set
+       * @param {Object} $target Jquery object for the target node       * 
+       * @param {String} updateContent The content to set
        * @param {String} method The method to use for setting the content.
        * This can specified as 'prepend' or 'append'. If theese are not
        * specified the content is replaced.
        * @return {Function} Container.setState
        */
-      function update( content, method ){
+      function update( $target, updateContent, method ){
         switch( method ){
           case 'append':
-            self.appendContent( content );
+            self.appendContent( updateContent );
             break;
           case 'prepend':
-            self.prependContent( content );
+            self.prependContent( updateContent );
             break;
           default:
-            self.setContent( content );
+            self.setContent( updateContent );
             break;
         }
       }
@@ -234,6 +242,7 @@ Container = Switch.extend( function ( base ) {
        */
       self.setContent = function( value ){
         content = value;
+
         self.$target.html( content );
 
         if( settings.autoHeight ){
@@ -258,7 +267,8 @@ Container = Switch.extend( function ( base ) {
        * @return {Function} Container.setContent
        */
       self.appendContent = function( value ){
-        return self.setContent( content + value );
+        self.setContent( content + value );
+        return self;
       };
 
       /**

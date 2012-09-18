@@ -55,6 +55,7 @@
     }">
       (empty container)
     </div>
+
     <p id="stuff" style="display: none">THIS IS SOME FRESH STUFF!</p>
 
   <button id="button1" data-lu="Button" data-lu-config="{
@@ -73,9 +74,16 @@
     <button id="button3" data-lu="Button" data-lu-config="{
       'Button': {
         'notify': '#example',
-        'action': 'load'
+        'action': 'load', 
+        'url': 'container.html#example'
       }
     }">LOAD</button>
+    <a href="#stuff" id="button4" data-lu="Button" data-lu-config="{
+      'Button': {
+        'notify': '#example',
+        'action': 'load'
+      }
+    }">LOAD</a>
 
 
     </div>

@@ -193,6 +193,7 @@ List = Switch.extend( function( base ){
 
       this.on( constants.events.SELECT, function( event, component ){
         event.stopPropagation();
+
         var $element = component.$element,
           controls = $element.attr( 'aria-controls' ),
           href,
