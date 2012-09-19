@@ -5,7 +5,6 @@
 <!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 
-<!-- remove this yi-fan -->
 <head>
   <meta charset="utf-8">
 
@@ -24,6 +23,11 @@
     }
     .lu-state-selected {
       color: white;
+      background: red;
+    }
+    img {
+      padding: 0;
+      margin: 0;
     }
     #slider_window {
       overflow: hidden;  /* important (hide the items outside the div) */
@@ -39,9 +43,10 @@
       width:9999px; /* important */
     }
 
-    #list li{
+    li{
+      height: 105px;
+      width: 100px;
       float: left; /* important for inline positioning of the list items */
-      width:80px;  /* fixed width, important */
       /* just styling bellow*/
       padding: 0;
       background: grey;
@@ -57,22 +62,30 @@
 
 <body>
 
-  <div id="slider_window" data-lu="Carousel:Window">    
+  <div id="slider_window" data-lu="List" data-lu-config="{
+    'List': {
+      viewport: {
+        mode: 'sliding',
+        pageSize: 10,
+        threshold: 0.8
+      }
+    }
+  }">    
     <ul id="list">
-      <li class="lu-state-selected">#1</li>
-      <li>#2</li>
-      <li>#3</li>
-      <li>#4</li>
-      <li>#5</li>
-      <li>#6</li>
-      <li>#7</li>
-      <li>#8</li>
-      <li>#9</li>
-      <li>#10</li>
-      <li>#11</li>
-      <li>#12</li>
-      <li>#13</li>
-      <li>#14</li>
+      <li class="lu-state-selected"><img src="http://placehold.it/100x100&text=1"/></li>
+      <li><img src="http://placehold.it/100x100&text=2"/></li>
+      <li><img src="http://placehold.it/100x100&text=3"/></li>
+      <li><img src="http://placehold.it/100x100&text=4"/></li>
+      <li><img src="http://placehold.it/100x100&text=5"/></li>
+      <li><img src="http://placehold.it/100x100&text=6"/></li>
+      <li><img src="http://placehold.it/100x100&text=7"/></li>
+      <li><img src="http://placehold.it/100x100&text=8"/></li>
+      <li><img src="http://placehold.it/100x100&text=9"/></li>
+      <li><img src="http://placehold.it/100x100&text=10"/></li>
+      <li><img src="http://placehold.it/100x100&text=11"/></li>
+      <li><img src="http://placehold.it/100x100&text=12"/></li>
+      <li><img src="http://placehold.it/100x100&text=13"/></li>
+      <li><img src="http://placehold.it/100x100&text=14"/></li>
     </ul>
     <div id="controls">
       <button data-lu="Button:Previous">Previous</button>

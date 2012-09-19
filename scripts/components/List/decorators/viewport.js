@@ -10,13 +10,13 @@ function windowDecorator( settings ) {
     var self = this;
     var slidingWindow = this.$element;
     var windowStart = 0;
-    var pageSize = 10;
+    var pageSize = settings.viewport.pageSize || 1;
     var windowStartIndex = 0;
-    var threshold = Math.floor(pageSize*0.8);
+    var threshold = Math.floor(pageSize*(settings.viewport.threshold || 1));
 
     // Two modes are currently supported:
     // "paging" and "sliding"
-    var mode = "paging";
+    var mode = settings.viewport.mode || 'paging';
 
     function pageRight() {
       var currentIndex = self.index();
@@ -50,7 +50,7 @@ function windowDecorator( settings ) {
       slideToIndex(prevPageIndex);
     }
 
-    function slideSelect() {
+    function slideToSelected() {
       var currentIndex = self.index();
       var midpoint = Math.floor(windowStartIndex + pageSize/2);
 
@@ -102,7 +102,7 @@ function windowDecorator( settings ) {
         pageRight();
       }
       else if(mode === "sliding") {
-        slideSelect();
+        slideToSelected();
       } 
     } );
 
@@ -113,13 +113,16 @@ function windowDecorator( settings ) {
         pageLeft();
       }
       else if(mode === "sliding") {
-        slideSelect();
+        slideToSelected();
       }
     } ); 
 
     if(mode !== "sliding") {
       self.next = function() {};
       self.previous = function() {};
+      self.hasNext = function() {
+        return ( this.index() + pageSize < this.size() ); 
+      };
     }
   };
 

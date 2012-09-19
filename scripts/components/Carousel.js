@@ -10,10 +10,6 @@ var constants = require( 'lu/constants' ),
   Carousel;
 
 Carousel =  List.extend( function ( base ) {
-  var root = 'lu/Carousel/decorators/',
-    decorators = {
-        window: root + 'window',
-    },
     /**
      * Default configuration values
      * @property defaults
@@ -21,7 +17,7 @@ Carousel =  List.extend( function ( base ) {
      * @private
      * @final
      */
-    defaults = {
+    var defaults = {
       /**
        * Number of times to cycle through carousel items when playing, set to -1 to repeat forever
        * @property repeat
@@ -91,19 +87,6 @@ Carousel =  List.extend( function ( base ) {
 
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
-
-
-      var requirements = [];
-      requirements.push(decorators.window);
-
-      require.ensure( requirements, function( require, module, exports ){
-        _.each( requirements, function( decorator, index ){
-          decorator = require( decorator )( settings );
-          Fiber.decorate( self, decorator );
-        } );
-        self.trigger( 'dependencies-resolved' );
-      } );
-
 
       repeat = settings.repeat;
       delay = settings.delay;
