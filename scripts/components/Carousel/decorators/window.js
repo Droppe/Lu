@@ -8,97 +8,119 @@ function windowDecorator( settings ) {
 
   return function( base ){
     var self = this;
-
     var slidingWindow = this.$element;
+    var windowStart = 0;
+    var pageSize = 10;
+    var windowStartIndex = 0;
+    var threshold = Math.floor(pageSize*0.8);
 
-    var pageSize = 3;
-    var currentOffset = 0;
+    // Two modes are currently supported:
+    // "paging" and "sliding"
+    var mode = "paging";
+
+    function pageRight() {
+      var currentIndex = self.index();
+      var size = self.size();
+      var nextPageIndex = currentIndex + pageSize;
+
+      if(nextPageIndex === size) {
+          nextPageIndex = 0;
+      }
+      else if(size - nextPageIndex < pageSize) {
+          nextPageIndex -= pageSize - (size - nextPageIndex);
+      }
+
+      self.select(nextPageIndex);
+      slideToIndex(nextPageIndex);
+    }
+
+    function pageLeft() {
+      var currentIndex = self.index();
+      var size = self.size();
+      var prevPageIndex = currentIndex - pageSize;  
+      
+      if(prevPageIndex + pageSize === 0) {
+          prevPageIndex = size - pageSize;
+      }      
+      else if(prevPageIndex < 0) {
+          prevPageIndex = 0;
+      }
+
+      self.select(prevPageIndex);
+      slideToIndex(prevPageIndex);
+    }
+
+    function slideSelect() {
+      var currentIndex = self.index();
+      var midpoint = Math.floor(windowStartIndex + pageSize/2);
+
+        if(currentIndex === 0) {
+          windowStartIndex = 0;
+        }
+        else if(currentIndex === self.size() - 1) {
+          windowStartIndex = self.size() - pageSize;
+        }
+        else {
+          if(currentIndex >= windowStartIndex + threshold) {
+            windowStartIndex += Math.abs(currentIndex - midpoint);
+
+            if(windowStartIndex > self.size() - pageSize)
+              windowStartIndex = self.size() - pageSize;
+          }
+          else if(currentIndex < windowStartIndex + pageSize - threshold) {
+            windowStartIndex -= Math.abs(currentIndex - midpoint)
+
+            if(windowStartIndex < 0)
+              windowStartIndex = 0;
+          }
+          else
+            return;
+        }
+
+        slideToIndex(windowStartIndex);
+    }
     
     function getPageWidth() {
       var pageWidth = getItemWidth() * pageSize;
       return pageWidth;
     }
     
-    function getPageIndex() {
-        return currentOffset/getPageWidth();
-    }
-    
     function getItemWidth() {
-        return $('#list li').outerWidth(true);
+      return $('#list li').outerWidth(true);
     }
     
-    function getNumTotalItems() {
-        return $('#list li').size();
-    }
-    
-    function getNumRightItems() {
-        return getNumTotalItems() - getPageIndex()*pageSize - pageSize;               
-    }
-    
-    function getNumLeftItems() {
-        return getPageIndex()*pageSize;       
-    }
-    
-    function changeButtonState() {
-        
-        if(getNumRightItems() === 0)
-            $('#next').attr('disabled', '');
-        else
-            $('#next').removeAttr('disabled');
-        
-        if(getNumLeftItems() === 0)
-            $('#previous').attr('disabled', '');
-        else
-            $('#previous').removeAttr('disabled');
+    function slideToIndex(index) {
+      $('#list:not(:animated)').animate({right: index*getItemWidth()}, 500);
     }
 
-    function slide(direction) {
-        
-        if (direction === 'next' && getNumRightItems() >= pageSize) {
-           var pageWidth = getPageWidth();
-           currentOffset += pageWidth; 
-     
-           self.select(self.index() + pageSize);
-        } else if (direction === 'next' && getNumRightItems() > 0 && getNumRightItems() < pageSize) { 
-          var nextIdx =  parseInt(getNumRightItems()) + parseInt(self.index());
-           currentOffset += getNumRightItems()*getItemWidth();
-           
-           self.select(nextIdx);         
-        } else if (direction === 'previous' && getNumLeftItems() >= pageSize) {
-           currentOffset -= getPageWidth();
-
-           self.select(self.index() - pageSize);
-        } else if (direction === 'previous' && getNumLeftItems() > 0 && getNumLeftItems() < pageSize) {
-           var prevIdx = self.index() - getNumLeftItems();
-           currentOffset -= getNumLeftItems()*getItemWidth();
-           console.log('Num item left: ' + getNumLeftItems());
-           self.select(prevIdx);
-        }
-        
-        changeButtonState();
-               
-        $('#list:not(:animated)').animate({right: currentOffset}, 500);
-    };
-    
-    changeButtonState();
     $(slidingWindow).width(getPageWidth());
-    $("#nextPage").click(function(){slide('next');});
-    $("#previousPage").click(function(){slide('previous');});
-    
+
     self.on( constants.events.NEXT, function( event, Component ){
       event.stopPropagation();
-      console.log('NEXT');
-      slide('next');
+
+      if(mode === "paging") {
+        pageRight();
+      }
+      else if(mode === "sliding") {
+        slideSelect();
+      } 
     } );
 
     self.on( constants.events.PREVIOUS, function( event, Component ){
       event.stopPropagation();
-      console.log('PREVIOUS');
-      slide('previous');
-    } );
 
-    self.next = function() {};
-    self.previous = function() {};
+      if(mode === "paging") {
+        pageLeft();
+      }
+      else if(mode === "sliding") {
+        slideSelect();
+      }
+    } ); 
+
+    if(mode !== "sliding") {
+      self.next = function() {};
+      self.previous = function() {};
+    }
   };
 
 }

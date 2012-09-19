@@ -10,7 +10,10 @@ var constants = require( 'lu/constants' ),
   Carousel;
 
 Carousel =  List.extend( function ( base ) {
-  var
+  var root = 'lu/Carousel/decorators/',
+    decorators = {
+        window: root + 'window',
+    },
     /**
      * Default configuration values
      * @property defaults
@@ -88,6 +91,19 @@ Carousel =  List.extend( function ( base ) {
 
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
+
+
+      var requirements = [];
+      requirements.push(decorators.window);
+
+      require.ensure( requirements, function( require, module, exports ){
+        _.each( requirements, function( decorator, index ){
+          decorator = require( decorator )( settings );
+          Fiber.decorate( self, decorator );
+        } );
+        self.trigger( 'dependencies-resolved' );
+      } );
+
 
       repeat = settings.repeat;
       delay = settings.delay;
