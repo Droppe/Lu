@@ -19,7 +19,9 @@ var constants = {
     PLAY: 'play',
     PAUSE: 'pause',
     HIDE: 'hide',
-    SHOW: 'show'
+    SHOW: 'show',
+    VALIDATION_SUCCESS: 'validation_success',
+    VALIDATION_FAILURE: 'validation_failure'
   },
   statePrefix: 'lu-state-',
   states: {

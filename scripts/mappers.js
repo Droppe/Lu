@@ -83,6 +83,7 @@
   _.each( ['Switch', 'List', 'Carousel', 'Container'], function( id, index ){
     Mapper.register( function(){
       Lu.map( _.filter( Mapper.$scope, function( item, index ){
+        // hack to prevent Form and FormElement from both being initialized as forms
         return ( item.getAttribute( 'data-lu' ).indexOf( id ) > -1 );
       } ), id );
     } );
@@ -126,7 +127,6 @@
   } );
 
   _.each( ['Above', 'Below', 'Left', 'Right'], function( placement ) {
-
     Mapper.register( function(){
       var key = 'Tip:' + placement;
       Lu.map( _.filter( tips, function( item ){
@@ -146,6 +146,43 @@
              ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
              item.getAttribute( 'placeholder' ) );
     } ), 'Placeholder' );
+  } );
+
+  // Form
+  Mapper.register( function(){
+    Lu.map( _.filter( Mapper.$scope, function( item, index ){
+      var luAttribute = item.getAttribute( 'data-lu' );
+
+      return ( luAttribute.indexOf( 'Form' ) > -1 && luAttribute.indexOf( 'FormElement' ) === -1 );
+    } ), 'Form', function( $element ){
+      var luAttribute = $element[0].getAttribute( 'data-lu' ),
+        decorators = luAttribute.split(':').slice(1);
+
+      this.settings.decorators = decorators;
+      if( decorators.length > 0 ){
+        this.hasDependencies = true;
+      }
+    } );
+  } );
+
+  // FormElement
+  var formElements = _.filter( Mapper.$scope, function( item ){
+    return ( item.getAttribute( 'data-lu' ).indexOf( 'FormElement' ) > -1 );
+  } );
+
+  Mapper.register( function(){
+    Lu.map( _.filter( formElements, function( item ){
+      return ( item.getAttribute( 'data-lu' ).indexOf( 'FormElement' ) > -1 );
+    } ), 'FormElement', function( $element ){
+      var luAttribute = $element[0].getAttribute( 'data-lu' ),
+        validators = luAttribute.split(':').slice(1);
+
+      this.key = 'FormElement';
+      this.settings.validators = validators;
+      if( validators.length > 0 ){
+        this.hasDependencies = true;
+      }
+    } );
   } );
 
   //Execute Default Mappers
