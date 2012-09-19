@@ -127,6 +127,11 @@ Button = Switch.extend( function( base ){
       //binds the space-bar to the on event
       bindSpaceBar( this, settings.on );
 
+      // Prevent default on Button clicks to avoid jumping around a web page...
+      this.$element.on('click', function (evt) {
+        evt.preventDefault();
+      });
+
       /**
        * Gets the url for the button -- either from the config setting or from the HREF
        * @method getUrl

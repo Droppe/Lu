@@ -1,5 +1,8 @@
 ( function(){
 
+  var Mapper,
+    tips;
+
   /**
    * Mappers are used to store a scope of a DOM tree
    * to map and a registry of mappers to execute
@@ -16,10 +19,10 @@
   /**
    * Sets the scope to use when mapping components to nodes
    * @public
-   * @method setScoped
+   * @method setScope
    * @param {*} scope This can be an HTML Element,
    * an array of elements, a selector string or a jquery object
-   * @return this
+   * @return Mapper instance
    */
   Lu.Mapper.prototype.setScope = function( scope ){
     var $scope;
@@ -45,7 +48,7 @@
   /**
    * Gets a jquery object containing all Lu decorated nodes
    * @public
-   * @method setScoped
+   * @method getScope
    * @return a jquery object
    */
   Lu.Mapper.prototype.getScope = function(){
@@ -57,10 +60,12 @@
    * @public
    * @method register
    * @param {Function} map A function mapper to be called
-   * @return this
+   * @return Mapper instance
    */
   Lu.Mapper.prototype.register = function( map ){
-    this.maps.unshift( map );
+    //this.maps.unshift( map );
+    this.maps.push( map );
+
     return this;
   };
 
@@ -68,16 +73,17 @@
    * Executes all registered maps
    * @public
    * @method execute
-   * @return this
+   * @return Mapper instance
    */
   Lu.Mapper.prototype.execute = function(){
     _.each( this.maps, function( item, index ){
       item.call();
     } );
+    return this;
   };
 
   //Create a new Mapper to contain default mappings for Lu.
-  var Mapper = new Lu.Mapper();
+  Mapper = new Lu.Mapper();
 
   //Generic Mappers
   _.each( ['Switch', 'List', 'Carousel', 'Container', 'Tip', 'Button'], function( id, index ){
@@ -110,7 +116,7 @@
   } );
 
   // Tip (tooltip)
-  var tips = _.filter( Mapper.$scope, function( item ){
+  tips = _.filter( Mapper.$scope, function( item ){
     return ( item.getAttribute( 'data-lu' ).indexOf( 'Tip' ) > -1 );
   } );
 

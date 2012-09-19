@@ -148,10 +148,14 @@ Container = Switch.extend( function ( base ) {
           if (typeof source === "object" && source.getUrl) {
             url = source.getUrl();
           }
+          else if (typeof source === "string") {
+            url = source;
+          }
           else if ( $target.is( 'a' ) ){
             url = $target.attr( 'href' );
           }
 
+          // DO WE NEED THIS???
           if( !url && arguments.length > 1 ){
             method = url;
           }
@@ -202,7 +206,7 @@ Container = Switch.extend( function ( base ) {
        * Updates content on an update event
        * @method update
        * @private
-       * @param {Object} $target Jquery object for the target node       * 
+       * @param {Object} $target Jquery object for the target node
        * @param {String} updateContent The content to set
        * @param {String} method The method to use for setting the content.
        * This can specified as 'prepend' or 'append'. If theese are not
