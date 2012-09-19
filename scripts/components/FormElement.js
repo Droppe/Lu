@@ -65,7 +65,7 @@ FormElement = Abstract.extend( function (Abstract){
       }
 
       this.validate = function( event ){
-        var success = true;
+        var isValid = true;
 
         _.each( validators, function( validatorFunction, validatorName, validators ){
           var result = validatorFunction();
@@ -73,17 +73,19 @@ FormElement = Abstract.extend( function (Abstract){
           // perform internal validation tasks
           handleValidationResult( result, validatorName );
           // determine if field has any failed validators
-          if(success) {
-            success = result.success
+          if(isValid) {
+            isValid = result.success
           }
         } );
 
-        return success;
+        // return validity of field (used by Form)
+        return isValid;
       }
 
       // === LU EVENT LISTENERS ===
       this.on( constants.events.VALIDATION_SUCCESS, function( event, component, validatorName ){
         if( errorMessageEls[ validatorName ] ) {
+          // remove error message from DOM
           errorMessageEls[ validatorName ].remove();
           delete errorMessageEls[ validatorName ];
         }
@@ -94,8 +96,10 @@ FormElement = Abstract.extend( function (Abstract){
 
       this.on( constants.events.VALIDATION_FAILURE, function( event, component, validatorName, errorMessage ){
         if( errorMessageEls[ validatorName ] ) {
+          // if error message already exists update it
           errorMessageEls[ validatorName ].html( errorMessage );
         } else {
+          // if no error message for this validator yet create one
           insertErrorMessage( validatorName, $( settings.errorMessageTemplate( { className: settings.errorMessageClassName, message: errorMessage } ) ) );
         }
         $element.addClass( settings.errorClassName );
@@ -135,6 +139,6 @@ if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
     module.setExports( FormElement );
   } else if( module.exports ){
-   module.exports = FormElement; 
+   module.exports = FormElement;
   }
 }

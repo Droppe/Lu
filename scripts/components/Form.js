@@ -56,6 +56,7 @@ Form = Abstract.extend( function (Abstract){
         // remove any errors for the now successful validation
         if( errors[ fieldName ] && errors[ fieldName ][ validatorName ] ){
           delete errors[ fieldName ][ validatorName ];
+          // if a field has no validators in error state remove it
           if( _.size( errors[ fieldName ] ) === 0 ){
             delete errors[ fieldName ];
           }
