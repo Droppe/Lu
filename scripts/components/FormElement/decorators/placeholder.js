@@ -10,14 +10,14 @@ function placeholderDecorator(settings) {
         PLACEHOLDER_STATE = constants.states.PLACEHOLDER;
 
     function clear( event ){
-      if ( self.hasState( PLACEHOLDER_STATE ) ) {
+      if( self.hasState( PLACEHOLDER_STATE ) ){
         $element.val('');
         self.removeState( PLACEHOLDER_STATE );
       }
     }
 
     function show( event ){
-      if ( $element.val() === '' ) {
+      if( $element.val() === '' ){
         $element.val( placeholderText );
         self.addState( PLACEHOLDER_STATE );
       }

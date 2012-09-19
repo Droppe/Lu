@@ -1,10 +1,12 @@
+var constants = require( 'lu/constants' );
+
 function requiredDecorator( settings ) {
 
   return function( base ){
     var self = this;
 
     this.addValidator('required', function() {
-      if( self.$element.val().length === 0 ){
+      if( self.$element.val().length === 0 || self.hasState( constants.states.PLACEHOLDER ) ){
         return { success: false, message: i18n.FormElement.decorators.required.error };
       } else {
         return { success: true };
