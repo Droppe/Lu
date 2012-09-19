@@ -83,7 +83,6 @@
   _.each( ['Switch', 'List', 'Carousel', 'Container'], function( id, index ){
     Mapper.register( function(){
       Lu.map( _.filter( Mapper.$scope, function( item, index ){
-        // hack to prevent Form and FormElement from both being initialized as forms
         return ( item.getAttribute( 'data-lu' ).indexOf( id ) > -1 );
       } ), id );
     } );
@@ -127,6 +126,7 @@
   } );
 
   _.each( ['Above', 'Below', 'Left', 'Right'], function( placement ) {
+
     Mapper.register( function(){
       var key = 'Tip:' + placement;
       Lu.map( _.filter( tips, function( item ){
