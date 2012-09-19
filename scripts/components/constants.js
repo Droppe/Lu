@@ -21,7 +21,8 @@ var constants = {
     HIDE: 'hide',
     SHOW: 'show',
     VALIDATION_SUCCESS: 'validation_success',
-    VALIDATION_FAILURE: 'validation_failure'
+    VALIDATION_FAILURE: 'validation_failure',
+    FORM_SUBMIT: 'form_submit'
   },
   statePrefix: 'lu-state-',
   states: {

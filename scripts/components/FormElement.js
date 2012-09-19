@@ -1,10 +1,10 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
-  Abstract = require( 'lu/Abstract' ),
+  Switch = require( 'lu/Switch' ),
   Fiber = require( 'Fiber' ),
   FormElement;
 
-FormElement = Abstract.extend( function (Abstract){
+FormElement = Switch.extend( function (Switch){
 
   // === STATIC VARIABLES ===
   var root = 'lu/FormElement/decorators/',
@@ -12,11 +12,11 @@ FormElement = Abstract.extend( function (Abstract){
         required: root + 'required',
         length: root + 'length',
         ajax: root + 'ajax',
-        number: root + 'number'
+        number: root + 'number',
+        placeholder: root + 'placeholder'
       },
       defaults = {
         validationFrequency: [ 'blur' ],
-        errorClassName: 'error',
         errorMessageTemplate: _.template('<div class="<%= className %>"><%= message %></div>'),
         errorMessageClassName: 'errorMessage',
         errorMessagePosition: 'firstChildOfParent'
@@ -24,7 +24,7 @@ FormElement = Abstract.extend( function (Abstract){
 
   return {
 
-    init: function ( $element, settings ){
+    init: function( $element, settings ){
 
       // === INSTANCE VARIABLES ===
       var self = this,
@@ -35,7 +35,7 @@ FormElement = Abstract.extend( function (Abstract){
 
       // === INITIALIZE ===
       _.defaults( settings, defaults );
-      Abstract.init.call( this, $element, settings );
+      Switch.init.call( this, $element, settings );
 
       // === PRIVATE ===
       function handleValidationResult( result, validatorName ){
@@ -90,7 +90,7 @@ FormElement = Abstract.extend( function (Abstract){
           delete errorMessageEls[ validatorName ];
         }
         if( _.size( errorMessageEls ) === 0 ){
-          $element.removeClass( settings.errorClassName );
+          self.removeState( constants.states.ERRED );
         }
       } );
 
@@ -102,7 +102,7 @@ FormElement = Abstract.extend( function (Abstract){
           // if no error message for this validator yet create one
           insertErrorMessage( validatorName, $( settings.errorMessageTemplate( { className: settings.errorMessageClassName, message: errorMessage } ) ) );
         }
-        $element.addClass( settings.errorClassName );
+        self.addState( constants.states.ERRED );
       } );
 
       // === DOM EVENT LISTENERS ===

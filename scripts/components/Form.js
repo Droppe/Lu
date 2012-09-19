@@ -34,7 +34,8 @@ Form = Abstract.extend( function (Abstract){
 
         // force all children fields to validate
         _.each( formElements, function( formElement, index ){
-          var result = $( formElement ).lu( 'getComponents' ).FormElement.instance.validate();
+          var component = $( formElement ).lu( 'getComponents' ),
+              result = component.FormElement ? component.FormElement.instance.validate() : true;
 
           if( isValid ){
             isValid = result;
@@ -42,6 +43,7 @@ Form = Abstract.extend( function (Abstract){
         } );
 
         if( isValid ){
+          self.trigger( constants.events.FORM_SUBMIT, [ self ] );
           self.submitForm( event );
         }else{
           return false;

@@ -140,13 +140,13 @@
   } );
 
   //Placeholder
-  Mapper.register( function(){
-    Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Placeholder' ) > -1 &&
-             ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
-             item.getAttribute( 'placeholder' ) );
-    } ), 'Placeholder' );
-  } );
+  // Mapper.register( function(){
+  //   Lu.map( _.filter( Mapper.$scope, function( item, index ){
+  //     return ( item.getAttribute( 'data-lu' ).indexOf( 'Placeholder' ) > -1 &&
+  //            ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
+  //            item.getAttribute( 'placeholder' ) );
+  //   } ), 'Placeholder' );
+  // } );
 
   // Form
   Mapper.register( function(){
