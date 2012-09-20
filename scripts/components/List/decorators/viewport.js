@@ -87,11 +87,11 @@ function windowDecorator( settings ) {
     }
     
     function getItemWidth() {
-      return $('#list li').outerWidth(true);
+      return slidingWindow.find('li').outerWidth(true);
     }
     
     function slideToIndex(index) {
-      $('#list:not(:animated)').animate({right: index*getItemWidth()}, 500);
+      slidingWindow.find('ul').animate({right: index*getItemWidth()}, 500);
     }
 
     $(slidingWindow).width(getPageWidth());
