@@ -1,4 +1,5 @@
-var constants = require( 'lu/constants' );
+var constants = require( 'lu/constants' ),
+  Carousel = require( 'lu/Carousel' );
 
 /**
  * @method first
@@ -120,9 +121,11 @@ function windowDecorator( settings ) {
     if(mode !== "sliding") {
       self.next = function() {};
       self.previous = function() {};
-      self.hasNext = function() {
-        return ( this.index() + pageSize < this.size() ); 
-      };
+      if (!(self instanceof Carousel)) {
+        self.hasNext = function() {
+          return ( this.index() + pageSize < this.size() ); 
+        };
+      }
     }
   };
 
