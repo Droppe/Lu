@@ -18,7 +18,6 @@ function windowDecorator( settings ) {
     var previewSize = settings.viewport.previewSize || '0';
     
     $(slidingWindow).width(getPageWidth() + 2*previewSize*getItemWidth());
-    slideToIndex(self.index() - previewSize);
 
     function pageRight() {
       var currentIndex = self.index();
@@ -31,25 +30,26 @@ function windowDecorator( settings ) {
       else if(size - nextPageIndex < pageSize) {
           nextPageIndex -= pageSize - (size - nextPageIndex);
       }
-
+ 
       self.select(nextPageIndex);
-      slideToIndex(nextPageIndex - previewSize);
+      slideToIndex(nextPageIndex);
     }
 
     function pageLeft() {
       var currentIndex = self.index();
       var size = self.size();
-      var prevPageIndex = currentIndex - pageSize; 
+      var prevPageIndex = currentIndex - pageSize;
       
       if(prevPageIndex + pageSize === 0) {
           prevPageIndex = size - pageSize;
       }      
       else if(prevPageIndex < 0) {
           prevPageIndex = 0;
+
       }
 
       self.select(prevPageIndex);
-      slideToIndex(prevPageIndex - previewSize);
+      slideToIndex(prevPageIndex);
     }
 
     function slideToSelected() {
@@ -66,20 +66,22 @@ function windowDecorator( settings ) {
           if(currentIndex >= windowStartIndex + threshold) {
             windowStartIndex += Math.abs(currentIndex - midpoint);
 
-            if(windowStartIndex > self.size() - pageSize)
+            if(windowStartIndex > self.size() - pageSize) {
               windowStartIndex = self.size() - pageSize;
+            }
           }
           else if(currentIndex < windowStartIndex + pageSize - threshold) {
             windowStartIndex -= Math.abs(currentIndex - midpoint)
 
-            if(windowStartIndex < 0)
+            if(windowStartIndex < 0) {
               windowStartIndex = 0;
+            }
           }
           else
             return;
         }
 
-        slideToIndex(windowStartIndex - previewSize);
+        slideToIndex(windowStartIndex);
     }
     
     function getPageWidth() {
@@ -92,7 +94,14 @@ function windowDecorator( settings ) {
     }
     
     function slideToIndex(index) {
-      slidingWindow.find('ul').animate({right: index*getItemWidth()}, 500);
+      if (index === 0) {
+        slidingWindow.find('ul').animate({right: index*getItemWidth()}, 500);
+      } else if (index >= self.size() - pageSize) {
+        slidingWindow.find('ul').animate({right: index*getItemWidth() - 2*previewSize*getItemWidth()}, 500);
+      } else {
+        slidingWindow.find('ul').animate({right: index*getItemWidth() - previewSize*getItemWidth()}, 500);
+
+      }
     }
 
     self.on( constants.events.NEXT, function( event, Component ){
