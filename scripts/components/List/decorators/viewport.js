@@ -14,10 +14,11 @@ function windowDecorator( settings ) {
     var pageSize = settings.viewport.pageSize || 1;
     var windowStartIndex = 0;
     var threshold = Math.floor(pageSize*(settings.viewport.threshold || 1));
-
-    // Two modes are currently supported:
-    // "paging" and "sliding"
     var mode = settings.viewport.mode || 'paging';
+    var previewSize = settings.viewport.previewSize || '0';
+    
+    $(slidingWindow).width(getPageWidth() + 2*previewSize*getItemWidth());
+    slideToIndex(self.index() - previewSize);
 
     function pageRight() {
       var currentIndex = self.index();
@@ -32,13 +33,13 @@ function windowDecorator( settings ) {
       }
 
       self.select(nextPageIndex);
-      slideToIndex(nextPageIndex);
+      slideToIndex(nextPageIndex - previewSize);
     }
 
     function pageLeft() {
       var currentIndex = self.index();
       var size = self.size();
-      var prevPageIndex = currentIndex - pageSize;  
+      var prevPageIndex = currentIndex - pageSize; 
       
       if(prevPageIndex + pageSize === 0) {
           prevPageIndex = size - pageSize;
@@ -48,7 +49,7 @@ function windowDecorator( settings ) {
       }
 
       self.select(prevPageIndex);
-      slideToIndex(prevPageIndex);
+      slideToIndex(prevPageIndex - previewSize);
     }
 
     function slideToSelected() {
@@ -78,7 +79,7 @@ function windowDecorator( settings ) {
             return;
         }
 
-        slideToIndex(windowStartIndex);
+        slideToIndex(windowStartIndex - previewSize);
     }
     
     function getPageWidth() {
@@ -93,8 +94,6 @@ function windowDecorator( settings ) {
     function slideToIndex(index) {
       slidingWindow.find('ul').animate({right: index*getItemWidth()}, 500);
     }
-
-    $(slidingWindow).width(getPageWidth());
 
     self.on( constants.events.NEXT, function( event, Component ){
       event.stopPropagation();
