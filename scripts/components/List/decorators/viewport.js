@@ -104,20 +104,6 @@ function viewportDecorator( settings ) {
       }
     }
 
-    self.on( constants.events.NEXT, function( event, Component ){
-      event.stopPropagation();
-      if(mode === "paging") {
-        pageRight();
-      }
-    } );
-
-    self.on( constants.events.PREVIOUS, function( event, Component ){
-      event.stopPropagation();
-      if(mode === "paging") {
-        pageLeft();
-      }
-    } );
-
     self.on( constants.events.SELECTED, function( event, Component ){
       event.stopPropagation();
       if(mode === "sliding") {
@@ -125,9 +111,13 @@ function viewportDecorator( settings ) {
       }
     } ); 
 
-    if(mode !== "sliding") {
-      self.next = function() {};
-      self.previous = function() {};
+    if(mode === "paging") {
+      self.next = function() {
+        pageRight();
+      };
+      self.previous = function() {
+        pageLeft();
+      };
       if (!(self instanceof Carousel)) {
         self.hasNext = function() {
           return ( this.index() + pageSize < this.size() ); 
