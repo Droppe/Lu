@@ -5,7 +5,7 @@ var constants = require( 'lu/constants' ),
  * @method first
  * @private
  */
-function windowDecorator( settings ) {
+function viewportDecorator( settings ) {
 
   return function( base ){
     var self = this;
@@ -106,22 +106,21 @@ function windowDecorator( settings ) {
 
     self.on( constants.events.NEXT, function( event, Component ){
       event.stopPropagation();
-
       if(mode === "paging") {
         pageRight();
       }
-      else if(mode === "sliding") {
-        slideToSelected();
-      } 
     } );
 
     self.on( constants.events.PREVIOUS, function( event, Component ){
       event.stopPropagation();
-
       if(mode === "paging") {
         pageLeft();
       }
-      else if(mode === "sliding") {
+    } );
+
+    self.on( constants.events.SELECTED, function( event, Component ){
+      event.stopPropagation();
+      if(mode === "sliding") {
         slideToSelected();
       }
     } ); 
@@ -142,8 +141,8 @@ function windowDecorator( settings ) {
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( windowDecorator );
+    module.setExports( viewportDecorator );
   } else if( module.exports ){
-    module.exports = windowDecorator;
+    module.exports = viewportDecorator;
   }
 }

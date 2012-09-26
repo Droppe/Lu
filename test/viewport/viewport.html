@@ -1,0 +1,240 @@
+<!doctype html>
+
+<!--[if lt IE 7]><html class="no-js ie6" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Carousel</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="../qunit.css">
+  <style type="text/css">
+    #test-container {
+      width: 800px;
+      margin: 10px auto;
+    }
+    #test-container .lu-state-selected {
+      background: red;
+    }
+    #test-container img {
+      padding: 0;
+      margin: 0;
+    }
+    #test-container div {
+      overflow: hidden;  /* important (hide the items outside the div) */
+      /* non-important styling bellow */
+      background: blue;
+    }
+
+    #test-container .list {
+      position:relative;
+      list-style-type: none; /* removing the default styling for unordered list items */
+      margin: 0;
+      padding: 0;
+      width:9999px; /* important */
+    }
+
+    #test-container li{
+      height: 105px;
+      width: 100px;
+      float: left; /* important for inline positioning of the list items */
+      /* just styling bellow*/
+      padding: 0;
+      background: grey;
+      margin: 10px 5px;
+    }
+
+    #test-container .controls {
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="qunit"></div>
+
+<div id="test-container">
+  List w/ Viewport Decorator in Paging mode
+  <div id="list-paging" data-lu="List" data-lu-config="{
+    'List': {
+      viewport: {
+        mode: 'paging',
+        pageSize: 5,
+        threshold: 0.8,
+        previewSize: 0.25
+      }
+    }
+  }">    
+    <ul class="list">
+      <li class="lu-state-selected">0</li>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>10</li>
+      <li>11</li>
+      <li>12</li>
+      <li>13</li>
+    </ul>
+    <div class="controls">
+      <button data-lu="Button:Previous">Previous</button>
+      <button data-lu="Button:Next">Next</button>
+    </div>
+  </div>
+
+  List w/ Viewport Decorator in Sliding mode
+  <div id="list-sliding" data-lu="List" data-lu-config="{
+    'List': {
+      viewport: {
+        mode: 'sliding',
+        pageSize: 5,
+        threshold: 0.8
+      }
+    }
+  }">    
+    <ul class="list">
+      <li class="lu-state-selected">0</li>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>10</li>
+      <li>11</li>
+      <li>12</li>
+      <li>13</li>
+    </ul>
+    <div class="controls">
+      <button class="button-previous" data-lu="Button:Previous">Previous</button>
+      <button class="button-next" data-lu="Button:Next">Next</button>
+    </div>
+  </div>
+
+  Carousel w/ Viewport Decorator in Paging mode
+  <div id="carousel-paging" data-lu="Carousel" data-lu-config="{
+    'Carousel': {
+      autoplay: false,
+      viewport: {
+        mode: 'paging',
+        pageSize: 5,
+        threshold: 0.8,
+        previewSize: 0.25
+      }
+    }
+  }">    
+    <ul class="list">
+      <li class="lu-state-selected">0</li>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>10</li>
+      <li>11</li>
+      <li>12</li>
+      <li>13</li>
+    </ul>
+    <div class="controls">
+      <button data-lu="Button:Previous">Previous</button>
+      <button data-lu="Button:Next">Next</button>
+    </div>
+  </div>
+
+  Carousel w/ Viewport Decorator in Sliding mode
+  <div id="carousel-sliding" data-lu="Carousel" data-lu-config="{
+    'Carousel': {
+      autoplay: false,
+      viewport: {
+        mode: 'sliding',
+        pageSize: 5,
+        threshold: 0.8,
+        previewSize: 0.25
+      }
+    }
+  }">    
+    <ul class="list">
+      <li class="lu-state-selected">0</li>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>10</li>
+      <li>11</li>
+      <li>12</li>
+      <li>13</li>
+    </ul>
+    <div class="controls">
+      <button data-lu="Button:Previous">Previous</button>
+      <button data-lu="Button:Next">Next</button>
+    </div>
+  </div>
+
+</div>
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="/scripts/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
+
+  <script src="../qunit.js"></script>
+  <script src="test.js"></script>
+
+  <script type="text/javascript" charset="utf-8">
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    Lu.map( $( '[data-lu~=Abstract]' ), 'Abstract', function(){} );
+
+
+    Lu.execute( $( 'body' ) ).done( function(){
+      $( '#list-paging' ).lu( 'getComponent', 'List' ).instance.on('dependencies-resolved', function(){
+        execute();  
+      });
+    } );
+
+  </script>
+
+</body>
+
+</html>
