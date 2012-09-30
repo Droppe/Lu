@@ -130,12 +130,49 @@
   } );
 
   //Placeholder
+  // Mapper.register( function(){
+  //   Lu.map( _.filter( Mapper.$scope, function( item, index ){
+  //     return ( item.getAttribute( 'data-lu' ).indexOf( 'Placeholder' ) > -1 &&
+  //            ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
+  //            item.getAttribute( 'placeholder' ) );
+  //   } ), 'Placeholder' );
+  // } );
+
+  // Form
   Mapper.register( function(){
     Lu.map( _.filter( Mapper.$scope, function( item, index ){
-      return ( item.getAttribute( 'data-lu' ).indexOf( 'Placeholder' ) > -1 &&
-             ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
-             item.getAttribute( 'placeholder' ) );
-    } ), 'Placeholder' );
+      var luAttribute = item.getAttribute( 'data-lu' );
+
+      return ( luAttribute.indexOf( 'Form' ) > -1 && luAttribute.indexOf( 'FormElement' ) === -1 );
+    } ), 'Form', function( $element ){
+      var luAttribute = $element[0].getAttribute( 'data-lu' ),
+        decorators = luAttribute.split(':').slice(1);
+
+      this.settings.decorators = decorators;
+      if( decorators.length > 0 ){
+        this.hasDependencies = true;
+      }
+    } );
+  } );
+
+  // FormElement
+  var formElements = _.filter( Mapper.$scope, function( item ){
+    return ( item.getAttribute( 'data-lu' ).indexOf( 'FormElement' ) > -1 );
+  } );
+
+  Mapper.register( function(){
+    Lu.map( _.filter( formElements, function( item ){
+      return ( item.getAttribute( 'data-lu' ).indexOf( 'FormElement' ) > -1 );
+    } ), 'FormElement', function( $element ){
+      var luAttribute = $element[0].getAttribute( 'data-lu' ),
+        validators = luAttribute.split(':').slice(1);
+
+      this.key = 'FormElement';
+      this.settings.validators = validators;
+      if( validators.length > 0 ){
+        this.hasDependencies = true;
+      }
+    } );
   } );
 
   //Execute Default Mappers
