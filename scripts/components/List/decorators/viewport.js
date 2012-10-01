@@ -1,21 +1,17 @@
 var constants = require('lu/constants'),
   Carousel = require('lu/Carousel');
 
-/**
- * @method first
- * @private
- */
 function viewportDecorator(settings) {
 
   return function (base) {
     var self = this,
       slidingWindow = this.$element,
-      windowStart = 0,
       pageSize = settings.viewport.pageSize || 1,
       windowStartIndex = 0,
       threshold = Math.floor(pageSize * (settings.viewport.threshold || 1)),
       mode = settings.viewport.mode || 'paging',
-      previewSize = settings.viewport.previewSize || '0';
+      previewSize = settings.viewport.previewSize || 0,
+      animationSpeed = settings.viewport.animationSpeed || 500;
 
     $(slidingWindow).width(getPageWidth() + 2 * previewSize * getItemWidth());
 
@@ -89,17 +85,15 @@ function viewportDecorator(settings) {
 
     function slideToIndex(index) {
       if (index === 0) {
-        slidingWindow.find('ul').animate({right: index * getItemWidth()}, 500);
+        slidingWindow.find('ul').animate({right: index * getItemWidth()}, animationSpeed);
       } else if (index >= self.size() - pageSize) {
-        slidingWindow.find('ul').animate({right: index * getItemWidth() - 2 * previewSize * getItemWidth()}, 500);
+        slidingWindow.find('ul').animate({right: index * getItemWidth() - 2 * previewSize * getItemWidth()}, animationSpeed);
       } else {
-        slidingWindow.find('ul').animate({right: index * getItemWidth() - previewSize * getItemWidth()}, 500);
-
+        slidingWindow.find('ul').animate({right: index * getItemWidth() - previewSize * getItemWidth()}, animationSpeed);
       }
     }
 
     self.on(constants.events.SELECTED, function (event, Component) {
-      event.stopPropagation();
       if (mode === "sliding") {
         slideToSelected();
       }
