@@ -1,18 +1,41 @@
 var constants = require('lu/constants'),
   Carousel = require('lu/Carousel');
 
+/**
+ * Applies a viewport to a List or Carousel.
+ * @private
+ */
 function viewportDecorator(settings) {
 
   return function (base) {
     var self = this,
       slidingWindow = this.$element,
-      pageSize = settings.viewport.pageSize || 1,
-      windowStartIndex = 0,
-      threshold = Math.floor(pageSize * (settings.viewport.threshold || 1)),
-      mode = settings.viewport.mode || 'paging',
-      previewSize = settings.viewport.previewSize || 0,
+      viewportStartIndex = 0,
+      // Settings
+      pageSize = settings.viewport.pageSize || 1, // number of elements to show in the viewport
+      slidingThreshold = settings.viewport.slidingThreshold || pageSize, // how far from the edge to trigger scrolling
+      mode = settings.viewport.mode || 'paging', // or sliding
+      previewSize = settings.viewport.previewSize || 0, // how much of the next element to reveal
       animationSpeed = settings.viewport.animationSpeed || 500;
 
+    // Check if settings are reasonable
+    if (pageSize <= 0) {
+      pageSize = 1;
+    }
+
+    if (slidingThreshold > pageSize) {
+      slidingThreshold = pageSize;
+    } else if (slidingThreshold < 0) {
+      slidingThreshold = 0;
+    }
+
+    if (previewSize > 0.5) {
+      previewSize = 0.5;
+    } else if (previewSize < 0) {
+      previewSize = 0;
+    }
+
+    // Ensures the proper width of the viewport.
     $(slidingWindow).width(getPageWidth() + 2 * previewSize * getItemWidth());
 
     function pageRight() {
@@ -20,9 +43,11 @@ function viewportDecorator(settings) {
         size = self.size(),
         nextPageIndex = currentIndex + pageSize;
 
-      if (nextPageIndex === size) {
+      if (nextPageIndex >= size) {
         nextPageIndex = 0;
       } else if (size - nextPageIndex < pageSize) {
+        // Compensate for when the last page does not contain a full page of elements.
+        // Only scroll over the remaining elements.
         nextPageIndex -= pageSize - (size - nextPageIndex);
       }
 
@@ -39,7 +64,6 @@ function viewportDecorator(settings) {
         prevPageIndex = size - pageSize;
       } else if (prevPageIndex < 0) {
         prevPageIndex = 0;
-
       }
 
       self.select(prevPageIndex);
@@ -48,31 +72,33 @@ function viewportDecorator(settings) {
 
     function slideToSelected() {
       var currentIndex = self.index(),
-        midpoint = Math.floor(windowStartIndex + pageSize / 2);
+        midpoint = Math.floor(viewportStartIndex + pageSize / 2);
 
       if (currentIndex === 0) {
-        windowStartIndex = 0;
+        viewportStartIndex = 0;
       } else if (currentIndex === self.size() - 1) {
-        windowStartIndex = self.size() - pageSize;
+        // On last page, slide the viewport to the beginning of the last page
+        viewportStartIndex = self.size() - pageSize;
       } else {
-        if (currentIndex >= windowStartIndex + threshold) {
-          windowStartIndex += Math.abs(currentIndex - midpoint);
+        // Slide back/forth and place the currently selected element in the middle of the viewport
+        if (currentIndex >= viewportStartIndex + slidingThreshold) {
+          viewportStartIndex += Math.abs(currentIndex - midpoint);
 
-          if (windowStartIndex > self.size() - pageSize) {
-            windowStartIndex = self.size() - pageSize;
+          if (viewportStartIndex > self.size() - pageSize) {
+            viewportStartIndex = self.size() - pageSize;
           }
-        } else if (currentIndex < windowStartIndex + pageSize - threshold) {
-          windowStartIndex -= Math.abs(currentIndex - midpoint);
+        } else if (currentIndex < viewportStartIndex + pageSize - slidingThreshold) {
+          viewportStartIndex -= Math.abs(currentIndex - midpoint);
 
-          if (windowStartIndex < 0) {
-            windowStartIndex = 0;
+          if (viewportStartIndex < 0) {
+            viewportStartIndex = 0;
           }
         } else {
           return;
         }
       }
 
-      slideToIndex(windowStartIndex);
+      slideToIndex(viewportStartIndex);
     }
 
     function getPageWidth() {
@@ -84,13 +110,20 @@ function viewportDecorator(settings) {
     }
 
     function slideToIndex(index) {
+      var position;
+
       if (index === 0) {
-        slidingWindow.find('ul').animate({right: index * getItemWidth()}, animationSpeed);
+        // at the beginning
+        position = 0;
       } else if (index >= self.size() - pageSize) {
-        slidingWindow.find('ul').animate({right: index * getItemWidth() - 2 * previewSize * getItemWidth()}, animationSpeed);
+        // on last page
+        position = index * getItemWidth() - 2 * previewSize * getItemWidth();
       } else {
-        slidingWindow.find('ul').animate({right: index * getItemWidth() - previewSize * getItemWidth()}, animationSpeed);
+        // in the middle
+        position = index * getItemWidth() - previewSize * getItemWidth();
       }
+
+      slidingWindow.find('ul').animate({right: position}, animationSpeed);
     }
 
     self.on(constants.events.SELECTED, function (event, Component) {
@@ -100,6 +133,7 @@ function viewportDecorator(settings) {
     });
 
     if (mode === "paging") {
+      // In paging mode, the next/previous events will cause scrolling one page at a time
       self.next = function () {
         pageRight();
       };
@@ -107,6 +141,7 @@ function viewportDecorator(settings) {
         pageLeft();
       };
       if (!(self instanceof Carousel)) {
+        // If this a List, then hasNext will return if it has a next page or not
         self.hasNext = function () {
           return (this.index() + pageSize < this.size());
         };

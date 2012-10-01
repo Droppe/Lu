@@ -21,36 +21,38 @@
       width: 800px;
       margin: 10px auto;
     }
-    .lu-state-selected {
-      color: white;
-      background: red;
-    }
+
     img {
       padding: 0;
       margin: 0;
     }
-    div {
-      overflow: hidden;  /* important (hide the items outside the div) */
-      /* non-important styling bellow */
+
+    .container {
+      overflow: hidden;
       background: blue;
+      width: 605px;
     }
 
     .list {
-      position:relative;
-      list-style-type: none; /* removing the default styling for unordered list items */
+      position: relative;
+      list-style-type: none;
       margin: 0;
       padding: 0;
-      width:9999px; /* important */
+      width: 9999px;
     }
 
-    li{
+    .list li {
       height: 105px;
       width: 100px;
-      float: left; /* important for inline positioning of the list items */
-      /* just styling bellow*/
+      float: left;
       padding: 0;
       background: grey;
       margin: 10px 5px;
+    }
+
+    .list li.lu-state-selected {
+      color: white;
+      background: red;
     }
 
     .controls {
@@ -63,16 +65,15 @@
 <body>
 
   List w/ Viewport Decorator in Paging mode
-  <div data-lu="List" data-lu-config="{
+  <div class="container" data-lu="List" data-lu-config="{
     'List': {
       viewport: {
         mode: 'paging',
         pageSize: 5,
-        threshold: 0.8,
         previewSize: 0.25
       }
     }
-  }">    
+  }">
     <ul class="list">
       <li class="lu-state-selected"><img src="http://placehold.it/100x100&text=1"/></li>
       <li><img src="http://placehold.it/100x100&text=2"/></li>
@@ -95,17 +96,17 @@
     </div>
   </div>
 
-    List w/ Viewport Decorator in Sliding mode
-    <div data-lu="List" data-lu-config="{
+  List w/ Viewport Decorator in Sliding mode
+  <div class="container" data-lu="List" data-lu-config="{
     'List': {
       viewport: {
         mode: 'sliding',
         pageSize: 5,
-        threshold: 0.8,
-        previewSize: 0.25        
+        slidingThreshold: 4,
+        previewSize: 0.25
       }
     }
-  }">    
+  }">
     <ul class="list">
       <li class="lu-state-selected"><img src="http://placehold.it/100x100&text=1"/></li>
       <li><img src="http://placehold.it/100x100&text=2"/></li>
@@ -128,17 +129,16 @@
     </div>
   </div>
 
-  Carousel w/ Viewport Decorator in Paging mode
-  <div data-lu="Carousel" data-lu-config="{
+  Carousel w/ Viewport Decorator in Paging mode with autoplay
+  <div class="container" data-lu="Carousel" data-lu-config="{
     'Carousel': {
       viewport: {
         mode: 'paging',
         pageSize: 5,
-        threshold: 0.8,   
-        previewSize: 0.25    
+        previewSize: 0.25
       }
     }
-  }">    
+  }">
     <ul class="list">
       <li class="lu-state-selected"><img src="http://placehold.it/100x100&text=1"/></li>
       <li><img src="http://placehold.it/100x100&text=2"/></li>
@@ -161,17 +161,17 @@
     </div>
   </div>
 
-  Carousel w/ Viewport Decorator in Sliding mode
-  <div data-lu="Carousel" data-lu-config="{
+  Carousel w/ Viewport Decorator in Sliding mode with autoplay
+  <div class="container" data-lu="Carousel" data-lu-config="{
     'Carousel': {
       viewport: {
         mode: 'sliding',
         pageSize: 5,
-        threshold: 0.8,
+        slidingThreshold: 4,
         previewSize: 0.25
       }
     }
-  }">    
+  }">
     <ul class="list">
       <li class="lu-state-selected"><img src="http://placehold.it/100x100&text=1"/></li>
       <li><img src="http://placehold.it/100x100&text=2"/></li>
