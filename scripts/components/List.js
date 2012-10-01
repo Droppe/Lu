@@ -22,7 +22,7 @@ List = Switch.extend( function( base ){
     root = 'lu/List/decorators/',
 
     decorators = {
-      viewport: root + 'viewport',
+      viewport: root + 'viewport'
     };
 
   return {

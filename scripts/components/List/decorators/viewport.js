@@ -35,6 +35,14 @@ function viewportDecorator(settings) {
       previewSize = 0;
     }
 
+    function getPageWidth() {
+      return getItemWidth() * pageSize;
+    }
+
+    function getItemWidth() {
+      return slidingWindow.find('li').outerWidth(true);
+    }
+
     // Ensures the proper width of the viewport.
     $(slidingWindow).width(getPageWidth() + 2 * previewSize * getItemWidth());
 
@@ -99,14 +107,6 @@ function viewportDecorator(settings) {
       }
 
       slideToIndex(viewportStartIndex);
-    }
-
-    function getPageWidth() {
-      return getItemWidth() * pageSize;
-    }
-
-    function getItemWidth() {
-      return slidingWindow.find('li').outerWidth(true);
     }
 
     function slideToIndex(index) {
