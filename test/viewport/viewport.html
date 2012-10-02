@@ -33,6 +33,7 @@
       overflow: hidden;  /* important (hide the items outside the div) */
       /* non-important styling bellow */
       background: blue;
+      position: relative;
     }
 
     #test-container .list {
@@ -75,7 +76,7 @@
         previewSize: 0.25
       }
     }
-  }">    
+  }">
     <ul class="list">
       <li class="lu-state-selected">0</li>
       <li>1</li>
@@ -107,7 +108,7 @@
         threshold: 0.8
       }
     }
-  }">    
+  }">
     <ul class="list">
       <li class="lu-state-selected">0</li>
       <li>1</li>
@@ -141,7 +142,7 @@
         previewSize: 0.25
       }
     }
-  }">    
+  }">
     <ul class="list">
       <li class="lu-state-selected">0</li>
       <li>1</li>
@@ -175,7 +176,7 @@
         previewSize: 0.25
       }
     }
-  }">    
+  }">
     <ul class="list">
       <li class="lu-state-selected">0</li>
       <li>1</li>
@@ -229,7 +230,7 @@
 
     Lu.execute( $( 'body' ) ).done( function(){
       $( '#list-paging' ).lu( 'getComponent', 'List' ).instance.on('dependencies-resolved', function(){
-        execute();  
+        execute();
       });
     } );
 
