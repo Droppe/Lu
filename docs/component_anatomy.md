@@ -139,9 +139,9 @@ this.on( constants.events.LOAD, function(event, [self]) {
 
  7. Decoration
 
-Decoration is used to add or modify a specific attribute or behavior of an object.  A _big_ dog, a _red_ car, or a _loud_ baby.  Instead of subclassing the Dog, Car, or Baby classes and incurring the cost of another object, we can simply add something extra to those existing objects.
+ Decoration is used to add or modify a specific attribute or behavior of an object.  A _big_ dog, a _red_ car, or a _loud_ baby.  Instead of subclassing the Dog, Car, or Baby classes and incurring the cost of another object, we can simply add something extra to those existing objects.
 ```js
-Fiber.decorate(this, {});
+Fiber.decorate(this, functionToMakeMineRed);
 ```
 
 ## Public Methods
