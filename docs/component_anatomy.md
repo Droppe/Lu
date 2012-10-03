@@ -137,9 +137,9 @@ this.on( constants.events.LOAD, function(event, [self]) {
 });
 ```
 
- 7. Decoration
+7. Decoration
 
- Decoration is used to add or modify a specific attribute or behavior of an object.  A _big_ dog, a _red_ car, or a _loud_ baby.  Instead of subclassing the Dog, Car, or Baby classes and incurring the cost of another object, we can simply add something extra to those existing objects.
+ Decoration is used to add or modify a specific attribute or behavior of an object.  A _big_ dog, a _red_ car, or a _loud_ baby.  Instead of subclassing the Dog, Car, or Baby classes and incurring the cost of another object, we can simply add something extra to those existing objects.  Fiber gives us an easy utility for this via its `decorate` method.
 ```js
 Fiber.decorate(this, functionToMakeMineRed);
 ```
@@ -148,7 +148,25 @@ Fiber.decorate(this, functionToMakeMineRed);
 
 Public methods are defined within the main returned object as siblings to our `init` method.
 
+```js
+/**
+ * This method is available on the prototype
+ * @method myPublicMethod
+ * @public
+ * @return {String} Computed height of the Container (result drops units)
+ */
+myPublicMethod: function(){
+  var something = 1;
+
+  // Do something useful here...
+
+  return something;
+}
+```
+
 ## Export to Common JS Loader
+
+This is boilerplate code that follows the [Common JS](http://wiki.commonjs.org/wiki/CommonJS) specification.  You can simply copy/paste/modify it to work with your particular component.
 
 ```js
 //Export to Common JS Loader
