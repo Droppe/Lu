@@ -1,6 +1,7 @@
 function execute(){
   var Switch = $( '#switch' ).lu( 'getComponents' ).Switch.instance,
     $setFunkyButton = $( '#set-funky-button' ),
+    $setColdButton = $( '#set-cold-button' ),
     $toggleFunkyColdButton = $( '#toggle-funky-cold-button' ),
     $addMedinaButton = $( '#add-medina-button' ),
     $removeFunkyButton = $( '#remove-funky-button' ),
@@ -135,7 +136,7 @@ function execute(){
 
   QUnit.asyncTest( 'reset state using button', function(){
     expect( 3 );
-    ok( Switch.setState( 'cold' ), 'Setting alternative state' );
+    ok( $setColdButton.click(), 'Setting alternative state with button' ); //Needs to be set with button to activate remove button in actual browsers
     ok( $resetButton.click(), 'Resetting initial state with button' );
     ok( Switch.hasState( 'funky' ), 'Confirming initial state restored' );
     start();
