@@ -75,6 +75,7 @@ function stateDecorator( settings ){
      * @return {Function} Container.setState
      */
     function state( event, states, method ){
+      console.log( 'hello', method );
       if( self.$element.is( event.target ) ){
         //return early to prevent recursion
         return self;
