@@ -123,18 +123,11 @@ function execute(){
   } );
 
   // QUnit.asyncTest( 'clear states using button', function(){
-  //   expect( 6 );
-  //   console.log( 'HRLLPO' );
+  //   expect( 7 );
   //   ok( Switch.setState( 'funky' ), 'Setting first state' );
   //   ok( Switch.addState( 'cold' ), 'Setting second state' );
   //   ok( Switch.addState( 'medina' ), 'Setting third state' );
-  //   console.log( 'HRLLPO' );
-  //   //ok( $clearButton.click(), 'Clearing states with button' );
-  //   console.log( Switch.hasState( 'funky' ) );
-  //   console.log( 'clear-button', $clearButton );
-  //   $clearButton.click();
-  //   $( '#clear-button' ).click();
-  //   console.log( Switch.hasState( 'funky' ) );
+  //   ok( $clearButton.click(), 'Clearing states with button' );
   //   ok( !Switch.hasState( 'funky' ), 'Confirming first state cleared' );
   //   ok( !Switch.hasState( 'cold' ), 'Confirming second state cleared' );
   //   ok( !Switch.hasState( 'medina' ), 'Confirming third state cleared' );
