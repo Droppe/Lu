@@ -195,8 +195,7 @@ module.exports = function(grunt) {
         module: true,
         require: true,
         Inject: true,
-        _: true,
-        console: true
+        _: true
       }
     }
   } );
