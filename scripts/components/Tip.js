@@ -73,7 +73,7 @@ Tip = Abstract.extend( function (Abstract){
          * @type String
          * @private
          */
-        template: _.template('<div class="<%= className %>" role="tooltip"><!-- CONTENT PLACEHOLDER --></div>'),
+        template: _.template('<div class="<%= className %>" role="tooltip" tabindex="-1"><!-- CONTENT PLACEHOLDER --></div>'),
 
         /**
          * Class name to be applied to tooltips outermost div
@@ -304,32 +304,6 @@ Tip = Abstract.extend( function (Abstract){
         self.show();
       }
 
-      // === LU EVENT LISTENERS ===
-      this.on( constants.events.SHOW, function( event ){
-        event.stopPropagation();
-        self.show();
-      } );
-
-      this.on( constants.events.HIDE, function( event ){
-        event.stopPropagation();
-        self.hide();
-      } );
-
-      // Append tip to DOM after container is updated (loaded)
-      TipContainer.on( constants.events.UPDATED, function(event) {
-        event.stopPropagation();
-        append();
-        rendered = TRUE;
-        self.trigger( constants.events.SHOW, [self] );
-      } );
-
-      // === DOM EVENT LISTENERS ===
-      if( !isInput ) {
-        $element.on( 'mouseenter', handleMouseEnter );
-      } else {
-        $element.on( 'focus', handleFocus );
-      }
-
       // === PUBLIC ===
       this.$tip = $tip;
 
@@ -344,6 +318,10 @@ Tip = Abstract.extend( function (Abstract){
         } else {
           $tip.css( self.getPosition() );
           $tip.show();
+          // use setting focus on active tip to enforce one tip at a time
+          if( !isInput ) {
+            $tip.focus();
+          }
         }
       };
 
@@ -377,6 +355,34 @@ Tip = Abstract.extend( function (Abstract){
 
         return self.calcPosition( elOffset, elHeight, elWidth, settings );
       };
+
+      // === LU EVENT LISTENERS ===
+      this.on( constants.events.SHOW, function( event ){
+        event.stopPropagation();
+        self.show();
+      } );
+
+      this.on( constants.events.HIDE, function( event ){
+        event.stopPropagation();
+        self.hide();
+      } );
+
+      // Append tip to DOM after container is updated (loaded)
+      TipContainer.on( constants.events.UPDATED, function(event) {
+        event.stopPropagation();
+        append();
+        rendered = TRUE;
+        self.trigger( constants.events.SHOW, [self] );
+      } );
+
+      // === DOM EVENT LISTENERS ===
+      if( !isInput ) {
+        $element.on( 'mouseenter', handleMouseEnter );
+      } else {
+        $element.on( 'focus', handleFocus );
+      }
+      // use losing focus on tip to enforce one tip at a time
+      $tip.on( 'blur', self.hide );
 
       // === DECORATION ===
       switch( settings.placement ){
