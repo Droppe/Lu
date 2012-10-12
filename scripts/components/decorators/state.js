@@ -188,7 +188,6 @@ function stateDecorator( settings ){
         states = _.without.apply( this, args );
         applyState( this.$element, states, constants.statePrefix );
         this.trigger( constants.events.STATED, [this] );
-
       }
       return this;
     };
@@ -227,7 +226,9 @@ function stateDecorator( settings ){
     };
 
     //Add the initial state
-    this.addState( cache[0] );
+    if( cache[0] ){
+      this.addState( cache[0] );
+    }
     //Bind to 'state' events
     this.on( constants.events.STATE, state );
 
