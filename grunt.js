@@ -41,8 +41,8 @@ module.exports = function(grunt) {
         'http://localhost:1337/test/$/$.html',
         'http://localhost:1337/test/list/list.html',
         'http://localhost:1337/test/tip/tip.html',
-        'http://localhost:1337/test/carousel/carousel.html'//,
-        //'http://localhost:1337/test/switch/switch.html'
+        'http://localhost:1337/test/carousel/carousel.html',
+        'http://localhost:1337/test/switch/switch.html'
       ]
     },
     concat: {
@@ -139,6 +139,30 @@ module.exports = function(grunt) {
       t: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Placeholder.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Placeholder.js'
+      },
+      u: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/FormElement.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/FormElement.js'
+      },
+      v: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/Tip.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip.js'
+      },
+      w: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/Tip/decorators/above.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip/decorators/above.js'
+      },
+      x: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/Tip/decorators/below.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip/decorators/below.js'
+      },
+      y: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/Tip/decorators/left.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip/decorators/left.js'
+      },
+      z: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/Tip/decorators/right.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip/decorators/right.js'
       }
     },
     jshint: {
