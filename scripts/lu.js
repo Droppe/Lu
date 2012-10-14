@@ -107,9 +107,21 @@ var Lu = function(){
         count -= 1;
 
         deferral.then( function( required, module, exports ){
-          var Component = require( requirement );
-          component.instance = new Component( $element, settings );
+          var Component = require( requirement ),
+            dependenciesResolved = false;
+
           if( component.hasDependencies ){
+            $element.one( 'lu:dependencies-resolved', function( event, instance ){
+              event.stopPropagation();
+              dependenciesResolved = true;
+            } );
+          }
+
+          component.instance = new Component( $element, settings );
+
+          if( dependenciesResolved ){
+            component.deferral.resolve( component.instance );
+          } else if( !dependenciesResolved && component.hasDependencies ){
             component.instance.one( 'dependencies-resolved', function( event, instance ){
               event.stopPropagation();
               component.deferral.resolve( component.instance );
@@ -117,6 +129,7 @@ var Lu = function(){
           } else {
             component.deferral.resolve( component.instance );
           }
+
         } );
 
         if( count === 0 ){
