@@ -60,16 +60,24 @@ Placeholder = FormElement.extend( function ( base ) {
       } );
 
       $element.on( 'focus click', function ( evt ) {
-        var range;
+        var range, element;
         if ( Placeholder.hasState( PLACEHOLDER_STATE ) ) {
           // Prevent default prevents the placeholder text from being highlighted on tab focus
           evt.preventDefault();
-          if ( $element[0].createTextRange ) {
-            range = $element[0].createTextRange();
-            range.moveat( 'character', 0 );
-            range.movend( 'character', 0 );
-          } else if ( $element[0].setSelectionRange ) {
-            $element[0].setSelectionRange( 0, 0 );
+          element = $element[0];
+
+          //setSelectionRange defined in IE9
+          if ( element.setSelectionRange ) {
+            element.setSelectionRange( 0, 0 );
+          //createTextRange defined in Firefox 3 and IE7 and 8
+          } else if ( element.createTextRange ) {
+            range = element.createTextRange();
+            //moveat and movend defined in Firefox 3
+            if ( range.moveat && range.movend) {
+              range.moveat( 'character', 0 );
+              range.movend( 'character', 0 );
+            }
+            //no acceptable solution for moving the cursor in IE7 and 8
           }
         }
       });
