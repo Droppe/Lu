@@ -138,6 +138,13 @@
     } ), 'Placeholder' );
   } );
 
+  //Dropdown
+  Mapper.register( function(){
+    Lu.map( _.filter( Mapper.$scope, function( item, index ){
+      return ( item.getAttribute( 'data-lu' ).indexOf( 'Dropdown' ) > -1 );
+    } ), 'Dropdown' );
+  } );
+
   //Execute Default Mappers
   Mapper.execute();
 
