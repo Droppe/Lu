@@ -1335,7 +1335,6 @@ var Executor;
    * @param {Object} options - a collection of options
    */
   function executeJavaScriptModule(code, options) {
-    var oldError = context.onerror;
     var errorObject = null;
     var sourceString = IS_IE ? "" : "//@ sourceURL=" + options.url;
     var result;
@@ -1385,8 +1384,6 @@ var Executor;
       errorObject = new Error(message);
       errorObject.line = actualErrorLine;
       errorObject.stack = null;
-
-      context.onerror = oldError;
 
       return true;
     };
@@ -1474,6 +1471,9 @@ var Executor;
       }
       result.error = errorObject;
     }
+
+    // clean up our error handler
+    context.onerror = initOldError;
 
     // clean up the function or object we globally created if it exists
     if(context.Inject.INTERNAL.execute[options.functionId]) {
@@ -2487,16 +2487,9 @@ var RulesEngine;
 
         // exit early on resolved http URL
         if (ABSOLUTE_PATH_REGEX.test(path)) {
+          // store pointcuts based on the resolved URL
+          this.pointcuts[resolvedUrl] = result.pointcuts;
           return path;
-        }
-
-        // shortcut. If it starts with /, affix to module root
-        if (path.indexOf("/") === 0) {
-          resolvedUrl = userConfig.moduleRoot + path.substr(1);
-          if (userConfig.useSuffix && !FILE_SUFFIX_REGEX.test(resolvedUrl)) {
-            resolvedUrl = resolvedUrl + BASIC_FILE_SUFFIX;
-          }
-          return resolvedUrl;
         }
 
         // take off the :// to replace later
@@ -3411,5 +3404,5 @@ context.require = context.Inject.INTERNAL.createRequire();
     @public
  */
 context.define = context.Inject.INTERNAL.createDefine();
-context.Inject.version = "0.4.0rc4";
+context.Inject.version = "0.4.0rc4-4-gb67abc7";
 })(this);
