@@ -1,3 +1,18 @@
+/**
+ * @TODO:
+ *  - is it possible to work with custom states?
+ *  - cross browser test
+ *  - unit tests
+ *  - hash as preventDefault?
+ */
+
+/*
+focus
+blur
+fromElement
+toElement
+how to tell if I really blurred away from dropdown?
+*/
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch  = require( 'lu/Switch' ),
@@ -28,7 +43,17 @@ Dropdown = Switch.extend( function ( base ) {
      * @final
      */
     defaults = {
+      /**
+       * A selector that matches button element to display selected element text
+       * @property label
+       * @type {String}
+       */
       label: BUTTON_STATE + ':first-child',
+      /**
+       * The attribute that contains selected element's value
+       * @property valueAttr
+       * @type {String}
+       */
       valueAttr: 'data-lu-value'
     };
 
@@ -126,8 +151,9 @@ Dropdown = Switch.extend( function ( base ) {
      * @param {Object} settings Configuration settings
      */
     init: function ( $element, settings ){
-      var $list = $element.find(LIST_ATTR),
+      var $list = $element.find( LIST_ATTR ),
           listComponent,
+          timer,
           self = this;
 
       _.defaults( settings, defaults );
@@ -150,9 +176,10 @@ Dropdown = Switch.extend( function ( base ) {
       listComponent.deferral.then( function(){
         self.listInstance = listComponent.instance;
 
-        self.listInstance.on( constants.events.SELECTED, function( event, component ){
+        self.listInstance.on( constants.events.SELECTED, function( evt, component ){
           // prevent label update on arrow key events
           if( !isIgnoredTrigger ){
+            clearTimeout( timer );
             self.update();
           }
           
@@ -161,7 +188,9 @@ Dropdown = Switch.extend( function ( base ) {
       } );
 
       // stated event handler
-      self.on( constants.events.STATE, function( event, state ){
+      self.on( constants.events.STATED, function( evt, obj ){
+        var state = self.getState()[0];
+
         if( state === constants.states.ACTIVE ){
           self.listInitialIndex = self.listInstance.index();
         }
@@ -172,13 +201,19 @@ Dropdown = Switch.extend( function ( base ) {
         handleKeyEvents.apply( self, arguments );
       } );
 
-      // collapse dropdown on outside click
-      $(document).on( 'click', function( event ){
-        var $target = $(event.target);
+      // force collapse when dropdown loses focus
+      self.$element.on( 'focusin', function( evt ){
+        var $tget = $(evt.target);
 
-        if( !$target.closest($element).length ){
-          self.resetList();
+        if( $tget.is( self.$element ) || $tget.is( BUTTON_STATE ) ){
+          clearTimeout( timer );
         }
+      } );
+
+      self.$element.on( 'focusout', function( evt ){
+        timer = setTimeout( function(){
+          self.resetList();
+        }, 300 );
       } );
     },
 

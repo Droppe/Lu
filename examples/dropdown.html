@@ -125,19 +125,11 @@
       notify: '#the_input'
     }
   }" class="dropdown lu-state-inactive" tabindex="1">
-    <!-- update label -->
-    <button data-lu="Button:State" class="dropdown-button left">Choose...</button>
-    <button data-lu="Button:State" class="dropdown-button right">&#9660;</button>
+    <button data-lu="Button:State" class="dropdown-button left" tabindex="2">Choose...</button>
+    <button data-lu="Button:State" class="dropdown-button right" tabindex="3">&#9660;</button>
    
     <div class="dropdown-menu">
       <ul class="dropdown-list" data-lu="List">
-        <!-- 
-        data-lu-value
-        element attributes for anchors and inputs
-        settings object
-
-        hash as preventDefault?
-         -->
         <li><a href="#a" data-lu="Button:Select" data-lu-value="A">Item 1</a></li>
         <li><a href="#b" data-lu="Button:Select" data-lu-value="B">Item 2</a></li>
         <li><a href="#c" data-lu="Button:Select" data-lu-value="C">Item 3</a></li>
@@ -154,9 +146,9 @@
     Dropdown: {
       label: false
     }
-  }" class="dropdown split lu-state-inactive">
-  <button data-lu="Button" class="dropdown-button left">Select</button>
-  <button data-lu="Button:State" class="dropdown-button right">&#9660;</button>
+  }" class="dropdown split lu-state-inactive" tabindex="4">
+  <button data-lu="Button" class="dropdown-button left" tabindex="5">Select</button>
+  <button data-lu="Button:State" class="dropdown-button right" tabindex="6">&#9660;</button>
  
   <div class="dropdown-menu">
     <ul class="dropdown-list" data-lu="List">
