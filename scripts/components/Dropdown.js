@@ -6,13 +6,6 @@
  *  - hash as preventDefault?
  */
 
-/*
-focus
-blur
-fromElement
-toElement
-how to tell if I really blurred away from dropdown?
-*/
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch  = require( 'lu/Switch' ),
@@ -151,7 +144,8 @@ Dropdown = Switch.extend( function ( base ) {
      * @param {Object} settings Configuration settings
      */
     init: function ( $element, settings ){
-      var $list = $element.find( LIST_ATTR ),
+      var TIMER_MS = 300,
+          $list = $element.find( LIST_ATTR ),
           listComponent,
           timer,
           self = this;
@@ -213,7 +207,7 @@ Dropdown = Switch.extend( function ( base ) {
       self.$element.on( 'focusout', function( evt ){
         timer = setTimeout( function(){
           self.resetList();
-        }, 300 );
+        }, TIMER_MS );
       } );
     },
 
