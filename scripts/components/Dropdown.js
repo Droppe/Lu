@@ -236,6 +236,7 @@ Dropdown = Switch.extend( function ( base ) {
     },
 
     /**
+     * Reset list to original state if no selections are made
      * @method resetList
      * @public
      */
