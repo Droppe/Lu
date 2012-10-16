@@ -132,7 +132,7 @@
       <ul class="dropdown-list" data-lu="List">
         <li><a href="#a" data-lu="Button:Select" data-lu-value="A">Item 1</a></li>
         <li><a href="#b" data-lu="Button:Select" data-lu-value="B">Item 2</a></li>
-        <li><a href="#c" data-lu="Button:Select" data-lu-value="C">Item 3</a></li>
+        <li><a href="http://www.google.com" data-lu="Button:Select" data-lu-value="C">Item 3</a></li>
         <li><a href="#d" data-lu="Button:Select" data-lu-value="D">Item 4</a></li>
         <li><a href="#e" data-lu="Button:Select" data-lu-value="E">Item 5</a></li>
       </ul>
@@ -190,8 +190,6 @@
       Lu.execute( $( 'body' ) ).then( function(){
         console.info( 'DONE!' );
       } );
-
-      $('#button_1, #button_2').on('click', function(e){ e.stopPropagation(); });
 
     });
 

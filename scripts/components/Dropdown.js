@@ -1,9 +1,6 @@
 /**
  * @TODO:
- *  - is it possible to work with custom states?
- *  - cross browser test
  *  - unit tests
- *  - hash as preventDefault?
  */
 
 var constants = require( 'lu/constants' ),
@@ -93,7 +90,7 @@ Dropdown = Switch.extend( function ( base ) {
    */
   function handleEnterKey( state ){
     if( state === constants.states.ACTIVE ){
-      this.update();
+      this.update( true );
     }else if( state === constants.states.INACTIVE ){
       this.expand();
     }
@@ -209,6 +206,19 @@ Dropdown = Switch.extend( function ( base ) {
           self.resetList();
         }, TIMER_MS );
       } );
+
+      // temp prevent default on anchors
+      $list.on( 'click', 'a', function( evt ){
+        var $tget = $(evt.target),
+            href;
+
+        href = $tget.attr('href');
+
+        // prevent default on hash
+        if( href.indexOf('#') === 0 ){
+          evt.preventDefault();
+        }
+      } );
     },
 
     /**
@@ -245,17 +255,28 @@ Dropdown = Switch.extend( function ( base ) {
      * Updates dropdown label and form element value
      * @method update
      * @public
+     * @param {Boolean} fromKey Is the caller a key handler
      */
-    update: function(){
+    update: function( fromKey ){
       var $element = this.listInstance.current().$element,
           $button = $element.find(BUTTON_SELECT),
-          value = '';
+          value = '',
+          href;
 
       this.updateLabel( $button );
 
       if( this.settings.valueAttr && typeof $button.attr(this.settings.valueAttr) !== 'undefined' ){
         value = $button.attr( this.settings.valueAttr );
         this.updateValue( value );
+      }
+
+      // follow link if triggered by enter key
+      if( fromKey ){
+        href = $button.attr('href');
+
+        if( href.indexOf('#') !== 0 ){
+          window.location = href;
+        }
       }
 
       this.collapse();
