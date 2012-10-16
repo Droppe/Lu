@@ -60,16 +60,21 @@ Placeholder = FormElement.extend( function ( base ) {
       } );
 
       $element.on( 'focus click', function ( evt ) {
-        var range;
+        var range, element;
         if ( Placeholder.hasState( PLACEHOLDER_STATE ) ) {
           // Prevent default prevents the placeholder text from being highlighted on tab focus
           evt.preventDefault();
-          if ( $element[0].createTextRange ) {
-            range = $element[0].createTextRange();
-            range.moveat( 'character', 0 );
-            range.movend( 'character', 0 );
-          } else if ( $element[0].setSelectionRange ) {
-            $element[0].setSelectionRange( 0, 0 );
+          element = $element[0];
+          // Handle cursor placement in Firefox 3 and IE 9
+          if ( element.setSelectionRange ) {
+            element.setSelectionRange( 0, 0);
+          // Handle cursor placement in IE7 and 8 (and technically 9 if we hadn't already handled it)
+          } else if ( element.createTextRange ) {
+            range = element.createTextRange();
+            if ( range.collapse && range.select ) {
+              range.collapse( true );
+              range.select();
+            }
           }
         }
       });
