@@ -56,7 +56,7 @@ Button = Switch.extend( function( base ){
     /**
      * Class constructor
      * @method initialize
-     * @pulic
+     * @public
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */
@@ -126,6 +126,22 @@ Button = Switch.extend( function( base ){
 
       //binds the space-bar to the on event
       bindSpaceBar( this, settings.on );
+
+      // Prevent default on Button clicks to avoid jumping around a web page...
+      this.$element.on('click', function (evt) {
+        evt.preventDefault();
+      });
+
+      /**
+       * Gets the url for the button -- either from the config setting or from the HREF
+       * @method getUrl
+       * @public
+       * @return {String} The URL for the button
+       */
+       self.getUrl = function() {
+        return settings.url || $element.attr('href');
+      };
+
     },
 
     /**
@@ -134,6 +150,7 @@ Button = Switch.extend( function( base ){
      * it is a button or input element.
      * @method disable
      * @public
+     * @return {Object} The Button instance
      */
     disable: function(){
       var $element = this.$element;
@@ -150,6 +167,7 @@ Button = Switch.extend( function( base ){
      * it is a button or input element.
      * @method enable
      * @public
+     * @return {Object} The Button instance
      */
     enable: function(){
       var $element = this.$element;
