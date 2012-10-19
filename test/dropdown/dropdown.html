@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dropdown</title>
+  <link rel="stylesheet" type="text/css" href="../qunit.css">
+</head>
+
+<body>
+
+  <div id="qunit"></div>
+
+  <div id="test-container">
+    <div id="A" data-lu="Dropdown" class="lu-state-inactive">
+      <button data-lu="Button:State">Choose...</button>
+      <ul class="dropdown-list" data-lu="List">
+        <li><a href="#" data-lu="Button:Select" data-lu-value="A">One</a></li>
+        <li><a href="#" data-lu="Button:Select" data-lu-value="B">Two</a></li>
+        <li><a href="#" data-lu="Button:Select" data-lu-value="C">Three</a></li>
+        <li><a href="#" data-lu="Button:Select" data-lu-value="D">Four</a></li>
+        <li><a href="#" data-lu="Button:Select" data-lu-value="E">Five</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="/scripts/libraries/underscore.js"></script>
+  <script src="/scripts/libraries/inject/inject.js"></script>
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="/scripts/config.js"></script>
+  <script src="/scripts/lu.js" ></script>
+  <script src="/scripts/mappers.js"></script>
+
+  <script src="../qunit.js"></script>
+  <script src="test.js"></script>
+
+  <script>
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    Lu.map( $( '[data-lu~=Dropdown]' ), 'Dropdown', function(){} );
+
+    Lu.execute( $( 'body' ) ).done( function(){
+      execute();
+    } );
+
+  </script>
+
+</body>
+
+</html>
