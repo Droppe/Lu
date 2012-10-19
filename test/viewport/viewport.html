@@ -67,7 +67,7 @@
 
 <div id="test-container">
   List w/ Viewport Decorator in Paging mode
-  <div id="list-paging" data-lu="List" data-lu-config="{
+  <div id="list-paging" data-lu="List:Viewport" data-lu-config="{
     'List': {
       viewport: {
         mode: 'paging',
@@ -100,7 +100,7 @@
   </div>
 
   List w/ Viewport Decorator in Sliding mode
-  <div id="list-sliding" data-lu="List" data-lu-config="{
+  <div id="list-sliding" data-lu="List:Viewport" data-lu-config="{
     'List': {
       viewport: {
         mode: 'sliding',
@@ -132,7 +132,7 @@
   </div>
 
   Carousel w/ Viewport Decorator in Paging mode
-  <div id="carousel-paging" data-lu="Carousel" data-lu-config="{
+  <div id="carousel-paging" data-lu="Carousel:Viewport" data-lu-config="{
     'Carousel': {
       autoplay: false,
       viewport: {
@@ -165,16 +165,10 @@
     </div>
   </div>
 
-  Carousel w/ Viewport Decorator in Sliding mode
-  <div id="carousel-sliding" data-lu="Carousel" data-lu-config="{
+  Carousel w/ Viewport Decorator in Sliding mode (default mapper config)
+  <div id="carousel-sliding" data-lu="Carousel:Viewport" data-lu-config="{
     'Carousel': {
-      autoplay: false,
-      viewport: {
-        mode: 'sliding',
-        pageSize: 5,
-        threshold: 0.8,
-        previewSize: 0.25
-      }
+      autoplay: false
     }
   }">
     <ul class="list">
@@ -229,9 +223,7 @@
 
 
     Lu.execute( $( 'body' ) ).done( function(){
-      $( '#list-paging' ).lu( 'getComponent', 'List' ).instance.on('dependencies-resolved', function(){
-        execute();
-      });
+      execute();
     } );
 
   </script>
