@@ -1,0 +1,127 @@
+<!doctype html>
+
+<!--[if lt IE 7]><html class="no-js ie6" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Container</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/base.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/layout.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/skeleton.css">
+
+
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: 50px auto;
+    }
+    .lu-state-selected {
+      background-color: #00f;
+    }
+    .lu-state-visible {
+      display: block;
+    }
+    .lu-state-hidden {
+      display: none;
+    }
+
+
+  </style>
+</head>
+
+<body>
+
+  <div id="container" class="container">
+    <h1>Container Example</h1>
+    <p>Here's a Container:</p>
+
+    <div id="example" data-lu="Container" data-lu-config="{
+      'Container': {
+        'content': '#stuff',
+        'method': 'replace',
+        'notify': 'button',
+        'frame': true
+      }
+    }">
+      (empty container)
+    </div>
+
+    <p id="stuff" style="display: none">THIS IS SOME FRESH STUFF!</p>
+
+  <button id="button1" data-lu="Button" data-lu-config="{
+      'Button': {
+        'notify': '#example',
+        'action': 'state',
+        'states': ['visible', 'hidden']
+      }
+    }">CLICK ME</button>
+    <button id="button2" data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        'notify': '#example',
+        'states': ['visible', 'hidden']
+      }
+    }">CLICK ME TOO</button>
+    <button id="button3" data-lu="Button" data-lu-config="{
+      'Button': {
+        'notify': '#example',
+        'action': 'load', 
+        'url': 'container.html#example'
+      }
+    }">LOAD</button>
+    <a href="#stuff" id="button4" data-lu="Button" data-lu-config="{
+      'Button': {
+        'notify': '#example',
+        'action': 'load'
+      }
+    }">LOAD</a>
+
+
+    </div>
+
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="/scripts/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.enableDebug("sourceMap");
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    $( function(){
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
+    } );
+
+  </script>
+
+</body>
+
+</html>
+
+
