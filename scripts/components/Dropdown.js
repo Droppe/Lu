@@ -1,8 +1,3 @@
-/**
- * @TODO:
- *  - unit tests
- */
-
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch  = require( 'lu/Switch' ),
@@ -24,6 +19,7 @@ Dropdown = Switch.extend( function ( base ) {
       BUTTON_STATE = '[data-lu="Button:State"]',
       BUTTON_SELECT = '[data-lu="Button:Select"]',
       isIgnoredTrigger = false,
+      listInitialIndex = 0,
 
     /**
      * Default configuration values
@@ -156,10 +152,13 @@ Dropdown = Switch.extend( function ( base ) {
 
       listComponent = $list.lu('getComponents').List;
 
+      // TODO: export to individual settings
       self.settings = settings;
+
+      self.$stateButton = $element.find( BUTTON_STATE );
       self.$label = ( typeof settings.label !== 'undefined' && settings.label !== false ) ? $element.find( settings.label ) : [];
+      self.valueAttr = self.settings.valueAttr;
       self.$observers = $(settings.notify);
-      self.listInitialIndex = 0;
 
       self.$observers = self.$observers.add( self.$element.find('input[type="hidden"], select') );
 
@@ -183,7 +182,7 @@ Dropdown = Switch.extend( function ( base ) {
         var state = self.getState()[0];
 
         if( state === constants.states.ACTIVE ){
-          self.listInitialIndex = self.listInstance.index();
+          listInitialIndex = self.listInstance.index();
         }
       } );
 
@@ -206,19 +205,6 @@ Dropdown = Switch.extend( function ( base ) {
           self.resetList();
         }, TIMER_MS );
       } );
-
-      // temp prevent default on anchors
-      $list.on( 'click', 'a', function( evt ){
-        var $tget = $(evt.target),
-            href;
-
-        href = $tget.attr('href');
-
-        // prevent default on hash
-        if( href.indexOf('#') === 0 ){
-          evt.preventDefault();
-        }
-      } );
     },
 
     /**
@@ -240,22 +226,34 @@ Dropdown = Switch.extend( function ( base ) {
     },
 
     /**
-     * Reset list to original state if no selections are made
+     * Reset list to original state when no selections are made
      * @method resetList
      * @public
      */
     resetList: function(){
       isIgnoredTrigger = true;
 
-      this.listInstance.select( this.listInitialIndex );
+      this.listInstance.select( listInitialIndex );
       this.collapse();
+    },
+
+    getValue: function(){
+      var $el = this.listInstance.current().$element,
+          $btnSelect = $el.find( BUTTON_SELECT ),
+          value = '';
+
+      if( typeof $btnSelect.attr( this.valueAttr ) !== 'undefined' ){
+        value = $btnSelect.attr( this.valueAttr );
+      }
+
+      return value;
     },
 
     /**
      * Updates dropdown label and form element value
      * @method update
      * @public
-     * @param {Boolean} fromKey Is the caller a key handler
+     * @param {Boolean} fromKey Is the caller a key handler?
      */
     update: function( fromKey ){
       var $element = this.listInstance.current().$element,
@@ -265,18 +263,15 @@ Dropdown = Switch.extend( function ( base ) {
 
       this.updateLabel( $button );
 
-      if( this.settings.valueAttr && typeof $button.attr(this.settings.valueAttr) !== 'undefined' ){
-        value = $button.attr( this.settings.valueAttr );
+      if( this.valueAttr && typeof $button.attr( this.valueAttr ) !== 'undefined' ){
+        value = $button.attr( this.valueAttr );
         this.updateValue( value );
       }
 
       // follow link if triggered by enter key
-      if( fromKey ){
+      if( fromKey && $button.is('a') ){
         href = $button.attr('href');
-
-        if( href.indexOf('#') !== 0 ){
-          window.location.href = href;
-        }
+        window.location.href = href;
       }
 
       this.collapse();

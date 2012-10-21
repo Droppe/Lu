@@ -42,10 +42,25 @@
 
     window.LU_DEBUG = 5;
 
-    Lu.map( $( '[data-lu~=Dropdown]' ), 'Dropdown', function(){} );
+    $( function(){
+      /*Lu.execute( $( 'body' ) ).done( function(){
+        var $DropdownA = $('#A'),
+            DropdownA = $DropdownA.lu('getComponents').Dropdown.instance;
 
-    Lu.execute( $( 'body' ) ).done( function(){
-      execute();
+        function checkReadiness( evt, instance ){
+          console.log('stated executed outside');
+
+          if( instance.$element[0] === $DropdownA[0] ){
+            DropdownA.off( 'stated', checkReadiness );
+            execute();
+          }
+        }
+
+        DropdownA.on( 'stated', checkReadiness );
+      } );*/
+      Lu.execute( $( 'body' ) ).done( function(){
+        execute();
+      } );
     } );
 
   </script>
