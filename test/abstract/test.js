@@ -1,3 +1,9 @@
+/**
+ * @venus-library  qunit
+ * @venus-template  lu
+ * @venus-fixture   test.tl
+ */
+
 Lu.map( $( '[data-lu~=Abstract]' ), 'Abstract', function(){} );
 
 function execute(){
