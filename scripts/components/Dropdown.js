@@ -1,6 +1,6 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
-  Switch  = require( 'lu/Switch' ),
+  Switch = require( 'lu/Switch' ),
   Dropdown;
 
 /**
@@ -11,15 +11,17 @@ var constants = require( 'lu/constants' ),
  */
 Dropdown = Switch.extend( function ( base ) {
   var LIST_ATTR = '[data-lu=List]',
-      KEY_EVT = 'keydown',
-      KEY_ENTER = 13,
-      KEY_ESCAPE = 27,
-      KEY_UP = 38,
-      KEY_DOWN = 40,
-      BUTTON_STATE = '[data-lu="Button:State"]',
-      BUTTON_SELECT = '[data-lu="Button:Select"]',
-      isIgnoredTrigger = false,
-      listInitialIndex = 0,
+    KEY_EVT = 'keydown',
+    KEY_ENTER = 13,
+    KEY_ESCAPE = 27,
+    KEY_UP = 38,
+    KEY_DOWN = 40,
+    BUTTON_STATE = '[data-lu="Button:State"]',
+    BUTTON_SELECT = '[data-lu="Button:Select"]',
+    TIMER_MS = 250,
+    isIgnoredTrigger = false,
+    listInitialIndex = 0,
+    $listBtn = [],
 
     /**
      * Default configuration values
@@ -86,7 +88,7 @@ Dropdown = Switch.extend( function ( base ) {
    */
   function handleEnterKey( state ){
     if( state === constants.states.ACTIVE ){
-      this.update( true );
+      update.call( this, true );
     }else if( state === constants.states.INACTIVE ){
       this.expand();
     }
@@ -100,8 +102,8 @@ Dropdown = Switch.extend( function ( base ) {
    */
   function handleKeyEvents( evt ){
     var $target = $(evt.target),
-        key = evt.keyCode,
-        state = this.getState()[0];
+      key = evt.keyCode,
+      state = this.getState()[0];
 
     if( !$target.is( this.$element ) && !$target.is( BUTTON_STATE ) ){
       return;
@@ -127,6 +129,36 @@ Dropdown = Switch.extend( function ( base ) {
     }
   }
 
+  /**
+   * Actions after item has been selected from list
+   * @method update
+   * @private
+   * @param {Boolean} fromKey Is the caller a key handler?
+   */
+  function update( fromKey ){
+    var href;
+
+    updateLabel.call( this );
+    this.collapse();
+
+    // follow link if triggered by enter key
+    if( fromKey && $listBtn.is( 'a' ) ){
+      href = $listBtn.attr( 'href' );
+      window.location.href = href;
+    }
+  }
+
+  /**
+   * Updates dropwdown label with text from list item
+   * @method updateLabel
+   * @private
+   */
+  function updateLabel(){
+    if( this.$label.length > 0 && $listBtn.length > 0 ){
+      this.$label.html( $listBtn.html() );
+    }
+  }
+
   // RETURN METHODS OBJECT
   return {
     /**
@@ -137,11 +169,10 @@ Dropdown = Switch.extend( function ( base ) {
      * @param {Object} settings Configuration settings
      */
     init: function ( $element, settings ){
-      var TIMER_MS = 300,
-          $list = $element.find( LIST_ATTR ),
-          listComponent,
-          timer,
-          self = this;
+      var $list = $element.find( LIST_ATTR ),
+        listComponent,
+        timer,
+        self = this;
 
       _.defaults( settings, defaults );
       base.init.call( this, $element, settings );
@@ -152,32 +183,27 @@ Dropdown = Switch.extend( function ( base ) {
 
       listComponent = $list.lu('getComponents').List;
 
-      // TODO: export to individual settings
-      self.settings = settings;
-
       self.$stateButton = $element.find( BUTTON_STATE );
       self.$label = ( typeof settings.label !== 'undefined' && settings.label !== false ) ? $element.find( settings.label ) : [];
-      self.valueAttr = self.settings.valueAttr;
-      self.$observers = $(settings.notify);
-
-      self.$observers = self.$observers.add( self.$element.find('input[type="hidden"], select') );
+      self.valueAttr = settings.valueAttr;
 
       // get reference of list component instance
       listComponent.deferral.then( function(){
         self.listInstance = listComponent.instance;
 
         self.listInstance.on( constants.events.SELECTED, function( evt, component ){
+          $listBtn = self.listInstance.current().$element.find( BUTTON_SELECT );
+
           // prevent label update on arrow key events
           if( !isIgnoredTrigger ){
-            clearTimeout( timer );
-            self.update();
+            update.call( self );
           }
           
           isIgnoredTrigger = false;
         } );
       } );
 
-      // stated event handler
+      // stated event handler on dropdown
       self.on( constants.events.STATED, function( evt, obj ){
         var state = self.getState()[0];
 
@@ -193,9 +219,9 @@ Dropdown = Switch.extend( function ( base ) {
 
       // force collapse when dropdown loses focus
       self.$element.on( 'focusin', function( evt ){
-        var $tget = $(evt.target);
+        var $tget = $( evt.target );
 
-        if( $tget.is( self.$element ) || $tget.is( BUTTON_STATE ) ){
+        if( $tget.closest( self.$element ) ){
           clearTimeout( timer );
         }
       } );
@@ -237,66 +263,20 @@ Dropdown = Switch.extend( function ( base ) {
       this.collapse();
     },
 
+    /**
+     * Get the dropdown's selected value
+     * @method getValue
+     * @public
+     * @return {String} value Selected value
+     */
     getValue: function(){
-      var $el = this.listInstance.current().$element,
-          $btnSelect = $el.find( BUTTON_SELECT ),
-          value = '';
+      var value = '';
 
-      if( typeof $btnSelect.attr( this.valueAttr ) !== 'undefined' ){
-        value = $btnSelect.attr( this.valueAttr );
+      if( typeof $listBtn.attr( this.valueAttr ) !== 'undefined' ){
+        value = $listBtn.attr( this.valueAttr );
       }
 
       return value;
-    },
-
-    /**
-     * Updates dropdown label and form element value
-     * @method update
-     * @public
-     * @param {Boolean} fromKey Is the caller a key handler?
-     */
-    update: function( fromKey ){
-      var $element = this.listInstance.current().$element,
-          $button = $element.find(BUTTON_SELECT),
-          value = '',
-          href;
-
-      this.updateLabel( $button );
-
-      if( this.valueAttr && typeof $button.attr( this.valueAttr ) !== 'undefined' ){
-        value = $button.attr( this.valueAttr );
-        this.updateValue( value );
-      }
-
-      // follow link if triggered by enter key
-      if( fromKey && $button.is('a') ){
-        href = $button.attr('href');
-        window.location.href = href;
-      }
-
-      this.collapse();
-    },
-
-    /**
-     * Updates dropwdown label
-     * @method updateLabel
-     * @public
-     * @param {Object} $element List element's selected button
-     */
-    updateLabel: function( $element ){
-      if( this.$label.length > 0 && $element.length > 0 ){
-        this.$label.html( $element.html() );
-      }
-    },
-
-    /**
-     * Updates form element's value
-     * @method updateValue
-     * @public
-     * @param {String} value List element's selected value
-     */
-    updateValue: function( value ){
-      this.$observers.val( value );
     }
   };
 

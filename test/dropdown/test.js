@@ -66,6 +66,7 @@ function execute(){
     QUnit.asyncTest( 'getValue', function(){
       expect( 3 );
       ok( DropdownA.getValue );
+      //ok( DropdownA.listInstance.index() === 0, 'DropdownA should have the 1st list item selected at index 0.' );
       DropdownA.listInstance.select( 3 );
       ok( DropdownA.listInstance.index() === 3, 'DropdownA should have the 4th list item selected at index 3.' );
       ok( DropdownA.getValue() === 'D', 'DropdownA has the value of D.' );
