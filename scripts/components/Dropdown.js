@@ -1,3 +1,12 @@
+/**
+ * @TODO:
+ *   move resetList fn to private scope
+ *   write unit test for updated event
+ *   update examples to single button 
+ *   show examples of observed and notified form elements
+ *   get rid of listInitialIndex
+ *   mark as experimental
+ */
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch = require( 'lu/Switch' ),
@@ -21,6 +30,7 @@ Dropdown = Switch.extend( function ( base ) {
     TIMER_MS = 250,
     isIgnoredTrigger = false,
     listInitialIndex = 0,
+    listLastIndex = 0,
     $listBtn = [],
 
     /**
@@ -32,13 +42,15 @@ Dropdown = Switch.extend( function ( base ) {
      */
     defaults = {
       /**
-       * A selector that matches button element to display selected element text
+       * A selector that matches the button element that will display the selected list item's text.
+       * Specify Boolean false for no label.
        * @property label
-       * @type {String}
+       * @type {Mixed}
        */
       label: BUTTON_STATE + ':first-child',
       /**
-       * The attribute that contains selected element's value
+       * The attribute that contains selected element's value.
+       * If attribute doesn't exist, list item's text will be used as value.
        * @property valueAttr
        * @type {String}
        */
@@ -55,12 +67,12 @@ Dropdown = Switch.extend( function ( base ) {
   function handleArrowKey( direction, state ){
     var list = this.listInstance;
 
-    isIgnoredTrigger = true;
-
     // expand dropdown if inactive
     if( state === constants.states.INACTIVE ){
       this.expand();
     }else{
+      isIgnoredTrigger = true;
+
       // up
       if( direction < 0 ){
         if( list.hasPrevious() ){
@@ -136,9 +148,18 @@ Dropdown = Switch.extend( function ( base ) {
    * @param {Boolean} fromKey Is the caller a key handler?
    */
   function update( fromKey ){
-    var href;
+    var href,
+      index = this.listInstance.index();
 
-    updateLabel.call( this );
+    $listBtn = this.listInstance.current().$element.find( BUTTON_SELECT );
+
+    setLabel.call( this );
+
+    if( index !== listLastIndex ){
+      this.trigger( constants.events.UPDATED, this );
+      listLastIndex = index;
+    }
+
     this.collapse();
 
     // follow link if triggered by enter key
@@ -150,10 +171,10 @@ Dropdown = Switch.extend( function ( base ) {
 
   /**
    * Updates dropwdown label with text from list item
-   * @method updateLabel
+   * @method setLabel
    * @private
    */
-  function updateLabel(){
+  function setLabel(){
     if( this.$label.length > 0 && $listBtn.length > 0 ){
       this.$label.html( $listBtn.html() );
     }
@@ -192,9 +213,7 @@ Dropdown = Switch.extend( function ( base ) {
         self.listInstance = listComponent.instance;
 
         self.listInstance.on( constants.events.SELECTED, function( evt, component ){
-          $listBtn = self.listInstance.current().$element.find( BUTTON_SELECT );
-
-          // prevent label update on arrow key events
+          // prevent updates on arrow key events
           if( !isIgnoredTrigger ){
             update.call( self );
           }
@@ -208,6 +227,7 @@ Dropdown = Switch.extend( function ( base ) {
         var state = self.getState()[0];
 
         if( state === constants.states.ACTIVE ){
+          // store initial selected item, used in resetList
           listInitialIndex = self.listInstance.index();
         }
       } );
@@ -259,7 +279,7 @@ Dropdown = Switch.extend( function ( base ) {
     resetList: function(){
       isIgnoredTrigger = true;
 
-      this.listInstance.select( listInitialIndex );
+      this.listInstance.select( listLastIndex );
       this.collapse();
     },
 
@@ -274,6 +294,8 @@ Dropdown = Switch.extend( function ( base ) {
 
       if( typeof $listBtn.attr( this.valueAttr ) !== 'undefined' ){
         value = $listBtn.attr( this.valueAttr );
+      }else{
+        value = $listBtn.text();
       }
 
       return value;

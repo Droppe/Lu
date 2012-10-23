@@ -43,24 +43,11 @@
     window.LU_DEBUG = 5;
 
     $( function(){
-      /*Lu.execute( $( 'body' ) ).done( function(){
-        var $DropdownA = $('#A'),
-            DropdownA = $DropdownA.lu('getComponents').Dropdown.instance;
-
-        function checkReadiness( evt, instance ){
-          console.log('stated executed outside');
-
-          if( instance.$element[0] === $DropdownA[0] ){
-            DropdownA.off( 'stated', checkReadiness );
-            execute();
-          }
-        }
-
-        DropdownA.on( 'stated', checkReadiness );
-      } );*/
+      
       Lu.execute( $( 'body' ) ).done( function(){
         execute();
       } );
+      
     } );
 
   </script>
