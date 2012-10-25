@@ -88,27 +88,6 @@
     } );
   } );
 
-  // Coalesce the Viewport decorator for List/Carousel into one mapper function.
-  Mapper.register( function () {
-    var components = ['List', 'Carousel'];
-    var decorator = 'Viewport';
-    _.each(components, function (component) {
-      var key = component + ':' + decorator;
-      Lu.map(_.filter(Mapper.$scope, function (item) {
-        return ( item.getAttribute('data-lu').indexOf(key) > -1 );
-      }), component, function () {
-        this.hasDependencies = true;
-        // Default configs
-        this.settings.viewport = {
-          mode:'sliding',
-          pageSize:5,
-          threshold:0.8,
-          previewSize:0.25
-        };
-      });
-    });
-  });
-
   // Coalesce the buttons into one mapper function, because we care about performance,
   // saving bytes, and abhor redundancy.
   _.each( ['select', 'first', 'last', 'next', 'previous', 'load', 'play', 'pause', 'state'], function( action ) {

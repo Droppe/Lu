@@ -8,58 +8,6 @@
 var Lu = function(){
   var self = this;
 
-  this.$mapped = $( [] );
-  this.map = function( $element, component, callback ){
-    var mapped = [];
-
-    _.each( $element, function( item, index ){
-      var $element = $( item ),
-        componentData,
-        deferral,
-        settings,
-        configuration = item.getAttribute( 'data-lu-config' ),
-        key;
-
-      componentData = $element.lu( 'getComponents' );
-
-      if( !$element.data( 'mapped' ) ){
-        $element.data( 'mapped', true );
-        mapped.push( item );
-      }
-
-      if( !componentData[component] ){
-        deferral = $.Deferred();
-        componentData[component] = {
-          deferral: deferral,
-          ready: deferral.then,
-          settings: {}
-        };
-      } else {
-        _.extend( componentData[component].settings, {} );
-      }
-
-      if( callback ){
-        callback.call( componentData[component], $element );
-      }
-
-      key = componentData[component].key || component;
-
-      if( configuration ){
-        try {
-          configuration = ( function(){ return eval( '( function(){ return ' + configuration + '; }() );' ); }()[key] || {} );
-        } catch( e ){
-          configuration = {};
-        }
-      } else {
-        configuration = {};
-      }
-
-      componentData[component].settings = _.extend( componentData[component].settings, configuration );
-    } );
-
-    this.$mapped = this.$mapped.add( mapped );
-  };
-
   /**
    * Loads and instantiates components.
    * @public
@@ -69,16 +17,10 @@ var Lu = function(){
    * @return {Object} The executed element (allows chaining)
    */
   this.execute = function( $element ){
-    var $nodes = $element.find( this.$mapped ),
+    var $nodes = $element,
       deferral = $.Deferred(),
       requirements = [],
       count;
-
-    if( $element.data( 'mapped' ) ){
-      $nodes = $nodes.add( $element );
-    }
-
-    count = $nodes.length;
 
     /**
      * Instantiates a control with selected element.
@@ -140,6 +82,13 @@ var Lu = function(){
 
       } );
     }
+
+    if( $element.data( 'mapped' ) ){
+      $nodes = $nodes.add( $element );
+    }
+
+    count = $nodes.length;
+
     _.each( $nodes, function( item, index ){
       execute( $( item ) );
     } );

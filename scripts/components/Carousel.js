@@ -6,10 +6,10 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   List = require( 'lu/List' ),
-  Fiber = require( 'Fiber' ),
   Carousel;
 
 Carousel =  List.extend( function ( base ) {
+  var
     /**
      * Default configuration values
      * @property defaults
@@ -17,7 +17,7 @@ Carousel =  List.extend( function ( base ) {
      * @private
      * @final
      */
-    var defaults = {
+    defaults = {
       /**
        * Number of times to cycle through carousel items when playing, set to -1 to repeat forever
        * @property repeat

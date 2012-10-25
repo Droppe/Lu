@@ -1,7 +1,6 @@
 
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
-  Fiber = require( 'Fiber' ),
   Abstract;
 
 /**
