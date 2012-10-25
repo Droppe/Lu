@@ -6,7 +6,6 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   List = require( 'lu/List' ),
-  Fiber = require( 'Fiber' ),
   Carousel;
 
 Carousel =  List.extend( function ( base ) {

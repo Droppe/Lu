@@ -51,6 +51,7 @@ function stateDecorator( settings ){
 
     this.on( constants.events.STATED, function( event, Component ){
       var intersection;
+
       if( self.$element.is( Component.$element ) ){
         return;
       }
