@@ -16,6 +16,12 @@ List = Switch.extend( function( base ){
 
     defaults = {
       index: undefined
+    },
+
+    root = 'lu/List/decorators/',
+
+    decorators = {
+      viewport: root + 'viewport'
     };
 
   return {
@@ -36,6 +42,19 @@ List = Switch.extend( function( base ){
       _.defaults( settings, defaults );
 
       base.init.call( this, $element, settings );
+
+      var requirements = [];
+      if (settings.viewport) {
+        requirements.push(decorators.viewport);
+      }
+
+      require.ensure( requirements, function( require, module, exports ){
+        _.each( requirements, function( decorator, index ){
+          decorator = require( decorator )( settings );
+          Fiber.decorate( self, decorator );
+        } );
+        self.trigger( 'dependencies-resolved' );
+      } );
 
       /**
        * gets the 0 based index of the selected item.
