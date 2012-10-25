@@ -21,8 +21,12 @@
       width: 800px;
       margin: 50px auto;
     }
+    li {
+      overflow: hidden;
+    }
     .container {
-      height: auto;
+      height: 100px;
+      -moz-transition: height 1s;
     }
     .lu-state-collapsed .container {
       height: 0;
@@ -98,6 +102,7 @@
 
     Inject.setExpires( 0 );
     Inject.clearCache();
+    Inject.enableDebug("sourceMap");
     Inject.setModuleRoot( 'http://localhost:1337/' );
 
     window.LU_DEBUG = 5;

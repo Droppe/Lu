@@ -63,7 +63,7 @@
 
 <body>
 
-  <div id="carousel" data-lu="Carousel" data-lu="{
+  <div id="carousel" data-lu="Carousel" data-lu-config="{
     Carousel: {
       autoplay: true
     }
@@ -109,6 +109,7 @@
 
     Inject.setExpires( 0 );
     Inject.clearCache();
+    Inject.enableDebug("sourceMap");
     Inject.setModuleRoot( 'http://localhost:1337/' );
 
     window.LU_DEBUG = 5;
