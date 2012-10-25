@@ -1,19 +1,11 @@
-/**
- * @TODO:
- *   move resetList fn to private scope
- *   write unit test for updated event
- *   update examples to single button 
- *   show examples of observed and notified form elements
- *   get rid of listInitialIndex
- *   mark as experimental
- */
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch = require( 'lu/Switch' ),
   Dropdown;
 
 /**
- * Dropdown Lu control
+ * Dropdown Lu Control v1.0.0 Experimental
+ * Only for the brave, use at your own peril!
  * @class Dropdown
  * @extends Switch
  * @constructor
@@ -29,8 +21,7 @@ Dropdown = Switch.extend( function ( base ) {
     BUTTON_SELECT = '[data-lu="Button:Select"]',
     TIMER_MS = 250,
     isIgnoredTrigger = false,
-    listInitialIndex = 0,
-    listLastIndex = 0,
+    listPrevIndex = 0,
     $listBtn = [],
 
     /**
@@ -136,7 +127,7 @@ Dropdown = Switch.extend( function ( base ) {
         break;
 
       case KEY_ESCAPE:
-        this.resetList();
+        resetList.call( this );
         break;
     }
   }
@@ -155,9 +146,9 @@ Dropdown = Switch.extend( function ( base ) {
 
     setLabel.call( this );
 
-    if( index !== listLastIndex ){
+    if( index !== listPrevIndex ){
+      listPrevIndex = index;
       this.trigger( constants.events.UPDATED, this );
-      listLastIndex = index;
     }
 
     this.collapse();
@@ -178,6 +169,18 @@ Dropdown = Switch.extend( function ( base ) {
     if( this.$label.length > 0 && $listBtn.length > 0 ){
       this.$label.html( $listBtn.html() );
     }
+  }
+
+  /**
+   * Reset list to original state when no selections are made
+   * @method resetList
+   * @private
+   */
+  function resetList(){
+    isIgnoredTrigger = true;
+
+    this.listInstance.select( listPrevIndex );
+    this.collapse();
   }
 
   // RETURN METHODS OBJECT
@@ -205,12 +208,13 @@ Dropdown = Switch.extend( function ( base ) {
       listComponent = $list.lu('getComponents').List;
 
       self.$stateButton = $element.find( BUTTON_STATE );
-      self.$label = ( typeof settings.label !== 'undefined' && settings.label !== false ) ? $element.find( settings.label ) : [];
+      self.$label = ( typeof settings.label !== 'undefined' || settings.label !== false ) ? $element.find( settings.label ) : [];
       self.valueAttr = settings.valueAttr;
 
       // get reference of list component instance
       listComponent.deferral.then( function(){
         self.listInstance = listComponent.instance;
+        listPrevIndex = self.listInstance.index();
 
         self.listInstance.on( constants.events.SELECTED, function( evt, component ){
           // prevent updates on arrow key events
@@ -220,16 +224,6 @@ Dropdown = Switch.extend( function ( base ) {
           
           isIgnoredTrigger = false;
         } );
-      } );
-
-      // stated event handler on dropdown
-      self.on( constants.events.STATED, function( evt, obj ){
-        var state = self.getState()[0];
-
-        if( state === constants.states.ACTIVE ){
-          // store initial selected item, used in resetList
-          listInitialIndex = self.listInstance.index();
-        }
       } );
 
       // keydown event handler
@@ -248,7 +242,7 @@ Dropdown = Switch.extend( function ( base ) {
 
       self.$element.on( 'focusout', function( evt ){
         timer = setTimeout( function(){
-          self.resetList();
+          resetList.call( self );
         }, TIMER_MS );
       } );
     },
@@ -269,18 +263,6 @@ Dropdown = Switch.extend( function ( base ) {
      */
     collapse: function(){
       this.setState( constants.states.INACTIVE );
-    },
-
-    /**
-     * Reset list to original state when no selections are made
-     * @method resetList
-     * @public
-     */
-    resetList: function(){
-      isIgnoredTrigger = true;
-
-      this.listInstance.select( listLastIndex );
-      this.collapse();
     },
 
     /**

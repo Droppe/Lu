@@ -11,8 +11,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <title>Lu Dropdown</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="Lu Dropdown Component">
+  <meta name="author" content="Lu Team">
 
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
@@ -27,6 +27,16 @@
       width: 150px;
       margin-bottom: 20px;
       position: relative;
+    }
+
+    .dropdown:focus {
+      outline: none;
+      border: none;
+    }
+
+    .dropdown:focus .dropdown-button,
+    .dropdown .dropdown-button:focus {
+      box-shadow: 0 0 8px rgba(0, 0, 0, .4);
     }
 
     .dropdown:after {
@@ -46,36 +56,54 @@
       float: left;
       padding: 2px 5px;
       border: 1px solid #999;
+      border-radius: 4px;
       background-color: #eee;
       font: 12px/1.5 Arial, Helvetica, sans-serif;
       color: #000;
       cursor: pointer;
+      text-align: left;
+    }
+
+    .dropdown .dropdown-button.single {
+      width: 100%;
+      float: none;
+      position: relative;
+    }
+
+    .dropdown .dropdown-button.single:after {
+      content: "\25BC";
+      display: block;
+      position: absolute;
+      top: 3px;
+      right: 8px;
+      width:10px;
+      height: 10px;
     }
 
     .dropdown .dropdown-button.left {
       width: 84%;
-      border-radius: 4px 0 0 4px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
       border-right-width: 0;
-      text-align: left;
     }
 
     .dropdown .dropdown-button.right {
       width: 16%;
-      border-radius: 0 4px 4px 0;
-      border-left-width: 0;
-    }
-
-    .dropdown.split .right {
-      border-left: 1px solid #999;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      text-align: center;
     }
 
     .dropdown .dropdown-menu {
-      clear: left;
       display: none;
       width: 100%;
       position: absolute;
       left: 0;
       top: 25px;
+    }
+
+    .dropdown.split .dropdown-menu {
+      left: 84%;
     }
 
     .dropdown.lu-state-active .dropdown-menu {
@@ -115,49 +143,92 @@
     .dropdown-list .lu-state-selected a:hover {
       background-color: transparent;
     }
+
+    input,
+    select {
+      display: block;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 
 <body>
 
-  <div id="dropdown" data-lu="Dropdown" class="dropdown lu-state-inactive" tabindex="1">
-    <button data-lu="Button:State" class="dropdown-button left" tabindex="2">Choose...</button>
-    <button data-lu="Button:State" class="dropdown-button right" tabindex="3">&#9660;</button>
-   
+  <!-- 
+  Typical use case example. Button gets set up as label by default, which means it displays selected item's text. 
+  Nested form elements update their values automatically.
+  -->
+  <div id="dropdown_a" data-lu="Dropdown" class="dropdown lu-state-inactive" tabindex="1">
+    <button data-lu="Button:State" class="dropdown-button single">Choose...</button>
+
     <div class="dropdown-menu">
       <ul class="dropdown-list" data-lu="List">
-        <li><a href="#a" data-lu="Button:Select" data-lu-value="A">Item 1</a></li>
-        <li><a href="#b" data-lu="Button:Select" data-lu-value="B">Item 2</a></li>
-        <li><a href="http://www.google.com" data-lu="Button:Select" data-lu-value="C">Item 3</a></li>
-        <li><a href="#d" data-lu="Button:Select" data-lu-value="D">Item 4</a></li>
-        <li><a href="#e" data-lu="Button:Select" data-lu-value="E">Item 5</a></li>
+        <li><a href="#a" data-lu="Button:Select" data-lu-value="A1">Item 1</a></li>
+        <li><a href="#b" data-lu="Button:Select" data-lu-value="A2">Item 2</a></li>
+        <li><a href="#c" data-lu="Button:Select" data-lu-value="A3">Item 3</a></li>
+        <li><a href="#d" data-lu="Button:Select" data-lu-value="A4">Item 4</a></li>
+        <li><a href="#e" data-lu="Button:Select" data-lu-value="A5">Item 5</a></li>
       </ul>
     </div>
 
-    <input id="the_input" type="hidden" data-lu="FormElement" />
+    <input id="input_a" type="hidden" data-lu="FormElement" />
   </div>
 
 
-<div data-lu="Dropdown" data-lu-config="{
+  <!-- Example of notifying an element outside of component markup. -->
+  <div id="dropdown_b" data-lu="Dropdown" data-lu-config="{
+    Dropdown: {
+      notify: '#input_b'
+    }
+  }" class="dropdown lu-state-inactive" tabindex="2">
+    <button data-lu="Button:State" class="dropdown-button single">Choose...</button>
+
+    <div class="dropdown-menu">
+      <ul class="dropdown-list" data-lu="List">
+        <li><a href="#" data-lu="Button:Select">Item 1</a></li>
+        <li><a href="#" data-lu="Button:Select">Item 2</a></li>
+        <li><a href="#" data-lu="Button:Select">Item 3</a></li>
+        <li><a href="#" data-lu="Button:Select">Item 4</a></li>
+        <li><a href="#" data-lu="Button:Select">Item 5</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <select id="input_b" data-lu="FormElement">
+    <option>Item 1</option>
+    <option>Item 2</option>
+    <option>Item 3</option>
+    <option>Item 4</option>
+    <option>Item 5</option>
+  </select>
+
+  <!-- Set a form element as an observer. -->
+  <input type="text" data-lu="FormElement" data-lu-config="{
+    FormElement: {
+      observe: '#dropdown_b'
+    }
+  }" readonly />
+
+
+  <!-- Split button example which also notifies a form element outside of component markup. -->
+  <div data-lu="Dropdown" data-lu-config="{
     Dropdown: {
       label: false
     }
-  }" class="dropdown split lu-state-inactive" tabindex="4">
-  <button data-lu="Button" class="dropdown-button left" tabindex="5">Select</button>
-  <button data-lu="Button:State" class="dropdown-button right" tabindex="6">&#9660;</button>
- 
-  <div class="dropdown-menu">
-    <ul class="dropdown-list" data-lu="List">
-      <li><a href="#abcdefg" data-lu="Button:Select">Item 1</a></li>
-      <li><a href="#" data-lu="Button:Select">Item 2</a></li>
-      <li><a href="#" data-lu="Button:Select">Item 3</a></li>
-      <li><a href="#" data-lu="Button:Select">Item 4</a></li>
-      <li><a href="#" data-lu="Button:Select">Item 5</a></li>
-    </ul>
+  }" class="dropdown split lu-state-inactive" tabindex="3">
+    <button data-lu="Button" class="dropdown-button left" tabindex="4">Select</button>
+    <button data-lu="Button:State" class="dropdown-button right" tabindex="5">&#9660;</button>
+   
+    <div class="dropdown-menu">
+      <ul class="dropdown-list" data-lu="List">
+        <li><a href="#" data-lu="Button:Select" data-lu-value="B1">Item 1</a></li>
+        <li><a href="#" data-lu="Button:Select" data-lu-value="B2">Item 2</a></li>
+        <li><a href="#" data-lu="Button:Select" data-lu-value="B3">Item 3</a></li>
+        <li><a href="#" data-lu="Button:Select" data-lu-value="B4">Item 4</a></li>
+        <li><a href="#" data-lu="Button:Select" data-lu-value="B5">Item 5</a></li>
+      </ul>
+    </div>
   </div>
-
-  <input id="input_1" type="hidden" />
-</div>
 
 
   <!-- Bootstrap:Util -->
@@ -181,12 +252,15 @@
 
     window.LU_DEBUG = 5;
 
-    Lu.map( $('#the_input'), 'FormElement', function( $element ){
+    // map form elements to react to dropdown updates
+    Lu.map( $( 'input, select' ), 'FormElement', function( $element ){
       var self = this;
 
+      $element.val('');
+
       self.deferral.then( function(){
-        self.instance.on( 'updated', function( evt, dropdown ){
-          $element.val( dropdown.getValue() );
+        self.instance.on( 'updated', function( evt, ddInstance ){
+          $element.val( ddInstance.getValue() );
         } );
       } );
     } );
