@@ -1,13 +1,14 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch = require( 'lu/Switch' ),
+  Fiber = require( 'Fiber' ),
   Container;
 
 /**
 * Contains content and maintains state
 * @class Container
 * @constructor
-* @extends Switch
+* @extends Abstract
 * @version 0.2.4
 */
 
@@ -103,7 +104,7 @@ Container = Switch.extend( function ( base ) {
 
       _.defaults( settings, defaults );
 
-      base.init.call( self, $element, settings );
+      base.init.call( this, $element, settings );
 
       /**
        * A cache to store the height and width of the $element
@@ -111,7 +112,7 @@ Container = Switch.extend( function ( base ) {
        * @type Object
        * @public
        */
-      self.cache = {};
+      this.cache = {};
 
       /**
        * A jquery object to inject content into
@@ -119,110 +120,102 @@ Container = Switch.extend( function ( base ) {
        * @type {Object}
        * @public
        */
-      self.$target = null;
+      this.$target = null;
 
       target = settings.target;
 
       if( target ){
-        self.$target = $element.find( target );
+        this.$target = $element.find( target );
       } else {
-        self.$target = $element;
+        this.$target = $element;
       }
 
       /**
        * Loads content and then triggers an update event. Called on load event.
        * @method load
        * @private
-       * @param {Object} $target Jquery object for the target node
-       * @param {String|Object} source The source to load or obtain a URL from
+       * @param {String} url The URL to load
        * @param {String} method the method to be used when inserting content
        * @return {Object} Container
        */
-      function load( $target, source, method ){
-        var isUrl = helpers.isUrl( source ),
-          loadedContent,
-          tmpData,
-          url;
+      function load( event, url, method ){
+        var isUrl = helpers.isUrl( url ),
+          $target = $( event.target ),
+          content;
+
+        event.stopPropagation();
 
         if( !isUrl ){
-          if (typeof source === "object" && source.getUrl) {
-            url = source.getUrl();
-          }
-          else if (typeof source === "string") {
-            url = source;
-          }
-          else if ( $target.is( 'a' ) ){
+          if( $target.is( 'a' ) ){
             url = $target.attr( 'href' );
           }
 
-          // DO WE NEED THIS???
           if( !url && arguments.length > 1 ){
             method = url;
           }
         }
 
         if( url.indexOf( '#' ) === 0 ){
-          loadedContent = $( url ).html();
-          self.trigger( constants.events.UPDATE, [loadedContent, method] );
-          return self;
+          content = $( url ).html();
+          return self.trigger( constants.events.UPDATE, [content] );
         }
 
         if( settings.frame === true ){
-          loadedContent = '<iframe src="' + url + '"></iframe>';
-          self.trigger( constants.events.UPDATE, [loadedContent, method] );
-          return self;
+          content = '<iframe src="' + url + '"></iframe>';
+          return this.trigger( constants.events.UPDATED, [self] );
         }
 
-        self.removeState( constants.states.LOADED );
-        self.addState( constants.states.LOADING );
+        this.removeState( constants.states.LOADED );
+        this.addState( constants.states.LOADING );
 
         $.ajax( {
           url: url,
           success: function( data, textStatus, jXHR ){
-            var newContent,
+            var content,
               anchor = helpers.parseUri( url ).anchor;
 
             if( settings.selector ){
-              newContent = $( data ).find( settings.selector ).html();
+              content = $( data ).find( settings.selector ).html();
             } else if( anchor ){
-              newContent = $( data ).find( '#' + anchor ).html() || data;
+              content = $( data ).find( '#' + anchor ).html() || data;
             } else {
-              newContent = data;
+              content = data;
             }
 
             self.removeState( constants.states.LOADING );
             self.addState( constants.states.LOADED );
-            self.trigger( constants.events.UPDATE, [newContent, method] );
+            self.trigger( constants.events.UPDATED, [self] );
           },
           failure: function(){
            self.removeState( constants.states.LOADING ).addState( constants.states.ERRED );
           }
         } );
 
-        return self;
+        return this;
       }
 
       /*
        * Updates content on an update event
        * @method update
        * @private
-       * @param {Object} $target Jquery object for the target node
-       * @param {String} updateContent The content to set
+       * @param {Object} event The jQuery Event object
+       * @param {String} content The content to set
        * @param {String} method The method to use for setting the content.
        * This can specified as 'prepend' or 'append'. If theese are not
        * specified the content is replaced.
        * @return {Function} Container.setState
        */
-      function update( $target, updateContent, method ){
+      function update( event, content, method ){
+        event.stopPropagation();
         switch( method ){
           case 'append':
-            self.appendContent( updateContent );
+            self.appendContent( content );
             break;
           case 'prepend':
-            self.prependContent( updateContent );
+            self.prependContent( content );
             break;
           default:
-            self.setContent( updateContent );
+            self.setContent( content );
             break;
         }
       }
@@ -233,7 +226,7 @@ Container = Switch.extend( function ( base ) {
        * @public
        * @return {Array} contents
        */
-      self.getContent = function(){
+      this.getContent = function(){
         return content;
       };
 
@@ -244,23 +237,22 @@ Container = Switch.extend( function ( base ) {
        * @public
        * @return {Object} Container
        */
-      self.setContent = function( value ){
+      this.setContent = function( value ){
         content = value;
-
-        self.$target.html( content );
+        this.$target.html( content );
 
         if( settings.autoHeight ){
           delete this.cache.height;
-          self.setHeight( this.getHeight() );
+          this.setHeight( this.getHeight() );
         }
 
         if( settings.autoWidth ){
           delete this.cache.width;
-          self.setWidth( this.getWidth() );
+          this.setWidth( this.getWidth() );
         }
 
-        self.trigger( constants.events.UPDATED, $element );
-        return self;
+        this.trigger( constants.events.UPDATED, $element );
+        return this;
       };
 
       /**
@@ -270,9 +262,8 @@ Container = Switch.extend( function ( base ) {
        * @public
        * @return {Function} Container.setContent
        */
-      self.appendContent = function( value ){
-        self.setContent( content + value );
-        return self;
+      this.appendContent = function( value ){
+        return this.setContent( content + value );
       };
 
       /**
@@ -280,15 +271,15 @@ Container = Switch.extend( function ( base ) {
        * @method prepend Content
        * param {String} value The content to prepend.
        * @public
-       * @return {Function} self.setContent
+       * @return {Function} this.setContent
        */
-      self.prependContent = function( value ){
-        return self.setContent( value + content );
+      this.prependContent = function( value ){
+        return this.setContent( value + content );
       };
 
       if( settings.url ){
         //Load content from url
-        self.trigger( constants.events.LOAD );
+        this.trigger( constants.events.LOAD );
       } else {
         //Store the $elements content
         content = $element.html();
@@ -301,29 +292,14 @@ Container = Switch.extend( function ( base ) {
 
       //sets the width of the container automagically if autoHeight is set to true.
       if( settings.autoWidth ){
-        self.setWidth( self.getWidth() );
+        this.setWidth( this.getWidth() );
       }
 
       // //Bind update event to update
-      self.on( constants.events.UPDATE, function(event, content, method ) {
-        event.stopPropagation();
-        update( $( event.target ), content, method );
-      });
+      this.on( constants.events.UPDATE, update );
 
       //Bind load event to load
-      self.on( constants.events.LOAD, function(event, content, method ) {
-        event.stopPropagation();
-        //load( $(event.target), content, method );
-        var things = [$(event.target)];
-        if (content) {
-          things.push(content);
-        }
-        if (method) {
-          things.push(method);
-        }
-        load.apply(this, things);
-      });
-      
+      this.on( constants.events.LOAD, load );
     },
     /**
      * Returns the computed height of the Container; result has no units

@@ -6,9 +6,7 @@
  * @require Container
  * @version 0.1.4
  */
-
 var constants = require( 'lu/constants' ),
-  helpers = require( 'lu/helpers' ),
   Abstract = require( 'lu/Abstract' ),
   Container = require( 'lu/Container' ),
   Fiber = require( 'Fiber' ),
@@ -316,7 +314,7 @@ Tip = Abstract.extend( function (Abstract){
        */
       this.show = function(){
         if( rendered === FALSE ){
-          TipContainer.trigger( 'load', [href] );
+          TipContainer.trigger( 'load', href );
         } else {
           $tip.css( self.getPosition() );
           $tip.show();

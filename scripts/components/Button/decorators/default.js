@@ -8,13 +8,12 @@
 function DefaultDecorator( settings ){
   return function( base ){
     var self = this;
-    self.$element.on( settings.on, _.throttle( function( event ){
+    this.$element.on( settings.on, _.throttle( function( event ){
       if( !self.$element.is( 'button' ) ){
         self.$element.focus();
       }
       if( settings.action !== undefined ){
-        // this trigger should send params
-        self.trigger( settings.action, [self] );
+        self.trigger( settings.action );
       }
     }, settings.throttle ) );
   };

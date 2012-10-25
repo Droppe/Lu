@@ -16,12 +16,6 @@ List = Switch.extend( function( base ){
 
     defaults = {
       index: undefined
-    },
-
-    root = 'lu/List/decorators/',
-
-    decorators = {
-      viewport: root + 'viewport'
     };
 
   return {
@@ -42,19 +36,6 @@ List = Switch.extend( function( base ){
       _.defaults( settings, defaults );
 
       base.init.call( this, $element, settings );
-
-      var requirements = [];
-      if (settings.viewport) {
-        requirements.push(decorators.viewport);
-      }
-
-      require.ensure( requirements, function( require, module, exports ){
-        _.each( requirements, function( decorator, index ){
-          decorator = require( decorator )( settings );
-          Fiber.decorate( self, decorator );
-        } );
-        self.trigger( 'dependencies-resolved' );
-      } );
 
       /**
        * gets the 0 based index of the selected item.
@@ -119,6 +100,9 @@ List = Switch.extend( function( base ){
           $item,
           idx;
 
+        //this is a temp fix until the mutator can tell the list about new items
+        this.$items = this.items();
+
         //return if no item was passed in.
         if( item === undefined ){
           return this;
@@ -170,8 +154,9 @@ List = Switch.extend( function( base ){
 
         //an acceptable component was not found.
         if( !component ){
-          Lu.map( $item, 'Switch', function(){} );
-          Lu.execute( $item );
+          //Taking this out for now...
+          //Lu.map( $item, 'Switch', function(){} );
+          //Lu.execute( $item );
           component = $item.lu( 'getComponents' ).Switch;
         }
 
