@@ -14,7 +14,7 @@ function loadDecorator( settings ){
   return function( base ){
     var self = this;
 
-    this.on( constants.events.STATED, function( event, Component ){
+    self.on( constants.events.STATED, function( event, Component ){
       event.stopPropagation();
       if( Component.hasState( constants.states.LOADED ) ){
         self.disable();
