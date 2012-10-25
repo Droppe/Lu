@@ -10,7 +10,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>List</title>
+  <title>Flow</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
@@ -21,8 +21,11 @@
       width: 800px;
       margin: 50px auto;
     }
+    li {
+      padding: 20px;
+    }
     .lu-state-selected {
-      background-color: #00f;
+      background-color: #efefef;
     }
   </style>
 </head>
@@ -30,21 +33,35 @@
 <body>
 
   <div>
-    <ul data-lu="List">
-      <li data-lu="Switch" class="lu-state-selected">
-        <button data-lu="Button" data-lu-config="{
-          'Button' : {
-            action: 'select'
-          }
-        }">Sherlock</button>
-      </li>
-      <li>
-        <button data-lu="Button:Select">Watson</button>
-      </li>
-      <li>
-        <button data-lu="Button:Select">Moriarty</button>
-      </li>
-    </ul>
+      <ul data-lu="List">
+        <li id="jack" class="lu-state-selected item" data-lu="Switch">
+          <h2>Jack</h2>
+          <p>Once upon a time, in a galaxy far far away, little Jack Horner sat in a corner.</p>
+          <p>What should he do?</p>
+          <button aria-controls="curds" data-lu="Button:Select" type="button">Eat His Curds and Weigh</button>
+          <br/>
+          <button aria-controls="pie" data-lu="Button:Select" type="button">Be Eating of a Christmas Pie</button>
+        </li>
+        <li id="curds" class="item">
+          <h2>Curds and Weigh</h2>
+          <p>Jack put his thumb in, and pulled out some cheese. He said 'what a good boy am I?'</p>
+          <button data-lu="Button:Previous">Go Back</button>
+          <br/>
+          <button data-lu="Button:Next" type="button">See What's Next</button>
+        </li>
+        <li id="pie" class="item">
+          <h2>Pie</h2>
+          <p>Jack put his thumb in, and pulled out a plum. He said 'what a good boy am I?'</p>
+          <button data-lu="Button:Previous" type="button">Go Back</button>
+          <br/>
+          <button data-lu="Button:Next" type="button">See What's Next &raquo;</button>
+        </li>
+        <li id="end" class="item">
+          <h2>The End</h2>
+          <p>Thanks for reading the story.</p>
+          <button aria-controls="sherlock" data-lu="Button:First" type="button">Go Back to the Beginning</button>
+        </li>
+      </ul>
   </div>
 
   <!-- Bootstrap:Util -->
@@ -64,7 +81,6 @@
 
     Inject.setExpires( 0 );
     Inject.clearCache();
-    Inject.enableDebug("sourceMap");
     Inject.setModuleRoot( 'http://localhost:1337/' );
 
     window.LU_DEBUG = 5;

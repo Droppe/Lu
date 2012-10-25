@@ -7,7 +7,6 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch = require( 'lu/Switch' ),
-  Fiber = require( 'Fiber' ),
   List;
 
 List = Switch.extend( function( base ){
@@ -101,6 +100,9 @@ List = Switch.extend( function( base ){
           $item,
           idx;
 
+        //this is a temp fix until the mutator can tell the list about new items
+        this.$items = this.items();
+
         //return if no item was passed in.
         if( item === undefined ){
           return this;
@@ -152,8 +154,9 @@ List = Switch.extend( function( base ){
 
         //an acceptable component was not found.
         if( !component ){
-          Lu.map( $item, 'Switch', function(){} );
-          Lu.execute( $item );
+          //Taking this out for now...
+          //Lu.map( $item, 'Switch', function(){} );
+          //Lu.execute( $item );
           component = $item.lu( 'getComponents' ).Switch;
         }
 

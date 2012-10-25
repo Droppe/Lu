@@ -10,34 +10,35 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>Examples</title>
+  <title>Tip</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
 
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/base.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/layout.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/skeleton.css">
+
+
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: 50px auto;
+    }
+    .lu-state-selected {
+      background-color: #00f;
+    }
+  </style>
 </head>
 
 <body>
 
   <div>
 
-    <h1>Examples of Lu Components</h1>
+    <!-- YOUR CODE HERE -->
 
-    <ul>
-      <li><a href="accordion.html">Accordion</a></li>
-      <li><a href="buttons.html">Buttons</a></li>
-      <li><a href="carousel.html">Carousel</a></li>
-      <li><a href="list.html">List</a></li>
-      <li><a href="viewport.html">Viewport (List/Carousel)</a></li>
-      <li><a href="switch.html">Switch</a></li>
-      <li><a href="tabs.html">Tabs w/ notify</a></li>
-      <li><a href="tabs.html">Tabs w/ observe</a></li>
-      <li><a href="tip.html">Tip</a></li>
-      <li><a href="container.html">Container</a></li>
-      <li><a href="dialog.html">Dialog</a></li>
-      <li><a href="placeholder.html">Placeholder</a></li>
-    </ul>
+
   </div>
 
   <!-- Bootstrap:Util -->
@@ -57,8 +58,10 @@
 
     Inject.setExpires( 0 );
     Inject.clearCache();
-    Inject.enableDebug( "sourceMap" );
+    Inject.enableDebug("sourceMap");
     Inject.setModuleRoot( 'http://localhost:1337/' );
+
+
 
     window.LU_DEBUG = 5;
 
@@ -71,5 +74,4 @@
   </script>
 
 </body>
-
 </html>

@@ -8,7 +8,6 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch = require( 'lu/Switch' ),
-  Fiber = require( 'Fiber' ),
   Button;
 
 Button = Switch.extend( function( base ){
@@ -21,7 +20,7 @@ Button = Switch.extend( function( base ){
        * @property notify
        * @type {String}
        */
-      throttle: 300
+      throttle: 100
     },
     root = 'lu/Button/decorators/',
     decorators = {

@@ -93,9 +93,6 @@ function stateDecorator( settings ){
         case 'clear':
           self.clear();
           break;
-        case 'toggle':
-          self.toggle( states );
-          break;
         default:
           self.setState( states );
       }
@@ -229,6 +226,7 @@ function stateDecorator( settings ){
     if( cache[0] ){
       this.addState( cache[0] );
     }
+
     //Bind to 'state' events
     this.on( constants.events.STATE, state );
 

@@ -8,7 +8,6 @@ var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Abstract = require( 'lu/Abstract' ),
   stateDecorator = require( 'lu/decorators/state' ),
-  Fiber = require( 'Fiber' ),
   Switch;
 
 Switch = Abstract.extend( function ( base ) {
