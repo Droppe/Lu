@@ -1,22 +1,9 @@
-QUnit.config.autostart = false;
-
 function execute(){
   var $A = $( '#A' ),
     DropdownA = $A.lu( 'getComponent', 'Dropdown' ).instance,
     $btnA = DropdownA.$stateButton,
     aState = 'active',
     iState = 'inactive';
-
-  /**
-   * For whatever reason, simulated DOM events don't register inside the component until Dropdown fires initial stated event.
-   * Hence don't start tests until Dropdown fires it's first event. I believe this might be an ailment
-   * of the Switch component.
-   */
-  DropdownA.one( 'stated', function( evt, instance ){
-    if( instance.$element[0] === $A[0] ){
-      QUnit.start();
-    }
-  } );
 
   QUnit.module( 'Initial State' );
 

@@ -4,11 +4,12 @@ var constants = require( 'lu/constants' ),
   Dropdown;
 
 /**
- * Dropdown Lu Control v1.0.0 Experimental
- * Only for the brave, use at your own peril!
+ * Dropdown Lu Control
+ * Experimental feature, subject to change
  * @class Dropdown
  * @extends Switch
  * @constructor
+ * @version 0.1.0 experimental
  */
 Dropdown = Switch.extend( function ( base ) {
   var LIST_ATTR = '[data-lu=List]',
