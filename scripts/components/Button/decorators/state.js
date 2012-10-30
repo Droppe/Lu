@@ -38,6 +38,9 @@ function stateDecorator( settings ){
     }
 
     this.$element.on( settings.on, _.throttle( function( event ){
+      if( settings.preventDefault ){
+        event.preventDefault();
+      }
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }

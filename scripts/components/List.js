@@ -7,6 +7,7 @@
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' ),
   Switch = require( 'lu/Switch' ),
+  Fiber = require( 'Fiber' ),
   List;
 
 List = Switch.extend( function( base ){
