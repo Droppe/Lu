@@ -17,9 +17,6 @@
   },
   "main": "./scripts",
   "contributors": [{
-    "name": "Dom DeLuise",
-    "email": "domdomdom@gmail.com"
-  }, {
     "name": "Matt Edwards",
     "email": "matt.m.edwards@gmail.com"
   }, {
@@ -32,8 +29,20 @@
     "name": "Kiro Risk",
     "email": "kirollos@gmail.com"
   }, {
+    "name": "James Gourgoutis",
+    "email": "jimg@yojimg.net"
+  }, {
     "name": "Brendan Dean",
     "email": "brendean@gmail.com"
+  }, {
+    "name": "Andrew A. Lee",
+    "email": "starsthatfell@gmail.com"
+  }, {
+    "name": "Alvin Huynh",
+    "email": "ahuynh5190@gmail.com"
+  }, {
+    "name": "Yi-Fan Zhang",
+    "email": "yifanz@yahoo.com"
   }],
   "repository": {
     "type": "git",
