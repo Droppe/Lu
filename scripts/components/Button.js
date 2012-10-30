@@ -161,10 +161,10 @@ Button = Switch.extend( function( base ){
      */
     disable: function(){
       var $element = this.$element;
-      if( $element.is( constants.HAS_A18_ATTRS ) ){
-        $element.attr( constants.DISABLED, 'disabled' );
-      }
       this.addState( constants.states.DISABLED );
+      if( $element.is( constants.HAS_A18_ATTRS ) ){
+        $element.prop( constants.DISABLED, true );
+      }
       return this;
     },
 
@@ -179,7 +179,7 @@ Button = Switch.extend( function( base ){
     enable: function(){
       var $element = this.$element;
       if( $element.is( constants.HAS_A18_ATTRS ) ){
-        $element.attr( constants.DISABLED, null );
+        $element.prop( constants.DISABLED, false );
       }
       this.removeState( constants.states.DISABLED );
       return this;
