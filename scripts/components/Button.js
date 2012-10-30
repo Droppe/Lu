@@ -18,10 +18,17 @@ Button = Switch.extend( function( base ){
        * The time in milliseconds in which to throttle events.
        * Events will only be triggred once per throttle time.
        * This is useful when timing complex css transitions.
-       * @property notify
-       * @type {String}
+       * @property throttle
+       * @type {Number}
        */
-      throttle: 300
+      throttle: 100,
+      /**
+       * By default the default is prevented setting this to true
+       * allows the hash to be updated and urls to resolve
+       * @property preventDefault
+       * @type {Number}
+       */
+      preventDefault: true
     },
     root = 'lu/Button/decorators/',
     decorators = {
@@ -154,10 +161,10 @@ Button = Switch.extend( function( base ){
      */
     disable: function(){
       var $element = this.$element;
-      if( $element.is( constants.HAS_A18_ATTRS ) ){
-        $element.attr( constants.DISABLED, 'disabled' );
-      }
       this.addState( constants.states.DISABLED );
+      if( $element.is( constants.HAS_A18_ATTRS ) ){
+        $element.prop( constants.DISABLED, true );
+      }
       return this;
     },
 
@@ -172,7 +179,7 @@ Button = Switch.extend( function( base ){
     enable: function(){
       var $element = this.$element;
       if( $element.is( constants.HAS_A18_ATTRS ) ){
-        $element.attr( constants.DISABLED, null );
+        $element.prop( constants.DISABLED, false );
       }
       this.removeState( constants.states.DISABLED );
       return this;

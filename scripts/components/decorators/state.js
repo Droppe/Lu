@@ -40,6 +40,10 @@ function stateDecorator( settings ){
     } );
 
     $element.removeClass( removed.join( ' ' ) ).addClass( classes.join( ' ' ) );
+
+    window.setTimeout( function(){
+      //allow browser re-flow
+    }, 1 );
   }
 
   function getAppliedStates( $element ){
