@@ -18,10 +18,17 @@ Button = Switch.extend( function( base ){
        * The time in milliseconds in which to throttle events.
        * Events will only be triggred once per throttle time.
        * This is useful when timing complex css transitions.
-       * @property notify
-       * @type {String}
+       * @property throttle
+       * @type {Number}
        */
-      throttle: 300
+      throttle: 100,
+      /**
+       * By default the default is prevented setting this to true
+       * allows the hash to be updated and urls to resolve
+       * @property preventDefault
+       * @type {Number}
+       */
+      preventDefault: true
     },
     root = 'lu/Button/decorators/',
     decorators = {

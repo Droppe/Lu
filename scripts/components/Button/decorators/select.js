@@ -10,7 +10,6 @@ var constants = require( 'lu/constants' );
  * @private
  */
 function selectDecorator( settings ){
-
   return function( base ){
     var self = this,
       isAnchor = self.$element.is( 'a' ),
@@ -46,6 +45,9 @@ function selectDecorator( settings ){
     } );
 
     this.$element.on( settings.on, _.throttle( function( event ){
+      if( settings.preventDefault ){
+        event.preventDefault();
+      }
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }
