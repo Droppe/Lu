@@ -8,9 +8,9 @@ var constants = require( 'lu/constants' );
  * @private
  */
 function playDecorator( settings ) {
-
   return function( base ){
     var self = this;
+
     this.on( constants.events.STATED, function( event, Component ){
       event.stopPropagation();
       if( Component.hasState( constants.states.PLAYING ) ){
