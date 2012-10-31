@@ -9,7 +9,7 @@ function viewportDecorator(settings) {
 
   return function (base) {
     var self = this,
-      slidingWindow = this.$element,
+      slidingWindow = settings.viewport.slidingWindow ? $( settings.viewport.slidingWindow ) : this.$element,
       viewportStartIndex = 0,
       // Settings
       pageSize = settings.viewport.pageSize || 1, // number of elements to show in the viewport
@@ -127,9 +127,7 @@ function viewportDecorator(settings) {
     }
 
     self.on(constants.events.SELECTED, function (event, Component) {
-      if (mode === "sliding") {
-        slideToSelected();
-      }
+      slideToSelected();
     });
 
     if (mode === "paging") {
