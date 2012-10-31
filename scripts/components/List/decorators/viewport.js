@@ -127,8 +127,10 @@ function viewportDecorator(settings) {
     }
 
     self.on(constants.events.SELECTED, function (event, Component) {
-      slideToSelected();
-    });
+      if (mode === "sliding") {
+        slideToSelected();
+      } 
+   });
 
     if (mode === "paging") {
       // In paging mode, the next/previous events will cause scrolling one page at a time
