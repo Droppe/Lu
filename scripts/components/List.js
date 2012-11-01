@@ -77,7 +77,7 @@ List = Switch.extend( function( base ){
 
         if( settings.items ){
           if( typeof settings.items === 'string' ){
-            $items = $element.children( settings.items );
+            $items = $element.find( settings.items );
           } else {
             $items = settings.items;
           }
