@@ -11,7 +11,7 @@ var constants = require( 'lu/constants' ),
  * @constructor
  */
 Abstract = Fiber.extend( function( base ){
-  var slice = Array.prototype.slice;
+  var slice = Array.prototype.slice,
 
   /**
    * Default configuration values
@@ -19,7 +19,7 @@ Abstract = Fiber.extend( function( base ){
    * @private
    * @type {Object}
    */
-  var defaults = {
+  defaults = {
     /**
      * A selector that matches nodes to observe
      * @property observe
@@ -83,6 +83,8 @@ Abstract = Fiber.extend( function( base ){
       this.$element = $element;
       this.eventStore = {};
 
+      this.decorators = [];
+
       if( settings.observe instanceof $ ){
         $observe = settings.observe;
       } else if( typeof settings.observe === 'string' ){
@@ -116,6 +118,8 @@ Abstract = Fiber.extend( function( base ){
         event = constants.eventPrefix + arguments[0];
 
       args.splice( 0, 1, event );
+
+      console.log(event);
 
       addToEventStore.call( this, event, 'on' );
       this.$element.on.apply( this.$element, args );

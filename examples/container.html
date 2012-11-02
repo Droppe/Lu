@@ -35,6 +35,15 @@
     .lu-state-hidden {
       display: none;
     }
+    .lu-state-disabled {
+      opacity: 0.5;
+    }
+    .lu-state-loading {
+      border: 1px solid red;
+    }
+    .lu-state-loaded {
+      border: 1px solid green;
+    }
 
 
   </style>
@@ -75,16 +84,15 @@
     <button id="button3" data-lu="Button" data-lu-config="{
       'Button': {
         'notify': '#example',
-        'action': 'load', 
-        'url': 'container.html#example'
+        'action': 'load'
       }
     }">LOAD</button>
-    <a href="#stuff" id="button4" data-lu="Button" data-lu-config="{
+    <a href="ajax.txt" id="button4" data-lu="Button" data-lu-config="{
       'Button': {
         'notify': '#example',
         'action': 'load'
       }
-    }">LOAD</a>
+    }">LOAD MORE</a>
 
 
     </div>

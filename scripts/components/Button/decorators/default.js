@@ -8,14 +8,14 @@
 function DefaultDecorator( settings ){
   return function( base ){
     var self = this;
-    this.$element.on( settings.on, _.throttle( function( event ){
+    this.$element.on( settings.on, function( event ){
       if( !self.$element.is( 'button' ) ){
         self.$element.focus();
       }
       if( settings.action !== undefined ){
-        self.trigger( settings.action );
+        self.trigger( settings.action, {sender: self, content: self.getUrl()} );
       }
-    }, settings.throttle ) );
+    });
   };
 }
 
