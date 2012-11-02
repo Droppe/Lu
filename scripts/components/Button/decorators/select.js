@@ -10,23 +10,29 @@ var constants = require( 'lu/constants' );
  * @private
  */
 function selectDecorator( settings ){
-
   return function( base ){
-    var self = this;
+    var self = this,
+      isAnchor = self.$element.is( 'a' ),
+      isButton = self.$element.is( 'button' ),
+      $controls;
+
+    if( isAnchor ){
+      $controls = $( self.$element.attr( 'href' ) );
+    } else if( isButton ){
+      $controls = $( '#' + self.$element.attr( 'aria-controls' ) );
+    }
 
     this.on( constants.events.SELECTED, function( event, Component ){
       event.stopPropagation();
       if( Component.$items && Component.current ){
-        if( self.$element.closest( Component.$items ).is( Component.current().$element ) ){
-          self.disable();
-        } else if( self.$element.is( 'button' ) ) {
-          if( $( '#' + self.$element.attr( 'aria-controls' ) ).is( Component.current().$element ) ){
+        if( $controls.is( Component.$items ) ){
+          if( $controls.is( Component.current().$element ) ){
             self.disable();
           } else {
             self.enable();
           }
-        } else if( self.$element.is( 'a' ) ) {
-          if( $( self.$element.attr( 'href' ) ).is( Component.current().$element ) ){
+        } else {
+          if( self.$element.closest( Component.$items ).is( Component.current().$element ) ){
             self.disable();
           } else {
             self.enable();
@@ -35,9 +41,13 @@ function selectDecorator( settings ){
       } else {
         self.enable();
       }
+
     } );
 
     this.$element.on( settings.on, _.throttle( function( event ){
+      if( settings.preventDefault ){
+        event.preventDefault();
+      }
       if( self.$element.is( 'a' ) ){
         self.$element.focus();
       }

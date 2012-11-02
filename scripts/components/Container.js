@@ -138,6 +138,7 @@ Container = Switch.extend( function ( base ) {
        * @return {Object} Container
        */
       function load( $target, source, method ){
+
         var isUrl,
           newContent,
           tmpData,
@@ -187,7 +188,6 @@ Container = Switch.extend( function ( base ) {
 
         // If we're not grabbing local content nor using an iframe, then perform an ajax call
          
-      
         $.ajax( {
           url: url,
           success: function( data, textStatus, jXHR ){
@@ -277,6 +277,7 @@ Container = Switch.extend( function ( base ) {
         self.trigger( constants.events.UPDATED, {
           sender: self
         } );
+
         return self;
       };
 

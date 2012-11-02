@@ -11,3 +11,6 @@ notifications:
   - jgourgoutis@linkedin.com
   - iheartweb@gmail.com
   - rockthemic12@gmail.com
+branches:
+  only:
+    - master

@@ -9,7 +9,6 @@ var constants = require( 'lu/constants' );
  * @private
  */
 function previousDecorator( settings ){
-
   return function( base ){
     var self = this;
 

@@ -21,7 +21,7 @@ function loadDecorator( settings ){
 
     _.defaults( settings, defaults );
 
-    this.on( constants.events.STATED, function( event, Component ){
+    self.on( constants.events.STATED, function( event, Component ){
       event.stopPropagation();
       console.log("stopping event " + event.type + " from " + $(event.target).attr("id"));
       // The config value settings.loadOnce can stop/allow additional loading...

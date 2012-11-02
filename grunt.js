@@ -41,8 +41,10 @@ module.exports = function(grunt) {
         'http://localhost:1337/test/$/$.html',
         'http://localhost:1337/test/list/list.html',
         'http://localhost:1337/test/tip/tip.html',
-        'http://localhost:1337/test/carousel/carousel.html'//,
-        //'http://localhost:1337/test/switch/switch.html'
+        'http://localhost:1337/test/carousel/carousel.html',
+        'http://localhost:1337/test/dropdown/dropdown.html',
+        'http://localhost:1337/test/switch/switch.html',
+        'http://localhost:1337/test/viewport/viewport.html'
       ]
     },
     concat: {
@@ -60,109 +62,117 @@ module.exports = function(grunt) {
         src: ['<banner>', 'scripts/mappers.js'],
         dest: 'dist/<%= pkg.version %>/mappers.js'
       },
-      a: {
+      StateDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/decorators/state.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/decorators/state.js'
       },
-      b: {
+      AbstractComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Abstract.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Abstract.js'
       },
-      c: {
+      ButtonComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button.js'
       },
-      d: {
+      DefaultButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/default.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/default.js'
       },
-      e: {
+      FirstButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/first.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/first.js'
       },
-      f: {
+      LastButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/last.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/last.js'
       },
-      g: {
+      LoadButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/load.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/load.js'
       },
-      h: {
+      NextButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/next.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/next.js'
       },
-      i: {
+      PauseButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/pause.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/pause.js'
       },
-      j: {
+      PlayButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/play.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/play.js'
       },
-      k: {
+      PreviousButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/previous.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/previous.js'
       },
-      l: {
+      SelectButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/select.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/select.js'
       },
-      m: {
+      StateButtonDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Button/decorators/state.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Button/decorators/state.js'
       },
-      n: {
+      CarouselComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Carousel.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Carousel.js'
       },
-      o: {
+      constants: {
         src: ['<banner>', 'scripts/<%= componentPath %>/constants.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/constants.js'
       },
-      p: {
+      ContainerComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Container.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Container.js'
       },
-      q: {
+      helpers: {
         src: ['<banner>', 'scripts/<%= componentPath %>/helpers.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/helpers.js'
       },
-      r: {
+      ListComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/List.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/List.js'
       },
-      s: {
+      SwitchComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Switch.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Switch.js'
       },
-      t: {
+      PlaceholderComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Placeholder.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Placeholder.js'
       },
-      u: {
+      FormElementComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/FormElement.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/FormElement.js'
       },
-      v: {
+      TipComponent: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Tip.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip.js'
       },
-      w: {
+      AboveTipDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Tip/decorators/above.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip/decorators/above.js'
       },
-      x: {
+      BelowTipDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Tip/decorators/below.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip/decorators/below.js'
       },
-      y: {
+      LeftTipDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Tip/decorators/left.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip/decorators/left.js'
       },
-      z: {
+      RightTipDecorator: {
         src: ['<banner>', 'scripts/<%= componentPath %>/Tip/decorators/right.js'],
         dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Tip/decorators/right.js'
+      },
+      ViewportListDecorator: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/List/decorators/viewport.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/List/decorators/viewport.js'
+      },
+      DropdownComponent: {
+        src: ['<banner>', 'scripts/<%= componentPath %>/Dropdown.js'],
+        dest: 'dist/<%= pkg.version %>/<%= componentPath %>/Dropdown.js'
       }
     },
     jshint: {
