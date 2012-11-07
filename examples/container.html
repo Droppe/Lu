@@ -59,7 +59,7 @@
       'Container': {
         'content': '#stuff',
         'method': 'replace',
-        'notify': 'button',
+        'notify': 'button, a',
         'frame': true
       }
     }">
@@ -84,28 +84,16 @@
     <button id="button3" data-lu="Button" data-lu-config="{
       'Button': {
         'notify': '#example',
-<<<<<<< HEAD
-        'action': 'load'
+        'action': 'load',
+        'loadOnce': false
       }
     }">LOAD</button>
     <a href="ajax.txt" id="button4" data-lu="Button" data-lu-config="{
-=======
-        'action': 'load', 
-        'url': 'container.html#example'
-      }
-    }">LOAD</button>
-    <a href="#stuff" id="button4" data-lu="Button" data-lu-config="{
->>>>>>> 4ab0fd78651787b19f37144decc2a7b016f633e9
       'Button': {
         'notify': '#example',
         'action': 'load'
       }
-<<<<<<< HEAD
-    }">LOAD MORE</a>
-=======
-    }">LOAD</a>
->>>>>>> 4ab0fd78651787b19f37144decc2a7b016f633e9
-
+    }"><strong>LOAD MORE</strong></a>
 
     </div>
 
