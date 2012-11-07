@@ -82,7 +82,6 @@ Abstract = Fiber.extend( function( base ){
 
       this.$element = $element;
       this.eventStore = {};
-
       this.decorators = [];
 
       if( settings.observe instanceof $ ){
@@ -118,8 +117,6 @@ Abstract = Fiber.extend( function( base ){
         event = constants.eventPrefix + arguments[0];
 
       args.splice( 0, 1, event );
-
-      console.log(event);
 
       addToEventStore.call( this, event, 'on' );
       this.$element.on.apply( this.$element, args );

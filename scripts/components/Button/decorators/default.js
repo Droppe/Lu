@@ -18,7 +18,7 @@ function DefaultDecorator( settings ){
       if( settings.action !== undefined ){
         self.trigger( settings.action, {sender: self, content: self.getUrl()} );
       }
-    }));
+    }, settings.throttle ));
   };
 }
 

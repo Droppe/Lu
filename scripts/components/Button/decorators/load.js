@@ -17,14 +17,12 @@ function loadDecorator( settings ){
         loadOnce: true
       };
 
-      console.log( "Decorating: " + this.$element.attr("id") );
-
     _.defaults( settings, defaults );
 
     self.on( constants.events.STATED, function( event, Component ){
       event.stopPropagation();
-      console.log("stopping event " + event.type + " from " + $(event.target).attr("id"));
-      // The config value settings.loadOnce can stop/allow additional loading...
+      
+      // The config value "settings.loadOnce" can stop/allow additional loading...
       if( settings.loadOnce && Component.hasState( constants.states.LOADED ) ){
         self.disable();
       }
