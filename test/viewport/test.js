@@ -1,8 +1,16 @@
 function execute(){
   var PagingList = $( '#list-paging' ).lu( 'getComponent', 'List' ),
+    PagingListPrevButton = $( '#list-paging-prev'),
+    PagingListNextButton = $( '#list-paging-next'),
     SlidingList = $( '#list-sliding' ).lu( 'getComponent', 'List' ),
+    SlidingListPrevButton = $( '#list-sliding-prev'),
+    SlidingListNextButton = $( '#list-sliding-next'),
     PagingCarousel = $( '#carousel-paging' ).lu( 'getComponent', 'Carousel' ),
-    SlidingCarousel = $( '#carousel-sliding' ).lu( 'getComponent', 'Carousel' );
+    PagingCarouselPrevButton = $( '#carousel-paging-prev'),
+    PagingCarouselNextButton = $( '#carousel-paging-next'),
+    SlidingCarousel = $( '#carousel-sliding' ).lu( 'getComponent', 'Carousel' )
+    SlidingCarouselPrevButton = $( '#carousel-sliding-prev'),
+    SlidingCarouselNextButton = $( '#carousel-sliding-next');
 
   QUnit.module( 'List Viewport Decorator Test' );
 
@@ -73,4 +81,32 @@ function execute(){
       start();
     });
   } );
+
+  QUnit.asyncTest( 'buttons', function(){
+
+    // Paging list
+    PagingListNextButton.click();
+    ok(PagingList.instance.index() === 5);
+    PagingListPrevButton.click();
+    ok(PagingList.instance.index() === 0);
+
+    // Sliding List
+    SlidingListNextButton.click();
+    ok(SlidingList.instance.index() === 1);
+    SlidingListPrevButton.click();
+    ok(SlidingList.instance.index() === 0); 
+
+    // Paging Carousel
+    PagingCarouselPrevButton.click();
+    ok(PagingCarousel.instance.index() === 9);
+    PagingCarouselNextButton.click();
+    ok(PagingCarousel.instance.index() === 0);
+
+    // Sliding Carousel
+    SlidingCarouselPrevButton.click();
+    ok(SlidingCarousel.instance.index() === 13); 
+    SlidingCarouselNextButton.click();
+    ok(SlidingCarousel.instance.index() === 0);
+    start(); 
+  } ); 
 }
