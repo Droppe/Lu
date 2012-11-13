@@ -77,7 +77,7 @@
   };
 
   //Create a new Mapper to contain default mappings for Lu.
-  var Mapper = new Lu.Mapper();
+  var Mapper = Lu.DefaultMapper = new Lu.Mapper();
 
   //Generic Mappers
   _.each( ['Switch', 'List', 'Carousel', 'Container'], function( id, index ){
@@ -88,18 +88,34 @@
     } );
   } );
 
+  // Coalesce the Viewport decorator for List/Carousel into one mapper function.
+  Mapper.register( function () {
+    var components = ['List', 'Carousel'];
+    var decorator = 'Viewport';
+    _.each(components, function (component) {
+      var key = component + ':' + decorator;
+      Lu.map(_.filter(Mapper.$scope, function (item) {
+        return ( item.getAttribute('data-lu').indexOf(key) > -1 );
+      }), component, function () {
+        this.hasDependencies = true;
+        // Default configs
+        this.settings.viewport = {
+          mode:'sliding',
+          pageSize:5,
+          threshold:0.8,
+          previewSize:0.25
+        };
+      });
+    });
+  });
+
   // Coalesce the buttons into one mapper function, because we care about performance,
   // saving bytes, and abhor redundancy.
   _.each( ['select', 'first', 'last', 'next', 'previous', 'load', 'play', 'pause', 'state'], function( action ) {
 
-    var scope = _.filter( Mapper.$scope, function( item ){
-      var nodeName = item.nodeName;
-      return ( nodeName === 'BUTTON' || nodeName === 'A' || nodeName === 'INPUT' );
-    } );
-
     Mapper.register( function(){
       var key = 'Button:' + action.charAt( 0 ).toUpperCase() + action.substring( 1 );
-      Lu.map( _.filter( scope, function( item ){
+      Lu.map( _.filter( Mapper.$scope, function( item ){
         return ( item.getAttribute( 'data-lu' ).indexOf( key ) > -1 );
       } ), 'Button', function(){
         this.settings.action = action;
@@ -109,14 +125,10 @@
     } );
   } );
 
-  // Tip (tooltip)
-  var tips = _.filter( Mapper.$scope, function( item ){
-    return ( item.getAttribute( 'data-lu' ).indexOf( 'Tip' ) > -1 );
-  } );
 
   Mapper.register( function(){
     var key = 'Tip';
-    Lu.map( _.filter( tips, function( item ){
+    Lu.map( _.filter( Mapper.$scope, function( item ){
       return ( _.indexOf( item.getAttribute( 'data-lu' ).split( ' ' ), key ) > -1 );
     } ), 'Tip', function(){
       this.settings.placement = 'Right';
@@ -126,11 +138,10 @@
   } );
 
   _.each( ['Above', 'Below', 'Left', 'Right'], function( placement ) {
-
     Mapper.register( function(){
       var key = 'Tip:' + placement;
-      Lu.map( _.filter( tips, function( item ){
-        return ( item.getAttribute( 'data-lu' ).indexOf( key ) > -1 );
+      Lu.map( _.filter( Mapper.$scope, function( item ){
+        return ( _.indexOf( item.getAttribute( 'data-lu' ).split( ' ' ), key ) > -1 );
       } ), 'Tip', function(){
         this.settings.placement = placement;
         this.key = key;
@@ -146,6 +157,13 @@
              ( item.nodeName === 'INPUT' || item.nodeName === 'TEXTAREA' ) &&
              item.getAttribute( 'placeholder' ) );
     } ), 'Placeholder' );
+  } );
+
+  //Dropdown
+  Mapper.register( function(){
+    Lu.map( _.filter( Mapper.$scope, function( item, index ){
+      return ( item.getAttribute( 'data-lu' ).indexOf( 'Dropdown' ) > -1 );
+    } ), 'Dropdown' );
   } );
 
   //Execute Default Mappers

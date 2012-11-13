@@ -1,4 +1,5 @@
 ;(function(context, undefined) {
+
 /*
 Inject
 Copyright 2011 LinkedIn
@@ -16,87 +17,185 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
-/** @constant the version of inject this is */
-var INJECT_VERSION = "0.4.0-pre";
-
-/** @constant a test to determine if this is the IE engine (needed for source in eval commands) */
+/**
+ * a test to determine if this is the IE engine (needed
+ * for source in eval commands)
+ * @constant
+ */
 var IS_IE = eval("/*@cc_on!@*/false");
 
-/** @constant a storagetoken identifier we use for the bucket (lscache) */
+/**
+ * a storagetoken identifier we use for the bucket (lscache)
+ * @constant
+ */
 var FILE_STORAGE_TOKEN = "INJECT";
 
-/** @constant the version of data storage schema for lscache */
+/**
+ * the version of data storage schema for lscache
+ * @constant
+ */
 var LSCACHE_SCHEMA_VERSION = 1;
 
-/** @constant the schema version string for validation of lscache schema */
+/**
+ * the schema version string for validation of lscache schema
+ * @constant
+ */
 var LSCACHE_SCHEMA_VERSION_STRING = "!version";
 
-/** @constant the cache version string for validation of developer lscache code */
+/**
+ * the cache version string for validation of developer lscache code
+ * @constant
+ */
 var LSCACHE_APP_KEY_STRING = "!appCacheKey";
 
-/** @constant AMD modules that are deferred have this set as their "arg[0]" as a way to flag */
+/**
+ * AMD modules that are deferred have this set
+ * as their "arg[0]" as a way to flag
+ * @constant
+ */
 var AMD_DEFERRED = "###DEFERRED###";
 
-/** @constant the namespace for inject() that is publicly reachable */
+/**
+ * the namespace for inject() that is publicly reachable
+ * @constant 
+ */
 var NAMESPACE = "Inject";
 
-/** @constant Regex for identifying things that end in *.js or *.txt */
+/**
+ * Regex for identifying things that end in *.js or *.txt
+ * @constant
+ */
 var FILE_SUFFIX_REGEX = /.*?\.(js|txt)(\?.*)?$/;
 
-/** @constant This is the basic suffix for JS files. When there is no extension, we add this if enabled */
+/**
+ * This is the basic suffix for JS files. When there is no
+ * extension, we add this if enabled
+ * @constant
+ */
 var BASIC_FILE_SUFFIX = ".js";
 
-/** @constant prefixes for URLs that begin with http/https */
+/** prefixes for URLs that begin with http/https
+ * @constant 
+ */
 var HOST_PREFIX_REGEX = /^https?:\/\//;
 
-/** @constant suffix for URLs used to capture everything up to / or the end of the string */
+/**
+ * suffix for URLs used to capture everything up to / or the
+ * end of the string
+ * @constant
+ */
 var HOST_SUFFIX_REGEX = /^(.*?)(\/.*|$)/;
 
 /**
- * @constant a regular expression for slicing a response from iframe communication into its parts
+ * a regular expression for slicing a response from iframe communication into its parts
  * (1) Anything up to a space (status code)
  * (2) Anything up to a space (moduleid)
  * (3) Any text up until the end of the string (file)
+ * @constant 
  **/
 var RESPONSE_SLICER_REGEX = /^(.+?)[\s]+([\w\W]+?)[\s]+([\w\W]+)$/m;
 
-/** @constant a regex to locate the function() opener */
+/**
+ * a regex to locate the function() opener
+ * @constant 
+ */
 var FUNCTION_REGEX = /^[\s\(]*function[^\(]*\(([^)]*)\)/;
 
-/** @constant a regex to locate newlines within a function body */
+/**
+ * a regex to locate newlines within a function body
+ * @constant
+ */
 var FUNCTION_NEWLINES_REGEX = /\/\/.*?[\r\n]|\/\*(?:.|[\r\n])*?\*\//g;
 
-/** @constant captures the body of a JS function */
+/**
+ * captures the body of a JS function
+ * @constant 
+ */
 var FUNCTION_BODY_REGEX = /[\w\W]*?\{([\w\W]*)\}/m;
 
-/** @constant locate whitespace within a function body */
+/**
+ * locate whitespace within a function body
+ * @constant 
+ */
 var WHITESPACE_REGEX = /\s+/g;
 
-/** @constant extract require() statements from within a larger string */
+/**
+ * extract require() statements from within a larger string
+ * @constant 
+ */
 var REQUIRE_REGEX = /(?:^|[^\w\$_.\(])require\s*\(\s*("[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*')\s*\)/g;
 
-/** @constant extract define() statements from within a larger string */
+/** 
+ * extract define() statements from within a larger string
+ * @constant 
+ */
 var DEFINE_EXTRACTION_REGEX = /(?:^|[\s]+)define[\s]*\([\s]*((?:"|')\S+(?:"|'))?,?[\s]*(?:\[([\w\W]+)\])?/g;
 
-/** @constant index of all commonJS builtins in a function arg collection */
+/** 
+ * index of all commonJS builtins in a function arg collection
+ * @constant 
+ */
 var BUILTINS = {require: true, exports: true, module: true};
 
-/** @constant a regex for replacing builtins and quotes */
+/**
+ * a regex for replacing builtins and quotes
+ * @constant 
+ */
 var BUILTINS_REPLACE_REGEX = /[\s]|"|'|(require)|(exports)|(module)/g;
 
-/** @constant capture anything that involves require*, aggressive to cut down the number of lines we analyze */
+/** 
+ * capture anything that involves require*, aggressive to cut
+ * down the number of lines we analyze
+ * @constant 
+ */
 var GREEDY_REQUIRE_REXEX = /require.*/;
 
-/** @constant match comments in our file (so we can strip during a static analysis) */
+/**
+ * match comments in our file (so we can strip during a static analysis)
+ * @constant 
+ */
 var JS_COMMENTS_REGEX = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
 
-/** @constant identifies a path as relative */
+/**
+ * identifies a path as relative
+ * @constant 
+ */
 var RELATIVE_PATH_REGEX = /^(\.{1,2}\/).+/;
 
-/** @constant identifies a path as absolute fully-qualified URL */
+/**
+ * identifies a path as absolute fully-qualified URL
+ * @constant 
+ */
 var ABSOLUTE_PATH_REGEX = /^([A-Za-z]+:)?\/\//;
 
-/** @constant run a test to determine if localstorage is available */
+/**
+ * The :// part of the protocol (to remove when splitting on / for URLs)
+ * @constant 
+ */
+var PROTOCOL_REGEX = /:\/\//;
+
+/**
+ * A string equivalent of the protocol regex
+ * @constant 
+ */
+var PROTOCOL_STRING = "://";
+
+/**
+ * A replacement for :// that doesn't contain slashes
+ * @constant 
+ */
+var PROTOCOL_EXPANDED_REGEX = /__INJECT_PROTOCOL_COLON_SLASH_SLASH__/;
+
+/**
+ * A string version of the expanded protocol regex
+ * @constant 
+ */
+var PROTOCOL_EXPANDED_STRING = "__INJECT_PROTOCOL_COLON_SLASH_SLASH__";
+
+/**
+ * run a test to determine if localstorage is available
+ * @constant 
+ */
 var HAS_LOCAL_STORAGE = (function() {
   try {
     localStorage.setItem("injectLStest", "ok");
@@ -126,36 +225,83 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
-// user configuration options (see reset)
+/**
+    User configuration options
+    @property {string} moduleRoot Base path for all module includes
+      @see InjectCore.setModuleRoot
+    @property {number} fileExpires Time (in seconds) for how long to preserve
+      items in cache @see InjectCore.setExpires
+    @property {boolean} useSuffix Specify true to append file suffix when
+      resolving an identifier to a URL.  @see RulesEngine.resolveUrl
+    @property {object} xd Contains properties related to cross-domain requests
+    @property {string|null} xd.relayFile URL to easyXDM provider document
+      @see <a href="https://github.com/oyvindkinsey/easyXDM">easyXDM</a>
+    @property {string|null} xd.relaySwf URL for easyXDM FlashTransport
+      @see <a href="https://github.com/oyvindkinsey/easyXDM">easyXDM</a>
+    @property {object} debug
+    @property {boolean} debug.sourceMap Specify true to enable source
+      mapping @see Executor
+    @property {boolean} debug.logging Specify true to enable logging
+      @see debugLog
+    @type {object}
+    @global
+ */
 var userConfig = {
   moduleRoot: null,
   fileExpires: 300,
   useSuffix: true,
   xd: {
-  	relayFile: null,
-  	relaySwf: null
+    relayFile: null,
+    relaySwf: null
   },
   debug: {
-  	sourceMap: false,
+    sourceMap: false,
     logging: false
   }
 };
 
-// context is our local scope. Should be "window"
+/**
+    The local scope
+    @global
+ */
 var context = this;
 
-// any mappings for module => handling defined by the user
+/**
+    Mappings for module => handling defined by the user.
+    @global
+  */
 var userModules = {};
 
-// a placeholder for the easyXDM lib if loaded
+/**
+    Reference to easyXDM library, if loaded.
+    @see <a href="http://www.easyxdm.net">easyXDM</a>
+    @global
+ */
 var easyXdm = false;
 
-// an XHR reference, loaded once
+/**
+    Returns whether or not 'property' exists in 'object' as a Function
+    or Object.
+    @param {object} object The object to inspect.
+    @param {*} property The property to assert exists in 'object'
+    @return {Boolean} true if 'property' exists in 'object', and false
+      otherwise.
+    @function
+    @global
+ */
 var isHostMethod = function(object, property) {
+  // Return if typeof is 'function', 'object' or 'unknown' (can occur for IE)
+  // See http://stackoverflow.com/questions/10982739/typeof-returning-unknown-in-ie
   var t = typeof object[property];
   return t == 'function' || (!!(t == 'object' && object[property])) || t == 'unknown';
 };
 
+/**
+    Returns object for doing async requests.
+    @return {XMLHttpRequest|ActiveXObject}
+    @function
+    @global
+ */
 var getXhr = (function(){
   if (isHostMethod(window, "XMLHttpRequest")) {
     return function(){
@@ -180,6 +326,14 @@ var getXhr = (function(){
   }
 }());
 
+/**
+    Calls the specified function in the specified scope.
+    @param {Function} fn The function to call.
+    @param {object} scope The scope to execute the function in.
+    @return {*} The result of calling fn.
+    @function
+    @global
+ */
 function proxy(fn, scope) {
   if (!scope) {
     throw new Error("proxying requires a scope");
@@ -192,17 +346,30 @@ function proxy(fn, scope) {
   }
 }
 
+/**
+    Apples fn to each item in given collection.
+    @param {*[]} collection An array of arbitrary elements.
+    @param {Function} fn A function that takes one argument.
+      Each element from 'collection' will be passed to 'fn'.
+    @function
+    @global
+ */
 function each(collection, fn) {
   for (var i = 0, len = collection.length; i < len; i++) {
     fn(collection[i]);
   }
 }
 
+/**
+    Function for logging debug output.
+    @type {Function}
+    @global
+ */
 var debugLog = function() {};
 // TODO: more robust logging solution
 (function() {
   var logs = [];
-  var canLog = (console && console.log && typeof(console.log) === "function");
+  var canLog = (typeof(console) !=="undefined" && console.log  && typeof(console.log) === "function");
   var doLog = function(origin, message) {
     if (userConfig.debug && userConfig.debug.logging) {
       console.log("## "+ origin +" ##" + "\n" + message);
@@ -239,6 +406,12 @@ governing permissions and limitations under the License.
  * @file This file contains the commonJS header and footers
 **/
 
+/**
+    CommonJS header with placeholders for Inject namespace, module ID,
+    module URI, function ID and pointcut before advice.
+    @type {string}
+    @global
+*/
 var commonJSHeader = ([
 '__INJECT_NS__.INTERNAL.execute.__FUNCTION_ID__ = function() {',
 '  with (window) {',
@@ -250,6 +423,13 @@ var commonJSHeader = ([
 '    __exe = function() {',
 '      __POINTCUT_BEFORE__'
 ]).join('\n');
+
+/**
+    CommonJS footer with placeholders for Inject namespace, exception, and
+    pointcut after advice.
+    @type {string}
+    @global
+*/
 var commonJSFooter = ([
 '      __POINTCUT_AFTER__',
 '    };',
@@ -542,273 +722,11 @@ var LOCAL_EASY_XDM = true;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/*jshint undef:true, browser:true */
-
-/**
- * Creates a namespace for the lscache functions.
- */
-var lscache = function() {
-
-  // Prefix for all lscache keys
-  var CACHE_PREFIX = 'lscache-';
-
-  // Suffix for the key name on the expiration items in localStorage
-  var CACHE_SUFFIX = '-cacheexpiration';
-
-  // expiration date radix (set to Base-36 for most space savings)
-  var EXPIRY_RADIX = 10;
-
-  // time resolution in minutes
-  var EXPIRY_UNITS = 60 * 1000;
-
-  // ECMAScript max Date (epoch + 1e8 days)
-  var MAX_DATE = Math.floor(8.64e15/EXPIRY_UNITS);
-
-  var cachedStorage;
-  var cachedJSON;
-  var cacheBucket = '';
-
-  // Determines if localStorage is supported in the browser;
-  // result is cached for better performance instead of being run each time.
-  // Feature detection is based on how Modernizr does it;
-  // it's not straightforward due to FF4 issues.
-  // It's not run at parse-time as it takes 200ms in Android.
-  function supportsStorage() {
-    var key = '__lscachetest__';
-    var value = key;
-
-    if (cachedStorage !== undefined) {
-      return cachedStorage;
-    }
-
-    try {
-      setItem(key, value);
-      removeItem(key);
-      cachedStorage = true;
-    } catch (exc) {
-      cachedStorage = false;
-    }
-    return cachedStorage;
-  }
-
-  // Determines if native JSON (de-)serialization is supported in the browser.
-  function supportsJSON() {
-    /*jshint eqnull:true */
-    if (cachedJSON === undefined) {
-      cachedJSON = (window.JSON != null);
-    }
-    return cachedJSON;
-  }
-
-  /**
-   * Returns the full string for the localStorage expiration item.
-   * @param {String} key
-   * @return {string}
-   */
-  function expirationKey(key) {
-    return key + CACHE_SUFFIX;
-  }
-
-  /**
-   * Returns the number of minutes since the epoch.
-   * @return {number}
-   */
-  function currentTime() {
-    return Math.floor((new Date().getTime())/EXPIRY_UNITS);
-  }
-
-  /**
-   * Wrapper functions for localStorage methods
-   */
-
-  function getItem(key) {
-    return localStorage.getItem(CACHE_PREFIX + cacheBucket + key);
-  }
-
-  function setItem(key, value) {
-    // Fix for iPad issue - sometimes throws QUOTA_EXCEEDED_ERR on setItem.
-    localStorage.removeItem(CACHE_PREFIX + cacheBucket + key);
-    localStorage.setItem(CACHE_PREFIX + cacheBucket + key, value);
-  }
-
-  function removeItem(key) {
-    localStorage.removeItem(CACHE_PREFIX + cacheBucket + key);
-  }
-
-  return {
-
-    /**
-     * Stores the value in localStorage. Expires after specified number of minutes.
-     * @param {string} key
-     * @param {Object|string} value
-     * @param {number} time
-     */
-    set: function(key, value, time) {
-      if (!supportsStorage()) return;
-
-      // If we don't get a string value, try to stringify
-      // In future, localStorage may properly support storing non-strings
-      // and this can be removed.
-      if (typeof value !== 'string') {
-        if (!supportsJSON()) return;
-        try {
-          value = JSON.stringify(value);
-        } catch (e) {
-          // Sometimes we can't stringify due to circular refs
-          // in complex objects, so we won't bother storing then.
-          return;
-        }
-      }
-
-      try {
-        setItem(key, value);
-      } catch (e) {
-        if (e.name === 'QUOTA_EXCEEDED_ERR' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-          // If we exceeded the quota, then we will sort
-          // by the expire time, and then remove the N oldest
-          var storedKeys = [];
-          var storedKey;
-          for (var i = 0; i < localStorage.length; i++) {
-            storedKey = localStorage.key(i);
-
-            if (storedKey.indexOf(CACHE_PREFIX + cacheBucket) === 0 && storedKey.indexOf(CACHE_SUFFIX) < 0) {
-              var mainKey = storedKey.substr((CACHE_PREFIX + cacheBucket).length);
-              var exprKey = expirationKey(mainKey);
-              var expiration = getItem(exprKey);
-              if (expiration) {
-                expiration = parseInt(expiration, EXPIRY_RADIX);
-              } else {
-                // TODO: Store date added for non-expiring items for smarter removal
-                expiration = MAX_DATE;
-              }
-              storedKeys.push({
-                key: mainKey,
-                size: (getItem(mainKey)||'').length,
-                expiration: expiration
-              });
-            }
-          }
-          // Sorts the keys with oldest expiration time last
-          storedKeys.sort(function(a, b) { return (b.expiration-a.expiration); });
-
-          var targetSize = (value||'').length;
-          while (storedKeys.length && targetSize > 0) {
-            storedKey = storedKeys.pop();
-            removeItem(storedKey.key);
-            removeItem(expirationKey(storedKey.key));
-            targetSize -= storedKey.size;
-          }
-          try {
-            setItem(key, value);
-          } catch (e) {
-            // value may be larger than total quota
-            return;
-          }
-        } else {
-          // If it was some other error, just give up.
-          return;
-        }
-      }
-
-      // If a time is specified, store expiration info in localStorage
-      if (time) {
-        setItem(expirationKey(key), (currentTime() + time).toString(EXPIRY_RADIX));
-      } else {
-        // In case they previously set a time, remove that info from localStorage.
-        removeItem(expirationKey(key));
-      }
-    },
-
-    /**
-     * Retrieves specified value from localStorage, if not expired.
-     * @param {string} key
-     * @return {string|Object}
-     */
-    get: function(key) {
-      if (!supportsStorage()) return null;
-
-      // Return the de-serialized item if not expired
-      var exprKey = expirationKey(key);
-      var expr = getItem(exprKey);
-
-      if (expr) {
-        var expirationTime = parseInt(expr, EXPIRY_RADIX);
-
-        // Check if we should actually kick item out of storage
-        if (currentTime() >= expirationTime) {
-          removeItem(key);
-          removeItem(exprKey);
-          return null;
-        }
-      }
-
-      // Tries to de-serialize stored value if its an object, and returns the normal value otherwise.
-      var value = getItem(key);
-      if (!value || !supportsJSON()) {
-        return value;
-      }
-
-      try {
-        // We can't tell if its JSON or a string, so we try to parse
-        return JSON.parse(value);
-      } catch (e) {
-        // If we can't parse, it's probably because it isn't an object
-        return value;
-      }
-    },
-
-    /**
-     * Removes a value from localStorage.
-     * Equivalent to 'delete' in memcache, but that's a keyword in JS.
-     * @param {string} key
-     */
-    remove: function(key) {
-      if (!supportsStorage()) return null;
-      removeItem(key);
-      removeItem(expirationKey(key));
-    },
-
-    /**
-     * Returns whether local storage is supported.
-     * Currently exposed for testing purposes.
-     * @return {boolean}
-     */
-    supported: function() {
-      return supportsStorage();
-    },
-
-    /**
-     * Flushes all lscache items and expiry markers without affecting rest of localStorage
-     */
-    flush: function() {
-      if (!supportsStorage()) return;
-
-      // Loop in reverse as removing items will change indices of tail
-      for (var i = localStorage.length-1; i >= 0 ; --i) {
-        var key = localStorage.key(i);
-        if (key.indexOf(CACHE_PREFIX + cacheBucket) === 0) {
-          localStorage.removeItem(key);
-        }
-      }
-    },
-    
-    /**
-     * Appends CACHE_PREFIX so lscache will partition data in to different buckets.
-     * @param {string} bucket
-     */
-    setBucket: function(bucket) {
-      cacheBucket = bucket;
-    },
-    
-    /**
-     * Resets the string being appended to CACHE_PREFIX so lscache will use the default storage behavior.
-     */
-    resetBucket: function() {
-      cacheBucket = '';
-    }
-  };
-}();
+/** @ignore */
+var lscache=function(){function k(){if(void 0!==g)return g;try{l("__lscachetest__","__lscachetest__"),f("__lscachetest__"),g=!0}catch(a){g=!1}return g}function o(){void 0===j&&(j=null!=window.JSON);return j}function l(a,b){localStorage.removeItem(e+c+a);localStorage.setItem(e+c+a,b)}function f(a){localStorage.removeItem(e+c+a)}var e="lscache-",p=Math.floor(144E9),g,j,c="";return{set:function(a,b,h){if(k()){if("string"!==typeof b){if(!o())return;try{b=JSON.stringify(b)}catch(g){return}}try{l(a,b)}catch(j){if("QUOTA_EXCEEDED_ERR"===
+j.name||"NS_ERROR_DOM_QUOTA_REACHED"===j.name){for(var m=[],d,i=0;i<localStorage.length;i++)if(d=localStorage.key(i),0===d.indexOf(e+c)&&0>d.indexOf("-cacheexpiration")){d=d.substr((e+c).length);var n=localStorage.getItem(e+c+(d+"-cacheexpiration")),n=n?parseInt(n,10):p;m.push({key:d,size:(localStorage.getItem(e+c+d)||"").length,expiration:n})}m.sort(function(a,b){return b.expiration-a.expiration});for(i=(b||"").length;m.length&&0<i;)d=m.pop(),f(d.key),f(d.key+"-cacheexpiration"),i-=d.size;try{l(a,
+b)}catch(q){return}}else return}h?l(a+"-cacheexpiration",(Math.floor((new Date).getTime()/6E4)+h).toString(10)):f(a+"-cacheexpiration")}},get:function(a){if(!k())return null;var b=a+"-cacheexpiration",h=localStorage.getItem(e+c+b);if(h&&(h=parseInt(h,10),Math.floor((new Date).getTime()/6E4)>=h))return f(a),f(b),null;a=localStorage.getItem(e+c+a);if(!a||!o())return a;try{return JSON.parse(a)}catch(g){return a}},remove:function(a){if(!k())return null;f(a);f(a+"-cacheexpiration")},supported:function(){return k()},
+flush:function(){if(k())for(var a=localStorage.length-1;0<=a;--a){var b=localStorage.key(a);0===b.indexOf(e+c)&&localStorage.removeItem(b)}},setBucket:function(a){c=a},resetBucket:function(){c=""}}}();
 /*
 Inject
 Copyright 2011 LinkedIn
@@ -856,9 +774,11 @@ else {
 }
 })();
 
-/*
-Class.js configuration
-*/
+/**
+    Class.js instance
+    @type {object}
+    @global
+ */
 var Class = this.Class.noConflict();
 /*
 Inject
@@ -877,11 +797,30 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
+/**
+ * The analyzer module handles extract the clean dependencies list 
+ * from a given file and supports remove buildin modules from a
+ * given module list
+ * @file
+**/
 var Analyzer;
 (function() {
   var AsStatic = Class.extend(function() {
     return {
+      /**
+       * analyzer initialization
+       * @constructs Analyzer
+       */
       init: function() {},
+      
+      /**
+       * Clean up moduleIds by removing all buildin modules 
+       * (requie, exports, module) from a given module list
+       * @method Analyzer.stripBuiltins
+       * @param {Array} modules - a dirty list of modules
+       * @public
+       * @returns {Array} a clean list of modules without buildins
+       */
       stripBuiltins: function(modules) {
         var strippedModuleList = [];
         var moduleId;
@@ -892,7 +831,18 @@ var Analyzer;
           }
         }
         return strippedModuleList;
-      },    
+      },
+      
+      /**
+       * Extract the clean dependency requires from a given file as
+       * String, remove all buildin requires, merge requires from
+       * AMD define purpose
+       * @method Analyzer.extractRequires
+       * @param {String} file - a string of a file
+       * @public
+       * @returns {Array} a clean list of dependency requires from a 
+       * module file
+       */
       extractRequires: function(file) {
         var requires = [];
         var requireMatches = null;
@@ -910,7 +860,9 @@ var Analyzer;
           }
           uniques[term] = true;
         };
-
+        
+        // remove comment lines from the file to avoid adding
+        // any requires from comments
         file = file.replace(JS_COMMENTS_REGEX, "");
 
         // handle runtime require statements
@@ -919,7 +871,7 @@ var Analyzer;
         }
         if (dirtyRuntimeRequires.length > 0) {
           try {
-            eval([dirtyRuntimeRequires.join(";"), "//@ sourceURL=inject-analyzer.js"].join("\n"));
+            eval([dirtyRuntimeRequires.join(";"), "//@ sourceURL=Inject-Analyzer.js"].join("\n"));
           }
           catch(err) {
             throw new Error("Invalid require() syntax found in file: " + dirtyRuntimeRequires.join(";"));
@@ -985,6 +937,12 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
+
+/**
+* Communicator handles the logic for 
+* downloading and executing required files and dependencies
+* @file
+**/
 var Communicator;
 (function() {
   var AsStatic = Class.extend(function() {
@@ -995,27 +953,66 @@ var Communicator;
 
     var socket;
 
+    /**
+    * Clear the records to socket connections and 
+    * downloaded files
+    * @function
+    * @private
+    **/
     function clearCaches() {
       socketConnectionQueue = [];
       downloadCompleteQueue = {};      
     }
 
+    /**
+    * Write file contents to local storage
+    * @function
+    * @param {string} url - url to use as a key to store file content
+    * @param {string} contents file contents to be stored in cache
+    * @private
+    * @returns a function adhearing to the lscache set() method
+    **/
     function writeToCache(url, contents) {
       // lscache and passthrough
       return lscache.set(url, contents, userConfig.fileExpires);
     }
 
+    /**
+    * read cached file contents from local storage
+    * @function
+    * @param {string} url - url key that the content is stored under
+    * @private
+    * @returns the content that is stored under the url key
+    * 
+    **/
     function readFromCache(url) {
       // lscache and passthrough
       return lscache.get(url);
     }
 
+    /**
+    * Utility function to cleanup Host name by removing leading 
+    * http or https string
+    * @function
+    * @param {string} host - The host name to trim.
+    * @private
+    * @returns hostname without leading http or https string
+    **/
     function trimHost(host) {
       host = host.replace(HOST_PREFIX_REGEX, "").replace(HOST_SUFFIX_REGEX, "$1");
       return host;
     }
 
-    // when a file completes, resolve all callbacks in its queue
+    /**
+    * function that resolves all callbacks that are associated 
+    * to the loaded file
+    * @function
+    * @param {string} moduleId - The id of the module that has been loaded
+    * @param {string} url - The location of the module that has loaded
+    * @param {int} statusCode - The result of the attempt to load the file at url
+    * @param {string} contents - The contents that were loaded from url
+    * @private
+    **/
     function resolveCompletedFile(moduleId, url, statusCode, contents) {
       statusCode = 1*statusCode;
       debugLog("Communicator ("+url+")", "status "+statusCode+". Length: "+((contents) ? contents.length : "NaN"));
@@ -1040,7 +1037,12 @@ var Communicator;
       downloadCompleteQueue[url] = [];
     }
 
-    // set up our easyXDM socket
+    /**
+    * Creates an easyXDM socket
+    * @function
+    * @private
+    * @returns and instance of a easyXDM Socket
+    **/
     function createSocket() {
       var relayFile = userConfig.xd.relayFile;
       var relaySwf = userConfig.xd.relaySwf || "";
@@ -1071,10 +1073,24 @@ var Communicator;
       });
     }
 
-    // these are our two senders, either via easyXDM or via standard xmlHttpRequest
+    /**
+    * Creates a standard xmlHttpRequest
+    * @function
+    * @param {string} moduleId - id of the module for the request
+    * @param {string} url - url where the content is located
+    * @private
+    **/
     function sendViaIframe(moduleId, url) {
       socket.postMessage(moduleId + "__INJECT_SPLIT__" + url);
     }
+
+    /**
+    * Get contents via xhr for cross-domain requests
+    * @function
+    * @param {string} moduleId - id of the module for the request
+    * @param {string} url - url where the content is located
+    * @private
+    **/
     function sendViaXHR(moduleId, url) {
       var xhr = getXhr();
       xhr.open("GET", url);
@@ -1087,12 +1103,32 @@ var Communicator;
     }
 
     return {
+      /**
+      *   The Communicator object is meant to be instantiated once, and have its
+      *   reference assigned to a location outside of the closure.
+      *   @constructs Communicator
+      **/
       init: function() {
         this.clearCaches();
       },
+
+      /**
+      * clear list of socket connections and list of downloaded files
+      * @method Communicator.clearCaches
+      * @public
+      */
       clearCaches: function() {
         clearCaches();
       },
+
+      /**
+      * retrieve file via download or cache keyed by the given url
+      * @method Communicator.get
+      * @param {string} moduleId - The id of the module to be fetched
+      * @param {string} url - The location of the script to be fetched
+      * @param {object} callback - The function callback to execute after the file is retrieved and loaded
+      * @public
+      */
       get: function(moduleId, url, callback) {
         if (!downloadCompleteQueue[url]) {
           downloadCompleteQueue[url] = [];
@@ -1157,18 +1193,67 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
+/**
+ * The executor module handles the raw JS execution and sandboxing
+ * of modules when they are ran. The resulting exports are cached
+ * here for later. The executor is also the authority on what
+ * modules have been AMD-defined, are broken, or contain circular
+ * references.
+ * @file
+**/
 var Executor;
 (function() {
+
+  /**
+   * the document head
+   * @private
+   * @type {boolean}
+   */
   var docHead = false;
+
+  /**
+   * on error, this offset represents the delta between actual
+   * errors and the reported line
+   * @private
+   * @type {int}
+   */
   var onErrorOffset = 0;
+
+  /**
+   * A test script designed to generate a known error
+   * @private
+   * @type {int}
+   */
   var testScript = 'function Inject_Test_Known_Error() {\n  function nil() {}\n  nil("Known Syntax Error Line 3";\n}';
+  
+  /**
+   * the old onerror object for restoring
+   * @private
+   * @type {*}
+   */
   var initOldError = context.onerror;
+
+  /**
+   * the test script node is a node containing the test script,
+   * which will trigger an error on injection
+   * @private
+   * @type {Node}
+   */
   var testScriptNode = createEvalScript(testScript);
 
   // capture document head
   try { docHead = document.getElementsByTagName("head")[0]; }
   catch(e) { docHead = false; }
 
+  /**
+   * create a script node containing code to execute when
+   * placed into the page. IE behaves differently from other
+   * browsers, which is why the logic has been encapsulated into
+   * a function.
+   * @function
+   * @param {String} code - the code to create a node with
+   * @private
+   */
   function createEvalScript(code) {
     var scr = document.createElement("script");
     scr.type = "text/javascript";
@@ -1179,8 +1264,16 @@ var Executor;
     return scr;
   }
 
+  /**
+   * remove an inserted script node from the page.
+   * It is put into a setTimeout call so that it will
+   * happen after all other code in queue has completed.
+   * @function
+   * @param {node} node - the HTML node to clean
+   * @private
+   */
   function cleanupEvalScriptNode(node) {
-    window.setTimeout(function() {
+    context.setTimeout(function() {
       if (docHead) {
         return docHead.removeChild(node);
       }
@@ -1199,6 +1292,16 @@ var Executor;
   context.onerror = initOldError;
   // test script completion
 
+  /**
+   * extract line numbers from an exception.
+   * it turns out that an exception can have an error line
+   * in multiple places. If there is e.lineNumber, then we
+   * can use that. Otherwise, we deconstruct the stack and
+   * locate the trace line with a line number
+   * @function
+   * @param {Exception} e - the exception to get a line number from
+   * @private
+   */
   function getLineNumberFromException(e) {
     var lines;
     var phrases;
@@ -1215,8 +1318,23 @@ var Executor;
     }
   }
 
+  /**
+   * execute a javascript module after wrapping it in sandbox code
+   * this way, the entire module process is encapsulated
+   * The options contain:
+   * <pre>
+   * moduleId     - the id of the module
+   * functionId   - the anonymous function id
+   * preamble     - the sandbox preamble code
+   * epilogue     - the sandbox epilogue code
+   * originalCode - the original unmodified code
+   * url          - the URL used to retrieve the module
+   * </pre>
+   * @function
+   * @param {String} code - the code to execute
+   * @param {Object} options - a collection of options
+   */
   function executeJavaScriptModule(code, options) {
-    var oldError = context.onerror;
     var errorObject = null;
     var sourceString = IS_IE ? "" : "//@ sourceURL=" + options.url;
     var result;
@@ -1235,10 +1353,17 @@ var Executor;
     // add source string in sourcemap compatible browsers
     code = [code, sourceString].join("\n");
 
-    // create a temp error handler for exactly this run of code
-    // we use this for syntax error handling. It's an inner function
-    // because we need to set the universal "errorObject" object
-    // so we don't try and execute it later
+    /**
+     * a temp error handler that lasts for the duration of this code
+     * run. It allows us to catch syntax error handling in this specific
+     * code execution. It sets an errorObject via closure so that
+     * we know we entered an error state
+     * @function
+     * @param {string} err - the error string
+     * @param {string} where - the file with the error
+     * @param {int} line - the line number of the error
+     * @param {string} type - the type of error (runtime, parse)
+     */
     var tempErrorHandler = function(err, where, line, type) {
       var actualErrorLine =  line - options.preambleLength;
       var originalCodeLength = options.originalCode.split("\n").length;
@@ -1259,8 +1384,6 @@ var Executor;
       errorObject = new Error(message);
       errorObject.line = actualErrorLine;
       errorObject.stack = null;
-
-      context.onerror = oldError;
 
       return true;
     };
@@ -1294,7 +1417,7 @@ var Executor;
           // there is nothing to run, so there must have been an uncaught
           // syntax error (firefox). 
           try {
-            try { eval("+\n//@ sourceURL=inject-executor-line.js"); } catch (ee) { relativeE = ee; }
+            try { eval("+\n//@ sourceURL=Inject-Executor-line.js"); } catch (ee) { relativeE = ee; }
             eval(toExec);
           }
           catch(e) {
@@ -1310,7 +1433,7 @@ var Executor;
         else {
           // again, we are creating a "relativeE" to capture the eval line
           // this allows us to get accurate line numbers in firefox
-          try { eval("+\n//@ sourceURL=inject-executor-line.js"); } catch (ee) { relativeE = ee; }
+          try { eval("+\n//@ sourceURL=Inject-Executor-line.js"); } catch (ee) { relativeE = ee; }
           eval(toExec);
         }
         
@@ -1349,6 +1472,9 @@ var Executor;
       result.error = errorObject;
     }
 
+    // clean up our error handler
+    context.onerror = initOldError;
+
     // clean up the function or object we globally created if it exists
     if(context.Inject.INTERNAL.execute[options.functionId]) {
       delete context.Inject.INTERNAL.execute[options.functionId];
@@ -1361,9 +1487,19 @@ var Executor;
   var AsStatic = Class.extend(function() {
     var functionCount = 0;
     return {
+      /**
+       * Create the executor and initialize its caches
+       * @constructs Executor
+       */
       init: function() {
         this.clearCaches();
       },
+
+      /**
+       * Clear all the caches for the executor
+       * @method Executor.clearCaches
+       * @public
+       */
       clearCaches: function() {
         // cache of resolved exports
         this.cache = {};
@@ -1383,18 +1519,51 @@ var Executor;
         // the stack of AMD define functions, because they "could" be anonymous
         this.anonymousAMDStack = [];
       },
+
+      /**
+       * Define the executing module by a moduleId and path.
+       * when using AMD style defines with just CommonJS
+       * wrappers, it's important to know what module we are
+       * currently trying to run.
+       * @method Executor.defineExecutingModuleAs
+       * @param {string} moduleId - the module ID being ran
+       * @param {string} path - the path for the current module
+       * @public
+       */
       defineExecutingModuleAs: function(moduleId, path) {
         return this.anonymousAMDStack.push({
           id: moduleId,
           path: path
         });
       },
+
+      /**
+       * Remove the currently executing module from the define stack
+       * @method Executor.undefineExecutingModule
+       * @public
+       */
       undefineExecutingModule: function() {
         return this.anonymousAMDStack.pop();
       },
+
+      /**
+       * Get the current executing AMD module
+       * @method Executor.getCurrentExecutingAMD
+       * @public
+       * @returns {object} the id and path of the current module
+       */
       getCurrentExecutingAMD: function() {
         return this.anonymousAMDStack[this.anonymousAMDStack.length - 1];
       },
+
+      /**
+       * run all items within the tree, then run the provided callback
+       * @method Executor.runTree
+       * @param {TreeNode} root - the root TreeNode to run execution on
+       * @param {Object} files - a hash of filename / contents
+       * @param {Function} callback - a callback to run when the tree is executed
+       * @public
+       */
       runTree: function(root, files, callback) {
         // do a post-order traverse of files for execution
         var returns = [];
@@ -1421,6 +1590,15 @@ var Executor;
         // all files are executed
         callback(returns);
       },
+
+      /**
+       * Create a module if it doesn't exist, and store it locally
+       * @method Executor.createModule
+       * @param {string} moduleId - the module identifier
+       * @param {string} path - the module's proposed URL
+       * @public
+       * @returns {Object} - a module object representation
+       */
       createModule: function(moduleId, path) {
         var module;
         if (!this.cache[moduleId]) {
@@ -1461,27 +1639,82 @@ var Executor;
           return module;
         }
       },
+
+      /**
+       * Check if a module is an AMD style define
+       * @method Executor.isModuleDefined
+       * @param {string} moduleId - the module ID
+       * @public
+       * @returns {boolean} if the module is AMD defined
+       */
       isModuleDefined: function(moduleId) {
         return this.defined[moduleId];
       },
+
+      /**
+       * Flag a module as defined AMD style
+       * @method Executor.flagModuleAsDefined
+       * @param {string} moduleId - the module ID
+       * @public
+       */
       flagModuleAsDefined: function(moduleId) {
         this.defined[moduleId] = true;
       },
+
+      /**
+       * Flag a module as broken
+       * @method Executor.flagModuleAsBroken
+       * @param {string} moduleId - the module ID
+       * @public
+       */
       flagModuleAsBroken: function(moduleId) {
         this.broken[moduleId] = true;
       },
+
+      /**
+       * Flag a module as circular
+       * @method Executor.flagModuleAsCircular
+       * @param {string} moduleId - the module ID
+       * @public
+       */
       flagModuleAsCircular: function(moduleId) {
         this.circular[moduleId] = true;
       },
+
+      /**
+       * returns if the module is circular or not
+       * @method Executor.isModuleCircular
+       * @param {string} moduleId - the module ID
+       * @public
+       * @returns {boolean} true if the module is circular
+       */
       isModuleCircular: function(moduleId) {
         return this.circular[moduleId];
       },
+
+      /**
+       * Get the module matching the specified Identifier
+       * @method Executor.getModule
+       * @param {string} moduleId - the module ID
+       * @public
+       * @returns {object} the module at the identifier
+       */
       getModule: function(moduleId) {
         if (this.broken[moduleId]) {
           throw new Error("module "+moduleId+" failed to load successfully");
         }
         return this.cache[moduleId] || null;
       },
+
+      /**
+       * Build a sandbox around and execute a module
+       * @method Executor.runModule
+       * @param {string} moduleId - the module ID
+       * @param {string} code - the code to execute
+       * @param {string} path - the URL for the module to run
+       * @param {object} pointcuts - the AOP pointcuts for the module
+       * @public
+       */
       runModule: function(moduleId, code, path, pointcuts) {
         debugLog("Executor", "executing " + path);
         // check cache
@@ -1508,20 +1741,14 @@ var Executor;
         var actualErrorLine;
         var message;
 
-        // try to run the JS as a module, errors set errorObject
-        // try {
-          result = executeJavaScriptModule(runCommand, {
-            moduleId: moduleId,
-            functionId: functionId,
-            preamble: header,
-            epilogue: footer,
-            originalCode: code,
-            url: path
-          });
-        // }
-        // catch(e) {
-        //   errorObject = e;
-        // }       
+        result = executeJavaScriptModule(runCommand, {
+          moduleId: moduleId,
+          functionId: functionId,
+          preamble: header,
+          epilogue: footer,
+          originalCode: code,
+          url: path
+        });    
 
         // if a global error object was created
         if (result && result.error) {
@@ -1561,11 +1788,34 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
+/**
+ * The InjectCore is the main configuration point for Inject.
+ * It is able to create require() and define() methods within a
+ * path context, as well as assign configuration for the
+ * various options.
+ * @file
+**/
 var InjectCore;
 (function() {
   var AsStatic = Class.extend(function() {
     return {
+      /**
+       * The InjectCore object is meant to be instantiated once, and have its
+       * reference assigned to a location outside of the closure.
+       * @constructs InjectCore
+       */
       init: function() {},
+
+      /**
+       * create a require() method within a given context path
+       * relative require() calls can be based on the provided
+       * id and path
+       * @method InjectCore.createRequire
+       * @param {string} id - the module identifier for relative module IDs
+       * @param {string} path - the module path for relative path operations
+       * @public
+       * @returns a function adhearing to CommonJS and AMD require()
+       */
       createRequire: function(id, path) {
         var req = new RequireContext(id, path);
         var require = proxy(req.require, req);
@@ -1579,27 +1829,90 @@ var InjectCore;
         };
         return require;
       },
+
+      /**
+       * create a define() method within a given context path
+       * relative define() calls can be based on the provided
+       * id and path
+       * @method InjectCore.createDefine
+       * @param {string} id - the module identifier for relative module IDs
+       * @param {string} path - the module path for relative path operations
+       * @public
+       * @returns a function adhearing to the AMD define() method
+       */
       createDefine: function(id, path) {
         var req = new RequireContext(id, path);
         var define = proxy(req.define, req);
         define.amd = {};
         return define;
       },
+
+      /**
+       * set the base path for all module includes
+       * @method InjectCore.setModuleRoot
+       * @param {string} root - the fully qualified URL for modules to be included from
+       * @public
+       */
       setModuleRoot: function(root) {
         userConfig.moduleRoot = root;
       },
+
+      /**
+       * set the cross domain configuration
+       * the cross domain config is an object consisting of two properties,
+       * the relayHtml and the relaySwf. The HTML and SWF file should be
+       * located on the remote server (for example the CDN).
+       * @method InjectCore.setCrossDomain
+       * @param {object} crossDomainConfig - the confuiguration object
+       * @public
+       */
       setCrossDomain: function(crossDomainConfig) {
         userConfig.xd.relayFile = crossDomainConfig.relayFile || null;
         userConfig.xd.relaySwf = crossDomainConfig.relaySwf || null;
       },
+
+      /**
+       * Set the useSuffix value. useSuffix is used to determine globally if
+       * a ".js" extension should be added to files by default
+       * @method InjectCore.setUseSuffix
+       * @param {Boolean} useSuffix - should a suffix be used
+       * @public
+       */
+      setUseSuffix: function(useSuffix) {
+        userConfig.useSuffix = useSuffix;
+      },
+
+      /**
+       * clear the localstorage caches
+       * @method InjectCore.clearCache
+       * @public
+       */
       clearCache: function() {
         if (HAS_LOCAL_STORAGE && lscache) {
           lscache.flush();
         }
       },
+
+      /**
+       * set a time (in seconds) for how long to preserve items in cache
+       * the default time is 300 seconds
+       * @method InjectCore.setExpires
+       * @param {int} seconds - the number of seconds to retain files for
+       * @public
+       * @see userConfig.fileExpires
+       */
       setExpires: function(seconds) {
         userConfig.fileExpires = seconds || 0;
       },
+
+      /**
+       * set a unique cache identifier for Inject. This allows the parent
+       * page to "bust" the cache by invoking setCacheKey with a different
+       * value.
+       * @method InjectCore.setCacheKey
+       * @param {string} cacheKey - the identifier to reference this cache version
+       * @public
+       */
       setCacheKey: function(cacheKey) {
         var lscacheAppCacheKey;
         var flush = false;
@@ -1617,16 +1930,34 @@ var InjectCore;
           lscache.set(LSCACHE_APP_KEY_STRING, cacheKey);
         }
       },
+
+      /**
+       * reset the entire Inject system. This clears the cache, execution caches,
+       * and any communicator caches.
+       * @method InjectCore.reset
+       * @public
+       */
       reset: function() {
         this.clearCache();
         Executor.clearCaches();
         Communicator.clearCaches();
       },
+
+      /**
+       * enable debugging options. For a full list of debugging options,
+       * the wiki page for "Debugging Options" lists the possible keys
+       * and impact
+       * @method InjectCore.enableDebug
+       * @param {string} key - the debugging key to enable or disable
+       * @param {boolean} value - the value to assign for the key, defaults to true
+       * @public
+       */
       enableDebug: function(key, value) {
         userConfig.debug[key] = value || true;
       }
     };
   });
+  // Assign the instantiated object outside of our closure
   InjectCore = new AsStatic();
 })();
 
@@ -1647,27 +1978,83 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
+/**
+ * RequireContext is an instance object which provides the
+ * CommonJS and AMD interfaces of require(string),
+ * require(array, callback) ensure (require.ensure),
+ * run (require.run), and define.
+ * @file
+**/
 var RequireContext = Class.extend(function() {
   return {
+    /**
+     * Creates a new RequireContext
+     * @constructs RequireContext
+     * @param {String} id - the current module ID for this context
+     * @param {String} path - the current module URL for this context
+     * @public
+     */
     init: function(id, path) {
       this.id = id || null;
       this.path = path || null;
     },
+
+    /**
+     * Log an operation for this context
+     * @method RequireContext#log
+     * @param {String} message - the message to log
+     * @protected
+     */
     log: function(message) {
       debugLog("RequireContext for "+this.path, message);
     },
+
+    /**
+     * get the path associated with this context
+     * @method RequireContext#getPath
+     * @public
+     * @returns {String} the path for the current context
+     */
     getPath: function() {
       if (!userConfig.moduleRoot) {
         throw new Error("moduleRoot must be defined. Please use Inject.setModuleRoot()");
       }
       return this.path || userConfig.moduleRoot;
     },
+
+    /**
+     * get the ID associated with this context
+     * @method RequireContext#getId
+     * @public
+     * @returns {String} the id of the current context
+     */
     getId: function() {
       return this.id || "";
     },
+
+    /**
+     * Get the module for a provided module ID. Used as a passthrough
+     * to collect modules during depenency resolution
+     * @method requireContext#getModule
+     * @param {String} moduleId - the module ID to retrieve
+     * @protected
+     * @see Executor.getModule
+     */
     getModule: function(moduleId) {
       return Executor.getModule(moduleId).exports;
     },
+
+    /**
+     * Get all modules that have loaded up to this point based on
+     * a list. Require and module calls are transparently added
+     * to the output
+     * @method RequireContext#getAllModules
+     * @param {Array|String} moduleIdOrList - a single or list of modules to resolve
+     * @param {Function} require - a require function, usually from a RequireContext
+     * @param {Object} module - a module representing the current executor, from Executor
+     * @protected
+     * @returns {Array} an array of modules matching moduleIdOrList
+     */
     getAllModules: function(moduleIdOrList, require, module) {
       var args = [];
       var mId = null;
@@ -1690,6 +2077,19 @@ var RequireContext = Class.extend(function() {
       }
       return args;
     },
+
+    /**
+     * The CommonJS and AMD require interface<br>
+     * CommonJS: <strong>require(moduleId)</strong><br>
+     * AMD: <strong>require(moduleList, callback)</strong>
+     * @method RequireContext#require
+     * @param {String|Array} moduleIdOrList - a string (CommonJS) or Array (AMD) of modules to include
+     * @param {Function} callback - a callback (AMD) to run on completion
+     * @public
+     * @returns {Object|null} the object at the module ID (CommonJS) or null (AMD)
+     * @see <a href="http://wiki.commonjs.org/wiki/Modules/1.0">http://wiki.commonjs.org/wiki/Modules/1.0</a>
+     * @see <a href="https://github.com/amdjs/amdjs-api/wiki/require">https://github.com/amdjs/amdjs-api/wiki/require</a>
+     */
     require: function(moduleIdOrList, callback) {
       var path;
       var module;
@@ -1720,6 +2120,15 @@ var RequireContext = Class.extend(function() {
         callback.apply(context, modules);
       }, this));
     },
+
+    /**
+     * the CommonJS require.ensure interface based on the async/a spec
+     * @method RequireContext#ensure
+     * @param {Array} moduleList - an array of modules to load
+     * @param {Function} callback - a callback to run when all modules are loaded
+     * @public
+     * @see <a href="http://wiki.commonjs.org/wiki/Modules/Async/A">http://wiki.commonjs.org/wiki/Modules/Async/A</a>
+     */
     ensure: function(moduleList, callback) {
       if (Object.prototype.toString.call(moduleList) !== '[object Array]') {
         throw new Error("require.ensure() must take an Array as the first argument");
@@ -1763,10 +2172,34 @@ var RequireContext = Class.extend(function() {
         }, this));
       }
     },
+
+    /**
+     * Run a module as a one-time approach. This is common verbage
+     * in many AMD based systems
+     * @method RequireContext#run
+     * @param {String} moduleId - the module ID to run
+     * @public
+     */
     run: function(moduleId) {
       this.log("AMD require.run(string) of "+moduleId);
       this.ensure([moduleId]);
     },
+
+    /**
+     * Define a module with its arguments. Define has multiple signatures:
+     * <ul>
+     *  <li>define(id, dependencies, factory)</li>
+     *  <li>define(id, factory)</li>
+     *  <li>define(dependencies, factory)</li>
+     *  <li>define(factory)</li>
+     * </ul>
+     * @method RequireContext#define
+     * @param {string} id - if provided, the name of the module being defined
+     * @param {Array} dependencies - if provided, an array of dependencies for this module
+     * @param {Object|Function} factory - an object literal that defines the module or a function to run that will define the module
+     * @public
+     * @see <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">https://github.com/amdjs/amdjs-api/wiki/AMD</a>
+     */
     define: function() {
       var args = Array.prototype.slice.call(arguments, 0);
       var id = null;
@@ -1914,27 +2347,73 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
+/**
+ * The Rules Engine is used to handle the deriving of pointcut and path
+ * information for a given module identifier. It maintains an internal
+ * rules table for the environment, and also caches the results of its
+ * resolution.
+ * @file
+**/
+
 var RulesEngine;
 (function() {
+
+  /**
+   * the collection of rules
+   * @private
+   * @type {Array}
+   */
   var rules = [];
+
+  /**
+   * have the rules been added to since last sorted
+   * @private
+   * @type {boolean}
+   */
   var rulesIsDirty = false;
 
+  /**
+   * sort the rules table based on their "weight" property
+   * @method RulesEngine.sortRulesTable
+   * @private
+   */
   function sortRulesTable() {
     rules.sort(function(a, b) {
-      return a.weight - b.weight;
+      return b.weight - a.weight;
     });
     rulesIsDirty = false;
   }
 
+  /**
+   * convert a function to a pointcut string
+   * @method RulesEngine.functionToPointcut
+   * @param {Function} fn - the function to convert
+   * @private
+   * @returns {String} the internal body of the function
+   */
   function functionToPointcut(fn) {
     return fn.toString().replace(FUNCTION_BODY_REGEX, "$1");
   }
 
   var AsStatic = Class.extend(function() {
     return {
+      /**
+       * Create a RulesEngine Object
+       * @constructs RulesEngine
+       */
       init: function() {
         this.pointcuts = {};
       },
+
+      /**
+       * Resolve an identifier after applying all rules
+       * @method RulesEngine.resolveIdentifier
+       * @param {String} identifier - the identifier to resolve
+       * @param {String} relativeTo - a base path for relative identifiers
+       * @public
+       * @returns {String} the resolved identifier
+       * @see RulesEngine.applyRules
+       */
       resolveIdentifier: function(identifier, relativeTo) {
         if (!relativeTo) {
           relativeTo = "";
@@ -1965,6 +2444,15 @@ var RulesEngine;
 
         return identifier;
       },
+
+      /**
+       * resolve a URL relative to a base path
+       * @method RulesEngine.resolveUrl
+       * @param {String} path - the path to resolve
+       * @param {String} relativeTo - a base path for relative URLs
+       * @public
+       * @returns {String} a resolved URL
+       */
       resolveUrl: function(path, relativeTo) {
         var resolvedUrl;
 
@@ -1974,12 +2462,12 @@ var RulesEngine;
         }
 
         if (relativeTo && !userConfig.baseDir) {
-          relativeTo = relativeTo.split("/");
-          if (relativeTo[relativeTo.length - 1]) {
+          relativeTo = relativeTo.replace(PROTOCOL_REGEX, PROTOCOL_EXPANDED_STRING).split("/");
+          if (relativeTo[relativeTo.length - 1] && relativeTo.length !== 1) {
             // not ending in /
             relativeTo.pop();
           }
-          relativeTo = relativeTo.join("/");
+          relativeTo = relativeTo.join("/").replace(PROTOCOL_EXPANDED_REGEX, PROTOCOL_STRING);
         }
         else if (relativeTo) {
           relativeTo = userConfig.baseDir(relativeTo);
@@ -1999,25 +2487,24 @@ var RulesEngine;
 
         // exit early on resolved http URL
         if (ABSOLUTE_PATH_REGEX.test(path)) {
+          // store pointcuts based on the resolved URL
+          this.pointcuts[resolvedUrl] = result.pointcuts;
           return path;
         }
 
-        // shortcut. If it starts with /, affix to module root
-        if (path.indexOf("/") === 0) {
-          resolvedUrl = userConfig.moduleRoot + path.substr(1);
-          if (userConfig.useSuffix && !FILE_SUFFIX_REGEX.test(resolvedUrl)) {
-            resolvedUrl = resolvedUrl + BASIC_FILE_SUFFIX;
-          }
-          return resolvedUrl;
+        // take off the :// to replace later
+        relativeTo = relativeTo.replace(PROTOCOL_REGEX, PROTOCOL_EXPANDED_STRING);
+        path = path.replace(PROTOCOL_REGEX, PROTOCOL_EXPANDED_STRING);
+
+        // #169: query strings in base
+        if (/\?/.test(relativeTo)) {
+          resolvedUrl = relativeTo + path;
+        }
+        else {
+          resolvedUrl = this.computeRelativePath(path, relativeTo);
         }
 
-        // take off the :// to replace later
-        relativeTo = relativeTo.replace(/:\/\//, "__INJECT_PROTOCOL_COLON_SLASH_SLASH__");
-        path = path.replace(/:\/\//, "__INJECT_PROTOCOL_COLON_SLASH_SLASH__");
-
-        var resolvedUrl = this.computeRelativePath(path, relativeTo);
-
-        resolvedUrl = resolvedUrl.replace(/__INJECT_PROTOCOL_COLON_SLASH_SLASH__/, "://");
+        resolvedUrl = resolvedUrl.replace(PROTOCOL_EXPANDED_REGEX, PROTOCOL_STRING);
 
         if (userConfig.useSuffix && !FILE_SUFFIX_REGEX.test(resolvedUrl)) {
           resolvedUrl = resolvedUrl + BASIC_FILE_SUFFIX;
@@ -2028,6 +2515,15 @@ var RulesEngine;
 
         return resolvedUrl;
       },
+
+      /**
+       * Dismantles and reassembles a relative path by exploding on slashes
+       * @method RulesEngine.computeRelativePath
+       * @param {String} id - the initial identifier
+       * @param {String} base - the base path for relative declarations
+       * @private
+       * @returns {String} a resolved path with no relative references
+       */
       computeRelativePath: function(id, base) {
         var blownApartURL;
         var resolved = [];
@@ -2062,6 +2558,14 @@ var RulesEngine;
         return resolved;
       },
 
+      /**
+       * Get the pointcuts associated with a given URL path
+       * @method RulesEngine.getPointcuts
+       * @param {String} path - the url path to get pointcuts for
+       * @param {Boolean} asString - if TRUE, return the pointcuts bodies as a string
+       * @public
+       * @returns {Object} an object containing all pointcuts for the URL
+       */
       getPointcuts: function(path, asString) {
         var pointcuts = this.pointcuts[path] || {before: [], after: []};
         var result = {
@@ -2092,6 +2596,29 @@ var RulesEngine;
         return result;
 
       },
+
+      /**
+       * Add a rule to the database. It can be called as:<br>
+       * addRule(regexMatch, weight, ruleSet)<br>
+       * addRule(regexMatch, ruleSet)<br>
+       * addRule(ruleSet)<br>
+       * The ruleSet object to apply contains a set of options.
+       * <ul>
+       * <li>ruleSet.matches: replaces regexMatch if found</li>
+       * <li>ruleSet.weight: replaces weight if found</li>
+       * <li>ruleSet.last: if true, no further rules are ran</li>
+       * <li>ruleSet.path: a path to use instead of a derived path<br>
+       *  you can also set ruleSet.path to a function, and that function will
+       *  passed the current path for mutation</li>
+       * <li>ruleSet.pointcuts.before: a function to run before executing this module</li>
+       * <li>ruleSet.pointcuts.after: a function to run after executing this module</li>
+       * </ul>
+       * @method RulesEngine.addRule
+       * @param {RegExp|String} regexMatch - a stirng or regex to match on
+       * @param {int} weight - a weight for the rule. Larger values run later
+       * @param {Object} ruleSet - an object containing the rules to apply
+       * @public
+       */
       addRule: function(regexMatch, weight, ruleSet) {
         // regexMatch, ruleSet
         // regexMatch, weight, ruleSet
@@ -2119,6 +2646,7 @@ var RulesEngine;
           };
         }
 
+        rulesIsDirty = true;
         rules.push({
           matches: ruleSet.matches || regexMatch,
           weight: ruleSet.weight || weight,
@@ -2129,6 +2657,14 @@ var RulesEngine;
         });
 
       },
+
+      /**
+       * a shortcut method for multiple addRule calls
+       * @method RulesEngine.manifest
+       * @param {Object} manifestObj - a "matchString":ruleSet object
+       * @public
+       * @see RulesEngine.addRule
+       */
       manifest: function(manifestObj) {
         var key;
         var rule;
@@ -2142,6 +2678,14 @@ var RulesEngine;
           this.addRule(key, rule);
         }
       },
+
+      /**
+       * Apply a set of rules to a given path
+       * @method RulesEngine.applyRules
+       * @param {String} path - the path to apply rules to
+       * @private
+       * @returns {Object} an object containing the resolved path and pointcuts
+       */
       applyRules: function(path) {
         if (rulesIsDirty) {
           sortRulesTable();
@@ -2218,27 +2762,50 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
-// depends on
-// ModuleDB
-//  GenericDB
-// ModuleDBRecord
-//  GenericDBRecord
-// TreeNode
-// Communicator
-// Analyzer
-
+/**
+ * TreeDownloader, as its name implies, downloads a tree starting
+ * at its root node. Once all nodes have been downloaded, a
+ * callback can be invoked. Circular references are resolved
+ * into a downloaded state and the TreeNode object is flagged
+ * as downloaded.
+ * @file
+**/
 var TreeDownloader = Class.extend(function() {
   return {
+    /**
+     * Create a TreeDownloader with a root node. From this node,
+     * it and its children can be analyzed and downloaded
+     * @constructs TreeDownloader
+     * @param {TreeNode} root - the root TreeNode to download
+     */
     init: function(root) {
       this.callsRemaining = 0;
       this.root = root;
       this.files = {};
     },
+
+    /**
+     * A logging function to help keep track of which "root" a call
+     * comes from
+     * @method TreeDownloader#log
+     * @param {variable} args - a collection of args to output
+     * @protected
+     */
     log: function() {
       var args = [].slice.call(arguments, 0);
       var name = (this.root.getValue()) ? this.root.getValue().name : null;
       debugLog("TreeDownloader ("+name+")", args.join(" "));
     },
+
+    /**
+     * Reduces the total number of calls remaining
+     * If the calls reach 0, the callback is invoked with the provided
+     * arguments
+     * @method TreeDownloader#reduceCallsRemaining
+     * @param {function} callback - a callback to run if 0 calls remain
+     * @param {array} args - a collection of arguments for callback
+     * @protected
+     */
     reduceCallsRemaining: function(callback, args) {
       this.callsRemaining--;
       this.log("reduce. outstanding", this.callsRemaining);
@@ -2247,36 +2814,68 @@ var TreeDownloader = Class.extend(function() {
         callback.call(null, args);
       }
     },
+
+    /**
+     * increase the total number of calls remaining
+     * @method TreeDownloader#increaseCallsRemaining
+     * @param {int} by - an amount to increase by, defaults to 1
+     * @protected
+     */
     increaseCallsRemaining: function(by) {
       this.callsRemaining += by || 1;
       this.log("increase. outstanding", this.callsRemaining);
     },
+
+    /**
+     * get a collection of the files downloaded
+     * @method TreeDownloader#getFiles
+     * @public
+     * @returns {object} an object containing url/file pairs
+     */
     getFiles: function() {
       return this.files;
     },
-    get: function(callback) {
-      /*
-          root
-          /  \
-         A    B
-        / \   |
-       B   C  D
-       |      |
-       D      A
-       |     / \
-      (A)  (B)  C
 
-       root: no-download. Add A, Add B. Spawn A, Spawn B // count = 0 + 2 = 2 (add A, add B)
-       A: download. Add B, Add C. Spawn C (B logged) // count = 2 - 1 + 1 = 2 (remove A, add C)
-       B: download. Add D. Spawn D // count = 2 - 1 + 1 = 2 (remove B, add D)
-       C: download // count = 2 - 1 = 1 (remove C)
-       D: download // count = 1 - 1 = 0 (remove D)
-      */
+    /**
+     * download the tree, invoking a callback on completion
+     * This recursively downloads an entire tree
+     * Consider the following tree:
+     * <pre>
+     *     root
+     *     /  \
+     *    A    B
+     *   / \   |
+     *  B   C  D
+     *  |      |
+     *  D      A
+     *  |     / \
+     * (A)  (B)  C
+     * </pre>
+     * root: no-download. Add A, Add B. Spawn A, Spawn B // count = 0 + 2 = 2 (add A, add B)<br>
+     * A: download. Add B, Add C. Spawn C (B logged) // count = 2 - 1 + 1 = 2 (remove A, add C)<br>
+     * B: download. Add D. Spawn D // count = 2 - 1 + 1 = 2 (remove B, add D)<br>
+     * C: download // count = 2 - 1 = 1 (remove C)<br>
+     * D: download // count = 1 - 1 = 0 (remove D)
+     * @method TreeDownloader#get
+     * @param {function} callback - a callback invoked on completion
+     * @public
+     */
+    get: function(callback) {
       this.log("started download");
       this.downloadTree(this.root, proxy(function(root) {
         callback(this.root, this.getFiles());
       }, this));
     },
+
+    /**
+     * The recursive loop of tree downloading, spawned by the top
+     * level get() call. A callback is called at the "complete" state,
+     * when all its dependencies have also been downloaded.
+     * @method TreeDownloader#downloadTree
+     * @param {TreeNode} node - a TreeNode to download and analyze
+     * @param {function} callback - a callback to invoke when this node is "complete"
+     * @protected
+     */
     downloadTree: function(node, callback) {
       // Normalize Module Path. Download. Analyze.
       var parentPath = (node.getParent() && node.getParent().getValue())
@@ -2378,6 +2977,15 @@ var TreeDownloader = Class.extend(function() {
     }
   };
 });
+/**
+ * Create a TreeNode object through a factory
+ * @method TreeDownloader.createNode
+ * @param {string} name - the moduleId for the tree node
+ * @param {string} path - the URL for the module
+ * @param {boolean} isCircular - if true, this node is a circular reference
+ * @public
+ * @returns {TreeNode} the created TreeNode object
+ */
 TreeDownloader.createNode = function(name, path, isCircular) {
   var tn = new TreeNode({
     name: name,
@@ -2406,9 +3014,19 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 
-// TreeNode JS
+/**
+ * The TreeNode is a data structure object for building N-ary
+ * trees. It also collects methods for iterating on itself
+ * via various traversal methods.
+ * @file
+**/
 var TreeNode = Class.extend(function() {
   return {
+    /**
+     * Create a TreeNode with a defined value
+     * @constructs TreeNode
+     * @param {TreeNode} value - the value of this node
+     */
     init: function(value) {
       this.value = value;
       this.children = [];
@@ -2417,15 +3035,43 @@ var TreeNode = Class.extend(function() {
       this.parent = null;
       this.isCircularNode = false;
     },
+
+    /**
+     * Get the value associated with the TreeNode
+     * @method TreeNode#getValue
+     * @public
+     * @returns {variable} the value of the node
+     */
     getValue: function() {
       return this.value;
     },
+
+    /**
+     * Flag this tree node as circular
+     * @method TreeNode#flagCircular
+     * @public
+     */
     flagCircular: function() {
       this.isCircularNode = true;
     },
+
+    /**
+     * return if this node is a circular reference
+     * @method TreeNode#isCircular
+     * @public
+     * @returns {boolean} true if this is a circular reference
+     */
     isCircular: function() {
       return this.isCircularNode;
     },
+
+    /**
+     * Add a child to the node. It also sets up left
+     * and right relationships as well as the parent.
+     * @method TreeNode#addChild
+     * @param {TreeNode} node - the TreeNode to add
+     * @public
+     */
     addChild: function(node) {
       var rightChild;
       if (this.children.length > 0) {
@@ -2436,27 +3082,88 @@ var TreeNode = Class.extend(function() {
       this.children.push(node);
       return node.setParent(this);
     },
+
+    /**
+     * Get all the children of this node
+     * @method TreeNode#getChildren
+     * @public
+     * @returns {Array} an array of child TreeNode objects
+     */
     getChildren: function() {
       return this.children;
     },
+
+    /**
+     * An interface for setting the "left" node of the tree
+     * @method TreeNode#setLeft
+     * @param {TreeNode} node - the node to set
+     * @public
+     * @returns {TreeNode}
+     */
     setLeft: function(node) {
       return this.left = node;
     },
+
+    /**
+     * Get the node "left" of the current
+     * @method TreeNode#getLeft
+     * @public
+     * @returns {TreeNode}
+     */
     getLeft: function() {
       return this.left;
     },
+
+    /**
+     * An interface for setting the "right" node of the tree
+     * @method TreeNode#setRight
+     * @param {TreeNode} node - the node to set
+     * @public
+     * @returns {TreeNode}
+     */
     setRight: function(node) {
       return this.right = node;
     },
+
+    /**
+     * Get the node "right" of the current
+     * @method TreeNode#getRight
+     * @public
+     * @returns {TreeNode}
+     */
     getRight: function() {
       return this.right;
     },
+
+    /**
+     * An interface for setting the "parent" node of current
+     * @method TreeNode#setParent
+     * @param {TreeNode} node - the node to set
+     * @public
+     * @returns {TreeNode}
+     */
     setParent: function(node) {
       return this.parent = node;
     },
+
+    /**
+     * Get the node "parent" of the current
+     * @method TreeNode#getParent
+     * @public
+     * @returns {TreeNode}
+     */
     getParent: function() {
       return this.parent;
     },
+
+    /**
+     * Perform a postOrder traversal over the tree, optionally running
+     * a supplied callback
+     * @method TreeNode#postOrder
+     * @param {Function} callback - a callback to run for each node
+     * @public
+     * @returns {Array} the nodes of the tree, ordered by post-order
+     */
     postOrder: function(callback) {
       // post order traversal to an array
       // left, right, parent
@@ -2515,63 +3222,187 @@ express or implied.   See the License for the specific language
 governing permissions and limitations under the License.
 */
 /**
- * This file defines the public interface for Inject
- * many functions in this collection pass through via proxy
- * to internal methods
- * @file public interface for Inject
+    This file defines the public interface for Inject
+    many functions in this collection pass through via proxy
+    to internal methods
+    @file public interface for Inject
  */
 var globalRequire = new RequireContext();
 
+/**
+    This object contains the public interface for Inject.
+    @class
+    @type {object}
+    @global
+ */
 context.Inject = {
+  /**
+      This object and its properties are meant solely for consumption
+      @private
+   */
   INTERNAL: {
+    // used by the executor. these let inject know the module that is currently running
     defineExecutingModuleAs: proxy(Executor.defineExecutingModuleAs, Executor),
     undefineExecutingModule: proxy(Executor.undefineExecutingModule, Executor),
     createModule: proxy(Executor.createModule, Executor),
     setModuleExports: function() {},
+
+    // a hash of publicly reachable module sandboxes ie exec0, exec1...
     execute: {},
+
+    // a globally available require() call for the window and base page
     globalRequire: globalRequire,
+
+    // creates require and define methods as passthrough
     createRequire: proxy(InjectCore.createRequire, InjectCore),
     createDefine: proxy(InjectCore.createDefine, InjectCore)
   },
+  /**
+      Exposes easyXDM API for doing cross-domain messaging.
+      @see <a href="http://www.easyxdm.net">easyXDM</a>
+      @public
+   */
   easyXDM: easyXDM,
-  reset: function() {
-    InjectCore.reset();
-  },
+  /**
+      Clears any locally cached modules, downloads and local storage.
+      @see InjectCore.reset
+      @method
+      @public
+   */
+  reset: proxy(InjectCore.reset, InjectCore),
+  /**
+      Enables debugging options.
+      @see InjectCore.enableDebug
+      @method
+      @public
+   */
   enableDebug: function() {
     InjectCore.enableDebug.apply(this, arguments);
   },
+  /**
+      @see RulesEngine.toUrl
+      @method
+      @public
+   */
   toUrl: function() {
     RulesEngine.toUrl.apply(this, arguments);
   },
+  /**
+      Sets base path for all module includes.
+      @see InjectCore.setModuleRoot
+      @method
+      @public
+   */
   setModuleRoot: function() {
     InjectCore.setModuleRoot.apply(this, arguments);
   },
+  /**
+      Set a time for how long to preserve items in cache.
+      The default time is 300 seconds.
+      @see InjectCore.setExpires
+      @method
+      @public
+   */
   setExpires: function() {
     InjectCore.setExpires.apply(this, arguments);
   },
+  /**
+      Sets unique cache identifier for Inject.  This allows the parent page
+      to "bust" the cache by invoking setCacheKey with a different value.
+      @see InjectCore.setCacheKey
+      @method
+      @public
+   */
   setCacheKey: function() {
     InjectCore.setCacheKey.apply(this, arguments);
   },
+  /**
+      Sets the cross-domain configuration.  The cross-domain configuration
+      is an object consisting of two properties: relayHtml and relaySwf.  The
+      HTML and SWF file should be located on the remote server (for example
+      the CDN).
+      @see InjectCore.setCrossDomain
+      @method
+      @public
+   */
   setCrossDomain: function() {
     InjectCore.setCrossDomain.apply(this, arguments);
   },
-  clearCache: function() {
-    InjectCore.clearCache();
+
+  /**
+      Sets the useSuffix user config. The useSuffix config tells the RulesEngine
+      not to auto-append a .js extension. This is highly helpful in concatenated
+      environments or environments with JS being generated programatically.
+  */
+  setUseSuffix: function(val) {
+    InjectCore.setUseSuffix(val);
   },
+
+  /**
+      Clears the local storage caches.
+      @see InjectCore.clearCache
+      @method
+      @public
+   */
+  clearCache: proxy(InjectCore.clearCache, InjectCore),
+  /**
+      @see RulesEngine.manifest
+      @method
+      @public
+   */
   manifest: function() {
     RulesEngine.manifest.apply(RulesEngine, arguments);
   },
+  /**
+      @see RulesEngine.addRule
+      @method
+      @public
+   */
   addRule: function() {
     RulesEngine.addRule.apply(RulesEngine, arguments);
   },
+  /**
+      CommonJS and AMD require()
+      @see InjectCore.createRequire
+      @see <a href="http://wiki.commonjs.org/wiki/Modules/1.1">CommonJS require()</a>
+      @see <a href="https://github.com/amdjs/amdjs-api/wiki/require">AMD require()</a>
+      @method
+      @public
+   */
   require: InjectCore.createRequire(),
+  /**
+      AMD define()
+      @see InjectCore.createDefine
+      @see <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD define()</a>
+      @method
+      @public
+   */
   define: InjectCore.createDefine(),
-  version: INJECT_VERSION
+  /**
+      The version of Inject.
+      @type {String}
+      @public
+   */
+  version: "undefined"
 };
 
-// commonJS (and AMD's toUrl)
+/**
+    CommonJS and AMD require()
+    @see InjectCore.createRequire
+    @see <a href="http://wiki.commonjs.org/wiki/Modules/1.1">CommonJS require()</a>
+    @see <a href="https://github.com/amdjs/amdjs-api/wiki/require">AMD require()</a>
+    @method
+    @public
+ */
 context.require = context.Inject.INTERNAL.createRequire();
 
-// AMD
+/**
+    AMD define()
+    @see InjectCore.createDefine
+    @see <a href="https://github.com/amdjs/amdjs-api/wiki/AMD">AMD define()</a>
+    @method
+    @public
+ */
 context.define = context.Inject.INTERNAL.createDefine();
+context.Inject.version = "0.4.0rc4-4-gb67abc7";
 })(this);

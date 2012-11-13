@@ -18,10 +18,17 @@ Button = Switch.extend( function( base ){
        * The time in milliseconds in which to throttle events.
        * Events will only be triggred once per throttle time.
        * This is useful when timing complex css transitions.
-       * @property notify
-       * @type {String}
+       * @property throttle
+       * @type {Number}
        */
-      throttle: 300
+      throttle: 100,
+      /**
+       * By default the default is prevented setting this to true
+       * allows the hash to be updated and urls to resolve
+       * @property preventDefault
+       * @type {Number}
+       */
+      preventDefault: true
     },
     root = 'lu/Button/decorators/',
     decorators = {
@@ -56,7 +63,7 @@ Button = Switch.extend( function( base ){
     /**
      * Class constructor
      * @method initialize
-     * @pulic
+     * @public
      * @param {Object} $element JQuery object for the element wrapped by the component
      * @param {Object} settings Configuration settings
      */
@@ -126,6 +133,22 @@ Button = Switch.extend( function( base ){
 
       //binds the space-bar to the on event
       bindSpaceBar( this, settings.on );
+
+      // Prevent default on Button clicks to avoid jumping around a web page...
+      this.$element.on('click', function (evt) {
+        evt.preventDefault();
+      });
+
+      /**
+       * Gets the url for the button -- either from the config setting or from the HREF
+       * @method getUrl
+       * @public
+       * @return {String} The URL for the button
+       */
+       self.getUrl = function() {
+        return settings.url || $element.attr('href');
+      };
+
     },
 
     /**
@@ -134,13 +157,14 @@ Button = Switch.extend( function( base ){
      * it is a button or input element.
      * @method disable
      * @public
+     * @return {Object} The Button instance
      */
     disable: function(){
       var $element = this.$element;
-      if( $element.is( constants.HAS_A18_ATTRS ) ){
-        $element.attr( constants.DISABLED, 'disabled' );
-      }
       this.addState( constants.states.DISABLED );
+      if( $element.is( constants.HAS_A18_ATTRS ) ){
+        $element.prop( constants.DISABLED, true );
+      }
       return this;
     },
 
@@ -150,11 +174,12 @@ Button = Switch.extend( function( base ){
      * it is a button or input element.
      * @method enable
      * @public
+     * @return {Object} The Button instance
      */
     enable: function(){
       var $element = this.$element;
       if( $element.is( constants.HAS_A18_ATTRS ) ){
-        $element.attr( constants.DISABLED, null );
+        $element.prop( constants.DISABLED, false );
       }
       this.removeState( constants.states.DISABLED );
       return this;

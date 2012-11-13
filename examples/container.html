@@ -10,11 +10,16 @@
 
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-  <title>List</title>
+  <title>Container</title>
   <meta name="description" content="">
   <meta name="author" content="">
 
   <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/base.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/layout.css">
+  <link rel="stylesheet" type="text/css" href="http://www.getskeleton.com/src/stylesheets/skeleton.css">
+
 
   <style type="text/css">
     body {
@@ -24,28 +29,66 @@
     .lu-state-selected {
       background-color: #00f;
     }
+    .lu-state-visible {
+      display: block;
+    }
+    .lu-state-hidden {
+      display: none;
+    }
+
+
   </style>
 </head>
 
 <body>
 
-  <div>
-    <ul data-lu="List">
-      <li data-lu="Switch" class="lu-state-selected">
-        <button data-lu="Button" data-lu-config="{
-          'Button' : {
-            action: 'select'
-          }
-        }">Sherlock</button>
-      </li>
-      <li>
-        <button data-lu="Button:Select">Watson</button>
-      </li>
-      <li>
-        <button data-lu="Button:Select">Moriarty</button>
-      </li>
-    </ul>
-  </div>
+  <div id="container" class="container">
+    <h1>Container Example</h1>
+    <p>Here's a Container:</p>
+
+    <div id="example" data-lu="Container" data-lu-config="{
+      'Container': {
+        'content': '#stuff',
+        'method': 'replace',
+        'notify': 'button',
+        'frame': true
+      }
+    }">
+      (empty container)
+    </div>
+
+    <p id="stuff" style="display: none">THIS IS SOME FRESH STUFF!</p>
+
+  <button id="button1" data-lu="Button" data-lu-config="{
+      'Button': {
+        'notify': '#example',
+        'action': 'state',
+        'states': ['visible', 'hidden']
+      }
+    }">CLICK ME</button>
+    <button id="button2" data-lu="Button:State" data-lu-config="{
+      'Button:State': {
+        'notify': '#example',
+        'states': ['visible', 'hidden']
+      }
+    }">CLICK ME TOO</button>
+    <button id="button3" data-lu="Button" data-lu-config="{
+      'Button': {
+        'notify': '#example',
+        'action': 'load', 
+        'url': 'container.html#example'
+      }
+    }">LOAD</button>
+    <a href="#stuff" id="button4" data-lu="Button" data-lu-config="{
+      'Button': {
+        'notify': '#example',
+        'action': 'load'
+      }
+    }">LOAD</a>
+
+
+    </div>
+
 
   <!-- Bootstrap:Util -->
   <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
@@ -80,3 +123,5 @@
 </body>
 
 </html>
+
+
