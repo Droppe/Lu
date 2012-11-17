@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>scripts&#x2F;components&#x2F;Carousel.js - The Lu Component API</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="http:&#x2F;&#x2F;use.lu&#x2F;images&#x2F;logo.png" title="The Lu Component API"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.3.x</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/aboveDecorator.html">aboveDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Abstract.html">Abstract</a></li>
+            
+                <li><a href="..&#x2F;classes/belowDecorator.html">belowDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Button.html">Button</a></li>
+            
+                <li><a href="..&#x2F;classes/Carousel.html">Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Container.html">Container</a></li>
+            
+                <li><a href="..&#x2F;classes/DefaultDecorator.html">DefaultDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Dropdown.html">Dropdown</a></li>
+            
+                <li><a href="..&#x2F;classes/firstDecorator.html">firstDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/FormElement.html">FormElement</a></li>
+            
+                <li><a href="..&#x2F;classes/genericStateDecorator.html">genericStateDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/lastDecorator.html">lastDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/leftDecorator.html">leftDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/List.html">List</a></li>
+            
+                <li><a href="..&#x2F;classes/loadDecorator.html">loadDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Lu.html">Lu</a></li>
+            
+                <li><a href="..&#x2F;classes/Mapper.html">Mapper</a></li>
+            
+                <li><a href="..&#x2F;classes/nextDecorator.html">nextDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/pauseDecorator.html">pauseDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Placeholder.html">Placeholder</a></li>
+            
+                <li><a href="..&#x2F;classes/playDecorator.html">playDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/previousDecorator.html">previousDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/rightDecorator.html">rightDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/selectDecorator.html">selectDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/stateDecorator.html">stateDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Switch.html">Switch</a></li>
+            
+                <li><a href="..&#x2F;classes/Tip.html">Tip</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/Button.html">Button</a></li>
+            
+                <li><a href="..&#x2F;modules/Lu.html">Lu</a></li>
+            
+                <li><a href="..&#x2F;modules/Tip.html">Tip</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: scripts&#x2F;components&#x2F;Carousel.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+ * @class Carousel
+ * @extends List
+ *&#x2F;
+
+var constants = require( &#x27;lu&#x2F;constants&#x27; ),
+  helpers = require( &#x27;lu&#x2F;helpers&#x27; ),
+  List = require( &#x27;lu&#x2F;List&#x27; ),
+  Fiber = require( &#x27;Fiber&#x27; ),
+  Carousel;
+
+Carousel =  List.extend( function ( base ) {
+    &#x2F;**
+     * Default configuration values
+     * @property defaults
+     * @type Object
+     * @private
+     * @final
+     *&#x2F;
+    var defaults = {
+      &#x2F;**
+       * Number of times to cycle through carousel items when playing, set to -1 to repeat forever
+       * @property repeat
+       * @type Number
+       * @private
+       *&#x2F;
+      repeat: -1,
+      &#x2F;**
+       * Automatically calls play on instantiation if set to true
+       * @property repeat
+       * @type Boolean
+       * @private
+       * @final
+       *&#x2F;
+      autoplay: true,
+      &#x2F;**
+       * The time in milliseconds to remain on an item while playing
+       * @property delay
+       * @type Number
+       * @private
+       * @final
+       *&#x2F;
+      delay: 3000
+    };
+
+  &#x2F;&#x2F; RETURN METHODS OBJECT
+  return {
+    &#x2F;**
+     * Class constructor
+     * @method initialize
+     * @public
+     * @param {Object} $element JQuery object for the element wrapped by the component
+     * @param {Object} settings Configuration settings
+     *&#x2F;
+    init: function ( $element, settings ){
+      var self = this,
+        &#x2F;**
+         * Integer value signalling whether the carousel is set to repeat
+         * @property repeat
+         * @type Type Number
+         * @private
+         *&#x2F;
+        repeat,
+        &#x2F;**
+         * Flag signalling the playing state of the carousel
+         * @property playing
+         * @type Boolean
+         * @default false
+         * @private
+         *&#x2F;
+        playing = false,
+        &#x2F;**
+         * The calculated time in milliseconds to remain on an item while playing
+         * @property delay
+         * @type Number
+         * @private
+         * @final
+         *&#x2F;
+        delay,
+        &#x2F;**
+         * Timer which handles the playing of the carousel
+         * @property playTimer
+         * @type Object
+         * @private
+         *&#x2F;
+        playTimer;
+
+      _.defaults( settings, defaults );
+      base.init.call( this, $element, settings );
+
+      repeat = settings.repeat;
+      delay = settings.delay;
+
+     &#x2F;**
+       * Plays the Carousel
+       * @method play
+       * @privileged
+       * @return {Object} Carousel
+       *&#x2F;
+      this.play = function(){
+        if( !this.hasState( constants.states.PLAYING ) ){
+          ( function recurse(){
+            playTimer = window.setTimeout( function(){
+              if( self.hasState( constants.states.PLAYING ) ){
+                self.next();
+                if( repeat !== 0 ){
+                  repeat -= 1;
+                  recurse();
+                } else {
+                  self.pause();
+                }
+              }
+            }, delay );
+          }() );
+          this.setState( constants.states.PLAYING );
+        }
+        return this;
+      };
+
+      &#x2F;**
+       * Pauses the Carousel
+       * @method pause
+       * @public
+       * @return {Object} Carousel
+       *&#x2F;
+      this.pause = function(){
+        if( !this.hasState( constants.states.PAUSED ) ){
+          repeat = settings.repeat;
+          window.clearTimeout( playTimer );
+          this.setState( constants.states.PAUSED );
+        }
+        return this;
+      };
+
+      this.on( constants.events.PLAY, function( event ){
+        event.stopPropagation();
+        self.play();
+      } );
+
+      _.each( [constants.events.PAUSE, constants.events.NEXT, constants.events.PREVIOUS,
+            constants.events.FIRST, constants.events.LAST,
+            constants.events.SELECT], function( event ){
+        self.on( event, function( event, item ){
+          event.stopPropagation();
+          self.pause();
+        } );
+      } );
+
+      &#x2F;&#x2F; Play if autoplay is true in settings
+      if( settings.autoplay ){
+        this.play();
+      } else {
+        this.pause();
+      }
+    },
+
+    &#x2F;**
+     * Carousels wrap, so they always have next
+     * @method hasNext
+     * @public
+     * @return {Boolean} true
+     *&#x2F;
+    hasNext: function(){
+      return true;
+    },
+
+    &#x2F;**
+     * Carousels wrap, so they always have previous
+     * @method hasPrevious
+     * @public
+     * @return {Boolean} true
+     *&#x2F;
+    hasPrevious: function(){
+      return true;
+    },
+
+    &#x2F;**
+     * Selects the next item in the Carousel.
+     * @method next
+     * @public
+     * @return {Object} Carousel
+     *&#x2F;
+    next: function(){
+      if( this.index() + 1 === this.size() ){
+        this.first();
+      } else {
+        this.select( this.index() + 1 );
+      }
+      return this;
+    },
+
+    &#x2F;**
+     * Selects the previous item in the Carousel.
+     * @method previous
+     * @public
+     * @return {Object} Carousel
+     *&#x2F;
+    previous: function(){
+      if( this.index() === 0 ){
+        this.last();
+      } else {
+        this.select( this.index() - 1 );
+      }
+      return this;
+    }
+  };
+
+} );
+
+&#x2F;&#x2F;Export to Common JS Loader
+if( typeof module !== &#x27;undefined&#x27; ){
+  if( typeof module.setExports === &#x27;function&#x27; ){
+    module.setExports( Carousel );
+  } else if( module.exports ){
+   module.exports = Carousel;
+  }
+}
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

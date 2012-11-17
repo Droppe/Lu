@@ -1,8 +1,25 @@
 var constants = require( 'lu/constants' );
 
+
+/**
+ * Decorates the Button to listen for the 'stated' event and
+ * to disable itself if the associated $item is selected.
+ * Additionally, the Button will fire a 'stated' event on the
+ * 'on' event as specified in the configuration. This event
+ * is triggered with a 'item' parameter.
+ * @class stateDecorator
+ * @uses Button
+ */
+
 function stateDecorator( settings ){
 
-  //Normalize states into an array.
+  /**
+   * Convert states into an array
+   * @method normalize
+   * @private
+   * @param {String} states A string of states
+   * @return {Array} A list of states
+   */
   function normalize( states ){
     if( states ){
       if( typeof states === 'string' ){
@@ -12,7 +29,14 @@ function stateDecorator( settings ){
     return states;
   }
 
-  //Correct the index
+  /**
+   * Corrects the index
+   * @method state
+   * @private
+   * @param {Array} states A list of states
+   * @param {Number} index The current state index
+   * @return {Number} The updated index value
+   */
   function state( states, index ){
     if( index === undefined ){
       index = 0;

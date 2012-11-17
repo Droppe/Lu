@@ -5,8 +5,8 @@ var constants = require( 'lu/constants' );
  * to intelligently disable or enable itself
  * based upon the item selected. This is used in
  * conjunction with the default decorator
- * @method last
- * @private
+ * @class lastDecorator
+ * @uses Button
  */
 function lastDecorator( settings ) {
 

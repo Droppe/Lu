@@ -33,11 +33,25 @@ module.exports = function(grunt) {
     lint: {
       files: ['grunt.js', 'scripts/components/**/*.js', 'scripts/*.js']
     },
+    yuidoc: {
+      compile: {
+        "name": "The Lu Component API",
+        "description": "Lu Component API Documentation",
+        "logo": "http://use.lu/images/logo.png",
+        "version": "0.3.x",
+        "url": "http://github.com/linkedin/Lu",
+        "options": {
+          "paths": "scripts",
+          "exclude": "scripts/libraries", 
+          "outdir": "./docs/yuidoc"
+        }
+      }
+    },
     qunit: {
       files: [
         'http://localhost:1337/test/abstract/abstract.html',
         'http://localhost:1337/test/lu/lu.html',
-        'http://localhost:1337/test/placeholder/placeholder.html',
+         'http://localhost:1337/test/placeholder/placeholder.html',
         'http://localhost:1337/test/$/$.html',
         'http://localhost:1337/test/list/list.html',
         'http://localhost:1337/test/tip/tip.html',
@@ -236,6 +250,10 @@ module.exports = function(grunt) {
 
   // Build task.
   grunt.registerTask( 'build', 'lint qunit concat min' );
+
+
+  // Generate docs
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
   // Default task.
   grunt.registerTask( 'default', '' );

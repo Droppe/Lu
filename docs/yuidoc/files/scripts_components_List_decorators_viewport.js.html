@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>scripts&#x2F;components&#x2F;List&#x2F;decorators&#x2F;viewport.js - The Lu Component API</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="http:&#x2F;&#x2F;use.lu&#x2F;images&#x2F;logo.png" title="The Lu Component API"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.3.x</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/aboveDecorator.html">aboveDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Abstract.html">Abstract</a></li>
+            
+                <li><a href="..&#x2F;classes/belowDecorator.html">belowDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Button.html">Button</a></li>
+            
+                <li><a href="..&#x2F;classes/Carousel.html">Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Container.html">Container</a></li>
+            
+                <li><a href="..&#x2F;classes/DefaultDecorator.html">DefaultDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Dropdown.html">Dropdown</a></li>
+            
+                <li><a href="..&#x2F;classes/firstDecorator.html">firstDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/FormElement.html">FormElement</a></li>
+            
+                <li><a href="..&#x2F;classes/genericStateDecorator.html">genericStateDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/lastDecorator.html">lastDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/leftDecorator.html">leftDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/List.html">List</a></li>
+            
+                <li><a href="..&#x2F;classes/loadDecorator.html">loadDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Lu.html">Lu</a></li>
+            
+                <li><a href="..&#x2F;classes/Mapper.html">Mapper</a></li>
+            
+                <li><a href="..&#x2F;classes/nextDecorator.html">nextDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/pauseDecorator.html">pauseDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Placeholder.html">Placeholder</a></li>
+            
+                <li><a href="..&#x2F;classes/playDecorator.html">playDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/previousDecorator.html">previousDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/rightDecorator.html">rightDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/selectDecorator.html">selectDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/stateDecorator.html">stateDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Switch.html">Switch</a></li>
+            
+                <li><a href="..&#x2F;classes/Tip.html">Tip</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/Button.html">Button</a></li>
+            
+                <li><a href="..&#x2F;modules/Lu.html">Lu</a></li>
+            
+                <li><a href="..&#x2F;modules/Tip.html">Tip</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: scripts&#x2F;components&#x2F;List&#x2F;decorators&#x2F;viewport.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+var constants = require(&#x27;lu&#x2F;constants&#x27;),
+  Carousel = require(&#x27;lu&#x2F;Carousel&#x27;);
+
+&#x2F;**
+ * Applies a viewport to a List or Carousel.
+ * @private
+ *&#x2F;
+function viewportDecorator(settings) {
+
+  return function (base) {
+    var self = this,
+      slidingWindow = settings.viewport.slidingWindow ? $( settings.viewport.slidingWindow ) : this.$element,
+      viewportStartIndex = 0,
+      &#x2F;&#x2F; Settings
+      pageSize = settings.viewport.pageSize || 1, &#x2F;&#x2F; number of elements to show in the viewport
+      slidingThreshold = settings.viewport.slidingThreshold || pageSize, &#x2F;&#x2F; how far from the edge to trigger scrolling
+      mode = settings.viewport.mode || &#x27;paging&#x27;, &#x2F;&#x2F; or sliding
+      previewSize = settings.viewport.previewSize || 0, &#x2F;&#x2F; how much of the next element to reveal
+      animationSpeed = settings.viewport.animationSpeed || 500;
+
+    &#x2F;&#x2F; Check if settings are reasonable
+    if (pageSize &lt;= 0) {
+      pageSize = 1;
+    }
+
+    if (slidingThreshold &gt; pageSize) {
+      slidingThreshold = pageSize;
+    } else if (slidingThreshold &lt; 0) {
+      slidingThreshold = 0;
+    }
+
+    if (previewSize &gt; 0.5) {
+      previewSize = 0.5;
+    } else if (previewSize &lt; 0) {
+      previewSize = 0;
+    }
+
+    function getPageWidth() {
+      return getItemWidth() * pageSize;
+    }
+
+    function getItemWidth() {
+      return slidingWindow.find(&#x27;li&#x27;).outerWidth(true);
+    }
+
+    &#x2F;&#x2F; Ensures the proper width of the viewport.
+    $(slidingWindow).width(getPageWidth() + 2 * previewSize * getItemWidth());
+
+    function pageRight() {
+      var currentIndex = self.index(),
+        size = self.size(),
+        nextPageIndex = currentIndex + pageSize;
+
+      if (nextPageIndex &gt;= size) {
+        nextPageIndex = 0;
+      } else if (size - nextPageIndex &lt; pageSize) {
+        &#x2F;&#x2F; Compensate for when the last page does not contain a full page of elements.
+        &#x2F;&#x2F; Only scroll over the remaining elements.
+        nextPageIndex -= pageSize - (size - nextPageIndex);
+      }
+
+      self.select(nextPageIndex);
+      slideToIndex(nextPageIndex);
+    }
+
+    function pageLeft() {
+      var currentIndex = self.index(),
+        size = self.size(),
+        prevPageIndex = currentIndex - pageSize;
+
+      if (prevPageIndex + pageSize === 0) {
+        prevPageIndex = size - pageSize;
+      } else if (prevPageIndex &lt; 0) {
+        prevPageIndex = 0;
+      }
+
+      self.select(prevPageIndex);
+      slideToIndex(prevPageIndex);
+    }
+
+    function slideToSelected() {
+      var currentIndex = self.index(),
+        midpoint = Math.floor(viewportStartIndex + pageSize &#x2F; 2);
+
+      if (currentIndex === 0) {
+        viewportStartIndex = 0;
+      } else if (currentIndex === self.size() - 1) {
+        &#x2F;&#x2F; On last page, slide the viewport to the beginning of the last page
+        viewportStartIndex = self.size() - pageSize;
+      } else {
+        &#x2F;&#x2F; Slide back&#x2F;forth and place the currently selected element in the middle of the viewport
+        if (currentIndex &gt;= viewportStartIndex + slidingThreshold) {
+          viewportStartIndex += Math.abs(currentIndex - midpoint);
+
+          if (viewportStartIndex &gt; self.size() - pageSize) {
+            viewportStartIndex = self.size() - pageSize;
+          }
+        } else if (currentIndex &lt; viewportStartIndex + pageSize - slidingThreshold) {
+          viewportStartIndex -= Math.abs(currentIndex - midpoint);
+
+          if (viewportStartIndex &lt; 0) {
+            viewportStartIndex = 0;
+          }
+        } else {
+          return;
+        }
+      }
+
+      slideToIndex(viewportStartIndex);
+    }
+
+    function slideToIndex(index) {
+      var position;
+
+      if (index === 0) {
+        &#x2F;&#x2F; at the beginning
+        position = 0;
+      } else if (index &gt;= self.size() - pageSize) {
+        &#x2F;&#x2F; on last page
+        position = index * getItemWidth() - 2 * previewSize * getItemWidth();
+      } else {
+        &#x2F;&#x2F; in the middle
+        position = index * getItemWidth() - previewSize * getItemWidth();
+      }
+
+      slidingWindow.find(&#x27;ul&#x27;).animate({right: position}, animationSpeed);
+    }
+
+    self.on(constants.events.SELECTED, function (event, Component) {
+      if (mode === &quot;sliding&quot;) {
+        slideToSelected();
+      } 
+   });
+
+    if (mode === &quot;paging&quot;) {
+      &#x2F;&#x2F; In paging mode, the next&#x2F;previous events will cause scrolling one page at a time
+      self.next = function () {
+        pageRight();
+      };
+      self.previous = function () {
+        pageLeft();
+      };
+      if (!(self instanceof Carousel)) {
+        &#x2F;&#x2F; If this a List, then hasNext will return if it has a next page or not
+        self.hasNext = function () {
+          return (this.index() + pageSize &lt; this.size());
+        };
+      }
+    }
+  };
+
+}
+
+&#x2F;&#x2F;Export to Common JS Loader
+if (typeof module !== &#x27;undefined&#x27;) {
+  if (typeof module.setExports === &#x27;function&#x27;) {
+    module.setExports(viewportDecorator);
+  } else if (module.exports) {
+    module.exports = viewportDecorator;
+  }
+}
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

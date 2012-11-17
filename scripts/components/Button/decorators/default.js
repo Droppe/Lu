@@ -2,7 +2,8 @@
  * Decorates the Button to listen for
  * the 'on' event and trigger the 'action' event
  * as specified in the configuration.
- * @private
+ * @class DefaultDecorator
+ * @uses Button
  */
 
 function DefaultDecorator( settings ){

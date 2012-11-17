@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>scripts&#x2F;components&#x2F;decorators&#x2F;state.js - The Lu Component API</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="http:&#x2F;&#x2F;use.lu&#x2F;images&#x2F;logo.png" title="The Lu Component API"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.3.x</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/aboveDecorator.html">aboveDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Abstract.html">Abstract</a></li>
+            
+                <li><a href="..&#x2F;classes/belowDecorator.html">belowDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Button.html">Button</a></li>
+            
+                <li><a href="..&#x2F;classes/Carousel.html">Carousel</a></li>
+            
+                <li><a href="..&#x2F;classes/Container.html">Container</a></li>
+            
+                <li><a href="..&#x2F;classes/DefaultDecorator.html">DefaultDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Dropdown.html">Dropdown</a></li>
+            
+                <li><a href="..&#x2F;classes/firstDecorator.html">firstDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/FormElement.html">FormElement</a></li>
+            
+                <li><a href="..&#x2F;classes/genericStateDecorator.html">genericStateDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/lastDecorator.html">lastDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/leftDecorator.html">leftDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/List.html">List</a></li>
+            
+                <li><a href="..&#x2F;classes/loadDecorator.html">loadDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Lu.html">Lu</a></li>
+            
+                <li><a href="..&#x2F;classes/Mapper.html">Mapper</a></li>
+            
+                <li><a href="..&#x2F;classes/nextDecorator.html">nextDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/pauseDecorator.html">pauseDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Placeholder.html">Placeholder</a></li>
+            
+                <li><a href="..&#x2F;classes/playDecorator.html">playDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/previousDecorator.html">previousDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/rightDecorator.html">rightDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/selectDecorator.html">selectDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/stateDecorator.html">stateDecorator</a></li>
+            
+                <li><a href="..&#x2F;classes/Switch.html">Switch</a></li>
+            
+                <li><a href="..&#x2F;classes/Tip.html">Tip</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="..&#x2F;modules/Button.html">Button</a></li>
+            
+                <li><a href="..&#x2F;modules/Lu.html">Lu</a></li>
+            
+                <li><a href="..&#x2F;modules/Tip.html">Tip</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: scripts&#x2F;components&#x2F;decorators&#x2F;state.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+ * Generic State decorator
+ * @class genericStateDecorator
+ * @module Lu
+ *&#x2F;
+
+
+var constants = require( &#x27;lu&#x2F;constants&#x27; ),
+  helpers = require( &#x27;lu&#x2F;helpers&#x27; );
+
+function genericStateDecorator( settings ){
+
+  &#x2F;**
+   * Converts a string of states into an array
+   * @method normalizeState
+   * @private
+   * @param {Array} states an array of states
+   * @return {Array} An array of states
+   *&#x2F;
+  function normalizeStates( states ){
+    if( states ){
+      if( typeof states === &#x27;string&#x27; ){
+        states = states.replace( &#x27; &#x27;, &#x27;&#x27; ).split( &#x27;,&#x27; );
+      }
+    }
+    return states;
+  }
+
+  &#x2F;**
+   * Add Classes representing the current states to $element and remove
+   * invalid states
+   * @method applyState
+   * @private
+   * @param {Object} event The jQuery Event object
+   * @param {Array} states an array of states to set
+   * @return {Function} Container.setState
+   *&#x2F;
+  function applyState( $element, states ){
+    var removed = [],
+      classes = [],
+      classAttr = $element.attr( &#x27;class&#x27; ) || &#x27;&#x27;;
+
+    _.each( classAttr.split( &#x27; &#x27; ), function( clss, index ){
+      if( clss.indexOf( constants.statePrefix ) &gt; -1 ){
+        removed.push( clss );
+      }
+    } );
+
+    _.each( states, function( clss, index ){
+      if( clss ){
+        classes.push( constants.statePrefix + clss );
+      }
+    } );
+
+    $element.removeClass( removed.join( &#x27; &#x27; ) ).addClass( classes.join( &#x27; &#x27; ) );
+
+    window.setTimeout( function(){
+      &#x2F;&#x2F;allow browser re-flow
+    }, 1 );
+  }
+
+
+  &#x2F;**
+   * Returns a list of newly-added states (???)
+   * @method getAppliedStates
+   * @private
+   * @param {Object} $element A jQuery element
+   * @return {Array} A list of states
+   *&#x2F;
+  function getAppliedStates( $element ){
+    var classes = $element.attr( &#x27;class&#x27; ) || &#x27;&#x27;,
+      states = [];
+
+    _.each( classes.split( &#x27; &#x27; ), function( item, index ){
+      if( item.indexOf( constants.statePrefix ) &gt; -1 ){
+        states.push( item.replace( constants.statePrefix, &#x27;&#x27; ) );
+      }
+    } );
+    return states;
+  }
+
+  return function( base ){
+
+    var self = this,
+      &#x2F;**
+       * An array of string representing the current state(s)
+       * @property states
+       * @type Array
+       * @private
+       *&#x2F;
+      states = [],
+      cache = [getAppliedStates( this.$element )];
+
+    &#x2F;**
+     * Updates states on a state event
+     * @method state
+     * @private
+     * @param {Object} event The jQuery Event object
+     * @param {Array} states an array of states to set
+     * @return {Function} Container.setState
+     *&#x2F;
+    function state( event, states, method ){
+      if( self.$element.is( event.target ) ){
+        &#x2F;&#x2F;return early to prevent recursion
+        return self;
+      }
+      event.stopPropagation();
+      switch( method ){
+        case &#x27;add&#x27;:
+          self.addState( states );
+          break;
+        case &#x27;remove&#x27;:
+          self.removeState( states );
+          break;
+        case &#x27;reset&#x27;:
+          self.reset();
+          break;
+        case &#x27;clear&#x27;:
+          self.clear();
+          break;
+        case &#x27;toggle&#x27;:
+          self.toggle( states );
+          break;
+        default:
+          self.setState( states );
+      }
+      return self;
+    }
+
+    &#x2F;**
+     * Returns the state(s) of the instance
+     * @method getState
+     * @public
+     * @return {Array} an Array of strings representing the state(s)
+     *&#x2F;
+    this.getState = function(){
+      return states;
+    };
+
+    &#x2F;*
+     * Sets the state(s) of the instance replacing other states
+     * @method setState
+     * @param {Array|String} value This can be an Array of strings or comma
+     * delimited string representing multiple states. It can also be
+     * a string representing a single state
+     * @public
+     * @return {Object} instance
+     *&#x2F;
+    this.setState = function( value ){
+      if( typeof value === &#x27;string&#x27; ){
+        value = value.split( &#x27;,&#x27; ).sort();
+      }
+
+      value = value.sort();
+      states = states.sort();
+
+      if( _.isEqual( value, states ) ){
+        return self;
+      }
+
+      states = value;
+
+      applyState( this.$element, states, constants.statePrefix );
+      this.trigger( constants.events.STATED, [this] );
+
+      return this;
+    };
+
+    &#x2F;*
+     * Adds a state or states to the instance
+     * @method addStates
+     * @param {Array|String} value This can be an Array of strings or comma
+     * delimited string representing multiple states. It can also be
+     * a string representing a single state
+     * @public
+     * @return {Object} instance
+     *&#x2F;
+    this.addState = function( value ){
+      if( typeof value === &#x27;string&#x27; ){
+        value = value.split( &#x27;,&#x27; );
+      }
+      if( _.difference( value, states ).length &gt; 0 ){
+        states = _.union( states, value );
+        applyState( this.$element, states );
+        this.trigger( constants.events.STATED, [this] );
+      }
+      return this;
+    };
+
+    &#x2F;**
+     * Removes the state(s) from the instance
+     * @method removeState
+     * @param {Array|String} value This can be an Array of strings or comma
+     * delimited string representing multiple states. It can also be
+     * a string representing a single state
+     * @public
+     * @return {Object} instance
+     *&#x2F;
+    this.removeState = function( value ){
+      var intersection,
+        args = [];
+
+      if( typeof value === &#x27;string&#x27; ){
+        value = value.split( &#x27;,&#x27; );
+      }
+
+      intersection = _.intersection( states, value );
+      if( intersection.length &gt; 0 ){
+        args.push( states );
+        _.each( value, function( item, index ){
+          args.push( item );
+        } );
+        states = _.without.apply( this, args );
+        applyState( this.$element, states, constants.statePrefix );
+        this.trigger( constants.events.STATED, [this] );
+      }
+      return this;
+    };
+
+    &#x2F;**
+     * Removes all states from the instance
+     * @method clear
+     * @public
+     * @return {Object} instance
+     *&#x2F;
+    this.clear = function(){
+      this.removeState( states );
+      return this;
+    };
+
+    &#x2F;**
+     * Sets states to those originally defined on the node
+     * @method reset
+     * @public
+     * @return {Object} instance
+     *&#x2F;
+    this.reset = function(){
+      this.setState( cache[0] );
+      return this;
+    };
+
+    &#x2F;**
+     * Checks to see if the state has been applied
+     * @method hasState
+     * @param {String} The state to check
+     * @public
+     * @return {Boolean} True if the state has been applied.
+     *&#x2F;
+    this.hasState = function( value ){
+      return ( _.indexOf( states, value ) &gt; -1 );
+    };
+
+    &#x2F;&#x2F;Add the initial state
+    if( cache[0] ){
+      this.addState( cache[0] );
+    }
+    &#x2F;&#x2F;Bind to &#x27;state&#x27; events
+    this.on( constants.events.STATE, state );
+
+  };
+}
+
+&#x2F;&#x2F;Export to Common JS Loader
+if( typeof module !== &#x27;undefined&#x27; ){
+  if( typeof module.setExports === &#x27;function&#x27; ){
+    module.setExports( genericStateDecorator );
+  } else if( module.exports ){
+   module.exports = genericStateDecorator;
+  }
+}
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

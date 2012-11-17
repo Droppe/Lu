@@ -4,8 +4,8 @@ var constants = require( 'lu/constants' );
  * Decorates the Button to listen for the 'stated' event and
  * to disable itself if the control is playing. This is used in
  * conjunction with the default decorator.
- * @method play
- * @private
+ * @class playDecorator
+ * @uses Button
  */
 function playDecorator( settings ) {
   return function( base ){
