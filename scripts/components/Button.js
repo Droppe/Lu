@@ -127,6 +127,7 @@ Button = Switch.extend( function( base ){
         _.each( requirements, function( decorator, index ){
           decorator = require( decorator )( settings );
           Fiber.decorate( self, decorator );
+          self.decorators.push(decorator);
         } );
         self.trigger( 'dependencies-resolved' );
       } );
@@ -178,10 +179,10 @@ Button = Switch.extend( function( base ){
      */
     enable: function(){
       var $element = this.$element;
+      this.removeState( constants.states.DISABLED );
       if( $element.is( constants.HAS_A18_ATTRS ) ){
         $element.prop( constants.DISABLED, false );
       }
-      this.removeState( constants.states.DISABLED );
       return this;
     }
   };

@@ -30,6 +30,12 @@ Container = Switch.extend( function ( base ) {
      * @default null
      */
     states: null,
+    /**
+     * A CSS selctor for an element to be used as a content source.
+     * @property content
+     * @type {String}
+     * @default null
+     */
     content: null,
     /**
      * A URL to be used as a content source.
@@ -38,13 +44,6 @@ Container = Switch.extend( function ( base ) {
      * @default null
      */
     url: null,
-    /**
-     * A CSS selctor for an element to be used as a content source.
-     * @property selector
-     * @type {String}
-     * @default null
-     */
-    selector: null,
     /**
      * Set to true if the content should be loaded in an iframe
      * @property frame
@@ -133,66 +132,82 @@ Container = Switch.extend( function ( base ) {
        * Loads content and then triggers an update event. Called on load event.
        * @method load
        * @private
-       * @param {Object} $target Jquery object for the target node
-       * @param {String|Object} source The source to load or obtain a URL from
+       * @param {Object} $target Jquery object for the event target 
+       * @param {String|Object} source The source to load or obtain a URL from, or the selector or node to use for local content
        * @param {String} method the method to be used when inserting content
        * @return {Object} Container
        */
       function load( $target, source, method ){
-        var isUrl = helpers.isUrl( source ),
-          loadedContent,
+
+        var isUrl,
+          newContent,
           tmpData,
           url;
 
-        if( !isUrl ){
-          if (typeof source === "object" && source.getUrl) {
-            url = source.getUrl();
-          }
-          else if (typeof source === "string") {
+        self.removeState( constants.states.LOADED ).addState( constants.states.LOADING );
+        
+        source = source || settings.content;
+        isUrl = helpers.isUrl( source );
+
+        if (!isUrl){
+          if (typeof source === "string") {
             url = source;
           }
-          else if ( $target.is( 'a' ) ){
-            url = $target.attr( 'href' );
+          else if ($target.is('a')){
+            url = $target.attr('href');
           }
-
-          // DO WE NEED THIS???
-          if( !url && arguments.length > 1 ){
-            method = url;
+          else if (settings.url) {
+            url = settings.url;
           }
         }
 
+        // Is the url really an ID selector?
         if( url.indexOf( '#' ) === 0 ){
-          loadedContent = $( url ).html();
-          self.trigger( constants.events.UPDATE, [loadedContent, method] );
+          newContent = $( url ).html();
+          if (newContent) {
+            // self here is HTMLDivElement
+            self.removeState( constants.states.LOADING ).addState( constants.states.LOADED );
+            self.trigger( constants.events.UPDATE, {
+              sender: self, 
+              content: newContent, 
+              method: method
+            } );            
+          }
+          return self;
+        }
+        else if( settings.iframe === true || method === 'iframe'){
+          newContent = '<iframe src="' + url + '"></iframe>';
+          self.removeState( constants.states.LOADING ).addState( constants.states.LOADED );
+          self.trigger( constants.events.UPDATE, {
+            sender: self, 
+            content: newContent, 
+            method: 'iframe'
+          } );
           return self;
         }
 
-        if( settings.frame === true ){
-          loadedContent = '<iframe src="' + url + '"></iframe>';
-          self.trigger( constants.events.UPDATE, [loadedContent, method] );
-          return self;
-        }
-
-        self.removeState( constants.states.LOADED );
-        self.addState( constants.states.LOADING );
-
+        // If we're not grabbing local content nor using an iframe, then perform an ajax call
+         
         $.ajax( {
           url: url,
           success: function( data, textStatus, jXHR ){
             var newContent,
               anchor = helpers.parseUri( url ).anchor;
 
-            if( settings.selector ){
-              newContent = $( data ).find( settings.selector ).html();
-            } else if( anchor ){
+            if( anchor ){
               newContent = $( data ).find( '#' + anchor ).html() || data;
             } else {
               newContent = data;
             }
 
-            self.removeState( constants.states.LOADING );
-            self.addState( constants.states.LOADED );
-            self.trigger( constants.events.UPDATE, [newContent, method] );
+            self.removeState( constants.states.LOADING ).addState( constants.states.LOADED );
+            
+            // self here is HTMLDivElement
+            self.trigger( constants.events.UPDATE, {
+              sender: self, 
+              content: newContent, 
+              method: null
+            } );
           },
           failure: function(){
            self.removeState( constants.states.LOADING ).addState( constants.states.ERRED );
@@ -259,7 +274,10 @@ Container = Switch.extend( function ( base ) {
           self.setWidth( this.getWidth() );
         }
 
-        self.trigger( constants.events.UPDATED, $element );
+        self.trigger( constants.events.UPDATED, {
+          sender: self
+        } );
+
         return self;
       };
 
@@ -287,41 +305,37 @@ Container = Switch.extend( function ( base ) {
       };
 
       if( settings.url ){
-        //Load content from url
-        self.trigger( constants.events.LOAD );
+        // Load content from url
+        self.trigger( constants.events.LOAD, {
+            sender: self
+          } );
       } else {
-        //Store the $elements content
+        // Store the $elements content
         content = $element.html();
       }
 
-      //sets the height of the container automagically if autoHeight is set to true.
+      // Sets the height of the container automagically if autoHeight is set to true.
       if( settings.autoHeight ){
         this.setHeight( this.getHeight() );
       }
 
-      //sets the width of the container automagically if autoHeight is set to true.
+      // Sets the width of the container automagically if autoHeight is set to true.
       if( settings.autoWidth ){
         self.setWidth( self.getWidth() );
       }
 
-      // //Bind update event to update
-      self.on( constants.events.UPDATE, function(event, content, method ) {
+      // Bind update event to update
+      self.on( constants.events.UPDATE, function(event, payload ) {
         event.stopPropagation();
-        update( $( event.target ), content, method );
+        payload = payload || {};
+        update( $(event.target), payload.content, payload.method );
       });
 
       //Bind load event to load
-      self.on( constants.events.LOAD, function(event, content, method ) {
+      self.on( constants.events.LOAD, function(event, payload ) {
         event.stopPropagation();
-        //load( $(event.target), content, method );
-        var things = [$(event.target)];
-        if (content) {
-          things.push(content);
-        }
-        if (method) {
-          things.push(method);
-        }
-        load.apply(this, things);
+        payload = payload || {};
+        load( $(event.target), payload.content, payload.method );
       });
       
     },
