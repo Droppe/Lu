@@ -102,7 +102,7 @@ Tip = Abstract.extend( function (Abstract){
         style: '',
 
         /**
-         * If set to true the tip will remain open until the user clicks the close button.
+         * If set to true the tip will remain open until the user clicks the close button or outside of the tip
          * @property persistent
          * @type Boolean
          * @private
@@ -348,13 +348,15 @@ Tip = Abstract.extend( function (Abstract){
       this.hide = function( noDelay ){
         var timeout;
 
-        if( rendered === TRUE && !noDelay ){
-          timeout = window.setTimeout( function(){
+        if( rendered === TRUE ){
+          if( !noDelay ){
+            timeout = window.setTimeout( function(){
+              $tip.hide();
+              window.clearTimeout( timeout );
+            }, settings.delay );
+          } else {
             $tip.hide();
-            window.clearTimeout( timeout );
-          }, settings.delay );
-        } else if ( noDelay ) {
-          $tip.hide();
+          }
         }
       };
 
