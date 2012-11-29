@@ -86,6 +86,14 @@ Tip = Abstract.extend( function (Abstract){
         className: 'tooltip',
 
         /**
+         * Class of target that will close a persistent tip
+         * @property closeClass
+         * @type String
+         * @private
+         */
+        closeClass: '.close',
+
+        /**
          * CSS styles for the Tip
          * @property style
          * @type String
@@ -94,13 +102,13 @@ Tip = Abstract.extend( function (Abstract){
         style: '',
 
         /**
-         * If set to true the tip will remain open until the mouse has left the tip.
-         * @property interactive
+         * If set to true the tip will remain open until the user clicks the close button.
+         * @property persistent
          * @type Boolean
          * @private
          * @default true
          */
-        interactive: TRUE,
+        persistent: FALSE,
 
         /**
          * The buffer in pixels around the element to be used in determing if the user has stopped
@@ -161,20 +169,12 @@ Tip = Abstract.extend( function (Abstract){
         href,
 
         /**
-         * An indicator of whether or not the tip should remain open
-         * @property stuck
-         * @type Boolean
-         * @private
-         */
-        stuck,
-
-        /**
          * Whether the element is an input or not
          * @property isInput
          * @type Boolean
          * @private
          */
-        isInput = ($element[0].tagName.toLowerCase() === 'input'),
+        isInput = ( $element[0].tagName.toLowerCase() === 'input' ),
 
         /**
          * Array of decorators to apply to a Tip instance
@@ -241,8 +241,19 @@ Tip = Abstract.extend( function (Abstract){
       function handleMouseEnter ( event ){
         event.stopPropagation();
 
-        //set up a listener on the document to be used in determing if the user has moused out of the threshold
-        $document.on( 'mousemove.lu.tip', handleMouseMove );
+        if( !settings.persistent ) {
+          //set up a listener on the document to be used in determing if the user has moused out of the threshold
+          $document.on( 'mousemove.lu.tip', handleMouseMove );
+        } else {
+          // if the user clicks outside of a persistent tip close it
+          $document.on( 'click', function( evt) {
+            var $target = $( evt.target );
+
+            if( $target.closest( '.' + settings.className ).length === 0 ) {
+              self.hide();
+            }
+          } );
+        }
         self.show();
       }
 
@@ -297,11 +308,13 @@ Tip = Abstract.extend( function (Abstract){
       function handleFocus( event ){
         event.stopPropagation();
 
-        $element.on( 'blur.lu.tip', function( event ){
-          event.stopPropagation();
-          $element.off( 'blur.lu.tip' );
-          self.hide();
-        } );
+        if( !settings.persistent ) {
+          $element.on( 'blur.lu.tip', function( event ){
+            event.stopPropagation();
+            $element.off( 'blur.lu.tip' );
+            self.hide();
+          } );
+        }
 
         self.show();
       }
@@ -332,15 +345,16 @@ Tip = Abstract.extend( function (Abstract){
        * @method hide
        * @return {Void}
        */
-      this.hide = function(){
+      this.hide = function( noDelay ){
         var timeout;
-        if( rendered === TRUE ){
+
+        if( rendered === TRUE && !noDelay ){
           timeout = window.setTimeout( function(){
-            if( !stuck || !settings.interactive ){
-              $tip.hide();
-              window.clearTimeout( timeout );
-            }
+            $tip.hide();
+            window.clearTimeout( timeout );
           }, settings.delay );
+        } else if ( noDelay ) {
+          $tip.hide();
         }
       };
 
@@ -383,8 +397,17 @@ Tip = Abstract.extend( function (Abstract){
       } else {
         $element.on( 'focus', handleFocus );
       }
-      // use losing focus on tip to enforce one tip at a time
-      $tip.on( 'blur', self.hide );
+
+      if( settings.persistent ) {
+        // close button for persistent tips
+        $tip.on( 'click', settings.closeClass, function( evt ) {
+          evt.preventDefault();
+          self.hide( true );  // close tip with no delay
+        } );
+      } else {
+        // use losing focus on tip to enforce one (non-persistent) tip at a time
+        $tip.on( 'blur', self.hide );
+      }
 
       // === DECORATION ===
       switch( settings.placement ){
