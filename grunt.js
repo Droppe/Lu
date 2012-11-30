@@ -28,6 +28,7 @@ module.exports = function(grunt) {
       '\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.' +
       '\n * See the License for the specific language governing permissions and' +
       '\n * limitations under the License.' +
+      '\n *' + 
       '\n */'
     },
     lint: {
