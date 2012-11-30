@@ -84,6 +84,7 @@ function execute(){
     start();
   } );
 
+  /*
   QUnit.module( 'Button Tests' );
 
   QUnit.asyncTest( 'set state using button', function(){
@@ -141,4 +142,5 @@ function execute(){
     ok( Switch.hasState( 'funky' ), 'Confirming initial state restored' );
     start();
   } );
+*/
 }
