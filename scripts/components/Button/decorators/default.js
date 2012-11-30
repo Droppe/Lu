@@ -16,10 +16,9 @@ function DefaultDecorator( settings ){
         self.$element.focus();
       }
       if( settings.action !== undefined ){
-        // this trigger should send params
-        self.trigger( settings.action, [self] );
+        self.trigger( settings.action, {sender: self, content: self.getUrl()} );
       }
-    }, settings.throttle ) );
+    }, settings.throttle ));
   };
 }
 
