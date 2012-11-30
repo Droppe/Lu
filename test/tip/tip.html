@@ -4,6 +4,17 @@
   <meta charset="utf-8">
   <title>Tip Tests</title>
   <link rel="stylesheet" type="text/css" href="../qunit.css">
+  <style>
+    li {
+      padding: 20px 0;
+    }
+    .tooltip {
+      position: absolute;
+    }
+    .tip-contents {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
@@ -14,13 +25,21 @@
       <li>
         <a id="mouse-tip" href="#mouse-example" data-lu="Tip" data-lu-config="{ 'Tip' : { 'className' : 'tooltip mouse-tip' } }">Mouse Tip.</a>
         <div id="mouse-example" class="tip-contents">
-          Fatback pork belly flank salami cow t-bone ground round pancetta short ribs jerky pig pork sausage.
+          Mouse tooltip content.
         </div>
       </li>
       <li>
         <input id="input-tip" href="#input-example" data-lu="Tip:Right" value="" placeholder="Click for tip." data-lu-config="{ 'Tip:Right' : { 'className' : 'tooltip input-tip' } }"/>
         <div id="input-example" class="tip-contents">
-          Pastrami boudin pig, swine filet mignon venison flank chuck.
+          Input tooltip content.
+        </div>
+      </li>
+      <li>
+        <a id="persistent-tip" href="#persistent-example" data-lu="Tip" data-lu-config="{ 'Tip' : { 'persistent' : true,
+                                                                                                    'className' : 'tooltip persistent-tip' } }">Persistent Tip.</a>
+        <div id="persistent-example" class="tip-contents">
+          Persistent tooltip content.
+          <a href="#" class="close">Close</a>
         </div>
       </li>
     </ul>
