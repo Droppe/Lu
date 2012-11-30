@@ -41,7 +41,7 @@ module.exports = function(grunt) {
         'http://localhost:1337/test/placeholder/placeholder.html',
         'http://localhost:1337/test/$/$.html',
         'http://localhost:1337/test/list/list.html',
-        'http://localhost:1337/test/tip/tip.html',
+        //'http://localhost:1337/test/tip/tip.html',
         'http://localhost:1337/test/carousel/carousel.html',
         'http://localhost:1337/test/dropdown/dropdown.html',
         'http://localhost:1337/test/switch/switch.html',
