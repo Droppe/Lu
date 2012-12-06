@@ -12,11 +12,18 @@ var constants = require( 'lu/constants' );
 function loadDecorator( settings ){
 
   return function( base ){
-    var self = this;
+    var self = this,
+      defaults = {
+        loadOnce: true
+      };
+
+    _.defaults( settings, defaults );
 
     self.on( constants.events.STATED, function( event, Component ){
       event.stopPropagation();
-      if( Component.hasState( constants.states.LOADED ) ){
+      
+      // The config value "settings.loadOnce" can stop/allow additional loading...
+      if( settings.loadOnce && Component.hasState( constants.states.LOADED ) ){
         self.disable();
       }
     } );
