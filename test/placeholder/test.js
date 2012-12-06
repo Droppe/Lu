@@ -1,6 +1,12 @@
-Lu.map( $( 'input[type=text][placeholder][data-lu~=Placeholder], textarea[placeholder][data-lu~=Placeholder]' ), 'Placeholder', function(){} );
+/**
+ * @venus-library  qunit
+ * @venus-template  lu
+ * @venus-fixture  test.tl
+ */
 
-function execute(){
+Lu.map( $( 'input[type=text][placeholder][data-lu~=Placeholder], textarea[placeholder][data-lu~=Placeholder]' ), 'Placeholder', function(){} );
+function execute() {
+
   var InputPlaceholder,
     TextareaPlaceholder,
     $inputPlaceholder = $( '#inputTest' ),
@@ -8,7 +14,6 @@ function execute(){
 
   InputPlaceholder = $inputPlaceholder.lu( 'getComponents' ).Placeholder.instance;
   TextareaPlaceholder = $textareaPlaceholder.lu( 'getComponents' ).Placeholder.instance;
-
 
   if ( !( 'placeholder' in document.createElement( 'input' ) && 'placeholder' in document.createElement( 'textarea' ) ) ) {
     QUnit.module( 'module1', {
@@ -21,14 +26,14 @@ function execute(){
         $textareaPlaceholder.trigger( 'focus' ).val('').trigger( 'blur' );
       }
     });
-    asyncTest( 'placeholder text inserted', function(){
+    QUnit.asyncTest( 'placeholder text inserted', function(){
       expect( 2 );
       equal( $inputPlaceholder.val(), 'input placeholder', 'Placeholder text succesfully inserted into input element' );
       equal( $textareaPlaceholder.val(), 'textarea placeholder', 'Placeholder text succesfully inserted into textarea element' );
       start();
     } );
 
-    asyncTest ( 'focus, no user text in element', function() {
+    QUnit.asyncTest ( 'focus, no user text in element', function() {
       expect( 2 );
       $inputPlaceholder.one( 'focus', function() {
         equal( $inputPlaceholder.val(), 'input placeholder', 'Placeholder text succesfully maintained on focus' );
@@ -42,7 +47,7 @@ function execute(){
       $textareaPlaceholder.trigger( 'focus' );
     } );
 
-    asyncTest ( 'keydown, no user text in element', function() {
+    QUnit.asyncTest ( 'keydown, no user text in element', function() {
       expect( 2 );
       $inputPlaceholder.one( 'keydown', function() {
         equal( $inputPlaceholder.val(), '', 'Placeholder text succesfully removed' );
@@ -56,7 +61,7 @@ function execute(){
       $textareaPlaceholder.trigger( 'focus' ).trigger( 'keydown' );
     });
 
-    asyncTest ( 'focus, with user text in element', function() {
+    QUnit.asyncTest ( 'focus, with user text in element', function() {
       expect( 2 );
       $inputPlaceholder.trigger( 'focus' ).val( 'Remove me' ).trigger( 'blur' );
       $textareaPlaceholder.trigger( 'focus' ).val( 'Remove me, too' ).trigger( 'blur' );
@@ -72,7 +77,7 @@ function execute(){
       $textareaPlaceholder.trigger( 'focus' );
     } );
 
-    asyncTest ( 'blur, no user text in element', function() {
+    QUnit.asyncTest ( 'blur, no user text in element', function() {
       expect( 2 );
       $inputPlaceholder.one( 'blur', function() {
         equal( $inputPlaceholder.val(), 'input placeholder', 'Placeholder text succesfully removed' );
@@ -88,7 +93,7 @@ function execute(){
       $textareaPlaceholder.trigger( 'blur' );
     } );
 
-    asyncTest ( 'blur, with user text in element', function() {
+    QUnit.asyncTest ( 'blur, with user text in element', function() {
       expect( 2 );
       $inputPlaceholder.trigger( 'focus' ).val( 'Remove me' ).trigger( 'blur' );
       $textareaPlaceholder.trigger( 'focus' ).val( 'Remove me, too' ).trigger( 'blur' );
@@ -106,7 +111,7 @@ function execute(){
       $textareaPlaceholder.trigger( 'blur' );
     } );
   } else {
-    asyncTest( 'browser natively supports placeholder', function() {
+    QUnit.asyncTest( 'browser natively supports placeholder', function() {
       expect( 1 );
       ok( true );
       start();

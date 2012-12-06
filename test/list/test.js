@@ -1,3 +1,9 @@
+/**
+ * @venus-library  qunit
+ * @venus-template  lu
+ * @venus-fixture  test.tl
+ */
+
 function execute(){
   var ListA = $( '#A' ).lu( 'getComponent', 'List' ).instance,
     ListB = $( '#B' ).lu( 'getComponent', 'List' ).instance,

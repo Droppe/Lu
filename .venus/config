@@ -1,0 +1,26 @@
+// Configuration file for Venus
+{
+  libraries: {
+    mocha: {
+      includes: [
+        'libraries/mocha.js',
+        'libraries/expect.js',
+        'adaptors/mocha-venus.js'
+      ]
+    },
+    qunit: {
+      includes: [
+        'libraries/qunit.js',
+        'adaptors/qunit-venus.js'
+      ]
+    }
+  },
+
+  // Default settings
+  default: {
+    library: 'mocha'
+  },
+  static: {
+    lu: "../"
+  }
+}
