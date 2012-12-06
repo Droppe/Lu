@@ -329,7 +329,7 @@ Tip = Abstract.extend( function (Abstract){
        */
       this.show = function(){
         if( rendered === FALSE ){
-          TipContainer.trigger( 'load', [href] );
+          TipContainer.trigger( 'load', { content: href } );
         } else {
           $tip.css( self.getPosition() );
           $tip.show();
