@@ -1,8 +1,16 @@
 function execute(){
   var PagingList = $( '#list-paging' ).lu( 'getComponent', 'List' ),
+    PagingListPrevButton = $( '#list-paging-prev'),
+    PagingListNextButton = $( '#list-paging-next'),
     SlidingList = $( '#list-sliding' ).lu( 'getComponent', 'List' ),
+    SlidingListPrevButton = $( '#list-sliding-prev'),
+    SlidingListNextButton = $( '#list-sliding-next'),
     PagingCarousel = $( '#carousel-paging' ).lu( 'getComponent', 'Carousel' ),
-    SlidingCarousel = $( '#carousel-sliding' ).lu( 'getComponent', 'Carousel' );
+    PagingCarouselPrevButton = $( '#carousel-paging-prev'),
+    PagingCarouselNextButton = $( '#carousel-paging-next'),
+    SlidingCarousel = $( '#carousel-sliding' ).lu( 'getComponent', 'Carousel' ),
+    SlidingCarouselPrevButton = $( '#carousel-sliding-prev'),
+    SlidingCarouselNextButton = $( '#carousel-sliding-next');
 
   QUnit.module( 'List Viewport Decorator Test' );
 
@@ -18,8 +26,21 @@ function execute(){
       PagingList.instance.trigger('previous');
       ok(PagingList.instance.index() === 0);
       ok(PagingList.instance.hasPrevious() === false);
-      start();
-    });
+
+      PagingListNextButton.lu('getComponent','Button').ready(function() {
+        PagingList.instance.select(0);
+        PagingListNextButton.click();
+        ok(PagingList.instance.index() === 5);
+      }); 
+      PagingListPrevButton.lu('getComponent','Button').ready(function() {
+        PagingList.instance.select(5);
+        PagingListPrevButton.click();
+        ok(PagingList.instance.index() === 0);
+        start(); 
+      });   
+  });
+
+    
   } );
 
   QUnit.asyncTest( 'sliding', function(){
@@ -35,7 +56,18 @@ function execute(){
       ok(SlidingList.instance.index() === 12);
       ok(SlidingList.instance.hasNext() === true);
       ok(SlidingList.instance.hasPrevious() === true);
-      start();
+
+      SlidingListNextButton.lu('getComponent','Button').ready(function() {
+        SlidingList.instance.select(0);
+        SlidingListNextButton.click();
+        ok(SlidingList.instance.index() === 1);
+      }); 
+      SlidingListPrevButton.lu('getComponent','Button').ready(function() {
+        SlidingList.instance.select(1);
+        SlidingListPrevButton.click();
+        ok(SlidingList.instance.index() === 0); 
+        start(); 
+      }); 
     });
   } );
 
@@ -53,7 +85,18 @@ function execute(){
       ok(PagingCarousel.instance.hasPrevious() === true);
       PagingCarousel.instance.trigger('previous');
       ok(PagingCarousel.instance.index() === 9);
-      start();
+
+      PagingCarouselNextButton.lu('getComponent','Button').ready(function() {
+        PagingCarousel.instance.select(0);
+        PagingCarouselPrevButton.click();
+        ok(PagingCarousel.instance.index() === 9);
+      }); 
+      PagingCarouselPrevButton.lu('getComponent','Button').ready(function() {
+        PagingCarousel.instance.select(9);
+        PagingCarouselNextButton.click();
+        ok(PagingCarousel.instance.index() === 0);
+        start(); 
+      }); 
     });
   } );
 
@@ -70,7 +113,18 @@ function execute(){
       ok(SlidingCarousel.instance.hasPrevious() === true);
       SlidingCarousel.instance.trigger('previous');
       ok(SlidingCarousel.instance.index() == 13);
-      start();
+      
+      SlidingCarouselNextButton.lu('getComponent','Button').ready(function() {
+        SlidingCarousel.instance.select(0);
+        SlidingCarouselPrevButton.click();
+        ok(SlidingCarousel.instance.index() === 13);
+      }); 
+      SlidingCarouselPrevButton.lu('getComponent','Button').ready(function() {
+        SlidingCarousel.instance.select(13);
+        SlidingCarouselNextButton.click();
+        ok(SlidingCarousel.instance.index() === 0);
+        start(); 
+      }); 
     });
   } );
 }
