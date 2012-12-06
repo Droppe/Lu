@@ -32,6 +32,9 @@
       position: absolute;
       width: 200px;
     }
+    .tooltip:focus {
+      outline: 0;
+    }
   </style>
 </head>
 
@@ -72,6 +75,13 @@
       <input id="input-tip" href="#input-example" data-lu="Tip:Right" value="" placeholder="Click for tip." data-lu-config="{ 'Tip:Right' : { 'className' : 'tooltip input-tip' } }"/>
       <div id="input-example" class="tip-contents">
         Pastrami boudin pig, swine filet mignon venison flank chuck.
+      </div>
+    </li>
+    <li>
+      <a href="#persistent-example" data-lu="Tip" data-lu-config="{ 'Tip' : { 'persistent' : true } }">Persistent Tip.</a>
+      <div id="persistent-example" class="tip-contents">
+        Bresaola salami short loin tongue t-bone venison turkey fatback pancetta frankfurter swine hamburger.
+        <a href="#" class="close">close</a>
       </div>
     </li>
   </ul>
