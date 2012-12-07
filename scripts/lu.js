@@ -1,4 +1,8 @@
 /**
+ * module Lu
+ */
+
+/**
  * Lu's main class
  * @class Lu
  * @constructor

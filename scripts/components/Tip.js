@@ -5,6 +5,7 @@
  * @extends Abstract
  * @require Container
  * @version 0.1.4
+ * @submodule Tip
  */
 
 var constants = require( 'lu/constants' ),

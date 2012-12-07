@@ -1,9 +1,22 @@
+/**
+ * Generic State decorator
+ * @class genericStateDecorator
+ * @module Lu
+ */
+
 
 var constants = require( 'lu/constants' ),
   helpers = require( 'lu/helpers' );
 
-function stateDecorator( settings ){
+function genericStateDecorator( settings ){
 
+  /**
+   * Converts a string of states into an array
+   * @method normalizeState
+   * @private
+   * @param {Array} states an array of states
+   * @return {Array} An array of states
+   */
   function normalizeStates( states ){
     if( states ){
       if( typeof states === 'string' ){
@@ -46,6 +59,14 @@ function stateDecorator( settings ){
     }, 1 );
   }
 
+
+  /**
+   * Returns a list of newly-added states (???)
+   * @method getAppliedStates
+   * @private
+   * @param {Object} $element A jQuery element
+   * @return {Array} A list of states
+   */
   function getAppliedStates( $element ){
     var classes = $element.attr( 'class' ) || '',
       states = [];
@@ -242,8 +263,8 @@ function stateDecorator( settings ){
 //Export to Common JS Loader
 if( typeof module !== 'undefined' ){
   if( typeof module.setExports === 'function' ){
-    module.setExports( stateDecorator );
+    module.setExports( genericStateDecorator );
   } else if( module.exports ){
-   module.exports = stateDecorator;
+   module.exports = genericStateDecorator;
   }
 }

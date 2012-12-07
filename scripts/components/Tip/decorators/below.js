@@ -1,8 +1,24 @@
+/**
+ * Positions a Tip below the decorated element.
+ * @class belowDecorator
+ * @uses Tip
+ */
+
 function belowDecorator(settings) {
 
   return function( base ) {
     var self = this;
 
+  /**
+   * Gets the position of the tip
+   * @method calcPosition
+   * @param {Number} offset The offset value
+   * @param {Number} height The height value
+   * @param {Number} width The width value
+   * @param {Object} settings The instance's settings object containing config values
+   * @return {Object} position And object containing a top and left
+   * @private
+   */  
     this.calcPosition = function(offset, height, width, settings) {
       return {
         top: offset.top + height + settings.offsetTop,

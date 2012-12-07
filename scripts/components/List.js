@@ -1,6 +1,6 @@
 /**
  * Manages a list of Containers.
- * @class self
+ * @class List
  * @extends Switch
  */
 
@@ -36,15 +36,16 @@ List = Switch.extend( function( base ){
     init: function( $element, settings ){
       var self = this,
         Selected,
+        $selected,
         Previous,
         $items,
-        index;
+        index,
+        requirements = [];
 
       _.defaults( settings, defaults );
 
       base.init.call( this, $element, settings );
 
-      var requirements = [];
       if (settings.viewport) {
         requirements.push(decorators.viewport);
       }
@@ -201,7 +202,7 @@ List = Switch.extend( function( base ){
 
       index = settings.index;
       if( index === undefined ){
-        var $selected = this.$items.filter('.' + SELECTED );
+        $selected = this.$items.filter('.' + SELECTED );
         index = this.$items.index( $selected );
         if( index === -1 ){
           index = 0;

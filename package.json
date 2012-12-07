@@ -8,7 +8,14 @@
   },
   "dependencies": {
     "grunt": ">=0.3.12",
-    "node-static": ">=0.6.0"
+    "node-static": ">=0.6.0",
+    "grunt-contrib-yuidoc": "0.3.2",
+    "grunt-lib-contrib": "0.3.1",
+    "yuidocjs": "0.3.34",
+    "graceful-fs": "1.1.14",
+    "minimatch": "0.1.5",
+    "node-markdown": "0.1.1",
+    "rimraf": "2.0.2"
   },
   "engine": "node >= 0.5.11",
   "scripts": {

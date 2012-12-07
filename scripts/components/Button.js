@@ -3,6 +3,7 @@
 * @class Button
 * @constructor
 * @extends Switch
+* @submodule Button
 */
 
 var constants = require( 'lu/constants' ),

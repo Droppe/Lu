@@ -5,8 +5,8 @@ var constants = require( 'lu/constants' );
  * to intelligently disable or enable itself based upon
  * the control having a next item. This is used in
  * conjunction with the default decorator.
- * @method next
- * @private
+ * @class nextDecorator
+ * @uses Button
  */
 function nextDecorator( settings ){
 

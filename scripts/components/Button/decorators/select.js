@@ -6,8 +6,8 @@ var constants = require( 'lu/constants' );
  * Additionally, the Button will fire a 'select' event on the
  * 'on' event as specified in the configuration. This event
  * is triggered with a 'item' parameter.
- * @method select
- * @private
+ * @class selectDecorator
+ * @uses Button
  */
 function selectDecorator( settings ){
   return function( base ){

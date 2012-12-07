@@ -6,8 +6,8 @@ var constants = require( 'lu/constants' );
  * Additionally, the Button will fire a load event on the
  * 'on' event as specified in the configuration. This event
  * is triggered with a 'url' parameter.
- * @method load
- * @private
+ * @class loadDecorator
+ * @uses Button
  */
 function loadDecorator( settings ){
 

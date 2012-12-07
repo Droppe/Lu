@@ -4,8 +4,8 @@ var constants = require( 'lu/constants' );
  * Decorates the Button to listen for the 'stated' event and
  * to disable itself if the control is paused. This is used in
  * conjunction with the default decorator.
- * @method pause
- * @private
+ * @class pauseDecorator
+ * @uses Button
  */
 function pauseDecorator( settings ) {
   return function( base ){

@@ -1,0 +1,3271 @@
+{
+    "project": {
+        "name": "The Lu Component API",
+        "description": "Lu Component API Documentation",
+        "logo": "http://use.lu/images/logo.png",
+        "version": "0.3.x",
+        "url": "http://github.com/linkedin/Lu"
+    },
+    "files": {
+        "scripts/components/Button/decorators/default.js": {
+            "name": "scripts/components/Button/decorators/default.js",
+            "modules": {},
+            "classes": {
+                "DefaultDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/first.js": {
+            "name": "scripts/components/Button/decorators/first.js",
+            "modules": {},
+            "classes": {
+                "firstDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/last.js": {
+            "name": "scripts/components/Button/decorators/last.js",
+            "modules": {},
+            "classes": {
+                "lastDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/load.js": {
+            "name": "scripts/components/Button/decorators/load.js",
+            "modules": {},
+            "classes": {
+                "loadDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/next.js": {
+            "name": "scripts/components/Button/decorators/next.js",
+            "modules": {},
+            "classes": {
+                "nextDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/pause.js": {
+            "name": "scripts/components/Button/decorators/pause.js",
+            "modules": {},
+            "classes": {
+                "pauseDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/play.js": {
+            "name": "scripts/components/Button/decorators/play.js",
+            "modules": {},
+            "classes": {
+                "playDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/previous.js": {
+            "name": "scripts/components/Button/decorators/previous.js",
+            "modules": {},
+            "classes": {
+                "previousDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/select.js": {
+            "name": "scripts/components/Button/decorators/select.js",
+            "modules": {},
+            "classes": {
+                "selectDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button/decorators/state.js": {
+            "name": "scripts/components/Button/decorators/state.js",
+            "modules": {},
+            "classes": {
+                "stateDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/List/decorators/viewport.js": {
+            "name": "scripts/components/List/decorators/viewport.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Tip/decorators/above.js": {
+            "name": "scripts/components/Tip/decorators/above.js",
+            "modules": {},
+            "classes": {
+                "aboveDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Tip/decorators/below.js": {
+            "name": "scripts/components/Tip/decorators/below.js",
+            "modules": {},
+            "classes": {
+                "belowDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Tip/decorators/left.js": {
+            "name": "scripts/components/Tip/decorators/left.js",
+            "modules": {},
+            "classes": {
+                "leftDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Tip/decorators/right.js": {
+            "name": "scripts/components/Tip/decorators/right.js",
+            "modules": {},
+            "classes": {
+                "rightDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/decorators/state.js": {
+            "name": "scripts/components/decorators/state.js",
+            "modules": {
+                "Lu": 1
+            },
+            "classes": {
+                "genericStateDecorator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Abstract.js": {
+            "name": "scripts/components/Abstract.js",
+            "modules": {},
+            "classes": {
+                "Abstract": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Button.js": {
+            "name": "scripts/components/Button.js",
+            "modules": {},
+            "classes": {
+                "Button": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Carousel.js": {
+            "name": "scripts/components/Carousel.js",
+            "modules": {},
+            "classes": {
+                "Carousel": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Container.js": {
+            "name": "scripts/components/Container.js",
+            "modules": {},
+            "classes": {
+                "Container": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Dropdown.js": {
+            "name": "scripts/components/Dropdown.js",
+            "modules": {},
+            "classes": {
+                "Dropdown": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/FormElement.js": {
+            "name": "scripts/components/FormElement.js",
+            "modules": {},
+            "classes": {
+                "FormElement": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/List.js": {
+            "name": "scripts/components/List.js",
+            "modules": {},
+            "classes": {
+                "List": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Placeholder.js": {
+            "name": "scripts/components/Placeholder.js",
+            "modules": {},
+            "classes": {
+                "Placeholder": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Switch.js": {
+            "name": "scripts/components/Switch.js",
+            "modules": {},
+            "classes": {
+                "Switch": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/components/Tip.js": {
+            "name": "scripts/components/Tip.js",
+            "modules": {},
+            "classes": {
+                "Tip": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/lu.js": {
+            "name": "scripts/lu.js",
+            "modules": {},
+            "classes": {
+                "Lu": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "scripts/mappers.js": {
+            "name": "scripts/mappers.js",
+            "modules": {},
+            "classes": {
+                "Mapper": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "Lu": {
+            "name": "Lu",
+            "submodules": {
+                "Button": 1,
+                "Tip": 1
+            },
+            "classes": {
+                "DefaultDecorator": 1,
+                "firstDecorator": 1,
+                "lastDecorator": 1,
+                "loadDecorator": 1,
+                "nextDecorator": 1,
+                "pauseDecorator": 1,
+                "playDecorator": 1,
+                "previousDecorator": 1,
+                "selectDecorator": 1,
+                "stateDecorator": 1,
+                "aboveDecorator": 1,
+                "belowDecorator": 1,
+                "leftDecorator": 1,
+                "rightDecorator": 1,
+                "genericStateDecorator": 1,
+                "Abstract": 1,
+                "Button": 1,
+                "Carousel": 1,
+                "Container": 1,
+                "Dropdown": 1,
+                "FormElement": 1,
+                "List": 1,
+                "Placeholder": 1,
+                "Switch": 1,
+                "Tip": 1,
+                "Lu": 1,
+                "Mapper": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "scripts/mappers.js",
+            "line": 3,
+            "description": "Generic State decorator"
+        },
+        "Button": {
+            "name": "Button",
+            "submodules": {},
+            "classes": {
+                "Button": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Lu",
+            "namespace": "",
+            "description": "Button",
+            "file": "scripts/components/Button.js",
+            "line": 1
+        },
+        "Tip": {
+            "name": "Tip",
+            "submodules": {},
+            "classes": {
+                "Tip": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Lu",
+            "namespace": "",
+            "description": "Tooltip class",
+            "file": "scripts/components/Tip.js",
+            "line": 1
+        }
+    },
+    "classes": {
+        "DefaultDecorator": {
+            "name": "DefaultDecorator",
+            "shortname": "DefaultDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/default.js",
+            "line": 1,
+            "description": "Decorates the Button to listen for\nthe 'on' event and trigger the 'action' event\nas specified in the configuration.",
+            "uses": [
+                "Button"
+            ]
+        },
+        "firstDecorator": {
+            "name": "firstDecorator",
+            "shortname": "firstDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/first.js",
+            "line": 3,
+            "description": "Decorates the Button to listen for the 'selected' event and\nto intelligently disable or enable itself\nbased upon the item selected. This is used in\nconjunction with the default decorator",
+            "uses": [
+                "Button"
+            ]
+        },
+        "lastDecorator": {
+            "name": "lastDecorator",
+            "shortname": "lastDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/last.js",
+            "line": 3,
+            "description": "Decorates the Button to listen for the 'selected' event and\nto intelligently disable or enable itself\nbased upon the item selected. This is used in\nconjunction with the default decorator",
+            "uses": [
+                "Button"
+            ]
+        },
+        "loadDecorator": {
+            "name": "loadDecorator",
+            "shortname": "loadDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/load.js",
+            "line": 3,
+            "description": "Decorates the Button to listen for the 'stated' event and\nto disable itself if loading has occurred.\nAdditionally, the Button will fire a load event on the\n'on' event as specified in the configuration. This event\nis triggered with a 'url' parameter.",
+            "uses": [
+                "Button"
+            ]
+        },
+        "nextDecorator": {
+            "name": "nextDecorator",
+            "shortname": "nextDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/next.js",
+            "line": 3,
+            "description": "Decorates the Button to listen for the 'selected' event and\nto intelligently disable or enable itself based upon\nthe control having a next item. This is used in\nconjunction with the default decorator.",
+            "uses": [
+                "Button"
+            ]
+        },
+        "pauseDecorator": {
+            "name": "pauseDecorator",
+            "shortname": "pauseDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/pause.js",
+            "line": 3,
+            "description": "Decorates the Button to listen for the 'stated' event and\nto disable itself if the control is paused. This is used in\nconjunction with the default decorator.",
+            "uses": [
+                "Button"
+            ]
+        },
+        "playDecorator": {
+            "name": "playDecorator",
+            "shortname": "playDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/play.js",
+            "line": 3,
+            "description": "Decorates the Button to listen for the 'stated' event and\nto disable itself if the control is playing. This is used in\nconjunction with the default decorator.",
+            "uses": [
+                "Button"
+            ]
+        },
+        "previousDecorator": {
+            "name": "previousDecorator",
+            "shortname": "previousDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/previous.js",
+            "line": 3,
+            "description": "Decorates the Button to listen for the 'selected' event and\nto intelligently disable or enable itself based upon\nthe control having a next item. This is used in\nconjunction with the default decorator.",
+            "uses": [
+                "Button"
+            ]
+        },
+        "selectDecorator": {
+            "name": "selectDecorator",
+            "shortname": "selectDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/select.js",
+            "line": 3,
+            "description": "Decorates the Button to listen for the 'selected' event and\nto disable itself if the associated $item is selected.\nAdditionally, the Button will fire a 'select' event on the\n'on' event as specified in the configuration. This event\nis triggered with a 'item' parameter.",
+            "uses": [
+                "Button"
+            ]
+        },
+        "stateDecorator": {
+            "name": "stateDecorator",
+            "shortname": "stateDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Button/decorators/state.js",
+            "line": 4,
+            "description": "Decorates the Button to listen for the 'stated' event and\nto disable itself if the associated $item is selected.\nAdditionally, the Button will fire a 'stated' event on the\n'on' event as specified in the configuration. This event\nis triggered with a 'item' parameter.",
+            "uses": [
+                "Button"
+            ]
+        },
+        "aboveDecorator": {
+            "name": "aboveDecorator",
+            "shortname": "aboveDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Tip/decorators/above.js",
+            "line": 1,
+            "description": "Positions a Tip above the decorated element.",
+            "uses": [
+                "Tip"
+            ]
+        },
+        "belowDecorator": {
+            "name": "belowDecorator",
+            "shortname": "belowDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Tip/decorators/below.js",
+            "line": 1,
+            "description": "Positions a Tip below the decorated element.",
+            "uses": [
+                "Tip"
+            ]
+        },
+        "leftDecorator": {
+            "name": "leftDecorator",
+            "shortname": "leftDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Tip/decorators/left.js",
+            "line": 1,
+            "description": "Positions a Tip to the left of the decorated element.",
+            "uses": [
+                "Tip"
+            ]
+        },
+        "rightDecorator": {
+            "name": "rightDecorator",
+            "shortname": "rightDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/Tip/decorators/right.js",
+            "line": 1,
+            "description": "Positions a Tip to the right of the decorated element.",
+            "uses": [
+                "Tip"
+            ]
+        },
+        "genericStateDecorator": {
+            "name": "genericStateDecorator",
+            "shortname": "genericStateDecorator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "file": "scripts/components/decorators/state.js",
+            "line": 1,
+            "description": "Generic State decorator"
+        },
+        "Abstract": {
+            "name": "Abstract",
+            "shortname": "Abstract",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/Abstract.js",
+            "line": 7,
+            "description": "Provides an event facade for jQuery's event system as well as\nenabling observation.",
+            "is_constructor": 1
+        },
+        "Button": {
+            "name": "Button",
+            "shortname": "Button",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "DefaultDecorator",
+                "firstDecorator",
+                "lastDecorator",
+                "loadDecorator",
+                "nextDecorator",
+                "pauseDecorator",
+                "playDecorator",
+                "previousDecorator",
+                "selectDecorator",
+                "stateDecorator"
+            ],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/Button.js",
+            "line": 1,
+            "description": "Button",
+            "submodule": "Button",
+            "is_constructor": 1,
+            "extends": "Switch"
+        },
+        "Carousel": {
+            "name": "Carousel",
+            "shortname": "Carousel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/Carousel.js",
+            "line": 1,
+            "extends": "List"
+        },
+        "Container": {
+            "name": "Container",
+            "shortname": "Container",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/Container.js",
+            "line": 6,
+            "description": "Contains content and maintains state",
+            "is_constructor": 1,
+            "extends": "Switch",
+            "version": "0.2.4"
+        },
+        "Dropdown": {
+            "name": "Dropdown",
+            "shortname": "Dropdown",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/Dropdown.js",
+            "line": 6,
+            "description": "Dropdown Lu Control\nExperimental feature, subject to change",
+            "extends": "Switch",
+            "is_constructor": 1,
+            "version": "0.1.0 experimental"
+        },
+        "FormElement": {
+            "name": "FormElement",
+            "shortname": "FormElement",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/FormElement.js",
+            "line": 1,
+            "description": "Form Element control",
+            "is_constructor": 1,
+            "extends": "Abstract"
+        },
+        "List": {
+            "name": "List",
+            "shortname": "List",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/List.js",
+            "line": 1,
+            "description": "Manages a list of Containers.",
+            "extends": "Switch"
+        },
+        "Placeholder": {
+            "name": "Placeholder",
+            "shortname": "Placeholder",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/Placeholder.js",
+            "line": 1,
+            "description": "Placeholder form control",
+            "is_constructor": 1,
+            "extends": "FormElement"
+        },
+        "Switch": {
+            "name": "Switch",
+            "shortname": "Switch",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/Switch.js",
+            "line": 1,
+            "description": "A stateful element",
+            "is_constructor": 1,
+            "extends": "Abstract"
+        },
+        "Tip": {
+            "name": "Tip",
+            "shortname": "Tip",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "aboveDecorator",
+                "belowDecorator",
+                "leftDecorator",
+                "rightDecorator"
+            ],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/components/Tip.js",
+            "line": 1,
+            "description": "Tooltip class",
+            "submodule": "Tip",
+            "is_constructor": 1,
+            "extends": "Abstract",
+            "require": "Container",
+            "version": "0.1.4"
+        },
+        "Lu": {
+            "name": "Lu",
+            "shortname": "Lu",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/lu.js",
+            "line": 5,
+            "description": "Lu's main class",
+            "is_constructor": 1,
+            "require": "inject",
+            "params": [
+                {
+                    "name": "settings",
+                    "description": "Configuration properties for this instance",
+                    "type": "Object"
+                }
+            ]
+        },
+        "Mapper": {
+            "name": "Mapper",
+            "shortname": "Mapper",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lu",
+            "namespace": "",
+            "file": "scripts/mappers.js",
+            "line": 3,
+            "description": "Mappers are used to store a scope of a DOM tree\nto map and a registry of mappers to execute",
+            "is_constructor": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "scripts/components/Button/decorators/state.js",
+            "line": 16,
+            "description": "Convert states into an array",
+            "itemtype": "method",
+            "name": "normalize",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "states",
+                    "description": "A string of states",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "A list of states",
+                "type": "Array"
+            },
+            "class": "stateDecorator"
+        },
+        {
+            "file": "scripts/components/Button/decorators/state.js",
+            "line": 32,
+            "description": "Corrects the index",
+            "itemtype": "method",
+            "name": "state",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "states",
+                    "description": "A list of states",
+                    "type": "Array"
+                },
+                {
+                    "name": "index",
+                    "description": "The current state index",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "The updated index value",
+                "type": "Number"
+            },
+            "class": "stateDecorator"
+        },
+        {
+            "file": "scripts/components/List/decorators/viewport.js",
+            "line": 4,
+            "description": "Applies a viewport to a List or Carousel.",
+            "access": "private",
+            "tagname": "",
+            "class": "aboveDecorator"
+        },
+        {
+            "file": "scripts/components/Tip/decorators/above.js",
+            "line": 13,
+            "description": "Gets the position of the tip",
+            "itemtype": "method",
+            "name": "calcPosition",
+            "params": [
+                {
+                    "name": "offset",
+                    "description": "The offset value",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "The height value",
+                    "type": "Number"
+                },
+                {
+                    "name": "width",
+                    "description": "The width value",
+                    "type": "Number"
+                },
+                {
+                    "name": "settings",
+                    "description": "The instance's settings object containing config values",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "position And object containing a top and left",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "aboveDecorator"
+        },
+        {
+            "file": "scripts/components/Tip/decorators/below.js",
+            "line": 12,
+            "description": "Gets the position of the tip",
+            "itemtype": "method",
+            "name": "calcPosition",
+            "params": [
+                {
+                    "name": "offset",
+                    "description": "The offset value",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "The height value",
+                    "type": "Number"
+                },
+                {
+                    "name": "width",
+                    "description": "The width value",
+                    "type": "Number"
+                },
+                {
+                    "name": "settings",
+                    "description": "The instance's settings object containing config values",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "position And object containing a top and left",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "belowDecorator"
+        },
+        {
+            "file": "scripts/components/Tip/decorators/left.js",
+            "line": 12,
+            "description": "Gets the position of the tip",
+            "itemtype": "method",
+            "name": "calcPosition",
+            "params": [
+                {
+                    "name": "offset",
+                    "description": "The offset value",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "The height value",
+                    "type": "Number"
+                },
+                {
+                    "name": "width",
+                    "description": "The width value",
+                    "type": "Number"
+                },
+                {
+                    "name": "settings",
+                    "description": "The instance's settings object containing config values",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "position And object containing a top and left",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "leftDecorator"
+        },
+        {
+            "file": "scripts/components/Tip/decorators/right.js",
+            "line": 12,
+            "description": "Gets the position of the tip",
+            "itemtype": "method",
+            "name": "calcPosition",
+            "params": [
+                {
+                    "name": "offset",
+                    "description": "The offset value",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "The height value",
+                    "type": "Number"
+                },
+                {
+                    "name": "width",
+                    "description": "The width value",
+                    "type": "Number"
+                },
+                {
+                    "name": "settings",
+                    "description": "The instance's settings object containing config values",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "position And object containing a top and left",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "rightDecorator"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 13,
+            "description": "Converts a string of states into an array",
+            "itemtype": "method",
+            "name": "normalizeState",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "states",
+                    "description": "an array of states",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "An array of states",
+                "type": "Array"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 29,
+            "description": "Add Classes representing the current states to $element and remove\ninvalid states",
+            "itemtype": "method",
+            "name": "applyState",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The jQuery Event object",
+                    "type": "Object"
+                },
+                {
+                    "name": "states",
+                    "description": "an array of states to set",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "Container.setState",
+                "type": "Function"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 63,
+            "description": "Returns a list of newly-added states (???)",
+            "itemtype": "method",
+            "name": "getAppliedStates",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "A jQuery element",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A list of states",
+                "type": "Array"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 85,
+            "description": "An array of string representing the current state(s)",
+            "itemtype": "property",
+            "name": "states",
+            "type": "Array",
+            "access": "private",
+            "tagname": "",
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 94,
+            "description": "Updates states on a state event",
+            "itemtype": "method",
+            "name": "state",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The jQuery Event object",
+                    "type": "Object"
+                },
+                {
+                    "name": "states",
+                    "description": "an array of states to set",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "Container.setState",
+                "type": "Function"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 130,
+            "description": "Returns the state(s) of the instance",
+            "itemtype": "method",
+            "name": "getState",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "an Array of strings representing the state(s)",
+                "type": "Array"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 190,
+            "description": "Removes the state(s) from the instance",
+            "itemtype": "method",
+            "name": "removeState",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "This can be an Array of strings or comma\ndelimited string representing multiple states. It can also be\na string representing a single state",
+                    "type": "Array|String"
+                }
+            ],
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "instance",
+                "type": "Object"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 220,
+            "description": "Removes all states from the instance",
+            "itemtype": "method",
+            "name": "clear",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "instance",
+                "type": "Object"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 231,
+            "description": "Sets states to those originally defined on the node",
+            "itemtype": "method",
+            "name": "reset",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "instance",
+                "type": "Object"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/decorators/state.js",
+            "line": 242,
+            "description": "Checks to see if the state has been applied",
+            "itemtype": "method",
+            "name": "hasState",
+            "params": [
+                {
+                    "name": "The",
+                    "description": "state to check",
+                    "type": "String"
+                }
+            ],
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "True if the state has been applied.",
+                "type": "Boolean"
+            },
+            "class": "genericStateDecorator",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 16,
+            "description": "Default configuration values",
+            "itemtype": "property",
+            "name": "defaults",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object}",
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 23,
+            "description": "A selector that matches nodes to observe",
+            "itemtype": "property",
+            "name": "observe",
+            "type": "{String}",
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 29,
+            "description": "A selector that matches nodes to notify of events",
+            "itemtype": "property",
+            "name": "notify",
+            "type": "{String}",
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 37,
+            "description": "Adds an event, or a string of joined events to the eventStore",
+            "itemtype": "method",
+            "name": "addEventToStorage",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The event(s) to add",
+                    "type": "String"
+                },
+                {
+                    "name": "method",
+                    "description": "The method (ex: 'on', 'one')",
+                    "type": "String"
+                }
+            ],
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 54,
+            "description": "Removes an event, or a string of joined events from the eventStore",
+            "itemtype": "method",
+            "name": "removeEventFromStorage",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The event(s) to remove",
+                    "type": "String"
+                }
+            ],
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 70,
+            "description": "Class constructor",
+            "itemtype": "method",
+            "name": "init",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "JQuery object for DOM node wrapped by this component",
+                    "type": "Object"
+                },
+                {
+                    "name": "settings",
+                    "description": "Custom settings for this component",
+                    "type": "Object"
+                }
+            ],
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 110,
+            "description": "Creates an event listener for a type",
+            "itemtype": "method",
+            "name": "on",
+            "access": "public",
+            "tagname": "",
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 125,
+            "description": "Creates an event listener for a type, fires exactly once.",
+            "itemtype": "method",
+            "name": "one",
+            "access": "public",
+            "tagname": "",
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 140,
+            "description": "Unbinds event listeners of a type",
+            "itemtype": "method",
+            "name": "off",
+            "access": "public",
+            "tagname": "",
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 155,
+            "description": "Fires a custom event",
+            "itemtype": "method",
+            "name": "trigger",
+            "access": "public",
+            "tagname": "",
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 179,
+            "description": "Observe events from $observer",
+            "itemtype": "method",
+            "name": "observe",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$observer",
+                    "description": "A jQuery collection to be observed",
+                    "type": "Array"
+                }
+            ],
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 189,
+            "description": "Unobserve events from $observer",
+            "itemtype": "method",
+            "name": "unobserve",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$observer",
+                    "description": "A jQuery collection to be unobserved",
+                    "type": "Array"
+                }
+            ],
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Abstract.js",
+            "line": 199,
+            "description": "Returns and array of events the control is listening too",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "events list"
+            },
+            "class": "Abstract",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Button.js",
+            "line": 18,
+            "description": "The time in milliseconds in which to throttle events.\nEvents will only be triggred once per throttle time.\nThis is useful when timing complex css transitions.",
+            "itemtype": "property",
+            "name": "throttle",
+            "type": "{Number}",
+            "class": "Button",
+            "module": "Lu",
+            "submodule": "Button"
+        },
+        {
+            "file": "scripts/components/Button.js",
+            "line": 26,
+            "description": "By default the default is prevented setting this to true\nallows the hash to be updated and urls to resolve",
+            "itemtype": "property",
+            "name": "preventDefault",
+            "type": "{Number}",
+            "class": "Button",
+            "module": "Lu",
+            "submodule": "Button"
+        },
+        {
+            "file": "scripts/components/Button.js",
+            "line": 48,
+            "description": "Used for binding the space bar to the\nButton's 'on' event as specified in the\nconfiguration.",
+            "itemtype": "method",
+            "name": "bindSpaceBar",
+            "access": "private",
+            "tagname": "",
+            "class": "Button",
+            "module": "Lu",
+            "submodule": "Button"
+        },
+        {
+            "file": "scripts/components/Button.js",
+            "line": 64,
+            "description": "Class constructor",
+            "itemtype": "method",
+            "name": "initialize",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "JQuery object for the element wrapped by the component",
+                    "type": "Object"
+                },
+                {
+                    "name": "settings",
+                    "description": "Configuration settings",
+                    "type": "Object"
+                }
+            ],
+            "class": "Button",
+            "module": "Lu",
+            "submodule": "Button"
+        },
+        {
+            "file": "scripts/components/Button.js",
+            "line": 144,
+            "description": "Gets the url for the button -- either from the config setting or from the HREF",
+            "itemtype": "method",
+            "name": "getUrl",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "The URL for the button",
+                "type": "String"
+            },
+            "class": "Button",
+            "module": "Lu",
+            "submodule": "Button"
+        },
+        {
+            "file": "scripts/components/Button.js",
+            "line": 156,
+            "description": "Adds a disabled state to the Button\nas well as adding the prop disabled if\nit is a button or input element.",
+            "itemtype": "method",
+            "name": "disable",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "The Button instance",
+                "type": "Object"
+            },
+            "class": "Button",
+            "module": "Lu",
+            "submodule": "Button"
+        },
+        {
+            "file": "scripts/components/Button.js",
+            "line": 173,
+            "description": "Removes the disabled state from the Button\nas well the prop disabled if\nit is a button or input element.",
+            "itemtype": "method",
+            "name": "enable",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "The Button instance",
+                "type": "Object"
+            },
+            "class": "Button",
+            "module": "Lu",
+            "submodule": "Button"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 13,
+            "description": "Default configuration values",
+            "itemtype": "property",
+            "name": "defaults",
+            "type": "Object",
+            "access": "private",
+            "tagname": "",
+            "final": 1,
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 21,
+            "description": "Number of times to cycle through carousel items when playing, set to -1 to repeat forever",
+            "itemtype": "property",
+            "name": "repeat",
+            "type": "Number",
+            "access": "private",
+            "tagname": "",
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 28,
+            "description": "Automatically calls play on instantiation if set to true",
+            "itemtype": "property",
+            "name": "repeat",
+            "type": "Boolean",
+            "access": "private",
+            "tagname": "",
+            "final": 1,
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 36,
+            "description": "The time in milliseconds to remain on an item while playing",
+            "itemtype": "property",
+            "name": "delay",
+            "type": "Number",
+            "access": "private",
+            "tagname": "",
+            "final": 1,
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 48,
+            "description": "Class constructor",
+            "itemtype": "method",
+            "name": "initialize",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "JQuery object for the element wrapped by the component",
+                    "type": "Object"
+                },
+                {
+                    "name": "settings",
+                    "description": "Configuration settings",
+                    "type": "Object"
+                }
+            ],
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 57,
+            "description": "Integer value signalling whether the carousel is set to repeat",
+            "itemtype": "property",
+            "name": "repeat",
+            "type": "Type Number",
+            "access": "private",
+            "tagname": "",
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 64,
+            "description": "Flag signalling the playing state of the carousel",
+            "itemtype": "property",
+            "name": "playing",
+            "type": "Boolean",
+            "default": "false",
+            "access": "private",
+            "tagname": "",
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 72,
+            "description": "The calculated time in milliseconds to remain on an item while playing",
+            "itemtype": "property",
+            "name": "delay",
+            "type": "Number",
+            "access": "private",
+            "tagname": "",
+            "final": 1,
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 80,
+            "description": "Timer which handles the playing of the carousel",
+            "itemtype": "property",
+            "name": "playTimer",
+            "type": "Object",
+            "access": "private",
+            "tagname": "",
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 94,
+            "description": "Plays the Carousel",
+            "itemtype": "method",
+            "name": "play",
+            "privileged": "",
+            "return": {
+                "description": "Carousel",
+                "type": "Object"
+            },
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 120,
+            "description": "Pauses the Carousel",
+            "itemtype": "method",
+            "name": "pause",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Carousel",
+                "type": "Object"
+            },
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 157,
+            "description": "Carousels wrap, so they always have next",
+            "itemtype": "method",
+            "name": "hasNext",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "true",
+                "type": "Boolean"
+            },
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 167,
+            "description": "Carousels wrap, so they always have previous",
+            "itemtype": "method",
+            "name": "hasPrevious",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "true",
+                "type": "Boolean"
+            },
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 177,
+            "description": "Selects the next item in the Carousel.",
+            "itemtype": "method",
+            "name": "next",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Carousel",
+                "type": "Object"
+            },
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Carousel.js",
+            "line": 192,
+            "description": "Selects the previous item in the Carousel.",
+            "itemtype": "method",
+            "name": "previous",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Carousel",
+                "type": "Object"
+            },
+            "class": "Carousel",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 15,
+            "description": "Default configuration values",
+            "itemtype": "property",
+            "name": "defaults",
+            "type": "Object",
+            "access": "private",
+            "tagname": "",
+            "final": 1,
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 23,
+            "description": "The default state or states to be applied to the Container.\nThis can be an Array of strings or comma-delimited string\nrepresenting multiple states.\nIt can also be a string representing a single state",
+            "itemtype": "property",
+            "name": "states",
+            "type": "{String|Array}",
+            "default": "null",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 33,
+            "description": "A CSS selctor for an element to be used as a content source.",
+            "itemtype": "property",
+            "name": "content",
+            "type": "{String}",
+            "default": "null",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 40,
+            "description": "A URL to be used as a content source.",
+            "itemtype": "property",
+            "name": "url",
+            "type": "{String}",
+            "default": "null",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 47,
+            "description": "Set to true if the content should be loaded in an iframe",
+            "itemtype": "property",
+            "name": "frame",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 54,
+            "description": "When true the $element's height is set to the content height.",
+            "itemtype": "property",
+            "name": "autoHeight",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 61,
+            "description": "When true the $element's width is set to the content width.",
+            "itemtype": "property",
+            "name": "autoWidth",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 68,
+            "description": "A selector that specifies a target within the Container to inject content.",
+            "itemtype": "property",
+            "name": "target",
+            "type": "{String}",
+            "default": "null",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 78,
+            "description": "Constructor",
+            "itemtype": "method",
+            "name": "init",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "JQuery object for the element wrapped by\nthe component",
+                    "type": "Object"
+                },
+                {
+                    "name": "settings",
+                    "description": "Configuration settings",
+                    "type": "Object"
+                }
+            ],
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 87,
+            "description": "Instance of Container",
+            "itemtype": "property",
+            "name": "Container",
+            "type": "Object",
+            "access": "private",
+            "tagname": "",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 94,
+            "description": "The content of the container",
+            "itemtype": "property",
+            "name": "content",
+            "type": "String",
+            "access": "private",
+            "tagname": "",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 107,
+            "description": "A cache to store the height and width of the $element",
+            "itemtype": "property",
+            "name": "cache",
+            "type": "Object",
+            "access": "public",
+            "tagname": "",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 115,
+            "description": "A jquery object to inject content into",
+            "itemtype": "property",
+            "name": "target",
+            "type": "{Object}",
+            "access": "public",
+            "tagname": "",
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 131,
+            "description": "Loads content and then triggers an update event. Called on load event.",
+            "itemtype": "method",
+            "name": "load",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$target",
+                    "description": "Jquery object for the event target",
+                    "type": "Object"
+                },
+                {
+                    "name": "source",
+                    "description": "The source to load or obtain a URL from, or the selector or node to use for local content",
+                    "type": "String|Object"
+                },
+                {
+                    "name": "method",
+                    "description": "the method to be used when inserting content",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Container",
+                "type": "Object"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 245,
+            "description": "Returns the contents of the Container",
+            "itemtype": "method",
+            "name": "getContent",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "contents",
+                "type": "Array"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 255,
+            "description": "Sets the content of the Container replacing current content",
+            "itemtype": "method",
+            "name": "setContent!~YUIDOC_LINE~!param  value The content to set.",
+            "type": "String",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Container",
+                "type": "Object"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 284,
+            "description": "Appends content to the Container",
+            "itemtype": "method",
+            "name": "appendContent!~YUIDOC_LINE~!param  value The content to append.",
+            "type": "String",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Container.setContent",
+                "type": "Function"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 296,
+            "description": "Prepend content to the Container",
+            "itemtype": "method",
+            "name": "prepend Content!~YUIDOC_LINE~!param  value The content to prepend.",
+            "type": "String",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "self.setContent",
+                "type": "Function"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 342,
+            "description": "Returns the computed height of the Container; result has no units",
+            "itemtype": "method",
+            "name": "getHeight",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Computed height of the Container (result drops units)",
+                "type": "Integer"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 362,
+            "description": "Sets the height of the Container.",
+            "itemtype": "method",
+            "name": "setHeight",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The height in pixels to set",
+                    "type": "Integer"
+                }
+            ],
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Container",
+                "type": "Object"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 380,
+            "description": "Returns the computed width of the Container; result has no units",
+            "itemtype": "method",
+            "name": "getHeight",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Computed height of the Container (result drops units)",
+                "type": "Integer"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Container.js",
+            "line": 400,
+            "description": "Sets the width of the Container",
+            "itemtype": "method",
+            "name": "setWidth",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The width in pixels to set",
+                    "type": "Integer"
+                }
+            ],
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "Container",
+                "type": "Object"
+            },
+            "class": "Container",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 28,
+            "description": "Default configuration values",
+            "itemtype": "property",
+            "name": "defaults",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object}",
+            "final": 1,
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 36,
+            "description": "A selector that matches the button element that will display the selected list item's text.\nSpecify Boolean false for no label.",
+            "itemtype": "property",
+            "name": "label",
+            "type": "{Mixed}",
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 43,
+            "description": "The attribute that contains selected element's value.\nIf attribute doesn't exist, list item's text will be used as value.",
+            "itemtype": "property",
+            "name": "valueAttr",
+            "type": "{String}",
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 52,
+            "description": "Arrow key handler",
+            "itemtype": "method",
+            "name": "handleArrowKey",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "direction",
+                    "description": "Specifies which list element to select. -1 for previous item, 1 for next list item",
+                    "type": "Number"
+                },
+                {
+                    "name": "state",
+                    "description": "Dropdown element's current state",
+                    "type": "String"
+                }
+            ],
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 87,
+            "description": "Enter key handler",
+            "itemtype": "method",
+            "name": "handleEnterKey",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "state",
+                    "description": "Dropdown element's current state",
+                    "type": "String"
+                }
+            ],
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 101,
+            "description": "Key manager",
+            "itemtype": "method",
+            "name": "handleKeyEvents",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "evt",
+                    "description": "Event object",
+                    "type": "Object"
+                }
+            ],
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 136,
+            "description": "Actions after item has been selected from list",
+            "itemtype": "method",
+            "name": "update",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "fromKey",
+                    "description": "Is the caller a key handler?",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 164,
+            "description": "Updates dropwdown label with text from list item",
+            "itemtype": "method",
+            "name": "setLabel",
+            "access": "private",
+            "tagname": "",
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 175,
+            "description": "Reset list to original state when no selections are made",
+            "itemtype": "method",
+            "name": "resetList",
+            "access": "private",
+            "tagname": "",
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 189,
+            "description": "Class constructor",
+            "itemtype": "method",
+            "name": "initialize",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "JQuery object for the element wrapped by the component",
+                    "type": "Object"
+                },
+                {
+                    "name": "settings",
+                    "description": "Configuration settings",
+                    "type": "Object"
+                }
+            ],
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 251,
+            "description": "Sets dropdown to expanded state",
+            "itemtype": "method",
+            "name": "expand",
+            "access": "public",
+            "tagname": "",
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 260,
+            "description": "Sets dropdown to collapsed state",
+            "itemtype": "method",
+            "name": "collapse",
+            "access": "public",
+            "tagname": "",
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Dropdown.js",
+            "line": 269,
+            "description": "Get the dropdown's selected value",
+            "itemtype": "method",
+            "name": "getValue",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "value Selected value",
+                "type": "String"
+            },
+            "class": "Dropdown",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/FormElement.js",
+            "line": 16,
+            "description": "Instance of FormElement",
+            "itemtype": "property",
+            "name": "FormElement",
+            "type": "Object",
+            "access": "private",
+            "tagname": "",
+            "class": "FormElement",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 29,
+            "is_constructor": 1,
+            "itemtype": "method",
+            "name": "init",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "JQuery object for the element wrapped by the component",
+                    "type": "Object"
+                },
+                {
+                    "name": "settings",
+                    "description": "Configuration settings",
+                    "type": "Object"
+                }
+            ],
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 61,
+            "description": "gets the 0 based index of the selected item.",
+            "itemtype": "method",
+            "name": "index",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "index",
+                "type": "Number"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 71,
+            "description": "Gets the selectable items",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "a JQuery object-reference to the items",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 100,
+            "description": "Returns the currently-selected Container.",
+            "itemtype": "method",
+            "name": "current",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "JQuery object-reference to the selected item",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 110,
+            "description": "Select an item in the list",
+            "itemtype": "method",
+            "name": "select",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "item",
+                    "description": "The index of the item to\nselect, a css selector, or a JQuery collection containing the item.",
+                    "type": "Integer|String|Object"
+                }
+            ],
+            "return": {
+                "description": "self",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 287,
+            "description": "adds a new item to $element",
+            "itemtype": "method",
+            "name": "append",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "A",
+                    "description": "jQuery Collection of $items to append",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "self",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 300,
+            "description": "Removes an item from $element",
+            "itemtype": "method",
+            "name": "remove",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "A",
+                    "description": "jQuery Collection of $items to remove",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "self",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 312,
+            "description": "Selects the next item in the list.",
+            "itemtype": "method",
+            "name": "next",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "self",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 326,
+            "description": "Selects the previous item in the list.",
+            "itemtype": "method",
+            "name": "previous",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "self",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 340,
+            "description": "Selects the last item in the list.",
+            "itemtype": "method",
+            "name": "last",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "self",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 350,
+            "description": "Selects the first item in the list.",
+            "itemtype": "method",
+            "name": "first",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "self",
+                "type": "Object"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 360,
+            "description": "Determines if there are any higher-index items in the list.",
+            "itemtype": "method",
+            "name": "hasNext",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "true if not at the last item in the list",
+                "type": "Boolean"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 369,
+            "description": "Determines if there are any lower-index items in the list.",
+            "itemtype": "method",
+            "name": "hasPrevious",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "true if not at the first item in the list",
+                "type": "Boolean"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/List.js",
+            "line": 378,
+            "description": "Returns the number of items in the list.",
+            "itemtype": "method",
+            "name": "size",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "The number of items in the list",
+                "type": "Number"
+            },
+            "class": "List",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Switch.js",
+            "line": 18,
+            "description": "Constructor",
+            "itemtype": "method",
+            "name": "init",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "JQuery object for the element wrapped by\nthe component",
+                    "type": "Object"
+                },
+                {
+                    "name": "settings",
+                    "description": "Configuration settings",
+                    "type": "Object"
+                }
+            ],
+            "class": "Switch",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 31,
+            "description": "Default configuration values for all Tip instances",
+            "itemtype": "property",
+            "name": "defaults",
+            "type": "Object",
+            "access": "private",
+            "tagname": "",
+            "final": 1,
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 40,
+            "description": "The time in milliseconds before before the Tip hides after the user has stopped interacting with it.",
+            "itemtype": "property",
+            "name": "delay",
+            "type": "Number",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 48,
+            "description": "The placement of the tip. Valid options are \"above\"/\"below\"/\"right/\"left\"",
+            "itemtype": "property",
+            "name": "placement",
+            "type": "String",
+            "access": "private",
+            "tagname": "",
+            "default": "right",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 57,
+            "description": "The number of pixels from the top of the element the tip will be positioned at.",
+            "itemtype": "property",
+            "name": "offsetTop",
+            "type": "Number",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 65,
+            "description": "The number of pixels from the left of the element the tip will be positioned at.",
+            "itemtype": "property",
+            "name": "offsetTop",
+            "type": "Number",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 73,
+            "description": "An underscore template to be used in generating the tip. (see: http://documentcloud.github.com/underscore/)",
+            "itemtype": "property",
+            "name": "template",
+            "type": "String",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 81,
+            "description": "Class name to be applied to tooltips outermost div",
+            "itemtype": "property",
+            "name": "className",
+            "type": "String",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 89,
+            "description": "CSS styles for the Tip",
+            "itemtype": "property",
+            "name": "style",
+            "type": "String",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 97,
+            "description": "If set to true the tip will remain open until the mouse has left the tip.",
+            "itemtype": "property",
+            "name": "interactive",
+            "type": "Boolean",
+            "access": "private",
+            "tagname": "",
+            "default": "true",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 106,
+            "description": "The buffer in pixels around the element to be used in determing if the user has stopped\ninteracting with the tip",
+            "itemtype": "property",
+            "name": "threshold",
+            "type": "Number",
+            "access": "private",
+            "tagname": "",
+            "default": "10",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 124,
+            "description": "An indicator of whether or not the tip has been rendered.",
+            "itemtype": "property",
+            "name": "rendered",
+            "type": "Boolean",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 132,
+            "description": "A jQuery collection that references the document.",
+            "itemtype": "property",
+            "name": "$document",
+            "type": "jQuery Object",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 140,
+            "description": "A jQuery collection that references the tip node.",
+            "itemtype": "property",
+            "name": "$tip",
+            "type": "jQuery Object",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 148,
+            "description": "A reference to the tip's Container instance.",
+            "itemtype": "property",
+            "name": "TipContainer",
+            "type": "Object",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 156,
+            "description": "A URL from the Tip's anchor tag",
+            "itemtype": "property",
+            "name": "href",
+            "type": "String",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 164,
+            "description": "An indicator of whether or not the tip should remain open",
+            "itemtype": "property",
+            "name": "stuck",
+            "type": "Boolean",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 172,
+            "description": "Whether the element is an input or not",
+            "itemtype": "property",
+            "name": "isInput",
+            "type": "Boolean",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 180,
+            "description": "Array of decorators to apply to a Tip instance",
+            "itemtype": "property",
+            "name": "requirements",
+            "type": "Array",
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 196,
+            "description": "Transfer the styles from the target to the tip if style is not specified",
+            "itemtype": "method",
+            "name": "styleTip",
+            "access": "public",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 225,
+            "description": "Appends the Tip to the body",
+            "itemtype": "method",
+            "name": "append",
+            "access": "private",
+            "tagname": "",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 235,
+            "description": "Function to run on mouseenter. Must be named so we can pass it specifically to jQuery's off.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "handleMouseEnter",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "jQuery event object",
+                    "type": "Objct"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 250,
+            "description": "Function to run on mousemove.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "handleMouseMove",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "jQuery event object",
+                    "type": "Objct"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 270,
+            "description": "Returns true if the mouse is outside the threshold area",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "isMouseOutside",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 291,
+            "description": "Function to run on focus.",
+            "access": "private",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "handleFocus",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "jQuery event object",
+                    "type": "Objct"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 313,
+            "description": "Show the tip",
+            "itemtype": "method",
+            "name": "show",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 331,
+            "description": "Hide the tip",
+            "itemtype": "method",
+            "name": "hide",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/components/Tip.js",
+            "line": 348,
+            "description": "Gets the position of the tip",
+            "itemtype": "method",
+            "name": "getPosition",
+            "return": {
+                "description": "position And object containing a top and left",
+                "type": "Object"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "Tip",
+            "module": "Lu",
+            "submodule": "Tip"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 1,
+            "description": "module Lu",
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 67,
+            "description": "Loads and instantiates components.",
+            "access": "public",
+            "tagname": "",
+            "static": 1,
+            "itemtype": "method",
+            "name": "execute",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The executed element (allows chaining)",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 87,
+            "description": "Instantiates a control with selected element.",
+            "itemtype": "method",
+            "name": "execute",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "$node",
+                    "description": "A jQuery collection with the selected elements.",
+                    "type": "Array"
+                },
+                {
+                    "name": "key",
+                    "description": "The name of the Control.",
+                    "type": "String"
+                },
+                {
+                    "name": "Control",
+                    "description": "The Control's constructor.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 157,
+            "description": "Returns a components object containing all components mapped to a node.\nAvailable through $.lu jQuery plug-in.",
+            "itemtype": "method",
+            "name": "getComponents",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The Lu components associated with the given element",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 175,
+            "description": "Returns a component.\nAvailable through $.lu jQuery plug-in.",
+            "itemtype": "method",
+            "name": "getComponents",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                },
+                {
+                    "name": "$element",
+                    "description": "the components key",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The Lu component associated with the given element",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 190,
+            "description": "Gets the mapped parents of the passed in $element.\nAvailable through $.lu jQuery plug-in.",
+            "itemtype": "method",
+            "name": "getParents",
+            "access": "public",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A jQuery collection representing the parents",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 203,
+            "description": "Gets the mapped descendants of the passed in $element. Available through $.lu jQuery plug-in.",
+            "itemtype": "method",
+            "name": "getDescendants",
+            "access": "public",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A Jquery collection of the descendants",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 215,
+            "description": "Gets the mapped children of the passed in $element. Available through $.lu jQuery plug-in.",
+            "itemtype": "method",
+            "name": "getChildren",
+            "access": "public",
+            "tagname": "",
+            "static": 1,
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A jQuery collection of the children",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 227,
+            "description": "Add an $observer to an $element. Observers are added in $.data as $observers.\nAvailable through $.lu jQuery plug-in.",
+            "access": "public",
+            "tagname": "",
+            "static": 1,
+            "itemtype": "method",
+            "name": "observe",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                },
+                {
+                    "name": "$observer",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The target element (allows chaining)",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 250,
+            "description": "Remove an observer from an $element. Available through $.lu jQuery plug-in.",
+            "access": "public",
+            "tagname": "",
+            "static": 1,
+            "itemtype": "method",
+            "name": "unobserve",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                },
+                {
+                    "name": "$observer",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "The target element (allows chaining)",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/lu.js",
+            "line": 271,
+            "description": "Notifies observers of events. Available through $.lu jQuery plug-in.",
+            "access": "public",
+            "tagname": "",
+            "static": 1,
+            "itemtype": "method",
+            "name": "notify",
+            "params": [
+                {
+                    "name": "$element",
+                    "description": "a jQuery collection",
+                    "type": "Object"
+                },
+                {
+                    "name": "event",
+                    "description": "the event type",
+                    "type": "String"
+                },
+                {
+                    "name": "$element",
+                    "description": "extra arguments associated with the event",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "The target element (allows chaining)",
+                "type": "Object"
+            },
+            "class": "Lu",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/mappers.js",
+            "line": 16,
+            "description": "Sets the scope to use when mapping components to nodes",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "setScoped",
+            "params": [
+                {
+                    "name": "scope",
+                    "description": "This can be an HTML Element,\nan array of elements, a selector string or a jquery object",
+                    "type": "*"
+                }
+            ],
+            "return": {
+                "description": "this"
+            },
+            "class": "Mapper",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/mappers.js",
+            "line": 45,
+            "description": "Gets a jquery object containing all Lu decorated nodes",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "setScoped",
+            "return": {
+                "description": "a jquery object"
+            },
+            "class": "Mapper",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/mappers.js",
+            "line": 55,
+            "description": "Registers a mapper to be executed later",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "register",
+            "params": [
+                {
+                    "name": "map",
+                    "description": "A function mapper to be called",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "this"
+            },
+            "class": "Mapper",
+            "module": "Lu"
+        },
+        {
+            "file": "scripts/mappers.js",
+            "line": 67,
+            "description": "Executes all registered maps",
+            "access": "public",
+            "tagname": "",
+            "itemtype": "method",
+            "name": "execute",
+            "return": {
+                "description": "this"
+            },
+            "class": "Mapper",
+            "module": "Lu"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: privileged",
+            "line": " scripts/components/Carousel.js:94"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " scripts/components/Container.js:6"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " scripts/components/Dropdown.js:6"
+        },
+        {
+            "message": "unknown tag: require",
+            "line": " scripts/components/Tip.js:1"
+        },
+        {
+            "message": "unknown tag: version",
+            "line": " scripts/components/Tip.js:1"
+        },
+        {
+            "message": "unknown tag: require",
+            "line": " scripts/lu.js:5"
+        },
+        {
+            "message": "Missing item type\nApplies a viewport to a List or Carousel.",
+            "line": " scripts/components/List/decorators/viewport.js:4"
+        },
+        {
+            "message": "Missing item type\nReturns and array of events the control is listening too",
+            "line": " scripts/components/Abstract.js:199"
+        },
+        {
+            "message": "Missing item type\nGets the selectable items",
+            "line": " scripts/components/List.js:71"
+        },
+        {
+            "message": "Missing item type\nmodule Lu",
+            "line": " scripts/lu.js:1"
+        }
+    ]
+}
