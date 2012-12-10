@@ -1,0 +1,259 @@
+<!doctype html>
+
+<!--[if lt IE 7]><html class="no-js ie6" lang="en"><![endif]-->
+<!--[if IE 7]><html class="no-js ie7" lang="en"><![endif]-->
+<!--[if IE 8]><html class="no-js ie8" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>Lu Dropdown</title>
+  <meta name="description" content="Lu Dropdown Component">
+  <meta name="author" content="Lu Team">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+  <style type="text/css">
+    body {
+      width: 800px;
+      margin: 50px auto;
+      font: 12px/1.5 Arial, Helvetica, sans-serif;
+    }
+
+    .dropdown {
+      width: 150px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .dropdown:focus {
+      outline: none;
+      border: none;
+    }
+
+    .dropdown:focus .dropdown-button,
+    .dropdown .dropdown-button:focus {
+      box-shadow: 0 0 8px rgba(0, 0, 0, .4);
+    }
+
+    .dropdown:after {
+      content: ".";
+      display: block;
+      clear: both;
+      height: 0;
+      visibility: hidden;
+    }
+
+    .dropdown.lu-state-active {
+      z-index: 1000;
+    }
+
+    .dropdown .dropdown-button {
+      display: block;
+      float: left;
+      padding: 2px 5px;
+      border: 1px solid #999;
+      border-radius: 4px;
+      background-color: #eee;
+      font: 12px/1.5 Arial, Helvetica, sans-serif;
+      color: #000;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .dropdown .dropdown-button.single {
+      width: 100%;
+      float: none;
+      position: relative;
+    }
+
+    .dropdown .dropdown-button.single:after {
+      content: "\25BC";
+      display: block;
+      position: absolute;
+      top: 3px;
+      right: 8px;
+      width:10px;
+      height: 10px;
+    }
+
+    .dropdown .dropdown-button.left {
+      width: 84%;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right-width: 0;
+    }
+
+    .dropdown .dropdown-button.right {
+      width: 16%;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      text-align: center;
+    }
+
+    .dropdown .dropdown-menu {
+      display: none;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top: 25px;
+    }
+
+    .dropdown.split .dropdown-menu {
+      left: 84%;
+    }
+
+    .dropdown.lu-state-active .dropdown-menu {
+      display: block;
+    }
+
+    .dropdown .dropdown-list {
+      margin: 0;
+      padding: 0;
+      border: 1px solid #999;
+      background-color: #fff;
+    }
+
+    .dropdown .dropdown-list li {
+      list-style-type: none;
+    }
+
+    .dropdown-list .lu-state-selected {
+      background-color: #00f;
+    }
+
+    .dropdown-list .lu-state-selected a {
+      color: #fff;
+    }
+
+    .dropdown-list a {
+      display: block;
+      padding: 2px 5px;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .dropdown-list a:hover {
+      background-color: #eee;
+    }
+
+    .dropdown-list .lu-state-selected a:hover {
+      background-color: transparent;
+    }
+
+    input,
+    select {
+      display: block;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="dropdown_a" data-lu="Dropdown" class="dropdown lu-state-inactive" tabindex="1">
+    <button data-lu="Button:State" class="dropdown-button single">&nbsp;</button>
+
+    <div class="dropdown-menu">
+      <ul class="dropdown-list" data-lu="List"></ul>
+    </div>
+
+    <select>
+      <option value="1">Item 1</option>
+      <option value="2">Item 2</option>
+      <option value="3" selected="selected">Item 3</option>
+      <option value="4">Item 4</option>
+      <option value="5">Item 5</option>
+    </select>
+  </div>
+
+
+  <!-- Bootstrap:Util -->
+  <script src="/scripts/libraries/underscore.js" type="text/javascript" charset="utf-8"></script>
+
+  <!-- Bootstrap:CommonJS Loader -->
+  <script type="text/javascript" src="/scripts/libraries/inject/inject.js"></script>
+
+  <!-- Bootstrap:UI -->
+  <script src="/scripts/libraries/jquery-1.7.1.min.js"></script>
+
+  <script src="/scripts/config.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/lu.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/scripts/mappers.js" type="text/javascript" charset="utf-8"></script>
+
+  <script type="text/javascript" charset="utf-8">
+
+    Inject.setExpires( 0 );
+    Inject.clearCache();
+    Inject.setModuleRoot( 'http://localhost:1337/' );
+
+    window.LU_DEBUG = 5;
+
+    $(function(){
+      // get a jQuery reference to dropdown components
+      // preferable to use an ID, but can also target via '[data-lu="Dropdown"]' selector
+      var $dd = $('#dropdown_a');
+
+      // map select selements to Lu
+      $dd.each( function(i, el){
+        var $dropdown = $(el);
+
+        Lu.map( $dropdown.find('select'), 'FormElement', function( $el ){
+          var opts = $el[0].options,
+            $list = $dropdown.find('ul[data-lu="List"]'),
+            $btns = $(),
+            sIdx = $el[0].selectedIndex,
+            tmpl = '<li><a href="#" data-lu="Button:Select" data-lu-value="<%= value %>"><%= text %></a></li>',
+            liItems = '';
+
+          // build list of items
+          $.each(opts, function(i, el){
+            liItems += _.template(tmpl, {value: el.value, text: el.text});
+          } );
+
+          $list.append( liItems );
+
+          // map buttons to Lu
+          $btns = $btns.add( $list.find('a') );
+
+          Lu.map( $btns, 'Button', function( $el ){
+            var key = $el.attr('data-lu');
+
+            this.key = key;
+            this.settings.action = key.split(':')[1].toLowerCase();
+            this.hasDependencies = true;
+          } );
+
+          // update label with selected option
+          $dropdown.lu('getComponent', 'Dropdown').deferral.then( function( instance ){
+            instance.$label.html( opts[sIdx].text );
+          } );
+
+          // hilight selected option in List
+          $list.lu('getComponent', 'List').deferral.then( function( instance ){
+            instance.select(sIdx);
+          } );
+
+          // make FormElement listen to dropdown updates
+          $el.lu('getComponent', 'FormElement').deferral.then( function( instance ){
+            instance.on( 'updated', function( evt, luDd ){
+              $el.val( luDd.getValue() );
+            } );
+          } );
+        } );
+      } );
+
+      // execute Lu
+      Lu.execute( $( 'body' ) ).then( function(){
+        console.info( 'DONE!' );
+      } );
+    });
+
+  </script>
+
+</body>
+
+</html>
