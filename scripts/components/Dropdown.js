@@ -156,8 +156,12 @@ Dropdown = Switch.extend( function ( base ) {
 
     // follow link if triggered by enter key
     if( fromKey && $listBtn.is( 'a' ) ){
-      href = $listBtn.attr( 'href' );
-      window.location.href = href;
+      var instance = $listBtn.lu('getComponent', 'Button'),
+        settings = instance.settings;
+
+      if( 'preventDefault' in settings && !settings.preventDefault ){
+        window.location.href = $listBtn.attr('href');
+      }
     }
   }
 
