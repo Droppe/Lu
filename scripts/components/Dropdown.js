@@ -1,5 +1,4 @@
 var constants = require( 'lu/constants' ),
-  helpers = require( 'lu/helpers' ),
   Switch = require( 'lu/Switch' ),
   Dropdown;
 
@@ -140,8 +139,7 @@ Dropdown = Switch.extend( function ( base ) {
    * @param {Boolean} fromKey Is the caller a key handler?
    */
   function update( fromKey ){
-    var href,
-      index = this.listInstance.index();
+    var index = this.listInstance.index();
 
     $listBtn = this.listInstance.current().$element.find( BUTTON_SELECT );
 
@@ -221,7 +219,7 @@ Dropdown = Switch.extend( function ( base ) {
         self.listInstance = listComponent.instance;
         listPrevIndex = self.listInstance.index();
 
-        self.listInstance.on( constants.events.SELECTED, function( evt, component ){
+        self.listInstance.on( constants.events.SELECTED, function(){
           // prevent updates on arrow key events
           if( !isIgnoredTrigger ){
             update.call( self );
@@ -245,7 +243,7 @@ Dropdown = Switch.extend( function ( base ) {
         }
       } );
 
-      self.$element.on( 'focusout', function( evt ){
+      self.$element.on( 'focusout', function(){
         timer = setTimeout( function(){
           resetList.call( self );
         }, TIMER_MS );
